@@ -1,0 +1,16 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">${title}</ux-dialog-header>
+    <ux-dialog-body>
+      <input attach-focus="true" value.bind="content" />
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button
+        class="btn btn-primary"
+        click.trigger="ok()">确定</button>
+      <button type="button"
+        class="btn btn-default"
+        click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
