@@ -1,0 +1,16 @@
+{
+    "defaultSeverity": "warning",
+    "jsRules": {},
+    "rules": {
+        "no-var-keyword": true,
+        "no-unused-new": true,
+        "no-unused-expression": true,
+        "no-floating-promises": true,
+        "no-invalid-this": true,
+        "space-before-function-paren": false,
+        "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast", "check-preblock"],
+        "class-name": true,
+        "import-spacing": true
+    },
+    "rulesDirectory": []
+}

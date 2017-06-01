@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "target": "es5",
+    "sourceMap": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "lib": ["es7", "dom", "es2015.promise"],
+    "baseUrl": "./dist"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

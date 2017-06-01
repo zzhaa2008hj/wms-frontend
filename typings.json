@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "aurelia-binding": "github:aurelia/binding",
+    "aurelia-dependency-injection": "github:aurelia/dependency-injection",
+    "aurelia-event-aggregator": "github:aurelia/event-aggregator",
+    "aurelia-framework": "github:aurelia/framework",
+    "aurelia-history": "github:aurelia/history",
+    "aurelia-http-client": "github:aurelia/http-client",
+    "aurelia-loader": "github:aurelia/loader",
+    "aurelia-logging": "github:aurelia/logging",
+    "aurelia-logging-console": "github:aurelia/logging-console",
+    "aurelia-metadata": "github:aurelia/metadata",
+    "aurelia-pal": "github:aurelia/pal",
+    "aurelia-path": "github:aurelia/path",
+    "aurelia-route-recognizer": "github:aurelia/route-recognizer",
+    "aurelia-router": "github:aurelia/router",
+    "aurelia-task-queue": "github:aurelia/task-queue",
+    "aurelia-templating": "github:aurelia/templating",
+    "aurelia-templating-resources": "github:aurelia/templating-resources",
+    "aurelia-validation": "github:aurelia/validation"
+  },
+  "globalDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20170310222111"
+  }
+}

@@ -1,0 +1,3 @@
+[submodule "kendo-ui"]
+	path = kendo-ui
+	url = https://git.oschina.net/mushang/kendo-ui.git
