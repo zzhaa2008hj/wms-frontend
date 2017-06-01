@@ -8,7 +8,7 @@ import { Prompt, PromptOptions } from "../components/dialog/prompt";
  * @author 祁志海
  */
 @autoinject
-export class AppDialogService {
+export class MessageDialogService {
 
   constructor(private dialogService: DialogService) {}
 

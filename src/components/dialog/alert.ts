@@ -26,4 +26,5 @@ export class Alert {
 export interface AlertOptions {
   title: string;
   message?: string;
+  icon?: 'warning' | 'error'
 }
