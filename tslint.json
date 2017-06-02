@@ -3,14 +3,52 @@
     "jsRules": {},
     "rules": {
         "no-var-keyword": true,
-        "no-unused-new": true,
         "no-unused-expression": true,
         "no-floating-promises": true,
+        "no-invalid-template-strings": true,
         "no-invalid-this": true,
+        "no-var-requires": true,
+        "no-require-imports": true,
+        "no-string-throw": true,
+        "no-unbound-method": [true, "ignore-static"],
+        "no-for-in-array": true,
+        "prefer-for-of": true,
+        "await-promise": true,
+        "forin": true,
+        "member-ordering": [true, {
+          "order": [
+            "public-static-field",
+            "public-static-method",
+            "protected-static-field",
+            "protected-static-method",
+            "private-static-field",
+            "private-static-method",
+            "public-instance-field",
+            "protected-instance-field",
+            "private-instance-field",
+            "public-constructor",
+            "protected-constructor",
+            "private-constructor",
+            "public-instance-method",
+            "protected-instance-method",
+            "private-instance-method"
+            ]
+          }],
+        "deprecation": true,
+        "indent": [true, "spaces", 2],
+        "max-line-length": [true, 120],
+
         "space-before-function-paren": false,
         "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast", "check-preblock"],
         "class-name": true,
-        "import-spacing": true
+        "import-spacing": true,
+        "arrow-return-shorthand": true,
+        "encoding": true,
+        "jsdoc-format": true,
+        "no-unnecessary-callback-wrapper": true,
+        "prefer-function-over-method": true,
+        "semicolon": [true, "always"],
+        "variable-name": [true, "check-format"]
     },
     "rulesDirectory": []
 }
