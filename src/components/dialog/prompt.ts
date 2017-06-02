@@ -16,12 +16,12 @@ export class Prompt {
     this.content = content;
   }
 
-  ok() {
-    this.dialogController.ok(this.content);
+  async ok() {
+    await this.dialogController.ok(this.content);
   }
 
-  cancel() {
-    this.dialogController.cancel();
+  async cancel() {
+    await this.dialogController.cancel();
   }
 
 }

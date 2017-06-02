@@ -11,12 +11,12 @@ export class Confirm {
     dialogController.settings.keyboard = true;
   }
 
-  ok() {
-    this.dialogController.ok();
+  async ok() {
+    await this.dialogController.ok();
   }
 
-  cancel() {
-    this.dialogController.cancel();
+  async cancel() {
+    await this.dialogController.cancel();
   }
 
   activate({ title, message = title }: ConfirmOptions) {

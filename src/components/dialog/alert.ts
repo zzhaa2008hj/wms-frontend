@@ -12,8 +12,8 @@ export class Alert {
     dialogController.settings.keyboard = ['Enter'];
   }
 
-  ok() {
-    this.dialogController.ok();
+  async ok() {
+    await this.dialogController.ok();
   }
 
   activate({ title, message = title }: AlertOptions) {
@@ -26,5 +26,5 @@ export class Alert {
 export interface AlertOptions {
   title: string;
   message?: string;
-  icon?: 'warning' | 'error'
+  icon?: 'warning' | 'error';
 }
