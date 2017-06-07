@@ -1,10 +1,10 @@
 System.config({
-  baseURL: "/",
+  baseURL: "dist/",
   defaultJSExtensions: true,
   transpiler: false,
   paths: {
-    "npm:*": "jspm_packages/npm/*",
-    "github:*": "jspm_packages/github/*"
+    "npm:*": "../jspm_packages/npm/*",
+    "github:*": "../jspm_packages/github/*"
   },
 
   map: {

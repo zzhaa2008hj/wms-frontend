@@ -43,7 +43,6 @@
         "class-name": true,
         "import-spacing": true,
         "arrow-return-shorthand": true,
-        "encoding": true,
         "jsdoc-format": true,
         "no-unnecessary-callback-wrapper": true,
         "prefer-function-over-method": true,
