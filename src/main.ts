@@ -1,11 +1,72 @@
+import { Aurelia } from "aurelia-framework";
+import { HttpClient } from "aurelia-http-client";
+import * as LogManager from "aurelia-logging";
+import { ConsoleAppender } from 'aurelia-logging-console';
+import { RestClient } from "./utils";
+import { Container } from "aurelia-dependency-injection";
+import { EventAggregator } from "aurelia-event-aggregator";
 
-export function configure(aurelia) {
+export async function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    .developmentLogging()
+    .plugin('webarch')
     .plugin('aurelia-dialog')
     .plugin('aurelia-validation')
     .plugin('aurelia-kendoui-bridge', kendo => kendo.pro());
 
-  aurelia.start().then(a => a.setRoot());
+  LogManager.addAppender(new ConsoleAppender());
+  LogManager.setLevel(LogManager.logLevel.warn);
+  let config = await loadConfig();
+  aurelia.container.registerInstance('config', config);
+  await configureRestClient(config.api.baseUrl, aurelia.container);
+  await aurelia.start();
+  await aurelia.setRoot();
+}
+
+async function loadConfig() {
+  let http = new HttpClient();
+  let baseURI = document.baseURI;
+  if (!baseURI.endsWith('/')) baseURI += '/';
+  let config = await http.get(`${baseURI}config.json`).then(res => res.content);
+  return config;
+}
+
+/**
+ *
+ * @param container DI容器
+ */
+async function configureRestClient(baseUrl: string, container: Container) {
+  let eventAggregator: EventAggregator = container.get(EventAggregator);
+  let http: HttpClient = new class extends RestClient {};
+
+  eventAggregator.subscribe('user:login', user => {
+    console.log('user:login', user);
+    http.configure(b => {
+      if (user.token) b.withHeader("x-eupwood-session-token", user.token);
+    });
+  });
+
+  eventAggregator.subscribe('user:logout', () => {
+    http.configure(b => {
+      b.withHeader("x-eupwood-session-token", null);
+    });
+  });
+  
+
+  http.configure(builder => {
+    builder
+      .withBaseUrl(baseUrl)
+      .withHeader('accept', 'application/json')
+      .withInterceptor({
+        responseError: res => {
+          if (res.mimeType == 'application/json') {
+            return Promise.reject(new Error(res.content.message));
+          } else {
+            return Promise.reject(new Error(res.response));
+          }
+        }
+      });
+  });
+
+  container.registerInstance(RestClient, http);
 }

@@ -1,8 +1,11 @@
 System.config({
-  baseURL: "dist/",
+  baseURL: "./dist",
   defaultJSExtensions: true,
   transpiler: false,
   paths: {
+    "webarch": "./webarch/index",
+    "webarch/*": "./webarch/*",
+    "ui": "./webarch/index",
     "npm:*": "../jspm_packages/npm/*",
     "github:*": "../jspm_packages/github/*"
   },

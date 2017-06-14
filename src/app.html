@@ -1,3 +1,14 @@
 <template>
-  App
+  <require from="./navbar"></require>
+  <ui-navbar router.bind="router"></ui-navbar>
+  <div class="page-container row-fluid">
+
+    <wa-sidebar active-route.bind="router.currentInstruction.config.name"
+                menu.bind="nav" condensed.bind="user.settings.sidebar.condensed"></wa-sidebar>
+    <div class="page-content">
+      <div class="content">
+        <router-view containerless></router-view>
+      </div>
+    </div>
+  </div>
 </template>

@@ -1,5 +1,8 @@
 {
   "api": {
     "baseUrl": "http://localhost:8080"
-  }
+  },
+  "routes": [
+    { "route": "/report", "name": "report", "title": "报表", "moduleId": "./report/index" }
+  ]
 }
