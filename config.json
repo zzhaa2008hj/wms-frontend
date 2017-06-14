@@ -1,8 +1,9 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8080"
+    "baseUrl": "http://localhost:8090"
   },
   "routes": [
-    { "route": "/report", "name": "report", "title": "报表", "moduleId": "./report/index" }
+    { "route": "/report", "name": "report", "title": "报表", "moduleId": "./report/index" },
+    { "route": "/base/dictionary", "name": "dictionary", "title": "数据字典", "moduleId": "./base/dictionary/index" }
   ]
 }
