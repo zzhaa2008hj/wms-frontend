@@ -11,29 +11,29 @@ export class DictionaryService {
   }
 
   queryDictionary(param?: { name: string }): Query<any> {
-    return  this.http.query(`/base/dictionary/page`, param);
+    return this.http.query(`/base/dictionary/page`, param);
   }
 
-  async saveDictionary(dictionary: Dictionary) {
+  async saveDictionary(dictionary: Dictionary): Promise<void> {
     let url = `/base/dictionary`;
     let res = await this.http.createRequest(url).withContent(dictionary).asPost().send();
     return extractResult(res.content);
   }
 
 
- async updateState(id: string ) {
-   let url = `/base/dictionary/${id}`;
-   let res = await this.http.createRequest(url).asPut().send();
-   return extractResult(res.content);
+  async updateState(id: string): Promise<void> {
+    let url = `/base/dictionary/${id}`;
+    let res = await this.http.createRequest(url).asPut().send();
+    return extractResult(res.content);
   }
 
-  async getDictionary(id: string) {
+  async getDictionary(id: string): Promise<Dictionary> {
     let url = `/base/dictionary/${id}`;
     let res = await this.http.createRequest(url).asGet().send();
     return res.content;
   }
 
-  async updateDictionary(dictionary: Dictionary) {
+  async updateDictionary(dictionary: Dictionary): Promise<void> {
     let url = `/base/dictionary`;
     let res = await this.http.createRequest(url).withContent(dictionary).asPut().send();
     return extractResult(res.content);
@@ -46,29 +46,29 @@ export class DictionaryDataService {
   }
 
   queryDictionaryData(param?: { name: string }): Query<any> {
-    return  this.http.query(`/base/dictionaryData/page`, param);
+    return this.http.query(`/base/dictionaryData/page`, param);
   }
 
-  async saveDictionaryData(dictionaryData: DictionaryData) {
+  async saveDictionaryData(dictionaryData: DictionaryData): Promise<void> {
     let url = `/base/dictionaryData`;
     let res = await this.http.createRequest(url).withContent(dictionaryData).asPost().send();
     return extractResult(res.content);
   }
 
 
- async updateState(id: string ) {
-   let url = `/base/dictionaryData/${id}`;
-   let res = await this.http.createRequest(url).asPut().send();
-   return extractResult(res.content);
+  async updateState(id: string): Promise<void> {
+    let url = `/base/dictionaryData/${id}`;
+    let res = await this.http.createRequest(url).asPut().send();
+    return extractResult(res.content);
   }
 
-  async getDictionaryData(id: string) {
+  async getDictionaryData(id: string): Promise<DictionaryData> {
     let url = `/base/dictionaryData/${id}`;
     let res = await this.http.createRequest(url).asGet().send();
     return res.content;
   }
 
-  async updateDictionaryData(dictionaryData: DictionaryData) {
+  async updateDictionaryData(dictionaryData: DictionaryData): Promise<void> {
     let url = `/base/dictionaryData`;
     let res = await this.http.createRequest(url).withContent(dictionaryData).asPut().send();
     return extractResult(res.content);
