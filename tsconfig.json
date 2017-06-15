@@ -8,7 +8,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "lib": ["es7", "dom", "es2015.promise"],
-    "baseUrl": "."
+    "baseUrl": "./"
   },
   "exclude": [
     "node_modules"
