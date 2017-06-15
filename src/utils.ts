@@ -198,6 +198,12 @@ export function md5(s: string): string {
   return window['md5'](s);
 }
 
+export interface TreeOptions {
+  key?: string;
+  parentKey?: string;
+  childrenKey?: string;
+}
+
 export function treeHelper<T>(items: T[],
                       { key = 'id', parentKey = 'parentId', childrenKey = 'children' }: TreeOptions): TreeHelper<T> {
   let map = new Map(items.map<[any, T]>(item => [item[key], item]));
