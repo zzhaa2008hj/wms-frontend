@@ -5,14 +5,14 @@ import { inject, newInstance } from "aurelia-dependency-injection";
 import { OrganizationService } from "../../services/organization";
 import { Organization } from "../../models/organization";
 
-@inject
+
 export class EditOrganization {
   org: Organization;
 
-  constructor(private router: Router,
-              private orgService: OrganizationService,
+  constructor(@inject private router: Router,
+              @inject private orgService: OrganizationService,
               @newInstance() private validationController: ValidationController,
-              private messageDialogService: MessageDialogService) {
+              @inject private messageDialogService: MessageDialogService) {
   }
 
   /**
