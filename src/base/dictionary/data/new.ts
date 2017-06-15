@@ -2,20 +2,23 @@ import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
 import { autoinject, inject } from "aurelia-dependency-injection";
 import { DictionaryDataService, DictionaryService } from "../../services/dictionary";
+import { DictionaryData } from "../../models/DictionaryData";
+import { Dictionary } from "../../models/Dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */
 export class NewDictionaryData {
-  dictionaryData: { dictCode: string, dictDataCode: string, dictDataName: string, description: string, sort: number };
+  dictionaryData: DictionaryData;
 
   constructor(@inject private router: Router,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private messageDialogService: MessageDialogService,
-              @inject("dictionary") private dictionary: any) {
+              @inject("dictionary") private dictionary: Dictionary) {
   }
 
   async addNewDictionaryData() {
     try {
+
       this.dictionaryData.dictCode = this.dictionary.dictCode;
       await this.dictionaryDataService.saveDictionaryData(this.dictionaryData);
       await this.messageDialogService.alert({ title: "新增成功" });

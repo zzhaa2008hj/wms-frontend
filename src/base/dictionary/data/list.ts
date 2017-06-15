@@ -1,4 +1,3 @@
-import { Router } from "aurelia-router";
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
 import { createDataSource } from "../../../utils";

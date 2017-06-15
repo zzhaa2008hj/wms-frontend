@@ -5,7 +5,7 @@ import { autoinject, Container } from "aurelia-dependency-injection";
 export class DictionaryData {
 
   router: Router;
-  dictionary: { id: string, dictCode: string, dictName: string };
+  dictionary = {};
 
   constructor(private dictionaryService: DictionaryService,
               private container: Container) {
@@ -23,8 +23,7 @@ export class DictionaryData {
   }
 
   async activate(params) {
-    // let res = await this.dictionaryService.getDictionary(params.id);
-    // Object.assign(this.dictionary, res);
-    this.dictionary = await this.dictionaryService.getDictionary(params.id);
+    let res = await this.dictionaryService.getDictionary(params.id);
+    Object.assign(this.dictionary, res);
   }
 }
