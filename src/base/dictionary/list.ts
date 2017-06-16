@@ -1,14 +1,13 @@
-import { Router } from "aurelia-router";
 import { DictionaryService } from "../services/dictionary";
-import { createDataSource } from "../../utils";
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
+import { createDataSource } from "../../utils";
 @autoinject
 export class Dictionary {
   searchName: string;
 
   dataSource = createDataSource({
-    read: () => this.dictionaryService.queryDictionary({ name: this.searchName }),
+    read: () => this.dictionaryService.queryDictionaries({ name: this.searchName }),
     serverPaging: true,
     pageSize: 10
   });

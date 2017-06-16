@@ -1,0 +1,46 @@
+<template>
+    <div class="page-title">
+        <h3>基础费率管理</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增</a></div>
+
+        <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="sssss">
+            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-sortable.bind="true"
+             k-reorderable.bind="true"
+             k-resizable.bind="true"
+             k-filterable.bind="true"
+             k-column-menu.bind="true"
+             k-pageable.bind="pageable">
+        <ak-col k-field="customerCategory" k-title="客户类别"></ak-col>
+        <ak-col k-field="chargeType" k-title="费用类型"></ak-col>
+        <ak-col k-field="chargeCategory" k-title="费用类别"></ak-col>
+        <ak-col k-field="price" k-title="单价"></ak-col>
+        <ak-col k-field="unit" k-title="计量单位"></ak-col>
+        <ak-col k-field="pricingMode" k-title="计价方式"></ak-col>
+        <ak-col k-field="workName" k-title="作业内容"></ak-col>
+        <ak-col k-field="warehouseType" k-title="库位性质"></ak-col>
+        <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+        <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
+        <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
+        <ak-col k-field="remark" k-title="备注"></ak-col>
+        <ak-col k-title="操作">
+            <ak-template>
+                <a class="btn btn-small" if.bind="status==true" route-href="route: edit; params.bind: { id: id }">编辑</a>
+                <a class="btn btn-small btn-success" if.bind="status==true"
+                   route-href="route: data; params.bind: { id: id }">阶梯费率设置
+                </a>
+                <button class="btn btn-warning btn-small" if.bind="status==true" click.delegate="changeState(id)">
+                    禁用
+                </button>
+                <button class="btn btn-primary btn-small" if.bind="status==false" click.delegate="changeState(id)">
+                    启用
+                </button>
+            </ak-template>
+        </ak-col>
+    </ak-grid>
+</template>

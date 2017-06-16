@@ -1,0 +1,129 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-title no-border">新增</h4></div>
+        <div class="grid-body no-border"><br>
+            <form submit.delegate="addNewRate()">
+
+                <div class="form-group">
+                    <label class="form-label">客户类别*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.customerCategory">
+                        <select style="width: 100%;">
+                            <option></option>
+                            <option value="0">仓储客户</option>
+                            <option value="1">装卸单位</option>
+                        </select>
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">费用类型*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.chargeType">
+                        <select style="width: 100%;">
+                            <option></option>
+                            <option value="0">收费</option>
+                            <option value="1">付费</option>
+                        </select>
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">费用类别</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.chargeCategory">
+                        <select style="width: 100%;">
+                            <option></option>
+                            <option value="0">堆存费</option>
+                            <option value="1">装卸费</option>
+                            <option value="2">其他费用</option>
+                        </select>
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">单价*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">计量单位*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.unit">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">计价方式</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.pricingMode">
+                        <select style="width: 100%;">
+                            <option></option>
+                            <option value="0">计价方式</option>
+                        </select>
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">作业内容*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.workName">
+                    </div>
+                    <ak-drop-down-list
+                            k-data-text-field="id"
+                            k-data-value-field="name"
+                            k-data-source.bind="dataSourceWorkInfo"
+                            k-value.two-way="rate.warehouseType">
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">库位性质*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.warehouseType">
+                        <select style="width: 100%;">
+                            <option></option>
+                            <option value="0">通用</option>
+                            <option value="1">保税</option>
+                            <option value="2">内贸</option>
+                        </select>
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">货类</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.cargoCategoryName">
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="form-label">品牌*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.cargoSubCategoryName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">库位类别*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.warehouseCategory">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">备注</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.remark">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="pull-right">
+                        <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
+                        <button class="btn btn-white btn-cons" type="button" route-href="route: list">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</template>

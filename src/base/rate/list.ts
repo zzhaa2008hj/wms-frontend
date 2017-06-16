@@ -1,24 +1,25 @@
+import { RateService } from "../services/rate";
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
-import { createDataSource } from "../../../utils";
-import { DictionaryDataService } from "../../services/dictionary";
+import { DataSourceFactory } from "../../utils";
 @autoinject
-export class DictionaryData {
+export class Rate {
   searchName: string;
-  dataSource = createDataSource({
-    read: () => this.dictionaryDataService.queryDictionaryDatas({ name: this.searchName }),
-    serverPaging: true,
-    pageSize: 10
-  });
 
   pageable = {
     refresh: true,
     pageSizes: true,
     buttonCount: 10
   };
+  private dataSource: kendo.data.DataSource;
 
-  constructor(private dictionaryDataService: DictionaryDataService,
+  constructor(private rateService: RateService,
+              private dataSourceFactory: DataSourceFactory,
               private messageDialogService: MessageDialogService) {
+    this.dataSource = this.dataSourceFactory.create({
+      query: () => this.rateService.queryRates({ name: this.searchName }),
+      pageSize: 10
+    });
   }
 
   select() {
@@ -27,7 +28,7 @@ export class DictionaryData {
 
   async changeState(id) {
     try {
-      await this.dictionaryDataService.updateState(id);
+      await this.rateService.updateState(id);
       this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
