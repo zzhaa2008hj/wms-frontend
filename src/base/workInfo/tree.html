@@ -26,7 +26,8 @@
         <ak-treeview
                 k-data-source.bind="dataSource"
                 k-drag-and-drop.bind="true"
-                k-on-change.trigger="onChange($event)">
+                k-widget.bind="widget"
+                k-on-change.trigger="onSelectionChange($event)">
             <ak-template>
                 <i if.bind="selectedItem.status == false" class="fa fa-list-alt text-warning"></i>
                 <i if.bind="selectedItem.status == true" class="fa fa-bolt text-primary"></i>

@@ -1,12 +1,15 @@
-import { bindable, customElement } from "aurelia-templating";
+import { bindable, customElement } from "aurelia-framework";
 import { autoinject } from "aurelia-dependency-injection";
 import { TreeHelper, treeHelper } from "./treeUtil";
-import { bindingMode, observable } from "aurelia-binding";
+import { bindingMode, observable } from "aurelia-framework";
+import { MessageDialogService } from "ui";
+import { WorkInfoService } from "../services/workInfo";
+import { Router } from "aurelia-router";
 /**
  * Created by Hui on 2017/6/15.
  */
 
-@customElement('workInfo-tree')
+@customElement('work-info-tree')
 @autoinject
 export class Tree {
   @observable
@@ -27,12 +30,16 @@ export class Tree {
     data: this.data,
     schema: {
       model: {
-        id: 'id',
         children: 'sub',
         hasChildren: item => item.sub && item.sub.length > 0
       }
     }
   });
+
+  constructor(private router: Router,
+              private workInfoService: WorkInfoService,
+              private messageDialogService: MessageDialogService) {
+  }
 
   async expandTo(item: any) {
     let path = this.helper.pathFor(item);
@@ -40,7 +47,7 @@ export class Tree {
   }
 
   protected async dataChanged() {
-    this.helper = treeHelper(this.data, { childrenKey: 'submenu' });
+    this.helper = treeHelper(this.data, { childrenKey: 'sub' });
     let rootItems = this.helper.toTree();
     this.dataSource.data(rootItems);
     if (this.selectedItem && this.widget) { //如果selected-item已经先绑定
@@ -64,13 +71,25 @@ export class Tree {
     if (item == null) return; //data 还没初始化
     if (!item.uid) {
       await this.expandTo(item);
-      console.log('expanded ', item);
     }
     let node = this.widget.findByUid(item.uid);
     this.widget.select(node);
+  }
+
+  protected onSelectionChange() {
+    let node = this.widget.select()[0];
+    if (!node) return;
+    this.selectedItem = this.widget.dataItem(node);
     this.id = this.selectedItem.id;
   }
 
+  protected async changeState() {
+    try {
+      await this.workInfoService.updateState(this.id);
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+    }
+  }
 }
 function expandPath(tree: kendo.ui.TreeView, path: any[]): Promise<void> {
   return new Promise<void>(resolve => tree.expandPath(path, resolve));
