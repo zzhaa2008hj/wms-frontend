@@ -4,13 +4,8 @@
             <i class="fa fa-check-square-o"></i> 新增
         </ux-dialog-header>
         <ux-dialog-body>
-            <div class="form-group">
-                <label class="form-label">上级作业</label>
-                <span class="help"></span>
-                <div class="controls">
-                    <input type="text" class="form-control" value.bind="pWorkInfo.name" disabled>
-                </div>
-            </div>
+            <i if.bind="pWorkInfo.id">新增&nbsp&nbsp ${pWorkInfo.name}&nbsp&nbsp的所属作业</i>
+
             <div class="form-group">
                 <label class="form-label">作业名称*</label>
                 <span class="help"></span>

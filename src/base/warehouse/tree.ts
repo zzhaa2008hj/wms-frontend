@@ -1,15 +1,15 @@
-import { bindable, customElement, bindingMode, observable } from "aurelia-framework";
+import { bindable, customElement, bindingMode, observable  } from "aurelia-framework";
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { TreeHelper, treeHelper } from "../../utils";
-import { NewWorkInfo } from "./new";
-import { EditWorkInfo } from "./edit";
-import { WorkInfoService } from "../services/work-info";
+import { WarehouseService } from "../services/warehouse";
+import { NewWarehouse } from "./new";
+import { EditWarehouse } from "./edit";
 /**
  * Created by Hui on 2017/6/15.
  */
 
-@customElement('work-info-tree')
+@customElement('warehouse-tree')
 @autoinject
 export class Tree {
   @observable
@@ -37,7 +37,7 @@ export class Tree {
     }
   });
 
-  constructor(private workInfoService: WorkInfoService,
+  constructor(private warehouseService: WarehouseService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService) {
   }
@@ -87,10 +87,10 @@ export class Tree {
   protected async changeState() {
     try {
       if (!this.selectedItem.sub) {
-        await this.workInfoService.updateState(this.id);
+        await this.warehouseService.updateState(this.id);
       }
-      if (this.selectedItem.sub && this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级作业内容！" })) {
-        await this.workInfoService.updateState(this.id);
+      if (this.selectedItem.sub && this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级库区！" })) {
+        await this.warehouseService.updateState(this.id);
       }
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
@@ -98,12 +98,12 @@ export class Tree {
   }
 
   protected async add() {
-    let result = await this.dialogService.open({ viewModel: NewWorkInfo, model: this.selectedItem, lock: true })
+    let result = await this.dialogService.open({ viewModel: NewWarehouse, model: this.selectedItem, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
-    let workInfo = result.output;
+    let warehouse = result.output;
     try {
-      await this.workInfoService.saveWorkInfo(workInfo);
+      await this.warehouseService.saveWarehouse(warehouse);
       await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
@@ -111,12 +111,12 @@ export class Tree {
   }
 
   protected async edit() {
-    let result = await this.dialogService.open({ viewModel: EditWorkInfo, model: this.selectedItem, lock: true })
+    let result = await this.dialogService.open({ viewModel: EditWarehouse, model: this.selectedItem, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
-    let workInfo = result.output;
+    let warehouse = result.output;
     try {
-      await this.workInfoService.updateWorkInfo(workInfo);
+      await this.warehouseService.updateWarehouse(warehouse);
       await this.messageDialogService.alert({ title: "编辑成功", message: "编辑成功！" });
     } catch (err) {
       await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: "error" });

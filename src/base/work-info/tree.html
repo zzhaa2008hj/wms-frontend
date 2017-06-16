@@ -9,7 +9,9 @@
     </style>
     <div class="row">
         <div class="col-md-9">
-            <button class="btn btn-success btn-small" click.delegate="add()">新增</button>
+            <button class="btn btn-success btn-small" if.bind="!id || selectedItem.status==true" click.delegate="add()">
+                新增
+            </button>
             <button class="btn btn-warning btn-small" if.bind="selectedItem.status==true"
                     click.delegate="changeState(id)">
                 禁用

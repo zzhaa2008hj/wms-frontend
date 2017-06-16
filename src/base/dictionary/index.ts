@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-export class Dictionary {
+export class DictionaryRouter {
 
   router: Router;
 
