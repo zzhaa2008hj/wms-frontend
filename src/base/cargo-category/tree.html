@@ -9,8 +9,9 @@
     </style>
     <div class="row">
         <div class="col-md-9">
-            <a class="btn btn-sm btn-small btn-success" if.bind="id=='' || selectedItem.status==true "
-               route-href="route: new;params.bind: { id: id }">新增</a>
+            <button class="btn btn-success btn-small" if.bind="id=='' || selectedItem.status==true"
+                    click.delegate="add()">新增
+            </button>
             <button class="btn btn-warning btn-small" if.bind="selectedItem.status==true"
                     click.delegate="changeState(id)">
                 禁用
@@ -19,6 +20,9 @@
                     click.delegate="changeState(id)">
                 启用
             </button>
+            <button class="btn btn-promise btn-small" if.bind="selectedItem.status==true" click.delegate="edit()">
+                编辑
+            </button>
         </div>
 
     </div>
@@ -26,13 +30,14 @@
         <ak-treeview
                 k-data-source.bind="dataSource"
                 k-drag-and-drop.bind="true"
-                k-on-change.trigger="onChange($event)">
+                k-widget.bind="widget"
+                k-on-change.trigger="onSelectionChange($event)">
             <ak-template>
-                <i if.bind="selectedItem.status == false" class="fa fa-list-alt text-warning"></i>
-                <i if.bind="selectedItem.status == true" class="fa fa-bolt text-primary"></i>
-                <i if.bind="type == 2 && !parentId" class="fa fa-window-maximize text-info"></i>
-                <i if.bind="type == 2 && parentId" class="fa fa-window-restore text-info"></i>
-                ${name}
+                <i if.bind="status == false" class="fa fa-list-alt text-warning"></i>
+                <!--<i if.bind="status == true" class="fa fa-bolt text-primary"></i>-->
+                <!--<i if.bind="status == true && !parentId" class="fa fa-window-maximize text-info"></i>-->
+                <!--<i if.bind="status == tree && parentId" class="fa fa-window-restore text-info"></i>-->
+                ${categoryName}
             </ak-template>
         </ak-treeview>
     </div>

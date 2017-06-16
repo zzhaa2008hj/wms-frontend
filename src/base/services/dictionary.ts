@@ -1,6 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { extractResult, Query, RestClient } from "../../utils";
-import { DictionaryData } from "../models/DictionaryData";
 import { Dictionary } from "../models/Dictionary";
 /**
  * Created by Hui on 2017/6/14.
@@ -49,7 +48,7 @@ export class DictionaryDataService {
     return this.http.query(`/base/dictionaryData/page`, param);
   }
 
-  async saveDictionaryData(dictionaryData: DictionaryData): Promise<void> {
+  async saveDictionaryData(dictionaryData: Dictionary): Promise<void> {
     let url = `/base/dictionaryData`;
     let res = await this.http.createRequest(url).withContent(dictionaryData).asPost().send();
     return extractResult(res.content);
@@ -62,13 +61,13 @@ export class DictionaryDataService {
     return extractResult(res.content);
   }
 
-  async getDictionaryData(id: string): Promise<DictionaryData> {
+  async getDictionaryData(id: string): Promise<Dictionary> {
     let url = `/base/dictionaryData/${id}`;
     let res = await this.http.createRequest(url).asGet().send();
     return res.content;
   }
 
-  async updateDictionaryData(dictionaryData: DictionaryData): Promise<void> {
+  async updateDictionaryData(dictionaryData: Dictionary): Promise<void> {
     let url = `/base/dictionaryData`;
     let res = await this.http.createRequest(url).withContent(dictionaryData).asPut().send();
     return extractResult(res.content);

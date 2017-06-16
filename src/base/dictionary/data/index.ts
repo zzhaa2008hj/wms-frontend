@@ -1,11 +1,12 @@
 import { Router, RouterConfiguration } from "aurelia-router";
 import { DictionaryService } from "../../services/dictionary";
 import { autoinject, Container } from "aurelia-dependency-injection";
+import { Dictionary } from "../../models/dictionary";
 @autoinject
 export class DictionaryData {
 
   router: Router;
-  dictionary = {};
+  dictionary = {} as Dictionary;
 
   constructor(private dictionaryService: DictionaryService,
               private container: Container) {
