@@ -1,0 +1,45 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-title no-border">编辑</h4></div>
+        <div class="grid-body no-border"><br>
+            <form submit.delegate="updateDictionaryData()">
+
+                <div class="form-group">
+                    <label class="form-label">数据名称*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="dictionaryData.dictDataName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">数据编码*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="dictionaryData.dictDataCode">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">排序</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="dictionaryData.sort">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">描述</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="dictionaryData.description">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="pull-right">
+                        <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
+                        <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</template>
