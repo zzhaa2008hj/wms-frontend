@@ -86,7 +86,12 @@ export class Tree {
 
   protected async changeState() {
     try {
-      await this.cargoCategoryService.updateState(this.id);
+      if (!this.selectedItem.sub) {
+        await this.cargoCategoryService.updateState(this.id);
+      }
+      if (this.selectedItem.sub && this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级货物种类！" })) {
+        await this.cargoCategoryService.updateState(this.id);
+      }
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
     }

@@ -3,7 +3,7 @@ import { DictionaryService } from "../../services/dictionary";
 import { autoinject, Container } from "aurelia-dependency-injection";
 import { Dictionary } from "../../models/dictionary";
 @autoinject
-export class DictionaryData {
+export class DictionaryDataRouter {
 
   router: Router;
   dictionary = {} as Dictionary;

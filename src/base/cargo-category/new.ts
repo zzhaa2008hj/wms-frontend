@@ -19,7 +19,9 @@ export class NewCargoCategory {
 
 
   async save() {
-    this.cargoCategory.parentId = this.pCargoCategory.id;
+    if (this.pCargoCategory) {
+      this.cargoCategory.parentId = this.pCargoCategory.id;
+    }
     await this.dialogController.ok(this.cargoCategory);
   }
 

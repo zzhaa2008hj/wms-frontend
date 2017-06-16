@@ -19,7 +19,9 @@ export class NewWorkInfo {
 
 
   async save() {
-    this.workInfo.parentId = this.pWorkInfo.id;
+    if (this.pWorkInfo) {
+      this.workInfo.parentId = this.pWorkInfo.id;
+    }
     await this.dialogController.ok(this.workInfo);
   }
 

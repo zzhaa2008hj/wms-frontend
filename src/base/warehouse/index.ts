@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-export class WorkInfoRouter {
+export class WarehouseRouter {
 
   router: Router;
 

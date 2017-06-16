@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-export class CargoCategory {
+export class CargoCategoryRouter {
 
   router: Router;
 
