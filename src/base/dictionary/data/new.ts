@@ -2,13 +2,12 @@ import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
 import { autoinject, inject } from "aurelia-dependency-injection";
 import { DictionaryDataService, DictionaryService } from "../../services/dictionary";
-import { DictionaryData } from "../../models/DictionaryData";
 import { Dictionary } from "../../models/Dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */
 export class NewDictionaryData {
-  dictionaryData: DictionaryData;
+  dictionaryData: Dictionary;
 
   constructor(@inject private router: Router,
               @inject private dictionaryDataService: DictionaryDataService,

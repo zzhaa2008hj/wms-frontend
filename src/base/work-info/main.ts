@@ -1,7 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { WorkInfoService } from "../services/workInfo";
-import { MessageDialogService } from "ui";
 import { observable } from "aurelia-framework";
+import { WorkInfoService } from "../services/work-info";
 
 @autoinject
 export class WorkInfo {
@@ -9,17 +8,13 @@ export class WorkInfo {
   selectedItem: any;
 
   workInfoItems: any;
-  path: WorkInfo[];
-  status: boolean;
-  state: boolean;
-  id: string = "";
 
-  constructor(private workInfoService: WorkInfoService, private messageDialogService: MessageDialogService) {
+  constructor(private workInfoService: WorkInfoService) {
   }
 
   async activate() {
     this.workInfoItems = await this.workInfoService.listWorkInfo();
-
   }
+
 
 }

@@ -1,15 +1,17 @@
 import { bindable, customElement } from "aurelia-framework";
 import { autoinject } from "aurelia-dependency-injection";
-import { TreeHelper, treeHelper } from "./treeUtil";
 import { bindingMode, observable } from "aurelia-framework";
 import { MessageDialogService } from "ui";
-import { WorkInfoService } from "../services/workInfo";
-import { Router } from "aurelia-router";
+import { TreeHelper, treeHelper } from "../../utils";
+import { DialogService } from "aurelia-dialog";
+import { EditCargoCategory } from "./edit";
+import { CargoCategoryService } from "../services/cargo-category";
+import { NewCargoCategory } from "./new";
 /**
  * Created by Hui on 2017/6/15.
  */
 
-@customElement('work-info-tree')
+@customElement('cargo-category-tree')
 @autoinject
 export class Tree {
   @observable
@@ -22,6 +24,7 @@ export class Tree {
   @bindable({ attribute: 'selected-item', defaultBindingMode: bindingMode.twoWay })
   @observable
   selectedItem: any;
+
   id: string = "";
 
   private helper: TreeHelper<any>;
@@ -36,8 +39,8 @@ export class Tree {
     }
   });
 
-  constructor(private router: Router,
-              private workInfoService: WorkInfoService,
+  constructor(private cargoCategoryService: CargoCategoryService,
+              private dialogService: DialogService,
               private messageDialogService: MessageDialogService) {
   }
 
@@ -63,6 +66,7 @@ export class Tree {
       let node = this.widget.findByUid(this.dataSource.get(this.selectedItem.id).uid);
       this.widget.select(node);
     }
+    this.id = this.selectedItem.id;
   }
 
   protected async selectedItemChanged() {
@@ -85,9 +89,35 @@ export class Tree {
 
   protected async changeState() {
     try {
-      await this.workInfoService.updateState(this.id);
+      await this.cargoCategoryService.updateState(this.id);
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+    }
+  }
+
+  protected async add() {
+    let result = await this.dialogService.open({ viewModel: NewCargoCategory, model: this.selectedItem, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let cargoCategory = result.output;
+    try {
+      await this.cargoCategoryService.saveCargoCategory(cargoCategory);
+      await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+    }
+  }
+
+  protected async edit() {
+    let result = await this.dialogService.open({ viewModel: EditCargoCategory, model: this.selectedItem, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let cargoCategory = result.output;
+    try {
+      await this.cargoCategoryService.updateCargoCategory(cargoCategory);
+      await this.messageDialogService.alert({ title: "编辑成功", message: "编辑成功！" });
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: "error" });
     }
   }
 }
