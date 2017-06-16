@@ -1,12 +1,10 @@
-import { bindable, customElement } from "aurelia-framework";
+import { bindable, customElement, bindingMode, observable } from "aurelia-framework";
 import { autoinject } from "aurelia-dependency-injection";
-import { bindingMode, observable } from "aurelia-framework";
-import { MessageDialogService } from "ui";
+import { MessageDialogService, DialogService } from "ui";
 import { TreeHelper, treeHelper } from "../../utils";
-import { DialogService } from "aurelia-dialog";
+import { NewCargoCategory } from "./new";
 import { EditCargoCategory } from "./edit";
 import { CargoCategoryService } from "../services/cargo-category";
-import { NewCargoCategory } from "./new";
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -66,7 +64,6 @@ export class Tree {
       let node = this.widget.findByUid(this.dataSource.get(this.selectedItem.id).uid);
       this.widget.select(node);
     }
-    this.id = this.selectedItem.id;
   }
 
   protected async selectedItemChanged() {

@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { WorkInfo } from "../models/workInfo";
-import { DialogController } from "aurelia-dialog";
+import { DialogController } from "ui";
+import { WorkInfo } from "../models/work-info";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -19,6 +19,7 @@ export class NewWorkInfo {
 
 
   async save() {
+    this.workInfo.parentId = this.pWorkInfo.id;
     await this.dialogController.ok(this.workInfo);
   }
 

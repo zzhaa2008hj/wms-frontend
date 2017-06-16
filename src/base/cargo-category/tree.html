@@ -9,7 +9,9 @@
     </style>
     <div class="row">
         <div class="col-md-9">
-            <button class="btn btn-success btn-small" click.delegate="add()">新增</button>
+            <button class="btn btn-success btn-small" if.bind="id=='' || selectedItem.status==true"
+                    click.delegate="add()">新增
+            </button>
             <button class="btn btn-warning btn-small" if.bind="selectedItem.status==true"
                     click.delegate="changeState(id)">
                 禁用
@@ -35,7 +37,7 @@
                 <!--<i if.bind="status == true" class="fa fa-bolt text-primary"></i>-->
                 <!--<i if.bind="status == true && !parentId" class="fa fa-window-maximize text-info"></i>-->
                 <!--<i if.bind="status == tree && parentId" class="fa fa-window-restore text-info"></i>-->
-                ${name}
+                ${categoryName}
             </ak-template>
         </ak-treeview>
     </div>

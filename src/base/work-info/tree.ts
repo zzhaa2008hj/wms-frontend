@@ -1,9 +1,7 @@
-import { bindable, customElement } from "aurelia-framework";
+import { bindable, customElement, bindingMode, observable  } from "aurelia-framework";
 import { autoinject } from "aurelia-dependency-injection";
-import { bindingMode, observable } from "aurelia-framework";
-import { MessageDialogService } from "ui";
+import { MessageDialogService, DialogService } from "ui";
 import { TreeHelper, treeHelper } from "../../utils";
-import { DialogService } from "aurelia-dialog";
 import { NewWorkInfo } from "./new";
 import { EditWorkInfo } from "./edit";
 import { WorkInfoService } from "../services/work-info";
@@ -66,7 +64,6 @@ export class Tree {
       let node = this.widget.findByUid(this.dataSource.get(this.selectedItem.id).uid);
       this.widget.select(node);
     }
-    this.id = this.selectedItem.id;
   }
 
   protected async selectedItemChanged() {

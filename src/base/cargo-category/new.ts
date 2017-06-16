@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { DialogController } from "aurelia-dialog";
 import { CargoCategory } from "../models/cargo-category";
+import { DialogController } from "ui";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -19,6 +19,7 @@ export class NewCargoCategory {
 
 
   async save() {
+    this.cargoCategory.parentId = this.pCargoCategory.id;
     await this.dialogController.ok(this.cargoCategory);
   }
 

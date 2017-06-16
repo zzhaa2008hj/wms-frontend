@@ -1,7 +1,6 @@
-import { autoinject } from "aurelia-dependency-injection";
-import { WorkInfo } from "../models/workInfo";
-import { DialogController } from "../../../jspm_packages/npm/aurelia-dialog@1.0.0-rc.1.0.3/dialog-controller";
 import { CargoCategory } from "../models/cargo-category";
+import { autoinject } from "aurelia-dependency-injection";
+import { DialogController } from "ui";
 /**
  * Created by Hui on 2017/6/14.
  */

@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { extractResult, RestClient } from "../../utils";
-import { WorkInfo } from "../models/workInfo";
+import { WorkInfo } from "../models/work-info";
 /**
  * Created by Hui on 2017/6/15.
  */

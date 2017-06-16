@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { WorkInfo } from "../models/workInfo";
-import { DialogController } from "aurelia-dialog";
+import { WorkInfo } from "../models/work-info";
+import { DialogController } from "ui";
 /**
  * Created by Hui on 2017/6/14.
  */
