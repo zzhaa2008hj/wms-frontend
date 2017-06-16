@@ -1,0 +1,147 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-body no-border">
+            <form submit.delegate="save()">
+                <div class="row column-seperation">
+                    <h4>基本信息</h4>
+                    <div class="col-md-12">
+                        <label class="form-label">合同类型*</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <ak-drop-down-list k-option-label="请选择"
+                                               k-data-text-field="name"
+                                               k-data-value-field="type"
+                                               k-value.two-way="contract.contractType"
+                                               k-data-source.bind="contracTypes"
+                                               style="width: 100%">
+                            </ak-drop-down-list>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">客户名称*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.customerName & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">合同编号</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.contractNumber & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">合同名称*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.contractName & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">合同金额*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.contractAmount & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">合同开始日期</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.startTime & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">合同结束日期</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.endTime & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">签订人</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.description & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">签订日期</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.signDate & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">备注</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="contract.remark & validate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row column-seperation">
+                    <div if.bind="contract.contractType==3">
+                        <h4>存放库区</h4>
+                        <div class="col-md-12">
+                            <label class="form-label">堆放库区*</label>
+                            <span class="help"></span>
+                            <div class="controls right">
+                                <ak-drop-down-list k-option-label="请选择"
+                                                   k-data-text-field="name"
+                                                   k-data-value-field="id"
+                                                   k-value.two-way="contract.contractType"
+                                                   k-data-source.bind="warehouse"
+                                                   style="width: 100%">
+                                </ak-drop-down-list>
+                            </div>
+                        </div>
+                    </div>
+                    <div if.bind="contract.contractType==1||contract.contractType==2">
+                        <h4>合同费率</h4>
+                        <div class="col-md-12">
+                            <label class="form-label">费率*</label>
+                            <span class="help"></span>
+                            <div class="controls right">
+                                <ak-drop-down-list k-option-label="请选择"
+                                                   k-data-text-field="name"
+                                                   k-data-value-field="type"
+                                                   k-value.two-way="contract.contractType"
+                                                   k-data-source.bind="contracTypes"
+                                                   style="width: 100%">
+                                </ak-drop-down-list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-actions">
+                        <div class="pull-right">
+                            <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
+                            <a class="btn btn-primary" click.trigger="cancel()">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>

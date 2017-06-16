@@ -5,7 +5,6 @@ import { inject, newInstance } from "aurelia-dependency-injection";
 import { OrganizationService } from "../../services/organization";
 import { Organization } from "../../models/organization";
 
-@inject
 export class EditOrganization {
   org: Organization;
 
