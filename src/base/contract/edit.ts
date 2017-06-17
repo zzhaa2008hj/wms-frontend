@@ -2,15 +2,14 @@ import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
 import { ValidationController } from "aurelia-validation";
 import { inject, newInstance } from "aurelia-dependency-injection";
-import { OrganizationService } from "../../services/organization";
-import { Organization } from "../../models/organization";
+import { ContractVo } from "../models/contractVo";
+import { ContractService } from "../services/contract";
 
-
-export class EditOrganization {
-  org: Organization;
+export class EditContract {
+  contractVo: ContractVo;
 
   constructor(@inject private router: Router,
-              @inject private orgService: OrganizationService,
+              private contractService: ContractService,
               @newInstance() private validationController: ValidationController,
               @inject private messageDialogService: MessageDialogService) {
   }
@@ -19,12 +18,20 @@ export class EditOrganization {
    * 初始化后自动执行
    */
   async activate({ id }) {
-    this.org = await this.orgService.getOrganization(id);
+    this.contractVo = await this.contractService.getContract(id);
+  }
+
+  /**
+   * TODO refactor
+   */
+  /* tslint:disable */
+  formatMethod(type: number) {
+    return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
   }
 
   async update() {
     try {
-      await this.orgService.updateOrganization(this.org.id, this.org);
+      await this.contractService.updateContract(this.contractVo);
       await this.messageDialogService.alert({ title: "机构编辑成功" });
       this.cancel();
     } catch (err) {

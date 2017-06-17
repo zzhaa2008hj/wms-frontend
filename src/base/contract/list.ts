@@ -20,11 +20,18 @@ export class CustomerList {
               @inject private messageDialogService: MessageDialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.contractService.queryContracts({ contractType: '2', name: this.searchName }),
+      query: () => this.contractService.queryContracts({  name: this.searchName }),
       pageSize: 10
     });
   }
 
+  /**
+   * TODO refactor
+   */
+  /* tslint:disable */
+  formatMethod(type: number) {
+    return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
+  }
   // async changeStatus(id, status) {
   //   try {
   //     await this.contractService.changeStatus(id, status);
