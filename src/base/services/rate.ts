@@ -37,39 +37,44 @@ export class RateService {
     let res = await this.http.createRequest(url).withContent(rate).asPut().send();
     return extractResult(res.content);
   }
+
+  async deleteRate(id: string) {
+    let url = `/base/rate/${id}`;
+    let res = await this.http.createRequest(url).asDelete().send();
+    return extractResult(res.content);
+  }
 }
 
 @autoinject
-export class RateDataService {
+export class RateStepService {
   constructor(private http: RestClient) {
   }
 
-  queryRateData(param?: { name: string }): Query<any> {
-    return this.http.query(`/base/rateData/page`, param);
+  queryRateSteps(param?: { name: string }): Query<any> {
+    return this.http.query(`/base/rateStep/page`, param);
   }
 
-  async saveRateData(rateData: Rate): Promise<void> {
-    let url = `/base/rateData`;
-    let res = await this.http.createRequest(url).withContent(rateData).asPost().send();
+  async saveRateStep(rateStep: Rate): Promise<void> {
+    let url = `/base/rateStep`;
+    let res = await this.http.createRequest(url).withContent(rateStep).asPost().send();
     return extractResult(res.content);
   }
 
-
   async updateState(id: string): Promise<void> {
-    let url = `/base/rateData/${id}`;
+    let url = `/base/rateStep/${id}`;
     let res = await this.http.createRequest(url).asPut().send();
     return extractResult(res.content);
   }
 
-  async getRateData(id: string): Promise<Rate> {
-    let url = `/base/rateData/${id}`;
+  async getRateStep(id: string): Promise<Rate> {
+    let url = `/base/rateStep/${id}`;
     let res = await this.http.createRequest(url).asGet().send();
     return res.content;
   }
 
-  async updateRateData(rateData: Rate): Promise<void> {
-    let url = `/base/rateData`;
-    let res = await this.http.createRequest(url).withContent(rateData).asPut().send();
+  async updateRateStep(rateStep: Rate): Promise<void> {
+    let url = `/base/rateStep`;
+    let res = await this.http.createRequest(url).withContent(rateStep).asPut().send();
     return extractResult(res.content);
   }
 }

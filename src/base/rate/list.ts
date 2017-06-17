@@ -35,4 +35,15 @@ export class Rate {
     }
   }
 
+  async delete(id) {
+    try {
+      if (confirm("删除后无法恢复" )) {
+        await this.rateService.deleteRate(id);
+        this.dataSource.read();
+      }
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+    }
+  }
+
 }

@@ -1,0 +1,59 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 新增
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="form-group">
+                <label class="form-label">阶梯号*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="rateStep.stepNum">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">开始值*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="rateStep.stepStart">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">结束值</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="rateStep.stepEnd">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">阶梯价</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="rateStep.stepPrice">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">单位</label>
+                <span class="help"></span>
+                <ak-drop-down-list k-value.two-way="rateStep.stepUnit"
+                                   k-option-label="请选择..."
+                                   k-data-text-field="text"
+                                   k-data-value-field="value"
+                                   k-data-source.bind="stepUnit">
+                </ak-drop-down-list>
+            </div>
+            <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="rateStep.remark">
+                </div>
+            </div>
+
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">保存</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>
