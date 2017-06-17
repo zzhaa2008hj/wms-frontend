@@ -1,9 +1,10 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8090"
+    "baseUrl": "http://localhost:8090/rest/"
   },
   "routes": [
     { "route": "/report", "name": "report", "title": "报表", "moduleId": "./report/index" },
-    { "route": "/base/dictionary", "name": "dictionary", "title": "数据字典", "moduleId": "./base/dictionary/index" }
+    { "route": "/base/dictionary", "name": "dictionary", "title": "数据字典", "moduleId": "./base/dictionary/index" },
+    { "route": "/base/employee", "name": "employee", "title": "用户管理", "moduleId": "./base/employee/index" }
   ]
 }
