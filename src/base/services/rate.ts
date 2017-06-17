@@ -77,4 +77,10 @@ export class RateStepService {
     let res = await this.http.createRequest(url).withContent(rateStep).asPut().send();
     return extractResult(res.content);
   }
+
+  async deleteRateStep(id: string) {
+    let url = `/base/rateStep/${id}`;
+    let res = await this.http.createRequest(url).asDelete().send();
+    return extractResult(res.content);
+  }
 }

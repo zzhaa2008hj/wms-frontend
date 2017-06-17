@@ -23,6 +23,7 @@ export class RateStep {
       pageSize: 10
     });
   }
+
    async add() {
     let result = await this.dialogService.open({ viewModel: NewRateStep, model: this.rate.id, lock: true })
       .whenClosed();
@@ -33,6 +34,17 @@ export class RateStep {
       await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+    }
+  }
+
+  async delete(id) {
+    try {
+      if (confirm("删除后无法恢复" )) {
+        await this.rateStepService.deleteRateStep(id);
+        this.dataSource.read();
+      }
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
     }
   }
 }
