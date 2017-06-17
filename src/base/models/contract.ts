@@ -1,4 +1,4 @@
-export interface Organization {
+export interface Contract {
   id: string ;
   /**
    * 1：客户仓储；2：装卸单位；3：库区租赁
@@ -34,4 +34,5 @@ export interface Organization {
   remark: string;
 
   orgId: string;
+
 }

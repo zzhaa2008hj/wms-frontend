@@ -8,13 +8,7 @@
                         <label class="form-label">合同类型*</label>
                         <span class="help"></span>
                         <div class="controls right">
-                            <ak-drop-down-list k-option-label="请选择"
-                                               k-data-text-field="name"
-                                               k-data-value-field="type"
-                                               k-value.two-way="contractVo.contract.contractType"
-                                               k-data-source.bind="contractTypes"
-                                               style="width: 100%">
-                            </ak-drop-down-list>
+                            <ak-template>${formatMethod(contractType)}</ak-template>
                         </div>
                     </div>
                     <div class="col-md-3">

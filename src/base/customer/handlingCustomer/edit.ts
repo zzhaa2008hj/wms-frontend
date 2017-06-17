@@ -27,7 +27,7 @@ export class EditOrganization {
       await this.messageDialogService.alert({ title: "机构编辑成功" });
       this.cancel();
     } catch (err) {
-      await this.messageDialogService.alert({ title: "发生错误", message: err.mesasge, icon: 'error' });
+      await this.messageDialogService.alert({ title: "发生错误", message: err.message, icon: 'error' });
     }
   }
 
