@@ -11,6 +11,10 @@ export class NewContract {
   contractVo: ContractVo;
   contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
   warehouse: WorkInfo;
+  //todo
+  baseRate: any;
+  //todo
+  baseRateStep: any;
 
   constructor(private router: Router,
               private contractService: ContractService,
@@ -20,6 +24,8 @@ export class NewContract {
 
   async activate() {
     this.warehouse = await this.contractService.getWarehouses();
+    this.baseRate = await  this.contractService.getBaseRate();
+    this.baseRateStep = await  this.contractService.getBaseRateStep();
   }
 
   async save() {

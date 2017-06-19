@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import {dateConverter, extractResult, fixDate, Query, RestClient} from "../../utils";
+import { dateConverter, extractResult, fixDate, Query, RestClient } from "../../utils";
 import { Contract } from "../contract/index";
 import { ContractVo } from "../models/contractVo";
 import { WorkInfo } from "../models/workInfo";
@@ -30,18 +30,23 @@ export class ContractService {
     return res.content;
   }
 
+  async getBaseRate(): Promise<any> {
+    let res = await this.http.createRequest("base/warehouse").asGet().send();
+    return res.content;
+  }
+
   /**
    * 获取单个合同信息
    * @param id
    * @returns {Promise<ContractVo>}
    */
   async getContract(id: string): Promise<ContractVo> {
-    return  this.http.get(`base/contract/${id}`)
-        .then(res =>{
-          let contractVo = res.content;
-          fixDate(contractVo.contract, 'signDate', 'startTime', 'endTime');
-          return contractVo;
-        });
+    return this.http.get(`base/contract/${id}`)
+      .then(res => {
+        let contractVo = res.content;
+        fixDate(contractVo.contract, 'signDate', 'startTime', 'endTime');
+        return contractVo;
+      });
   }
 
   /**
@@ -69,13 +74,13 @@ export class ContractService {
    * @param id
    * @returns {Promise<any>}
    */
-  async delete(id: string){
+  async delete(id: string) {
     let res = await  this.http.delete(`base/contract/${id}`);
     return extractResult(res.content);
   }
 
-  async audit(id: string): Promise<any>{
-    let res = await  this.http.put(`base/contract/verifyContract/${id}`,'');
+  async audit(id: string): Promise<any> {
+    let res = await  this.http.put(`base/contract/verifyContract/${id}`, '');
     return extractResult(res.content);
   }
 }
