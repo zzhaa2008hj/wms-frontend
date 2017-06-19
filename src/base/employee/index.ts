@@ -20,7 +20,10 @@ export class EmployeeList {
     config.map([
       {route: '', name: 'list', moduleId: './list'},
       {route: '/new', name: 'new', moduleId: './new', title: "新增"},
-      {route: '/:id/edit', name: 'edit', moduleId: './edit', title: "编辑"}
+      {route: '/:id/edit', name: 'edit', moduleId: './edit', title: "编辑"},
+      {route: '/:id/auth', name: 'auth', moduleId: './auth', title: "授权"},
+      {route: '/:id/view', name: 'view', moduleId: './view', title: "查看"},
+      {route: '/:id/reset-password', name: 'reset-password', moduleId: './reset', title: "重置密码"}
     ]);
   }
 
