@@ -1,4 +1,4 @@
-export interface Rate {
+export interface RateStep {
   id?: string;
   orgId: string;
   remark: string;

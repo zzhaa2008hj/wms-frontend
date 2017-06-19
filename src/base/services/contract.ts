@@ -3,9 +3,8 @@ import { dateConverter, extractResult, fixDate, Query, RestClient } from "../../
 import { Contract } from "../contract/index";
 import { ContractVo } from "../models/contractVo";
 import { WorkInfo } from "../models/work-info";
-import { RateStep } from "../rate/step/list";
 import { Rate } from "../models/rate";
-
+import {RateStep} from "src/base/models/rateStep";
 /**
  * 机构查询条件
  */
