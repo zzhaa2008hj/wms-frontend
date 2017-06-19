@@ -1,13 +1,14 @@
 System.config({
-  baseURL: "./dist",
+  baseURL: "./",
   defaultJSExtensions: true,
   transpiler: false,
   paths: {
     "webarch": "./webarch/index",
     "webarch/*": "./webarch/*",
     "ui": "./webarch/index",
-    "npm:*": "../jspm_packages/npm/*",
-    "github:*": "../jspm_packages/github/*"
+    "npm:*": "jspm_packages/npm/*",
+    "github:*": "jspm_packages/github/*",
+    "*": "./dist/*"
   },
 
   map: {
@@ -28,6 +29,7 @@ System.config({
     "bootstrap-datepicker": "npm:bootstrap-datepicker@1.6.4",
     "font-awesome": "npm:font-awesome@4.7.0",
     "jquery": "npm:jquery@3.2.1",
+    "nprogress": "github:rstacruz/nprogress@0.2.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },
@@ -42,6 +44,9 @@ System.config({
     },
     "github:jspm/nodelibs-vm@0.1.0": {
       "vm-browserify": "npm:vm-browserify@0.0.4"
+    },
+    "github:rstacruz/nprogress@0.2.0": {
+      "css": "github:systemjs/plugin-css@0.1.35"
     },
     "github:twbs/bootstrap@3.3.7": {
       "jquery": "npm:jquery@3.2.1"
@@ -206,7 +211,7 @@ System.config({
       "ieee754": "npm:ieee754@1.1.8"
     },
     "npm:font-awesome@4.7.0": {
-      "css": "github:systemjs/plugin-css@0.1.33"
+      "css": "github:systemjs/plugin-css@0.1.35"
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
