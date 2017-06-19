@@ -14,20 +14,26 @@
              k-sortable.bind="true">
         <ak-col k-title="公告类别" k-field="category ==1 ? '重要事项':'通知'"></ak-col>
         <ak-col k-title="标题" k-field="title"></ak-col>
-        <ak-col k-title="是否显示" k-field="visible==1 ? '显示':'不显示'"></ak-col>
+        <ak-col k-title="是否显示" k-field="visible==1 ? '显示':'隐藏'"></ak-col>
         <ak-template for="detailTemplate">
             <div class="tabstrip">
                 <ul>
-                    <li >
-                        内容
-                    </li>
+                    <li>内容</li>
                 </ul>
                 <div>
-                    <div >
-                        ${content}
-                    </div>
+                    ${content}
                 </div>
             </div>
         </ak-template>
+        <ak-col k-title="操作">
+            <ak-template>
+                <button class="btn btn-warning btn-small" if.bind="visible == 1" click.delegate="changeVisible(id)">
+                    隐藏
+                </button>
+                <button class="btn btn-primary btn-small" if.bind="visible == 2" click.delegate="changeVisible(id)">
+                    显示
+                </button>
+            </ak-template>
+        </ak-col>
     </ak-grid>
 </template>

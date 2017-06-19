@@ -26,6 +26,14 @@ export class Notice {
     this.dataSource.read();
   }
 
+  async changeVisible(id) {
+    try {
+      await this.noticeService.updateVisible(id);
+      this.dataSource.read();
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+    }
+  }
 
 
 }

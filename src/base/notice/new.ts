@@ -14,7 +14,7 @@ export class NewNotice {
   notice: Notice;
   //数据字典数据方法完成后从数据字典中获取
   category = [{ text: "重要事项", value: 1 }, { text: "通知", value: 2 }];
-  visible = [{ text: "显示", value: 1 }, { text: "不显示", value: 2 }];
+  visible = [{ text: "显示", value: 1 }, { text: "隐藏", value: 2 }];
 
   constructor(private router: Router,
               private noticeService: NoticeService,

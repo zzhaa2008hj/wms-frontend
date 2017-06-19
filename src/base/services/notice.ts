@@ -25,7 +25,7 @@ export class NoticeService {
     return extractResult(res.content);
   }
 
-  async updateState(id: string): Promise<void> {
+  async updateVisible(id: string): Promise<void> {
     let url = `/base/notice/${id}`;
     let res = await this.http.createRequest(url).asPut().send();
     return extractResult(res.content);
@@ -42,6 +42,5 @@ export class NoticeService {
     let res = await this.http.createRequest(url).asDelete().send();
     return extractResult(res.content);
   }
-
 
 }
