@@ -8,6 +8,8 @@ import { Warehouse } from "../models/warehouse";
 export class NewWarehouse {
   warehouse: Warehouse;
   pWarehouse: Warehouse;
+  type = [{ text: "通用", value: 1 }, { text: "保税", value: 2 }, { text: "内贸", value: 3 }];
+  category = [{ text: "露天场内", value: 1 }, { text: "库区", value: 2 }];
 
   constructor(private dialogController: DialogController) {
 

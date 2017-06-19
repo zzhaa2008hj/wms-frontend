@@ -122,6 +122,17 @@ export class Tree {
       await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: "error" });
     }
   }
+
+  protected async delete() {
+    try {
+      if (await this.messageDialogService.confirm({ title: "删除:", message: "删除后无法恢复" })) {
+        await this.cargoCategoryService.deleteCargoCategory(this.id);
+        this.dataSource.read();
+      }
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+    }
+  }
 }
 function expandPath(tree: kendo.ui.TreeView, path: any[]): Promise<void> {
   return new Promise<void>(resolve => tree.expandPath(path, resolve));

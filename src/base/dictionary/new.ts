@@ -1,5 +1,5 @@
 import { Router } from "aurelia-router";
-import { MessageDialogService } from "ui";
+import { DialogController, MessageDialogService } from "ui";
 import { DictionaryService } from "../services/dictionary";
 import { autoinject } from "aurelia-dependency-injection";
 import { Dictionary } from "../models/Dictionary";
@@ -10,22 +10,15 @@ import { Dictionary } from "../models/Dictionary";
 export class NewDictionary {
   dictionary: Dictionary;
 
-  constructor(private router: Router,
-              private dictionaryService: DictionaryService,
-              private messageDialogService: MessageDialogService) {
+  constructor(private dialogController: DialogController) {
+
   }
 
-  async addNewDictionary() {
-    try {
-      await this.dictionaryService.saveDictionary(this.dictionary);
-      await this.messageDialogService.alert({ title: "新增成功" });
-      this.cancel();
-    } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
-    }
+  async save() {
+    await this.dialogController.ok(this.dictionary);
   }
 
-  cancel() {
-    this.router.navigateToRoute("list");
+  async cancel() {
+    await this.dialogController.cancel();
   }
 }

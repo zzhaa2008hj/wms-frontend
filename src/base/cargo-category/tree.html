@@ -23,6 +23,9 @@
             <button class="btn btn-promise btn-small" if.bind="selectedItem.status==true" click.delegate="edit()">
                 编辑
             </button>
+            <button class="btn btn-warning btn-small" if.bind="selectedItem.status==false" click.delegate="delete()">
+                删除
+            </button>
         </div>
 
     </div>

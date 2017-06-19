@@ -9,9 +9,9 @@ export class WarehouseService {
   constructor(private http: RestClient) {
   }
 
-  async listWarehouse(): Promise<Warehouse[]> {
+  async listWarehouse(params?: { status: boolean }): Promise<Warehouse[]> {
     let url = `/base/warehouse/list`;
-    let res = await this.http.createRequest(url).asGet().send();
+    let res = await this.http.createRequest(url).withParams(params).asGet().send();
     return res.content;
   }
 
@@ -30,6 +30,12 @@ export class WarehouseService {
   async updateWarehouse(warehouse: any): Promise<void> {
     let url = `/base/warehouse`;
     let res = await this.http.createRequest(url).withContent(warehouse).asPut().send();
+    return extractResult(res.content);
+  }
+
+  async deleteWarehouse(id: string) {
+    let url = `/base/warehouse/${id}`;
+    let res = await this.http.createRequest(url).asDelete().send();
     return extractResult(res.content);
   }
 }
