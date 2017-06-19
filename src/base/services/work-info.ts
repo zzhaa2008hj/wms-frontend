@@ -9,9 +9,9 @@ export class WorkInfoService {
   constructor(private http: RestClient) {
   }
 
-  async listWorkInfo(): Promise<WorkInfo[]> {
+  async listWorkInfo(params?: { status: boolean }): Promise<WorkInfo[]> {
     let url = `/base/workInfo/list`;
-    let res = await this.http.createRequest(url).asGet().send();
+    let res = await this.http.createRequest(url).withParams(params).asGet().send();
     return res.content;
   }
 
@@ -30,6 +30,12 @@ export class WorkInfoService {
   async updateWorkInfo(workInfo: any): Promise<void> {
     let url = `/base/workInfo`;
     let res = await this.http.createRequest(url).withContent(workInfo).asPut().send();
+    return extractResult(res.content);
+  }
+
+  async deleteWorkInfo(id: any) {
+    let url = `/base/workInfo/${id}`;
+    let res = await this.http.createRequest(url).asDelete().send();
     return extractResult(res.content);
   }
 }

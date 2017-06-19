@@ -37,7 +37,7 @@ export class Rate {
 
   async delete(id) {
     try {
-      if (confirm("删除后无法恢复" )) {
+      if (this.messageDialogService.confirm({ title: "删除:", message: "删除后无法恢复" })) {
         await this.rateService.deleteRate(id);
         this.dataSource.read();
       }

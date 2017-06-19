@@ -1,7 +1,7 @@
 import { autoinject, inject } from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
 import { DictionaryService } from "../services/dictionary";
-import { MessageDialogService } from "ui";
+import { DialogController, MessageDialogService } from "ui";
 import { Dictionary } from "../models/Dictionary";
 /**
  * Created by Hui on 2017/6/14.
@@ -10,29 +10,20 @@ import { Dictionary } from "../models/Dictionary";
 export class EditDictionary {
   dictionary: Dictionary;
 
-  constructor( private router: Router,
-               private dictionaryService: DictionaryService,
-               private messageDialogService: MessageDialogService) {
+  constructor(private dialogController: DialogController) {
+
   }
 
-  /**
-   * 初始化后自动执行
-   */
-  async activate({ id }) {
-    this.dictionary = await this.dictionaryService.getDictionary(id);
+  activate(dictionary: Dictionary) {
+    this.dictionary = dictionary;
   }
 
-  async updateDictionary() {
-    try {
-      await this.dictionaryService.updateDictionary(this.dictionary);
-      await this.messageDialogService.alert({ title: "编辑成功" });
-      this.cancel();
-    } catch (err) {
-      await this.messageDialogService.alert({ title: "发生错误", message: err.mesasge, icon: 'error' });
-    }
+
+  async save() {
+    await this.dialogController.ok(this.dictionary);
   }
 
-  cancel() {
-    this.router.navigateToRoute("list");
+  async cancel() {
+    await this.dialogController.cancel();
   }
 }

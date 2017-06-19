@@ -9,9 +9,9 @@ export class CargoCategoryService {
   constructor(private http: RestClient) {
   }
 
-  async listCargoCategory(): Promise<CargoCategory[]> {
+  async listCargoCategory(params?: { status: boolean }): Promise<CargoCategory[]> {
     let url = `/base/cargoCategory/list`;
-    let res = await this.http.createRequest(url).asGet().send();
+    let res = await this.http.createRequest(url).withParams(params).asGet().send();
     return res.content;
   }
 
@@ -30,6 +30,12 @@ export class CargoCategoryService {
   async updateCargoCategory(workInfo: any): Promise<void> {
     let url = `/base/cargoCategory`;
     let res = await this.http.createRequest(url).withContent(workInfo).asPut().send();
+    return extractResult(res.content);
+  }
+
+  async deleteCargoCategory(id: string) {
+    let url = `/base/cargoCategory/${id}`;
+    let res = await this.http.createRequest(url).asDelete().send();
     return extractResult(res.content);
   }
 }

@@ -50,8 +50,8 @@ export class RateStepService {
   constructor(private http: RestClient) {
   }
 
-  queryRateSteps(param?: { name: string }): Query<any> {
-    return this.http.query(`/base/rateStep/page`, param);
+  queryRateSteps(rateId: string): Query<any> {
+    return this.http.query(`/base/rateStep/${rateId}/page`);
   }
 
   async saveRateStep(rateStep: Rate): Promise<void> {

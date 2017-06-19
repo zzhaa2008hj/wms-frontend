@@ -19,7 +19,7 @@ export class NewRate {
   chargeType = [{ text: "收费", value: 1 }, { text: "付费", value: 2 }];
   warehouseCategory = [{ text: "露天场内", value: 1 }, { text: "库区", value: 2 }];
   unit = [{ text: "吨", value: "吨" }, { text: "方", value: "方" }];
-  pricingMode = [{ text: "天", value: 1 }, { text: "月", value: 2 }];
+  pricingMode = [{ text: "天", value: 1 }, { text: "阶梯", value: 2 }];
 
   selectedWorkInfo: any;
   dataSourceWorkInfo = {
@@ -63,14 +63,13 @@ export class NewRate {
       this.rate.cargoCategoryName = this.selectedCargoCategory.text();
     }
 
-    console.log(this.rate.customerCategory);
-    // try {
-    //   await this.rateService.saveRate(this.rate);
-    //   await this.messageDialogService.alert({ title: "新增成功" });
-    //   this.router.navigateToRoute("list");
-    // } catch (err) {
-    //   await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
-    // }
+    try {
+      await this.rateService.saveRate(this.rate);
+      await this.messageDialogService.alert({ title: "新增成功" });
+      this.router.navigateToRoute("list");
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+    }
   }
 
   cancel() {

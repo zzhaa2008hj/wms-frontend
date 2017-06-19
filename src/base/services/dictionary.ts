@@ -37,6 +37,13 @@ export class DictionaryService {
     let res = await this.http.createRequest(url).withContent(dictionary).asPut().send();
     return extractResult(res.content);
   }
+
+  async deleteDictionary(id: any) {
+    let url = `/base/dictionary/${id}`;
+    let res = await this.http.createRequest(url).asDelete().send();
+    return extractResult(res.content);
+  }
+
 }
 
 @autoinject
@@ -44,8 +51,8 @@ export class DictionaryDataService {
   constructor(private http: RestClient) {
   }
 
-  queryDictionaryDatas(param?: { name: string }): Query<any> {
-    return this.http.query(`/base/dictionaryData/page`, param);
+  queryDictionaryDatas(dictCode: string, param?: { name: string }): Query<any> {
+    return this.http.query(`/base/dictionaryData/${dictCode}/page`, param);
   }
 
   async saveDictionaryData(dictionaryData: Dictionary): Promise<void> {
@@ -70,6 +77,12 @@ export class DictionaryDataService {
   async updateDictionaryData(dictionaryData: Dictionary): Promise<void> {
     let url = `/base/dictionaryData`;
     let res = await this.http.createRequest(url).withContent(dictionaryData).asPut().send();
+    return extractResult(res.content);
+  }
+
+  async deleteDictionaryData(id: any) {
+    let url = `/base/dictionaryData/${id}`;
+    let res = await this.http.createRequest(url).asDelete().send();
     return extractResult(res.content);
   }
 }

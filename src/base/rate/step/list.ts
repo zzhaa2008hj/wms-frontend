@@ -19,7 +19,7 @@ export class RateStep {
               @inject("rate") private rate: Rate,
               @inject private messageDialogService: MessageDialogService) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.rateStepService.queryRateSteps(),
+      query: () => this.rateStepService.queryRateSteps(rate.id),
       pageSize: 10
     });
   }
@@ -39,7 +39,7 @@ export class RateStep {
 
   async delete(id) {
     try {
-      if (confirm("删除后无法恢复" )) {
+      if (await this.messageDialogService.confirm({ title: "删除:", message: "删除后无法恢复" })) {
         await this.rateStepService.deleteRateStep(id);
         this.dataSource.read();
       }
