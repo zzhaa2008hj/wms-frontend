@@ -1,0 +1,33 @@
+<template>
+    <div class="page-title">
+        <h3>公告管理</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增</a></div>
+
+        <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="sssss">
+            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-pageable.bind="pageable"
+             k-sortable.bind="true">
+        <ak-col k-title="公告类别" k-field="category ==1 ? '重要事项':'通知'"></ak-col>
+        <ak-col k-title="标题" k-field="title"></ak-col>
+        <ak-col k-title="是否显示" k-field="visible==1 ? '显示':'不显示'"></ak-col>
+        <ak-template for="detailTemplate">
+            <div class="tabstrip">
+                <ul>
+                    <li >
+                        内容
+                    </li>
+                </ul>
+                <div>
+                    <div >
+                        ${content}
+                    </div>
+                </div>
+            </div>
+        </ak-template>
+    </ak-grid>
+</template>
