@@ -6,7 +6,7 @@ import { DictionaryDataService } from "../../services/dictionary";
 export class DictionaryData {
   searchName: string;
   dataSource = createDataSource({
-    read: () => this.dictionaryDataService.queryDictionaryData({ name: this.searchName }),
+    read: () => this.dictionaryDataService.queryDictionaryDatas({ name: this.searchName }),
     serverPaging: true,
     pageSize: 10
   });

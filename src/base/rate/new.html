@@ -1,0 +1,134 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-title no-border">设置</h4></div>
+        <div class="grid-body no-border"><br>
+            <form submit.delegate="addNewRate()">
+                <div class="form-group">
+                    <label class="form-label">费用类别*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.chargeCategory"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-data-source.bind="chargeCategory">
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">费用类型*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.chargeType"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-data-source.bind="chargeType">
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">客户类别*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.customerCategory"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-data-source.bind="customerCategory">
+                    </ak-drop-down-list>
+                </div>
+                <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3 ">
+                    <div class="form-group" if.bind="rate.chargeCategory != 0">
+                        <label class="form-label">作业内容*</label>
+                        <span class="help"></span>
+                        <ak-drop-down-list k-data-text-field="name"
+                                           k-data-value-field="id"
+                                           k-option-label="请选择..."
+                                           k-data-source.bind="dataSourceWorkInfo"
+                                           k-widget.two-way="selectedWorkInfo">
+                        </ak-drop-down-list>
+                    </div>
+                    <div class="form-group" if.bind="rate.chargeCategory != 0">
+                        <label class="form-label">货物类别*</label>
+                        <span class="help"></span>
+                        <ak-drop-down-list k-data-text-field="categoryName"
+                                           k-data-value-field="id"
+                                           k-option-label="请选择..."
+                                           k-data-source.bind="dataSourceCargoCategory"
+                                           k-widget.two-way="selectedCargoCategory">
+                        </ak-drop-down-list>
+                    </div>
+                    <div class="form-group" if.bind="rate.chargeCategory != 0">
+                        <label class="form-label">品牌</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="rate.cargoSubCategoryName">
+                        </div>
+                    </div>
+                </div>
+                <div if.bind="rate.chargeCategory == 1">
+                    <div class="form-group">
+                        <label class="form-label">库位性质*</label>
+                        <span class="help"></span>
+                        <ak-drop-down-list k-value.two-way="rate.warehouseType"
+                                           k-option-label="请选择..."
+                                           k-data-text-field="text"
+                                           k-data-value-field="value"
+                                           k-data-source.bind="warehouseType">
+                        </ak-drop-down-list>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">库位类别*</label>
+                        <span class="help"></span>
+                        <ak-drop-down-list k-value.two-way="rate.warehouseCategory"
+                                           k-option-label="请选择..."
+                                           k-data-text-field="text"
+                                           k-data-value-field="value"
+                                           k-data-source.bind="warehouseCategory">
+                        </ak-drop-down-list>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">单价*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">计量单位*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.unit"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-data-source.bind="unit">
+                    </ak-drop-down-list>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">计价方式</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="rate.pricingMode"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-data-source.bind="pricingMode">
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">备注</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="rate.remark">
+                    </div>
+                </div>
+
+
+                <div class="form-actions">
+                    <div class="pull-right">
+                        <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
+                        <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</template>

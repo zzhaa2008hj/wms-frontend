@@ -9,7 +9,7 @@ export class DictionaryService {
   constructor(private http: RestClient) {
   }
 
-  queryDictionary(param?: { name: string }): Query<any> {
+  queryDictionaries(param?: { name: string }): Query<any> {
     return this.http.query(`/base/dictionary/page`, param);
   }
 
@@ -44,7 +44,7 @@ export class DictionaryDataService {
   constructor(private http: RestClient) {
   }
 
-  queryDictionaryData(param?: { name: string }): Query<any> {
+  queryDictionaryDatas(param?: { name: string }): Query<any> {
     return this.http.query(`/base/dictionaryData/page`, param);
   }
 
