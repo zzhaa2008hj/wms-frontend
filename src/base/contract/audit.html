@@ -1,7 +1,7 @@
 <template>
     <div class="grid simple">
         <div class="grid-body no-border">
-            <form submit.delegate="update()">
+            <form submit.delegate="audit()">
                 <div class="row column-seperation">
                     <h4>基本信息</h4>
                     <div class="col-md-12">
@@ -17,7 +17,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.customerName & validate">
+                                       value.bind="contractVo.contract.customerName & validate" readonly>
                             </div>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.contractNumber & validate">
+                                       value.bind="contractVo.contract.contractNumber & validate" readonly>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.contractName & validate">
+                                       value.bind="contractVo.contract.contractName & validate" readonly>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.contractAmount & validate">
+                                       value.bind="contractVo.contract.contractAmount & validate" readonly>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input ak-datepicker="k-value.two-way : contractVo.contract.startTime & validate"
-                                       style="width: 100%" type="text" class="form-control">
+                                       style="width: 100%" type="text" class="form-control" readonly>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input ak-datepicker="k-value.two-way : contractVo.contract.endTime & validate"
-                                       style="width: 100%" type="text" class="form-control">
+                                       style="width: 100%" type="text" class="form-control" readonly>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input ak-datepicker="k-value.two-way : contractVo.contract.signDate & validate"
-                                       style="width: 100%" type="text" class="form-control">
+                                       style="width: 100%" type="text" class="form-control" readonly>
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.signer & validate">
+                                       value.bind="contractVo.contract.signer & validate" readonly>
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.remark & validate">
+                                       value.bind="contractVo.contract.remark & validate" readonly>
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                                    k-data-value-field="id"
                                                    k-value.two-way="contractVo.warehouseId"
                                                    k-data-source.bind="warehouse"
-                                                   style="width: 100%">
+                                                   style="width: 100%" readonly>
                                 </ak-drop-down-list>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                                                    k-data-value-field="type"
                                                    k-value.two-way="contractVo.baseRateId"
                                                    k-data-source.bind="contracTypes"
-                                                   style="width: 100%">
+                                                   style="width: 100%" readonly>
                                 </ak-drop-down-list>
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                 <div class="col-md-12">
                     <div class="form-actions">
                         <div class="pull-right">
-                            <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
+                            <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 审核</button>
                             <a class="btn btn-primary" click.trigger="cancel()">返回</a>
                         </div>
                     </div>
