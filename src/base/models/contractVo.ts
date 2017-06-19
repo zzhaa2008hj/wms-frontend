@@ -1,4 +1,5 @@
 import { Contract } from "./contract";
+import { Rate } from "./rate";
 export interface ContractVo {
 
   /**
@@ -11,16 +12,8 @@ export interface ContractVo {
    */
   warehouseId: string ;
 
-  /**
-   *  基础费率id
-   */
-  baseRateId: string ;
-
-  /**
-   * 基础阶梯费率id
-   */
-  baseRateStepId: string ;
+  rateVos: Rate[];
 
 
-  time : Date ;
+  time: Date ;
 }

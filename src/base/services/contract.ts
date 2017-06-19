@@ -2,7 +2,9 @@ import { autoinject } from "aurelia-dependency-injection";
 import { dateConverter, extractResult, fixDate, Query, RestClient } from "../../utils";
 import { Contract } from "../contract/index";
 import { ContractVo } from "../models/contractVo";
-import { WorkInfo } from "../models/workInfo";
+import { WorkInfo } from "../models/work-info";
+import { RateStep } from "../rate/step/list";
+import { Rate } from "../models/rate";
 
 /**
  * 机构查询条件
@@ -26,12 +28,24 @@ export class ContractService {
    * @returns {Promise<WorkInfo>}
    */
   async getWarehouses(): Promise<WorkInfo> {
-    let res = await this.http.createRequest("base/warehouse").asGet().send();
+    let res = await this.http.get(`base/warehouse`);
     return res.content;
   }
 
-  async getBaseRate(): Promise<any> {
-    let res = await this.http.createRequest("base/warehouse").asGet().send();
+  /**
+   * 获取基础费率和阶梯费率
+   * @returns {Promise<RateAndRateStep[]>}
+   */
+  async getBaseRate(): Promise<Rate[]> {
+    let res = await this.http.get(`base/rate/list`);
+    return res.content;
+  }
+  /**
+   * 获取阶梯费率
+   * @returns {Promise<RateStep[]>}
+   */
+  async getBaseRateStep(): Promise<RateStep[]> {
+    let res = await this.http.get(`base/rateStep/list`);
     return res.content;
   }
 

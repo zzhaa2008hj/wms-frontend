@@ -1,4 +1,5 @@
 <template>
+    <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
     <div class="grid simple">
         <div class="grid-body no-border">
             <form submit.delegate="save()">
@@ -13,6 +14,7 @@
                                                k-data-value-field="type"
                                                k-value.two-way="contractVo.contract.contractType"
                                                k-data-source.bind="contractTypes"
+                                               k-on-change.delegate="contractTypeChanged()"
                                                style="width: 100%">
                             </ak-drop-down-list>
                         </div>
@@ -119,28 +121,64 @@
                                                    k-data-text-field="name"
                                                    k-data-value-field="id"
                                                    k-value.two-way="contractVo.warehouseId"
-                                                   k-data-source.bind="warehouse"
+                                                   k-data-source.bind="warehouses"
                                                    style="width: 100%">
                                 </ak-drop-down-list>
                             </div>
                         </div>
                     </div>
-                    <div if.bind="contractVo.contract.contractType==1||contract.contractType==2">
+                    <template if.bind="contractVo.contract.contractType==1 || contractVo.contract.contractType==2">
                         <h4>合同费率</h4>
                         <div class="col-md-12">
-                            <label class="form-label">费率*</label>
                             <span class="help"></span>
                             <div class="controls right">
-                                <ak-drop-down-list k-option-label="请选择"
-                                                   k-data-text-field="name"
-                                                   k-data-value-field="type"
-                                                   k-value.two-way="contractVo.baseRateId"
-                                                   k-data-source.bind="contracTypes"
-                                                   style="width: 100%">
-                                </ak-drop-down-list>
+                                <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid"
+                                         k-on-detail-init.delegate="detailInit($event.detail)"   >
+                                    <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'"
+                                            k-title="费用类别"></ak-col>
+                                    <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="费用类型"></ak-col>
+                                    <!--<ak-col k-field="customerCategory == 1 ? '仓储客户': '装卸单位' " k-title="客户类别"></ak-col>-->
+                                    <ak-col k-title="单价">
+                                        <ak-template><input type="text" value.bind="price & validate & notify">
+                                        </ak-template>
+                                    </ak-col>
+                                    <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                                    <ak-col k-field="pricingMode== 1 ? '天': '月'" k-title="计价方式"></ak-col>
+                                    <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                                    <ak-col k-field="warehouseType== 1 ? '通用': chargeCategory == 2 ? '保税': '内贸'"
+                                            k-title="库位性质"></ak-col>
+                                    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                    <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
+                                    <ak-col k-field="warehouseCategory == 1 ? '露天场内': '库区'" k-title="库位类别"></ak-col>
+                                    <ak-col k-field="remark" k-title="备注"></ak-col>
+                                    <ak-template for="detailTemplate">
+                                        <div>
+                                            <div class="rateSteps"></div>
+                                        </div>
+
+                                        <!--<div style="text-align: center" if.bind="rateId == null">
+                                            <h4>无阶梯费率</h4>
+                                        </div>
+                                        <div class="tabstrip" if.bind="rateSteps.rateId != null">
+                                            <div>
+                                                <ul>
+                                                    <li><label>阶梯号:</label>${rateSteps.stepNum}</li>
+                                                    <li><label>开始值:</label>${rateSteps.stepStart}</li>
+                                                    <li><label>结束值:</label>${rateSteps.stepEnd}</li>
+                                                    <li><label>阶梯价:</label>
+                                                        <input type="text" value.bind="rateSteps.stepPrice & validate & notify">
+                                                    </li>
+                                                    <li><label>单位:</label>
+                                                        <ak-template>${rateSteps.stepUnit == 1? '元/天' :'元/吨'}</ak-template>
+                                                    </li>
+                                                    <li><label>备注:</label>${remark}</li>
+                                                </ul>
+                                            </div>
+                                        </div>-->
+                                </ak-grid>
                             </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
                 <div class="col-md-12">
                     <div class="form-actions">

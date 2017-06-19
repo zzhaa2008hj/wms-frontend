@@ -1,3 +1,4 @@
+import { RateStep } from "../rate/step/list";
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -30,5 +31,5 @@ export interface Rate {
   stepPrice: number;
   stepUnit: string; //元/天、元/吨
 
-
+  rateSteps: RateStep[];
 }
