@@ -33,11 +33,15 @@ export class ContractList {
     return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
   }
   async delete(id) {
-    try {
-      await this.contractService.delete(id);
-      this.dataSource.read();
-    } catch (err) {
-      await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+    let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定删除该角色！" });
+    if(confirm){
+      try {
+        await this.contractService.delete(id);
+        await this.messageDialogService.alert({ title: "", message: "删除成功！" });
+        this.dataSource.read();
+      } catch (err) {
+        await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+      }
     }
   }
 
