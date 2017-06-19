@@ -6,7 +6,7 @@ import {Router} from "aurelia-router";
 import {EmployeeService} from "../services/employee";
 import {Employee} from "../models/employee";
 import {OrganizationRole} from "../models/organization-role";
-import {MessageDialogService} from "ui";
+import { DialogController, DialogService } from "ui";
 
 @autoinject
 export class EmployeeAdd {
@@ -16,31 +16,32 @@ export class EmployeeAdd {
 
   constructor(private employeeService: EmployeeService,
               private router: Router,
-              private messageDialogService: MessageDialogService) {
+              private dialogService: DialogService) {
   }
 
   /**
    * 初始化
-   * @returns {Promise<void>}
    */
-  async activate() {
+  async activate(): Promise<void>{
     this.employee.sex = '1';
   }
 
   /**
    * 保存/修改
-   * @returns {Promise<void>}
    */
   async doSave() {
     try {
       await this.employeeService.saveEmployee(this.employee);
-      await this.messageDialogService.alert({title: "", message: "编辑成功！"});
+      await this.dialogService.alert({title: "", message: "编辑成功！"});
       this.goBack();
     } catch (err) {
-      await this.messageDialogService.alert({title: "", message: err.message, icon: "error"});
+      await this.dialogService.alert({title: "", message: err.message, icon: "error"});
     }
   }
 
+  /**
+   * 返回列表页面
+   */
   goBack() {
     this.router.navigateToRoute('list');
   }

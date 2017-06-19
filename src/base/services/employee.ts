@@ -16,35 +16,73 @@ export class EmployeeService {
    * 查询员工信息
    */
   queryEmployeesPage(keywords?: string): Query<Employee> {
-    return this.http.query("/employee/page", {keywords});
+    return this.http.query("/base/employee/page", {keywords});
   }
 
   /**
    * 删除员工
    */
-  async deleteEmployee(id: string): Promise<void> {
-    await this.http.delete(`/employee/${id}`).then(handleResult);
+  async deleteEmployee(ids: string[]): Promise<void> {
+    await this.http.delete(`/base/employee`).then(handleResult);
+    await this.http.createRequest(`/base/employee`).withContent(ids).asDelete().send().then(handleResult);
   }
 
   /**
    * 修改员工状态
    */
-  async updateEmployeeStatus(id: string, status: string): Promise<void> {
-    await this.http.put(`/employee/${id}/status/${status}`, null).then(handleResult);
-  }
-
-  /**
-   * 获取机构角色
-   */
-  async getOrganizationRoles(): Promise<OrganizationRole[]> {
-    let res = await this.http.get("/employee/organization/role-list");
-    return res.content;
+  async updateEmployeeStatus(ids: string[], status: string): Promise<void> {
+    await this.http.put(`/base/employee/status/${status}`, ids).then(handleResult);
   }
 
   /**
    * 保存员工
    */
   async saveEmployee(employee: Employee) {
-    await this.http.post('/employee', employee).then(handleResult);
+    await this.http.post('/base/employee', employee).then(handleResult);
+  }
+
+  /**
+   * 获取单个员工
+   */
+  async getEmployee(id: string): Promise<Employee> {
+    let res = await this.http.get(`/base/employee/${id}`);
+    return res.content;
+  }
+
+  /**
+   * 修改员工
+   */
+  async updateEmployee(id: string, employee: Employee) {
+    await this.http.put(`/base/employee/${id}`, employee).then(handleResult);
+  }
+
+  /**
+   * 获取机构角色列表
+   */
+  async getOrganizationRoles(): Promise<OrganizationRole[]> {
+    let res = await this.http.get('/base/employee/organization/role-list');
+    return res.content;
+  }
+
+  /**
+   * 获取员工机构角色列表
+   */
+  async getEmployeeRoles(id: string): Promise<OrganizationRole[]> {
+    let res = await this.http.get(`/base/employee/role-list/${id}`);
+    return res.content;
+  }
+
+  /**
+   * 授权角色
+   */
+  async updateAuthorization(id: string, checkedRoleIds: string[]) {
+    await this.http.put(`/base/employee/auth/${id}`, checkedRoleIds).then(handleResult);
+  }
+
+  /**
+   * 重置密码
+   */
+  async resetPassword(id: string, password: string) {
+    await this.http.put(`/base/employee/${id}/reset-password`, {'password': password}).then(handleResult);
   }
 }
