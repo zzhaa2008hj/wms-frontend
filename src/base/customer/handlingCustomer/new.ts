@@ -18,10 +18,10 @@ export class NewOrganization {
   async save() {
     try {
       await this.orgService.saveOrganization(this.org, '2');
-      await this.messageDialogService.alert({ title: "机构新增成功" });
+      await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await this.messageDialogService.alert({ title: "机构新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
     }
   }
 

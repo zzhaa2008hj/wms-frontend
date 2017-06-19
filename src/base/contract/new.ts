@@ -18,17 +18,17 @@ export class NewContract {
               private messageDialogService: MessageDialogService) {
   }
 
-  async activate({ id }) {
+  async activate() {
     this.warehouse = await this.contractService.getWarehouses();
   }
 
   async save() {
     try {
       await this.contractService.saveContract(this.contractVo);
-      await this.messageDialogService.alert({ title: "编辑成功" });
+      await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
     }
   }
 
