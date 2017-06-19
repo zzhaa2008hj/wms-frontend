@@ -32,6 +32,7 @@ export class RateStep {
     try {
       await this.rateStepService.saveRateStep(rateStep);
       await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
