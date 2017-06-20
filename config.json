@@ -4,12 +4,6 @@
   },
   "routes": [
     {
-      "route": "/report",
-      "name": "report",
-      "title": "报表",
-      "moduleId": "./report/index"
-    },
-    {
       "route": "/base/dictionary",
       "name": "dictionary",
       "title": "数据字典",
@@ -50,6 +44,18 @@
       "name": "message",
       "title": "站内信",
       "moduleId": "./base/message/index"
+    },
+    {
+      "route": "/base/employee",
+      "name": "employee",
+      "title": "用户管理",
+      "moduleId": "./base/employee/index"
+    },
+    {
+      "route": "/base/organization-role",
+      "name": "organization-role",
+      "title": "角色管理",
+      "moduleId": "./base/organization-role/index"
     }
   ]
 }

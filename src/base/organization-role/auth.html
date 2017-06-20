@@ -1,0 +1,12 @@
+<template>
+    <require from="./tree"></require>
+    <p>所属菜单</p>
+    <div id="example">
+        <menu-tree data.bind="menuItems"
+                   checked-items.bind="assignedMenuItems"></menu-tree>
+    </div>
+    <div>
+        <button class="btn btn-primary" click.delegate="assignOrgRoleMenu()">授权</button>
+        <button class="btn btn-primary" click.delegate="cancel()">取消</button>
+    </div>
+</template>

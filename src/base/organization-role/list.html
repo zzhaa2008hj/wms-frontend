@@ -1,0 +1,30 @@
+<template>
+    <div class="row">
+         <div class="col-md-9"><a class="btn btn-sm btn-success" click.delegate="add()">新增</a></div>
+        <div class="input-group"><input class="form-control" type="text" value.bind="name"
+                                        placeholder="请输入名称">
+            <div class="input-group-addon" click.delegate="find()"><em class="fa fa-search"></em></div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-sortable.bind="true"
+             k-reorderable.bind="true"
+             k-resizable.bind="true"
+             k-filterable.bind="true"
+             k-column-menu.bind="true"
+             k-pageable.bind="pageable">
+        <ak-col k-field="name" k-title="角色"></ak-col>
+        <ak-col k-field="remark" k-title="备注"></ak-col>
+        <ak-col k-title="操作">
+            <ak-template>
+                <button class="btn btn-small" click.delegate="edit($this)">编辑</button>
+                <a class="btn btn-small" route-href="route: auth; params.bind: { id: id }">
+                    授权菜单
+                </a>
+                <button class="btn btn-warning btn-small" click.delegate="delete(id)">
+                    删除
+                </button>
+            </ak-template>
+        </ak-col>
+    </ak-grid>
+</template>
