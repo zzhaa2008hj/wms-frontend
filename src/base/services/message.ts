@@ -24,9 +24,5 @@ export class MessageResultService {
   constructor(private http: RestClient) {
   }
 
-  async saveMessageResult(messageResult: Message): Promise<void> {
-    return await this.http.post(`/base/messageResult`, messageResult).then(handleResult);
-  }
-
 
 }

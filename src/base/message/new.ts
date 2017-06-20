@@ -39,7 +39,6 @@ export class NewMessage {
 
   constructor(private router: Router,
               private messageService: MessageService,
-              private messageResultService: MessageResultService,
               private employeeService: EmployeeService,
               private customerService: OrganizationService,
               private messageDialogService: MessageDialogService) {
@@ -54,7 +53,6 @@ export class NewMessage {
   async addNewMessage() {
     try {
       await this.messageService.saveMessage(this.message);
-      await this.messageResultService.saveMessageResult(this.message);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
