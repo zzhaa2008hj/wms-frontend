@@ -1,0 +1,17 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            角色授权
+        </ux-dialog-header>
+        <ux-dialog-body>
+                <div class="form-group" repeat.for="role of organizationRoles">
+                    <input type="checkbox" model.bind="role.id" checked.bind="checkedRoleIds">
+                    ${role.name}
+                </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="ok()">确定</button>
+            <button class="btn" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

@@ -18,7 +18,8 @@ export async function configure(aurelia: Aurelia) {
   LogManager.setLevel(LogManager.logLevel.warn);
   let config = await loadConfig();
   aurelia.container.registerInstance('config', config);
-  await configureRestClient(config.api.baseUrl, aurelia.container);
+  let apiBaseUrlOverride = localStorage.getItem('api.baseUrl');
+  await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container);
   await aurelia.start();
   await aurelia.setRoot();
 }
