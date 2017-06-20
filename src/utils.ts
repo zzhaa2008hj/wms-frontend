@@ -2,7 +2,7 @@
  * 
  */
 
-import { HttpClient, HttpResponseMessage } from "aurelia-http-client";
+import { HttpClient, HttpResponseMessage, RequestBuilder } from "aurelia-http-client";
 import { autoinject } from "aurelia-dependency-injection";
 import { EventAggregator } from "aurelia-event-aggregator";
 
@@ -56,8 +56,8 @@ export function fixDate<K extends string, T extends Record<K, Date>>(obj: T, ...
  */
 export abstract class RestClient extends HttpClient {
 
-  query<T>(url: string, params?: { [name: string]: any }): Query<T> {
-    return new QueryImpl(this, url, params);
+  query<T>(url: string, params?: { [name: string]: any }, headers?: { [name: string]: string }): Query<T> {
+    return new QueryImpl(this.createRequest(url), params, headers);
   }
 
 }
@@ -250,19 +250,25 @@ export interface TreeHelper<T> {
 
 class QueryImpl<T> implements Query<T> {
 
-    constructor(private http: HttpClient,
-                private url: string,
+    constructor(private request: RequestBuilder,
                 private params?: { [name: string]: any },
-                private mapper?: Function) {}
+                private headers?: { [name: string]: any },
+                private mapper?: Function) {
+      if (headers) {
+        for (let key of Object.keys(headers)) {
+          this.request = this.request.withHeader(key, headers[key]);
+        }
+      }
+    }
 
     map<X>(f: (data: T) => X): Query<X> {
       let fn = this.mapper ? data => f(this.mapper.call(null, data)) : f;
-      return new QueryImpl(this.http, this.url, this.params, fn);
+      return new QueryImpl(this.request, this.params, this.headers, fn);
     }
 
     async fetch(options?: QueryOptions) {
       let { skip = 0, take } = options;
-      let req = this.http.createRequest(this.url);
+      let req = this.request;
       let params;
       if (take) {
         let page = (skip / take) + 1;
