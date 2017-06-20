@@ -3,7 +3,53 @@
     "baseUrl": "http://localhost:8090"
   },
   "routes": [
-    { "route": "/report", "name": "report", "title": "报表", "moduleId": "./report/index" },
-    { "route": "/base/dictionary", "name": "dictionary", "title": "数据字典", "moduleId": "./base/dictionary/index" }
+    {
+      "route": "/report",
+      "name": "report",
+      "title": "报表",
+      "moduleId": "./report/index"
+    },
+    {
+      "route": "/base/dictionary",
+      "name": "dictionary",
+      "title": "数据字典",
+      "moduleId": "./base/dictionary/index"
+    },
+    {
+      "route": "/base/work-info",
+      "name": "workInfo",
+      "title": "作业内容",
+      "moduleId": "./base/work-info/index"
+    },
+    {
+      "route": "/base/cargo-category",
+      "name": "cargoCategory",
+      "title": "货物种类",
+      "moduleId": "./base/cargo-category/index"
+    },
+    {
+      "route": "/base/warehouse",
+      "name": "cargoCategory",
+      "title": "仓库库区",
+      "moduleId": "./base/warehouse/index"
+    },
+    {
+      "route": "/base/rate",
+      "name": "rate",
+      "title": "基础费率",
+      "moduleId": "./base/rate/index"
+    },
+    {
+      "route": "/base/notice",
+      "name": "notice",
+      "title": "公告",
+      "moduleId": "./base/notice/index"
+    },
+    {
+      "route": "/base/message",
+      "name": "message",
+      "title": "站内信",
+      "moduleId": "./base/message/index"
+    }
   ]
 }
