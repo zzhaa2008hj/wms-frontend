@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, Query, RestClient } from "../../utils";
+import { extractResult, handleResult, Query, RestClient } from "../../utils";
 import { Dictionary } from "../models/Dictionary";
 /**
  * Created by Hui on 2017/6/14.
@@ -14,34 +14,24 @@ export class DictionaryService {
   }
 
   async saveDictionary(dictionary: Dictionary): Promise<void> {
-    let url = `/base/dictionary`;
-    let res = await this.http.createRequest(url).withContent(dictionary).asPost().send();
-    return extractResult(res.content);
+    return await this.http.post(`/base/dictionary`, dictionary).then(handleResult);
   }
 
 
   async updateState(id: string): Promise<void> {
-    let url = `/base/dictionary/${id}`;
-    let res = await this.http.createRequest(url).asPut().send();
-    return extractResult(res.content);
+    return await this.http.put(`/base/dictionary/${id}`, null).then(handleResult);
   }
 
-  async getDictionary(id: string): Promise<Dictionary> {
-    let url = `/base/dictionary/${id}`;
-    let res = await this.http.createRequest(url).asGet().send();
-    return res.content;
+  async getDictionary(id: string): Promise<any> {
+    return await this.http.get(`/base/dictionary/${id}`);
   }
 
   async updateDictionary(dictionary: Dictionary): Promise<void> {
-    let url = `/base/dictionary`;
-    let res = await this.http.createRequest(url).withContent(dictionary).asPut().send();
-    return extractResult(res.content);
+    return await this.http.put(`/base/dictionary/${dictionary.id}`, dictionary).then(handleResult);
   }
 
   async deleteDictionary(id: any) {
-    let url = `/base/dictionary/${id}`;
-    let res = await this.http.createRequest(url).asDelete().send();
-    return extractResult(res.content);
+    return await this.http.delete(`/base/dictionary/${id}`).then(handleResult);
   }
 
 }
@@ -56,33 +46,19 @@ export class DictionaryDataService {
   }
 
   async saveDictionaryData(dictionaryData: Dictionary): Promise<void> {
-    let url = `/base/dictionaryData`;
-    let res = await this.http.createRequest(url).withContent(dictionaryData).asPost().send();
-    return extractResult(res.content);
+    return await this.http.post(`/base/dictionaryData`, dictionaryData).then(handleResult);
   }
 
 
   async updateState(id: string): Promise<void> {
-    let url = `/base/dictionaryData/${id}`;
-    let res = await this.http.createRequest(url).asPut().send();
-    return extractResult(res.content);
-  }
-
-  async getDictionaryData(id: string): Promise<Dictionary> {
-    let url = `/base/dictionaryData/${id}`;
-    let res = await this.http.createRequest(url).asGet().send();
-    return res.content;
+    return await this.http.put(`/base/dictionaryData/${id}`, null).then(handleResult);
   }
 
   async updateDictionaryData(dictionaryData: Dictionary): Promise<void> {
-    let url = `/base/dictionaryData`;
-    let res = await this.http.createRequest(url).withContent(dictionaryData).asPut().send();
-    return extractResult(res.content);
+    return await this.http.put(`/base/dictionaryData/${dictionaryData.id}`, dictionaryData).then(handleResult);
   }
 
   async deleteDictionaryData(id: any) {
-    let url = `/base/dictionaryData/${id}`;
-    let res = await this.http.createRequest(url).asDelete().send();
-    return extractResult(res.content);
+    return await this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
   }
 }

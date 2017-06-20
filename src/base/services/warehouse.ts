@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, RestClient } from "../../utils";
+import { extractResult, handleResult, RestClient } from "../../utils";
 import { Warehouse } from "../models/warehouse";
 /**
  * Created by Hui on 2017/6/15.
@@ -16,26 +16,18 @@ export class WarehouseService {
   }
 
   async saveWarehouse(warehouse: Warehouse): Promise<void> {
-    let url = `/base/warehouse`;
-    let res = await this.http.createRequest(url).withContent(warehouse).asPost().send();
-    return extractResult(res.content);
+    return await this.http.post(`/base/warehouse`, warehouse).then(handleResult);
   }
 
   async updateState(id: string): Promise<void> {
-    let url = `/base/warehouse/${id}`;
-    let res = await this.http.createRequest(url).asPut().send();
-    return extractResult(res.content);
+    return await this.http.put(`/base/warehouse/${id}`, null).then(handleResult);
   }
 
-  async updateWarehouse(warehouse: any): Promise<void> {
-    let url = `/base/warehouse`;
-    let res = await this.http.createRequest(url).withContent(warehouse).asPut().send();
-    return extractResult(res.content);
+  async updateWarehouse(warehouse: Warehouse): Promise<void> {
+    return await this.http.put(`/base/warehouse/${warehouse.id}`, warehouse).then(handleResult);
   }
 
   async deleteWarehouse(id: string) {
-    let url = `/base/warehouse/${id}`;
-    let res = await this.http.createRequest(url).asDelete().send();
-    return extractResult(res.content);
+    return await this.http.delete(`/base/warehouse/${id}`).then(handleResult);
   }
 }

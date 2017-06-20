@@ -25,9 +25,9 @@ export class OrganizationService {
     return res.content;
   }
 
-  async saveOrganization(organization: Organization,organizationTypeCode : string) {
+  async saveOrganization(organization: Organization, organizationTypeCode: string) {
     let url = "base/customer";
-    let type = { organizationTypeCode: organizationTypeCode};
+    let type = { organizationTypeCode: organizationTypeCode };
     let res = await this.http.createRequest(url).withContent(organization).withParams(type).asPost().send();
     return extractResult(res.content);
   }
@@ -44,4 +44,7 @@ export class OrganizationService {
     return extractResult(res.content);
   }
 
-}                                                             
+  async listCustomer() {
+    return await this.http.get(`/base/customer/list`);
+  }
+}

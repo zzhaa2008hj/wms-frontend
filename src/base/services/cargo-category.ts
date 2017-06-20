@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, RestClient } from "../../utils";
+import { extractResult, handleResult, RestClient } from "../../utils";
 import { CargoCategory } from "../models/cargo-category";
 /**
  * Created by Hui on 2017/6/15.
@@ -16,26 +16,18 @@ export class CargoCategoryService {
   }
 
   async saveCargoCategory(cargoCategory: CargoCategory): Promise<void> {
-    let url = `/base/cargoCategory`;
-    let res = await this.http.createRequest(url).withContent(cargoCategory).asPost().send();
-    return extractResult(res.content);
+    return await this.http.post(`/base/cargoCategory`, cargoCategory).then(handleResult);
   }
 
   async updateState(id: string): Promise<void> {
-    let url = `/base/cargoCategory/${id}`;
-    let res = await this.http.createRequest(url).asPut().send();
-    return extractResult(res.content);
+    return await this.http.put(`/base/cargoCategory/${id}`, null).then(handleResult);
   }
 
-  async updateCargoCategory(workInfo: any): Promise<void> {
-    let url = `/base/cargoCategory`;
-    let res = await this.http.createRequest(url).withContent(workInfo).asPut().send();
-    return extractResult(res.content);
+  async updateCargoCategory(cargoCategory: CargoCategory): Promise<void> {
+    return await this.http.put(`/base/cargoCategory/${cargoCategory.id}`, cargoCategory).then(handleResult);
   }
 
   async deleteCargoCategory(id: string) {
-    let url = `/base/cargoCategory/${id}`;
-    let res = await this.http.createRequest(url).asDelete().send();
-    return extractResult(res.content);
+    return await this.http.delete(`/base/cargoCategory/${id}`, ).then(handleResult);
   }
 }
