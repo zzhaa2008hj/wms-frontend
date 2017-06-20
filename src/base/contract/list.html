@@ -1,0 +1,38 @@
+<template>
+    <div class="row">
+        <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增合同</a></div>
+        <div class="input-group"><input class="form-control" type="text" value.bind="searchName"
+                                        placeholder="请输入合同编号或客户名称">
+            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-sortable.bind="true"
+             k-reorderable.bind="true"
+             k-resizable.bind="true"
+             k-filterable.bind="true"
+             k-column-menu.bind="true"
+             k-pageable.bind="pageable">
+        <ak-col k-field="contractName" k-title="合同名称"></ak-col>
+        <ak-col k-field="contractNumber" k-title="合同编号"></ak-col>
+        <ak-col k-field="contractType" k-title="合同类别">
+            <ak-template>${formatMethod(contractType)}</ak-template>
+        </ak-col>
+        <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+        <ak-col k-field="signer" k-title="签订人"></ak-col>
+        <ak-col k-field="signDate" k-title="签订日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+        <ak-col k-field="startTime" k-title="合同开始时间" k-format="{0:yyyy-MM-dd}"></ak-col>
+        <ak-col k-field="endTime" k-title="合同结束时间" k-format="{0:yyyy-MM-dd}"></ak-col>
+        <ak-col k-field="status" k-title="审核状态">
+            <ak-template>${status == 0 ? '未审核' :status == 1 ? '审核通过' : '未通过审核'}</ak-template>
+        </ak-col>
+        <ak-col k-title="操作">
+            <ak-template>
+                <a class="btn btn-small" if.bind="status != 1" route-href="route: edit; params.bind: { id: id }">编辑</a>
+                <a class="btn btn-small" if.bind="status == 1" route-href="route: view; params.bind: { id: id }">查看</a>
+                <a class="btn btn-small" if.bind="status != 1" route-href="route: audit; params.bind: { id: id }">审核</a>
+                <a class="btn btn-success btn-small" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
+            </ak-template>
+        </ak-col>
+    </ak-grid>
+</template>

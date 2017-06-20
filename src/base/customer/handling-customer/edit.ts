@@ -5,8 +5,7 @@ import { inject, newInstance } from "aurelia-dependency-injection";
 import { OrganizationService } from "../../services/organization";
 import { Organization } from "../../models/organization";
 
-@inject
-export class EditOrganization {
+export class EditHandlingCustomer {
   org: Organization;
 
   constructor(@inject private router: Router,
@@ -25,10 +24,10 @@ export class EditOrganization {
   async update() {
     try {
       await this.orgService.updateOrganization(this.org.id, this.org);
-      await this.messageDialogService.alert({ title: "机构编辑成功" });
+      await this.messageDialogService.alert({ title: "编辑成功" });
       this.cancel();
     } catch (err) {
-      await this.messageDialogService.alert({ title: "发生错误", message: err.mesasge, icon: 'error' });
+      await this.messageDialogService.alert({ title: "发生错误", message: err.message, icon: 'error' });
     }
   }
 

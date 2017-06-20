@@ -1,6 +1,9 @@
 /**
  * Created by Hui on 2017/6/15.
  */
+import {RateStep} from "src/base/models/rateStep";
+
+
 export interface Rate {
   id?: string;
   status: boolean;
@@ -30,5 +33,5 @@ export interface Rate {
   stepPrice: number;
   stepUnit: string; //元/天、元/吨
 
-
+  rateStep: RateStep[];
 }
