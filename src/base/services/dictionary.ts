@@ -19,7 +19,7 @@ export class DictionaryService {
 
 
   async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/dictionary/${id}`, null).then(handleResult);
+    return await this.http.put(`/base/dictionary/${id}/state`, null).then(handleResult);
   }
 
   async getDictionary(id: string): Promise<any> {
@@ -51,7 +51,7 @@ export class DictionaryDataService {
 
 
   async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/dictionaryData/${id}`, null).then(handleResult);
+    return await this.http.put(`/base/dictionaryData/${id}/state`, null).then(handleResult);
   }
 
   async updateDictionaryData(dictionaryData: Dictionary): Promise<void> {

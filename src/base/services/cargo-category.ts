@@ -20,7 +20,7 @@ export class CargoCategoryService {
   }
 
   async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/cargoCategory/${id}`, null).then(handleResult);
+    return await this.http.put(`/base/cargoCategory/${id}/state`, null).then(handleResult);
   }
 
   async updateCargoCategory(cargoCategory: CargoCategory): Promise<void> {

@@ -20,7 +20,7 @@ export class WorkInfoService {
   }
 
   async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/workInfo/${id}`, null).then(handleResult);
+    return await this.http.put(`/base/workInfo/${id}/state`, null).then(handleResult);
   }
 
   async updateWorkInfo(workInfo: WorkInfo): Promise<void> {

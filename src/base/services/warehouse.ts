@@ -20,7 +20,7 @@ export class WarehouseService {
   }
 
   async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/warehouse/${id}`, null).then(handleResult);
+    return await this.http.put(`/base/warehouse/${id}/state`, null).then(handleResult);
   }
 
   async updateWarehouse(warehouse: Warehouse): Promise<void> {
