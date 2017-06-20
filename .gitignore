@@ -5,4 +5,4 @@ node_modules/
 jspm_packages/
 dist/
 typings/
-/config.json
+!/config.json
