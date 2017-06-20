@@ -11,7 +11,6 @@ import { observable } from "aurelia-framework";
  */
 @autoinject
 export class NewMessage {
-  sCategory: any;
   message: Message;
   category = [{ text: "内部", value: 1 }, { text: "外部", value: 2 }];
   selectedCategory: any;
@@ -44,14 +43,10 @@ export class NewMessage {
               private messageDialogService: MessageDialogService) {
   }
 
-  onSelectCategory(e) {
-    let dataItem = this.selectedCategory.dataItem(e.detail.item);
-    this.sCategory = dataItem.value;
-    // this.dataSourceReceiver.read();
-  }
-
   async addNewMessage() {
     try {
+      this.message.receiverId = this.selectedReceiver.value();
+      this.message.receiverName = this.selectedReceiver.text();
       await this.messageService.saveMessage(this.message);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
