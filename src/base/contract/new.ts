@@ -7,15 +7,15 @@ import {ContractVo} from "../models/contractVo";
 import {Rate} from "../models/rate";
 import {WorkInfo} from "../models/work-info";
 import {RateStep} from "../models/rateStep";
+import {Organization} from "../models/organization";
 
 @autoinject
 export class NewContract {
     contractVo: ContractVo;
     contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
     warehouses: WorkInfo;
-
-    customerGrid: any;
-    datasource;
+    customers: Organization;
+    datasource: kendo.data.DataSource;
 
     /**
      * 基础费率
@@ -53,6 +53,7 @@ export class NewContract {
 
     async activate() {
         this.warehouses = await this.contractService.getWarehouses();
+        this.customers = await  this.contractService.getCustomers();
         this.baseRateAndSteps = await this.contractService.getBaseRate();
         this.baseRateStep = await this.contractService.getBaseRateStep();
     }
@@ -68,7 +69,7 @@ export class NewContract {
 
 
     async save() {
-        this.customerGrid.saveChanges();
+        await this.datasource.sync();
         let rateList = this.baseRateAndSteps
             .filter(x => x.customerCategory == this.contractVo.contract.contractType);
 

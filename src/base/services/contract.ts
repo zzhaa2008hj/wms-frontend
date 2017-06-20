@@ -5,6 +5,7 @@ import { ContractVo } from "../models/contractVo";
 import { WorkInfo } from "../models/work-info";
 import { Rate } from "../models/rate";
 import {RateStep} from "src/base/models/rateStep";
+import {Organization} from "../models/organization";
 /**
  * 机构查询条件
  */
@@ -28,6 +29,11 @@ export class ContractService {
    */
   async getWarehouses(): Promise<WorkInfo> {
     let res = await this.http.get(`base/warehouse`);
+    return res.content;
+  }
+
+  async getCustomers(): Promise<Organization>{
+    let res = await this.http.get(`base/customer/list`);
     return res.content;
   }
 
@@ -78,7 +84,6 @@ export class ContractService {
    * @returns {Promise<any>}
    */
   async updateContract(contractVo: ContractVo): Promise<any> {
-    console.log(contractVo)
     let res = await this.http.put(`base/contract`, contractVo);
     return extractResult(res.content);
   }

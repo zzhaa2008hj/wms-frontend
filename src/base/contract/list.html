@@ -30,7 +30,7 @@
                 <a class="btn btn-small" if.bind="status != 1" route-href="route: edit; params.bind: { id: id }">编辑</a>
                 <a class="btn btn-small" if.bind="status == 1" route-href="route: view; params.bind: { id: id }">查看</a>
                 <a class="btn btn-small" if.bind="status != 1" route-href="route: audit; params.bind: { id: id }">审核</a>
-                <a class="btn btn-success btn-small" click.delegate="delete(id)">删除</a>
+                <a class="btn btn-success btn-small" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
             </ak-template>
         </ak-col>
     </ak-grid>

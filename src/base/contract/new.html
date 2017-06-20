@@ -24,8 +24,13 @@
                             <label class="form-label">客户名称*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.customerName & validate">
+                                <ak-drop-down-list k-option-label="请选择"
+                                                   k-data-text-field="name"
+                                                   k-data-value-field="id"
+                                                   k-value.two-way="contractVo.contract.customerId"
+                                                   k-data-source.bind="customers"
+                                                   style="width: 100%">
+                                </ak-drop-down-list>
                             </div>
                         </div>
                     </div>

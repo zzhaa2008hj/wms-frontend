@@ -7,6 +7,7 @@ import { ContractService } from "../services/contract";
 import { Rate } from "../models/rate";
 import { WorkInfo } from "../models/work-info";
 import {RateStep} from "../models/rateStep";
+import {Organization} from "../models/organization";
 
 @autoinject
 export class EditContract {
@@ -14,9 +15,8 @@ export class EditContract {
   contractVo: ContractVo;
   contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
   warehouses: WorkInfo;
-
-  customerGrid:  kendo.ui.Grid;
-  datasource;
+  customers: Organization;
+  datasource: kendo.data.DataSource;
 
   /**
    * 基础费率
@@ -56,6 +56,7 @@ export class EditContract {
    * 初始化后自动执行
    */
   async activate({ id }) {
+    this.customers = await  this.contractService.getCustomers();
     this.contractVo = await this.contractService.getContract(id);
     if (this.contractVo.contract.contractType == 3) {
       //库区信息
@@ -75,14 +76,10 @@ export class EditContract {
   }
 
   async update() {
-    this.customerGrid.saveChanges();
+    await this.datasource.sync();
     try {
       let info = this.contractVo;
-      console.log(info);
-      console.log(info.rateVos[0].price)
       await this.contractService.updateContract(info);
-      console.log("----")
-      console.log(info.rateVos[0].price)
       await this.messageDialogService.alert({ title: "编辑成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
