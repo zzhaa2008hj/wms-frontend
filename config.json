@@ -13,6 +13,7 @@
     { "route": "/base/rate", "name": "rate", "title": "基础费率", "moduleId": "./base/rate/index" },
     { "route": "/base/warehouse", "name": "warehouse", "title": "库区", "moduleId": "./base/warehouse/index" },
     { "route": "/base/work-info", "name": "workInfo", "title": "作业内容", "moduleId": "./base/work-info/index" },
-    { "route": "/base/employee", "name": "employee", "title": "用户管理", "moduleId": "./base/employee/index" }
+    { "route": "/base/employee", "name": "employee", "title": "用户管理", "moduleId": "./base/employee/index" },
+    { "route": "/base/organization-role", "name": "organization-role", "title": "角色管理", "moduleId": "./base/organization-role/index" }
   ]
 }

@@ -1,0 +1,26 @@
+<template>
+    <style>
+        ak-treeview .k-state-selected {
+        }
+        ak-treeview a {
+            color: #2e2e2e;
+        }
+    </style>
+    <ak-treeview
+            k-data-source.bind="dataSource"
+            k-drag-and-drop.bind="true"
+            k-widget.bind="widget"
+            k-checkboxes.bind="{ checkChildren: true}"
+            k-on-check.delegate="onCheck($event)"
+            k-on-change.trigger="onSelectionChange($event)" >
+        <ak-template>
+            <div>
+                <i if.bind="data.type == 0" class="fa fa-list-alt text-warning"></i>
+                <i if.bind="data.type == 1" class="fa fa-bolt text-primary"></i>
+                <i if.bind="data.type == 2 && !parentId" class="fa fa-window-maximize text-info"></i>
+                <i if.bind="data.type == 2 && parentId" class="fa fa-window-restore text-info"></i>
+                ${data.name}
+            </div>
+        </ak-template>
+    </ak-treeview>
+</template>

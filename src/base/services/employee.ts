@@ -23,7 +23,6 @@ export class EmployeeService {
    * 删除员工
    */
   async deleteEmployee(ids: string[]): Promise<void> {
-    await this.http.delete(`/base/employee`).then(handleResult);
     await this.http.createRequest(`/base/employee`).withContent(ids).asDelete().send().then(handleResult);
   }
 
@@ -60,7 +59,7 @@ export class EmployeeService {
    * 获取机构角色列表
    */
   async getOrganizationRoles(): Promise<OrganizationRole[]> {
-    let res = await this.http.get('/base/employee/organization/role-list');
+    let res = await this.http.get('/base/employee/organization/organization-role-list');
     return res.content;
   }
 
