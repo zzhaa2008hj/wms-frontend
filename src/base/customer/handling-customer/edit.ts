@@ -5,7 +5,7 @@ import { inject, newInstance } from "aurelia-dependency-injection";
 import { OrganizationService } from "../../services/organization";
 import { Organization } from "../../models/organization";
 
-export class EditOrganization {
+export class EditHandlingCustomer {
   org: Organization;
 
   constructor(@inject private router: Router,

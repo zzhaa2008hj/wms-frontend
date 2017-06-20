@@ -6,7 +6,7 @@ import { OrganizationService } from "../../services/organization";
 import { ValidationController } from "aurelia-validation";
 
 @autoinject
-export class NewOrganization {
+export class NewHandlingCustomer {
   org: Organization;
 
   constructor(private router: Router,

@@ -4,13 +4,13 @@ import { Contract } from "../contract/index";
 import { ContractVo } from "../models/contractVo";
 import { WorkInfo } from "../models/work-info";
 import { Rate } from "../models/rate";
-import {RateStep} from "src/base/models/rateStep";
-import {Organization} from "../models/organization";
+import { RateStep } from "src/base/models/rateStep";
+import { Organization } from "../models/organization";
 /**
  * 机构查询条件
  */
 export interface ContractCriteria {
-  name?: string;
+  searchName?: string;
   contractType?: string;
 }
 
@@ -32,7 +32,7 @@ export class ContractService {
     return res.content;
   }
 
-  async getCustomers(): Promise<Organization>{
+  async getCustomers(): Promise<Organization> {
     let res = await this.http.get(`base/customer/list`);
     return res.content;
   }
@@ -45,6 +45,7 @@ export class ContractService {
     let res = await this.http.get(`base/rate/list`);
     return res.content;
   }
+
   /**
    * 获取阶梯费率
    * @returns {Promise<RateStep[]>}
@@ -83,8 +84,8 @@ export class ContractService {
    * @param contractVo
    * @returns {Promise<any>}
    */
-  async updateContract(contractVo: ContractVo): Promise<any> {
-    let res = await this.http.put(`base/contract`, contractVo);
+  async updateContract(contractId: string, contractVo: ContractVo): Promise<any> {
+    let res = await this.http.put(`base/contract/${contractId}`, contractVo);
     return extractResult(res.content);
   }
 
@@ -93,7 +94,7 @@ export class ContractService {
    * @param id
    * @returns {Promise<any>}
    */
-  async delete(id: string) {
+  async delete(id: string): Promise<any> {
     let res = await  this.http.delete(`base/contract/${id}`);
     return extractResult(res.content);
   }

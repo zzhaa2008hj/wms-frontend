@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增合同</a></div>
         <div class="input-group"><input class="form-control" type="text" value.bind="searchName"
-                                        placeholder="请输入">
+                                        placeholder="请输入合同编号或客户名称">
             <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
         </div>
     </div>
@@ -13,6 +13,7 @@
              k-filterable.bind="true"
              k-column-menu.bind="true"
              k-pageable.bind="pageable">
+        <ak-col k-field="contractName" k-title="合同名称"></ak-col>
         <ak-col k-field="contractNumber" k-title="合同编号"></ak-col>
         <ak-col k-field="contractType" k-title="合同类别">
             <ak-template>${formatMethod(contractType)}</ak-template>

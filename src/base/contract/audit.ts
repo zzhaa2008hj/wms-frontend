@@ -1,18 +1,18 @@
 import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
 import { ValidationController } from "aurelia-validation";
-import {autoinject, newInstance} from "aurelia-dependency-injection";
+import { autoinject, newInstance } from "aurelia-dependency-injection";
 import { ContractVo } from "../models/contractVo";
 import { ContractService } from "../services/contract";
-import {Rate} from "../models/rate";
-import {RateStep} from "../models/rateStep";
-import {WorkInfo} from "../models/work-info";
+import { Rate } from "../models/rate";
+import { RateStep } from "../models/rateStep";
+import { WorkInfo } from "../models/work-info";
 
 @autoinject
 export class AuditContract {
   contractId: string;
   contractVo: ContractVo;
-  contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
+  contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
   warehouses: WorkInfo;
   datasource: kendo.data.DataSource;
 
@@ -25,10 +25,11 @@ export class AuditContract {
    * 基础阶梯费率
    */
   baseRateStep: RateStep[];
-  constructor( private router: Router,
-               private contractService: ContractService,
+
+  constructor(private router: Router,
+              private contractService: ContractService,
               @newInstance() private validationController: ValidationController,
-               private messageDialogService: MessageDialogService) {
+              private messageDialogService: MessageDialogService) {
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -54,7 +55,7 @@ export class AuditContract {
       this.warehouses = await this.contractService.getWarehouses();
     } else {
       this.baseRateAndSteps = this.contractVo.rateVos
-      this.baseRateStep =this.contractVo.rateStepVos;
+      this.baseRateStep = this.contractVo.rateStepVos;
     }
   }
 
@@ -90,15 +91,15 @@ export class AuditContract {
             options.success(this.baseRateStep);
           }
         },
-        filter: {field: 'rateId', operator: 'eq', value: e.data.id}
+        filter: { field: 'rateId', operator: 'eq', value: e.data.id }
       },
       columns: [
-        {field: 'stepNum', title: '阶梯号'},
-        {field: 'stepStart', title: '开始值'},
-        {field: 'stepEnd', title: '结束值'},
-        {field: 'stepPrice', title: '阶梯价'},
-        {field: 'stepUnit', title: '单位'},
-        {field: 'remark', title: '备注'}
+        { field: 'stepNum', title: '阶梯号' },
+        { field: 'stepStart', title: '开始值' },
+        { field: 'stepEnd', title: '结束值' },
+        { field: 'stepPrice', title: '阶梯价' },
+        { field: 'stepUnit', title: '单位' },
+        { field: 'remark', title: '备注' }
       ]
     });
   }

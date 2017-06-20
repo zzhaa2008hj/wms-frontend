@@ -6,7 +6,7 @@ import { OrganizationService } from "../../services/organization";
 import { Organization } from "../../models/organization";
 
 
-export class EditOrganization {
+export class EditWareHouseCustomer {
   org: Organization;
 
   constructor(@inject private router: Router,

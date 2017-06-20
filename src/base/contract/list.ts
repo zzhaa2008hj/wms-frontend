@@ -1,4 +1,4 @@
-import { autoinject, inject } from "aurelia-dependency-injection";
+import { autoinject} from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
 import { DataSourceFactory } from "../../utils";
@@ -15,12 +15,12 @@ export class ContractList {
     buttonCount: 10
   };
 
-  constructor( private router: Router,
-               private contractService: ContractService,
-               private messageDialogService: MessageDialogService,
-               private dataSourceFactory: DataSourceFactory) {
+  constructor(private router: Router,
+              private contractService: ContractService,
+              private messageDialogService: MessageDialogService,
+              private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.contractService.queryContracts({  name: this.searchName }),
+      query: () => this.contractService.queryContracts({ searchName: this.searchName }),
       pageSize: 10
     });
   }
@@ -32,9 +32,10 @@ export class ContractList {
   formatMethod(type: number) {
     return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
   }
+
   async delete(id) {
     let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定删除该角色！" });
-    if(confirm){
+    if (confirm) {
       try {
         await this.contractService.delete(id);
         await this.messageDialogService.alert({ title: "", message: "删除成功！" });

@@ -1,11 +1,11 @@
-import { autoinject, inject } from "aurelia-dependency-injection";
+import { autoinject } from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
 import { DataSourceFactory } from "../../../utils";
 import { OrganizationService } from "../../services/organization";
 import { MessageDialogService } from "ui";
 
 @autoinject
-export class CustomerList {
+export class WareHouseCustomerList {
   searchName: string;
 
   dataSource: kendo.data.DataSource;
@@ -15,10 +15,10 @@ export class CustomerList {
     buttonCount: 10
   };
 
-  constructor(@inject private router: Router,
-              @inject private orgService: OrganizationService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private dataSourceFactory: DataSourceFactory) {
+  constructor(private router: Router,
+              private orgService: OrganizationService,
+              private messageDialogService: MessageDialogService,
+              private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.orgService.queryOrganizations({ customerType: "1", name: this.searchName }),
       pageSize: 10
