@@ -6,7 +6,7 @@ import {ContractService} from "../services/contract";
 import {ContractVo} from "../models/contractVo";
 import {Rate} from "../models/rate";
 import {WorkInfo} from "../models/work-info";
-import {RateStep} from "src/base/models/rateStep";
+import {RateStep} from "../models/rateStep";
 
 @autoinject
 export class NewContract {
@@ -54,7 +54,6 @@ export class NewContract {
     async activate() {
         this.warehouses = await this.contractService.getWarehouses();
         this.baseRateAndSteps = await this.contractService.getBaseRate();
-        console.log(this.baseRateAndSteps)
         this.baseRateStep = await this.contractService.getBaseRateStep();
     }
 
@@ -67,9 +66,6 @@ export class NewContract {
     }
 
 
-    stepPriceChanged(e) {
-        console.log(e)
-    }
 
     async save() {
         this.customerGrid.saveChanges();

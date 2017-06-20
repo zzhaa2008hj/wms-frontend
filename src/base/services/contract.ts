@@ -78,6 +78,7 @@ export class ContractService {
    * @returns {Promise<any>}
    */
   async updateContract(contractVo: ContractVo): Promise<any> {
+    console.log(contractVo)
     let res = await this.http.put(`base/contract`, contractVo);
     return extractResult(res.content);
   }

@@ -1,5 +1,6 @@
 import { Contract } from "./contract";
 import { Rate } from "./rate";
+import {RateStep} from "../models/rateStep";
 export interface ContractVo {
 
   /**
@@ -14,6 +15,7 @@ export interface ContractVo {
 
   rateVos: Rate[];
 
+  rateStepVos : RateStep[];
 
   time: Date ;
 }
