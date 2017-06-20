@@ -8,6 +8,7 @@ export class OperationLogService {
   }
 
   queryOperationLog(realName?: string): Query<OperationLog> {
-    return this.http.query(`/base/operationLog/page`, { realName }).map(dateConverter('operationTime'));
+    return this.http.query(`/base/operationLog/page`, { realName }, { "x-eupwood-session-code": "" })
+      .map(dateConverter('operationTime'));
   }
 }

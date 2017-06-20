@@ -2,24 +2,11 @@
   "api": {
     "baseUrl": "http://localhost:8090"
   },
-  "routes": [
-    {
+  "routes": [{
       "route": "/report",
       "name": "report",
       "title": "报表",
       "moduleId": "./report/index"
-    },
-    {
-      "route": "/base/dictionary",
-      "name": "dictionary",
-      "title": "数据字典",
-      "moduleId": "./base/dictionary/index"
-    },
-    {
-      "route": "/base/work-info",
-      "name": "workInfo",
-      "title": "作业内容",
-      "moduleId": "./base/work-info/index"
     },
     {
       "route": "/base/cargo-category",
@@ -28,16 +15,34 @@
       "moduleId": "./base/cargo-category/index"
     },
     {
-      "route": "/base/warehouse",
-      "name": "warehouse",
-      "title": "仓库库区",
-      "moduleId": "./base/warehouse/index"
+      "route": "/base/contract",
+      "name": "contract",
+      "title": "合同",
+      "moduleId": "./base/contract/index"
     },
     {
-      "route": "/base/rate",
-      "name": "rate",
-      "title": "基础费率",
-      "moduleId": "./base/rate/index"
+      "route": "/base/customer",
+      "name": "customer",
+      "title": "客户",
+      "moduleId": "./base/customer/index"
+    },
+    {
+      "route": "/base/dictionary",
+      "name": "dictionary",
+      "title": "数据字典",
+      "moduleId": "./base/dictionary/index"
+    },
+    {
+      "route": "/base/employee",
+      "name": "employee",
+      "title": "用户",
+      "moduleId": "./base/employee/index"
+    },
+    {
+      "route": "/base/message",
+      "name": "message",
+      "title": "站内信",
+      "moduleId": "./base/message/index"
     },
     {
       "route": "/base/notice",
@@ -46,10 +51,28 @@
       "moduleId": "./base/notice/index"
     },
     {
-      "route": "/base/message",
-      "name": "message",
-      "title": "站内信",
-      "moduleId": "./base/message/index"
+      "route": "/base/operation-log",
+      "name": "operation-log",
+      "title": "操作日志",
+      "moduleId": "./base/operation-log/index"
+    },
+    {
+      "route": "/base/rate",
+      "name": "rate",
+      "title": "基础费率",
+      "moduleId": "./base/rate/index"
+    },
+    {
+      "route": "/base/warehouse",
+      "name": "warehouse",
+      "title": "仓库库区",
+      "moduleId": "./base/warehouse/index"
+    },
+    {
+      "route": "/base/work-info",
+      "name": "workInfo",
+      "title": "作业内容",
+      "moduleId": "./base/work-info/index"
     }
   ]
 }
