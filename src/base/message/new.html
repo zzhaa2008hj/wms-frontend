@@ -1,0 +1,58 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-title no-border">新增</h4></div>
+        <div class="grid-body no-border"><br>
+            <form submit.delegate="addNewMessage()">
+                <div class="form-group">
+                    <label class="form-label">类别*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="message.category"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-on-select.delegate="onSelectCategory($event)"
+                                       k-widget.two-way="selectedCategory"
+                                       k-data-source.bind="category"
+                                       id="categories">
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">发送到*</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-auto-bind.bind="false"
+                                       k-cascade-from="categories"
+                                       k-widget.two-way="selectedReceiver"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="name"
+                                       k-data-value-field="id"
+                                       k-data-source.bind="dataSourceReceiver">
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">标题*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="message.title">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">内容</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <textarea type="text" class="form-control" value.bind="message.content"
+                                  style="height:440px"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <div class="pull-right">
+                        <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 发送</button>
+                        <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</template>

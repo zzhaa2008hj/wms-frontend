@@ -13,7 +13,7 @@ import { CargoCategoryService } from "../services/cargo-category";
 export class NewNotice {
   notice: Notice;
   //数据字典数据方法完成后从数据字典中获取
-  category = [{ text: "重要事项", value: 1 }, { text: "通知", value: 2 }];
+  category = [{ text: "内部", value: 1 }, { text: "外部", value: 2 }];
   visible = [{ text: "显示", value: 1 }, { text: "隐藏", value: 2 }];
 
   constructor(private router: Router,

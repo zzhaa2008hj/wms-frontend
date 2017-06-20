@@ -1,10 +1,10 @@
 /**
  * Created by shun on 2017/6/15.
  */
-import {Employee} from "../models/employee";
-import {OrganizationRole} from "../models/organization-role";
-import {Query, handleResult, RestClient} from "../../utils";
-import {autoinject} from "aurelia-dependency-injection";
+import { Employee } from "../models/employee";
+import { OrganizationRole } from "../models/organization-role";
+import { Query, handleResult, RestClient } from "../../utils";
+import { autoinject } from "aurelia-dependency-injection";
 
 @autoinject
 export class EmployeeService {
@@ -16,7 +16,7 @@ export class EmployeeService {
    * 查询员工信息
    */
   queryEmployeesPage(keywords?: string): Query<Employee> {
-    return this.http.query("/base/employee/page", {keywords});
+    return this.http.query("/base/employee/page", { keywords });
   }
 
   /**
@@ -83,6 +83,11 @@ export class EmployeeService {
    * 重置密码
    */
   async resetPassword(id: string, password: string) {
-    await this.http.put(`/base/employee/${id}/reset-password`, {'password': password}).then(handleResult);
+    await this.http.put(`/base/employee/${id}/reset-password`, { 'password': password }).then(handleResult);
+  }
+
+  async listEmployee() {
+    let res = await this.http.get(`/rest/employee/list`);
+    return res.content;
   }
 }

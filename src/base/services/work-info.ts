@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, RestClient } from "../../utils";
+import { extractResult, handleResult, RestClient } from "../../utils";
 import { WorkInfo } from "../models/work-info";
 /**
  * Created by Hui on 2017/6/15.
@@ -16,26 +16,18 @@ export class WorkInfoService {
   }
 
   async saveWorkInfo(workInfo: WorkInfo): Promise<void> {
-    let url = `/base/workInfo`;
-    let res = await this.http.createRequest(url).withContent(workInfo).asPost().send();
-    return extractResult(res.content);
+    return await this.http.post(`/base/workInfo`, workInfo).then(handleResult);
   }
 
   async updateState(id: string): Promise<void> {
-    let url = `/base/workInfo/${id}`;
-    let res = await this.http.createRequest(url).asPut().send();
-    return extractResult(res.content);
+    return await this.http.put(`/base/workInfo/${id}`, null).then(handleResult);
   }
 
-  async updateWorkInfo(workInfo: any): Promise<void> {
-    let url = `/base/workInfo`;
-    let res = await this.http.createRequest(url).withContent(workInfo).asPut().send();
-    return extractResult(res.content);
+  async updateWorkInfo(workInfo: WorkInfo): Promise<void> {
+    return await this.http.put(`/base/workInfo/${workInfo.id}`, workInfo).then(handleResult);
   }
 
   async deleteWorkInfo(id: any) {
-    let url = `/base/workInfo/${id}`;
-    let res = await this.http.createRequest(url).asDelete().send();
-    return extractResult(res.content);
+    return await this.http.delete(`/base/workInfo/${id}`).then(handleResult);
   }
 }

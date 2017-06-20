@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-export class NoticeRouter {
+export class MessageRouter {
 
   router: Router;
 
