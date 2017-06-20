@@ -2,7 +2,8 @@
   "api": {
     "baseUrl": "http://localhost:8090"
   },
-  "routes": [{
+  "routes": [
+    {
       "route": "/report",
       "name": "report",
       "title": "报表",
@@ -31,12 +32,6 @@
       "name": "dictionary",
       "title": "数据字典",
       "moduleId": "./base/dictionary/index"
-    },
-    {
-      "route": "/base/employee",
-      "name": "employee",
-      "title": "用户",
-      "moduleId": "./base/employee/index"
     },
     {
       "route": "/base/message",
@@ -73,6 +68,18 @@
       "name": "workInfo",
       "title": "作业内容",
       "moduleId": "./base/work-info/index"
+    },
+    {
+      "route": "/base/employee",
+      "name": "employee",
+      "title": "用户管理",
+      "moduleId": "./base/employee/index"
+    },
+    {
+      "route": "/base/organization-role",
+      "name": "organization-role",
+      "title": "角色管理",
+      "moduleId": "./base/organization-role/index"
     }
   ]
 }
