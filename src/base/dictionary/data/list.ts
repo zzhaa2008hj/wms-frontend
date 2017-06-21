@@ -40,7 +40,11 @@ export class DictionaryData {
   }
 
   async add() {
-    let result = await this.dialogService.open({ viewModel: NewDictionaryData, model: this.dictionary, lock: true })
+    let result = await this.dialogService.open({
+      viewModel: NewDictionaryData,
+      model: { dictCode: this.dictionary.dictCode },
+      lock: true
+    })
       .whenClosed();
     if (result.wasCancelled) return;
     try {
@@ -52,7 +56,7 @@ export class DictionaryData {
     }
   }
 
-  async edit(dictionaryData: Dictionary) {
+  async edit(dictionaryData: DictionaryData) {
     let result = await this.dialogService.open({ viewModel: EditDictionaryData, model: dictionaryData, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;

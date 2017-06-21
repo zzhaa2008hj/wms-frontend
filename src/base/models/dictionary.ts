@@ -11,6 +11,13 @@ export interface Dictionary {
   dictName: string;
   remark: string;
 
+}
+
+export  interface DictionaryData{
+  id?: string;
+  dictCode: string;
+  status: boolean;
+  orgId: string;
   // DictionaryData
   dictDataCode: string;
   dictDataName: string;
