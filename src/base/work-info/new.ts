@@ -8,6 +8,7 @@ import { WorkInfo } from "../models/work-info";
 export class NewWorkInfo {
   workInfo: WorkInfo;
   pWorkInfo: WorkInfo;
+  category = [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "移库", value: 3 }];
 
   constructor(private dialogController: DialogController) {
 
@@ -21,6 +22,7 @@ export class NewWorkInfo {
   async save() {
     if (this.pWorkInfo) {
       this.workInfo.parentId = this.pWorkInfo.id;
+      this.workInfo.category = this.pWorkInfo.category;
     }
     await this.dialogController.ok(this.workInfo);
   }
