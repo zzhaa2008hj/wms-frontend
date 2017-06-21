@@ -89,9 +89,10 @@ export class Tree {
       if (!this.selectedItem.sub) {
         await this.workInfoService.updateState(this.id);
       }
-      if (this.selectedItem.sub && this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级作业内容！" })) {
+      if (this.selectedItem.sub && await this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级作业内容！" })) {
         await this.workInfoService.updateState(this.id);
       }
+      this.data = await this.workInfoService.listWorkInfo();
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
     }
@@ -105,6 +106,7 @@ export class Tree {
     try {
       await this.workInfoService.saveWorkInfo(workInfo);
       await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
+      this.data = await this.workInfoService.listWorkInfo();
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
@@ -118,6 +120,7 @@ export class Tree {
     try {
       await this.workInfoService.updateWorkInfo(workInfo);
       await this.messageDialogService.alert({ title: "编辑成功", message: "编辑成功！" });
+      this.data = await this.workInfoService.listWorkInfo();
     } catch (err) {
       await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: "error" });
     }
@@ -127,7 +130,7 @@ export class Tree {
     try {
       if (await this.messageDialogService.confirm({ title: "删除:", message: "删除后无法恢复" })) {
         await this.workInfoService.deleteWorkInfo(this.id);
-        this.dataSource.read();
+        this.data = await this.workInfoService.listWorkInfo();
       }
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
