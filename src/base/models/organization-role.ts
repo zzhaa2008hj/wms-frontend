@@ -19,4 +19,5 @@ export interface OrganizationRole {
   appKey: string;
   appId: string;
   appType: string;
+  remark: string;
 }

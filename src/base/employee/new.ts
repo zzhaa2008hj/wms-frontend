@@ -1,28 +1,27 @@
 /**
  * Created by shun on 2017/6/16.
  */
-import {autoinject} from "aurelia-dependency-injection";
+import {autoinject, inject} from "aurelia-dependency-injection";
 import {Router} from "aurelia-router";
 import {EmployeeService} from "../services/employee";
 import {Employee} from "../models/employee";
 import {OrganizationRole} from "../models/organization-role";
 import { DialogController, DialogService } from "ui";
 
-@autoinject
 export class EmployeeAdd {
 
   organizationRoles: OrganizationRole [];
   employee = {} as Employee;
 
-  constructor(private employeeService: EmployeeService,
-              private router: Router,
-              private dialogService: DialogService) {
+  constructor(@inject private employeeService: EmployeeService,
+              @inject private router: Router,
+              @inject private dialogService: DialogService) {
   }
 
   /**
    * 初始化
    */
-  async activate(): Promise<void>{
+  async activate() {
     this.employee.sex = '1';
   }
 

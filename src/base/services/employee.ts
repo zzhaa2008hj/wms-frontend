@@ -23,7 +23,6 @@ export class EmployeeService {
    * 删除员工
    */
   async deleteEmployee(ids: string[]): Promise<void> {
-    await this.http.delete(`/base/employee`).then(handleResult);
     await this.http.createRequest(`/base/employee`).withContent(ids).asDelete().send().then(handleResult);
   }
 
