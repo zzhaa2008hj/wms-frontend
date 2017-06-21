@@ -19,32 +19,24 @@ export class OrganizationService {
     return this.http.query(`base/customer/page`, criteria).map(dateConverter('createTime'));
   }
 
-  async getOrganization(id: string) {
-    let url = `base/customer/${id}`;
-    let res = await this.http.createRequest(url).asGet().send();
+  async getOrganization(id: string): Promise<Organization> {
+    let res = await this.http.get(`base/customer/${id}`);
     return res.content;
   }
 
-  async saveOrganization(organization: Organization, organizationTypeCode: string) {
-    let url = "base/customer";
-    let type = { organizationTypeCode: organizationTypeCode };
-    let res = await this.http.createRequest(url).withContent(organization).withParams(type).asPost().send();
+  async saveOrganization(organization: Organization, organizationTypeCode: string): Promise<any> {
+    let res = await this.http.post(`base/customer?customerType=${organizationTypeCode}`, organization)
     return extractResult(res.content);
   }
 
-  async updateOrganization(id: string, organization: any) {
-    let url = `base/customer/${id}`;
-    let res = await this.http.createRequest(url).withContent(organization).asPut().send();
+  async updateOrganization(id: string, organization: any): Promise<any> {
+    let res = await this.http.put(`base/customer/${id}`, organization);
     return extractResult(res.content);
   }
 
-  async changeStatus(id: string, status: string) {
-    let url = `base/customer/updateStatus/${id}`;
-    let res = await this.http.createRequest(url).withParams({ status }).asPut().send();
+  async changeStatus(id: string, status: string): Promise<any> {
+    let res = await this.http.put(`base/customer/updateStatus/${id}?status=${status}`, '')
     return extractResult(res.content);
   }
 
-  async listCustomer() {
-    return await this.http.get(`/base/customer/list`);
-  }
-}
+}                                                             
