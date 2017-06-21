@@ -33,7 +33,7 @@
                                        k-data-source.bind="customerCategory">
                     </ak-drop-down-list>
                 </div>
-                <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3 ">
+                <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3 || rate.chargeCategory == 5">
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">作业内容*</label>
                         <span class="help"></span>

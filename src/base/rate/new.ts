@@ -12,21 +12,22 @@ import { treeHelper, TreeHelper } from "../../utils";
  */
 @autoinject
 export class NewRate {
+  data: any[];
   rate: Rate;
   //数据字典数据方法完成后从数据字典中获取
   chargeCategory = [{ text: "仓储费", value: 1 },
-                    { text: "装卸费", value: 2 },
-                    { text: "拆箱费", value: 3 },
-                    { text: "过磅费", value: 4 },
-                    { text: "其他费用", value: 3 }];
+    { text: "装卸费", value: 2 },
+    { text: "拆箱费", value: 3 },
+    { text: "过磅费", value: 4 },
+    { text: "其他费用", value: 5 }];
   warehouseType = [{ text: "通用", value: 1 }, { text: "保税", value: 2 }, { text: "内贸", value: 3 }];
   customerCategory = [{ text: "仓储客户", value: 1 }, { text: "装卸单位", value: 2 }];
   chargeType = [{ text: "收费业务", value: 1 }, { text: "付费业务", value: 2 }];
   warehouseCategory = [{ text: "库", value: 1 }, { text: "场", value: 2 }];
   unit = [{ text: "重量", value: "重量" },
-          { text: "体积", value: "体积" },
-          { text: "件数", value: "件数" },
-          { text: "车次", value: "车次" }];
+    { text: "体积", value: "体积" },
+    { text: "件数", value: "件数" },
+    { text: "车次", value: "车次" }];
   pricingMode = [{ text: "单一计费", value: 1 }, { text: "阶梯计费", value: 2 }];
 
   selectedWorkInfo: any;
@@ -39,13 +40,6 @@ export class NewRate {
         } catch (err) {
           options.error("", "", err);
         }
-      }
-    },
-    schema: {
-      model: {
-        id: 'id',
-        parentId: 'parentId',
-        expanded: true
       }
     }
   };
