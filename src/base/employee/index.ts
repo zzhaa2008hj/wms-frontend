@@ -1,17 +1,16 @@
 import {Router, RouterConfiguration} from "aurelia-router";
 import {EmployeeService} from "../services/employee";
-import {autoinject, Container} from "aurelia-dependency-injection";
+import {autoinject, Container, inject} from "aurelia-dependency-injection";
 import {Employee} from "../models/employee";
 
-@autoinject
 export class EmployeeList {
 
   router: Router;
 
   private employee = {} as Employee;
 
-  constructor(private container: Container,
-              private employeeService: EmployeeService) {
+  constructor(@inject private container: Container,
+              @inject private employeeService: EmployeeService) {
     this.container.registerInstance('employee', this.employee);
   }
 

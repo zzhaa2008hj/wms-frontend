@@ -10,7 +10,6 @@ import {OrganizationRoleAdd} from "./new";
 import {OrganizationRoleEdit} from "./edit";
 import {OrganizationRole} from "../models/organization-role";
 
-@autoinject
 export class RoleList {
   name: string;
 
@@ -21,10 +20,10 @@ export class RoleList {
     buttonCount: 10
   };
 
-  constructor(private router: Router,
-              private roleService: OrganizationRoleService,
-              private dialogService: DialogService,
-              private dataSourceFactory: DataSourceFactory) {
+  constructor(@inject private router: Router,
+              @inject private roleService: OrganizationRoleService,
+              @inject private dialogService: DialogService,
+              @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.roleService.queryRolePage(this.name),
       pageSize: 10

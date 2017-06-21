@@ -4,12 +4,18 @@
             重置密码
         </ux-dialog-header>
         <ux-dialog-body>
-                <div class="form-group">
-                    <input type="text" class="k-textbox" placeholder="请输入新密码"
-                           value.bind="password"/> <br>
-                    <input type="text" class="k-textbox" placeholder="再次输入"
-                           value.bind="the2password"/>
+            <div class="form-group">
+                <div class="controls">
+                    <input type="text" class="k-textbox" placeholder="请输入新密码" value.bind="password  & validate"
+                           required/>
                 </div>
+            </div>
+            <div class="form-group">
+                <div class="controls">
+                    <input type="text" class="k-textbox" placeholder="再次输入" value.bind="the2password  & validate"
+                           required/>
+                </div>
+            </div>
         </ux-dialog-body>
         <ux-dialog-footer>
             <button class="btn btn-primary" click.trigger="ok()">确定</button>

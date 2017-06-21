@@ -1,15 +1,14 @@
-import { autoinject } from "aurelia-dependency-injection";
+import { autoinject, inject} from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
 import { EmployeeService } from "../services/employee";
 import { Employee } from "../models/employee";
 
-@autoinject
 export class EmployeeEdit {
 
   employee: Employee;
 
-  constructor(private employeeService: EmployeeService,
-              private router: Router) {
+  constructor(@inject private employeeService: EmployeeService,
+              @inject private router: Router) {
   }
 
   async activate(params) {
