@@ -18,7 +18,7 @@ export class NewMessage {
   dataSourceReceiver = new kendo.data.DataSource({
     serverFiltering: true,
     transport: {
-      read: options => {
+      read:async options => {
         try {
           if (!this.selectedCategory) {
             options.success([]);
@@ -27,7 +27,7 @@ export class NewMessage {
             this.employeeService.listEmployee().then(options.success);
           }
           if (this.selectedCategory.value() == 2) {
-            this.customerService.listCustomer().then(options.success);
+            this.messageService.listCustomer().then(options.success);
           }
         } catch (err) {
           options.error("", "", err);
@@ -39,7 +39,6 @@ export class NewMessage {
   constructor(private router: Router,
               private messageService: MessageService,
               private employeeService: EmployeeService,
-              private customerService: OrganizationService,
               private messageDialogService: MessageDialogService) {
   }
 

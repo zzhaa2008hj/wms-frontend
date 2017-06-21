@@ -13,10 +13,13 @@ export class MessageService {
     return this.http.query(`/base/message/page`, param).map(dateConverter("sendDate"));
   }
 
-  async saveMessage(message: Message): Promise<void> {
-    return await this.http.post(`/base/message`, message).then(handleResult);
+  saveMessage(message: Message) {
+    this.http.post(`/base/message`, message).then(handleResult);
   }
 
+  async listCustomer() {
+    return await this.http.get(`/base/customer/list`);
+  }
 }
 
 @autoinject

@@ -15,7 +15,7 @@
         <ak-col k-title="类别" k-field="category ==1 ? '内部':'外部'"></ak-col>
         <ak-col k-title="标题" k-field="title"></ak-col>
         <ak-col k-title="发送方" k-field="sender"></ak-col>
-        <ak-col k-title="发送日期" k-field="sendDate"></ak-col>
+        <ak-col k-title="发送日期" k-field="sendDate" k-format="{0:yyyy-MM-dd}"></ak-col>
         <ak-col k-title="接收方" k-field="receiverName"></ak-col>
         <ak-col k-title="是否已读" k-field="hasRead == 0 ?'未读':'已读'"></ak-col>
         <ak-template for="detailTemplate">

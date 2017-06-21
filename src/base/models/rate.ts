@@ -1,12 +1,10 @@
 /**
  * Created by Hui on 2017/6/15.
  */
-import {RateStep} from "src/base/models/rateStep";
 
 
 export interface Rate {
   id?: string;
-  status: boolean;
   orgId: string;
   remark: string;
 
@@ -25,6 +23,13 @@ export interface Rate {
   warehouseCategory: number;
   customerCategory: number;
 
+}
+
+export interface RateStep {
+  id?: string;
+  orgId: string;
+  remark: string;
+
   // RateStep
   rateId: string;
   stepNum: number;
@@ -33,5 +38,4 @@ export interface Rate {
   stepPrice: number;
   stepUnit: string; //元/天、元/吨
 
-  rateStep: RateStep[];
 }

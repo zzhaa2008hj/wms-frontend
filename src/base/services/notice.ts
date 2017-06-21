@@ -14,11 +14,11 @@ export class NoticeService {
   }
 
   async saveNotice(notice: Notice): Promise<void> {
-    return await this.http.post(`/base/notice`, notice).then(handleResult);
+    await this.http.post(`/base/notice`, notice).then(handleResult);
   }
 
   async updateVisible(id: string): Promise<void> {
-    return await this.http.put(`/base/notice/${id}`, null).then(handleResult);
+    await this.http.put(`/base/notice/${id}`, null).then(handleResult);
   }
 
 }

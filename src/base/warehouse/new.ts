@@ -23,6 +23,8 @@ export class NewWarehouse {
   async save() {
     if (this.pWarehouse) {
       this.warehouse.parentId = this.pWarehouse.id;
+      this.warehouse.type = this.pWarehouse.type;
+      this.warehouse.category = this.pWarehouse.category;
     }
     await this.dialogController.ok(this.warehouse);
   }
