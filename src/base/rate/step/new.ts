@@ -1,5 +1,5 @@
 import { DialogController } from "ui";
-import { Rate } from "../../models/Rate";
+import { Rate, RateStep } from "../../models/Rate";
 import { autoinject } from "aurelia-dependency-injection";
 /**
  * Created by Hui on 2017/6/14.
@@ -7,7 +7,7 @@ import { autoinject } from "aurelia-dependency-injection";
 @autoinject
 export class NewRateStep {
   rateId: string;
-  rateStep: Rate;
+  rateStep: RateStep;
   stepUnit = [{ text: "元/天", value: "元/天" }, { text: "元/吨", value: "元/吨" }];
 
   constructor(private dialogController: DialogController) {

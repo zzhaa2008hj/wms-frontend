@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { extractResult, handleResult, Query, RestClient } from "../../utils";
-import { Rate } from "../models/Rate";
+import { Rate, RateStep } from "../models/Rate";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -9,29 +9,29 @@ export class RateService {
   constructor(private http: RestClient) {
   }
 
-  queryRates(param?: { name: string }): Query<any> {
+  queryRates(param?: { name: string }): Query<Rate> {
     return this.http.query(`/base/rate/page`, param);
   }
 
-  async saveRate(rate: Rate): Promise<void> {
-    return await this.http.post(`/base/rate`, rate).then(handleResult);
+  saveRate(rate: Rate) {
+    this.http.post(`/base/rate`, rate).then(handleResult);
   }
 
 
-  async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/rate/${id}`, null).then(handleResult);
+  updateState(id: string) {
+    this.http.put(`/base/rate/${id}`, null).then(handleResult);
   }
 
-  async getRate(id: string): Promise<any> {
+  async getRate(id: string): Promise<Rate> {
     return await this.http.get(`/base/rate/${id}`);
   }
 
-  async updateRate(rate: Rate): Promise<void> {
-    return await this.http.put(`/base/rate/${rate.id}`, rate).then(handleResult);
+  updateRate(rate: Rate) {
+    this.http.put(`/base/rate/${rate.id}`, rate).then(handleResult);
   }
 
-  async deleteRate(id: string): Promise<void> {
-    return await this.http.delete(`/base/rate/${id}`).then(handleResult);
+  deleteRate(id: string) {
+    this.http.delete(`/base/rate/${id}`).then(handleResult);
   }
 }
 
@@ -40,19 +40,19 @@ export class RateStepService {
   constructor(private http: RestClient) {
   }
 
-  queryRateSteps(rateId: string): Query<any> {
+  queryRateSteps(rateId: string): Query<RateStep> {
     return this.http.query(`/base/rateStep/${rateId}/page`);
   }
 
-  async saveRateStep(rateStep: Rate): Promise<void> {
-    return await this.http.post(`/base/rateStep`, rateStep).then(handleResult);
+  saveRateStep(rateStep: RateStep) {
+    return this.http.post(`/base/rateStep`, rateStep).then(handleResult);
   }
 
-  async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/rateStep/${id}`, null).then(handleResult);
+  updateState(id: string) {
+    return this.http.put(`/base/rateStep/${id}`, null).then(handleResult);
   }
 
-  async deleteRateStep(id: string) {
-    return await this.http.delete(`/base/rateStep/${id}`).then(handleResult);
+  deleteRateStep(id: string) {
+    return this.http.delete(`/base/rateStep/${id}`).then(handleResult);
   }
 }

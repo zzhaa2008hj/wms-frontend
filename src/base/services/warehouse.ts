@@ -15,19 +15,19 @@ export class WarehouseService {
     return res.content;
   }
 
-  async saveWarehouse(warehouse: Warehouse): Promise<void> {
-    return await this.http.post(`/base/warehouse`, warehouse).then(handleResult);
+  saveWarehouse(warehouse: Warehouse) {
+    this.http.post(`/base/warehouse`, warehouse).then(handleResult);
   }
 
-  async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/warehouse/${id}/state`, null).then(handleResult);
+  updateState(id: string) {
+    this.http.put(`/base/warehouse/${id}/state`, null).then(handleResult);
   }
 
-  async updateWarehouse(warehouse: Warehouse): Promise<void> {
-    return await this.http.put(`/base/warehouse/${warehouse.id}`, warehouse).then(handleResult);
+  updateWarehouse(warehouse: Warehouse) {
+    this.http.put(`/base/warehouse/${warehouse.id}`, warehouse).then(handleResult);
   }
 
-  async deleteWarehouse(id: string) {
-    return await this.http.delete(`/base/warehouse/${id}`).then(handleResult);
+  deleteWarehouse(id: string) {
+    this.http.delete(`/base/warehouse/${id}`).then(handleResult);
   }
 }

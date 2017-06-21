@@ -24,8 +24,8 @@ export class RateStep {
     });
   }
 
-   async add() {
-    let result = await this.dialogService.open({ viewModel: NewRateStep, model: this.rate.id, lock: true })
+  async add() {
+    let result = await this.dialogService.open({ viewModel: NewRateStep, model: { id: this.rate.id }, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     let rateStep = result.output;

@@ -15,19 +15,19 @@ export class WorkInfoService {
     return res.content;
   }
 
-  async saveWorkInfo(workInfo: WorkInfo): Promise<void> {
-    return await this.http.post(`/base/workInfo`, workInfo).then(handleResult);
+  saveWorkInfo(workInfo: WorkInfo) {
+    this.http.post(`/base/workInfo`, workInfo).then(handleResult);
   }
 
-  async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/workInfo/${id}/state`, null).then(handleResult);
+  updateState(id: string) {
+    this.http.put(`/base/workInfo/${id}/state`, null).then(handleResult);
   }
 
-  async updateWorkInfo(workInfo: WorkInfo): Promise<void> {
-    return await this.http.put(`/base/workInfo/${workInfo.id}`, workInfo).then(handleResult);
+  updateWorkInfo(workInfo: WorkInfo) {
+    this.http.put(`/base/workInfo/${workInfo.id}`, workInfo).then(handleResult);
   }
 
-  async deleteWorkInfo(id: any) {
-    return await this.http.delete(`/base/workInfo/${id}`).then(handleResult);
+  deleteWorkInfo(id: any) {
+    this.http.delete(`/base/workInfo/${id}`).then(handleResult);
   }
 }

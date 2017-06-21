@@ -6,6 +6,7 @@ import { Rate } from "../models/Rate";
 import { WorkInfoService } from "../services/work-info";
 import { WorkInfo } from "../models/work-info";
 import { CargoCategoryService } from "../services/cargo-category";
+import { treeHelper, TreeHelper } from "../../utils";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -24,27 +25,45 @@ export class NewRate {
   selectedWorkInfo: any;
   dataSourceWorkInfo = {
     transport: {
-      read: options => {
+      read: async options => {
         try {
-          this.workInfoService.listWorkInfo().then(options.success);
+          let res = await this.workInfoService.listWorkInfo();
+          options.success(res);
         } catch (err) {
           options.error("", "", err);
         }
+      }
+    },
+    schema: {
+      model: {
+        id: 'id',
+        parentId: 'parentId',
+        expanded: true
       }
     }
   };
   selectedCargoCategory: any;
   dataSourceCargoCategory = {
     transport: {
-      read: options => {
+      read: async options => {
         try {
-          this.cargoCategoryService.listCargoCategory().then(options.success);
+          let items = await this.cargoCategoryService.listCargoCategory();
+          this.helper = treeHelper(items, { childrenKey: 'sub' });
+          let rootItems = this.helper.toTree();
+          options.success(rootItems);
         } catch (err) {
           options.error("", "", err);
         }
       }
+    },
+    schema: {
+      model: {
+        children: 'sub',
+        hasChildren: item => item.sub && item.sub.length > 0
+      }
     }
   };
+  private helper: TreeHelper<any>;
 
   constructor(private router: Router,
               private rateService: RateService,

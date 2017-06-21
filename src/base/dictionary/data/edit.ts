@@ -1,18 +1,18 @@
 import { autoinject} from "aurelia-dependency-injection";
-import { Dictionary } from "../../models/dictionary";
+import { DictionaryData } from "../../models/dictionary";
 import { DialogController } from "ui";
 /**
  * Created by Hui on 2017/6/14.
  */
 @autoinject()
 export class EditDictionaryData {
-  dictionaryData: Dictionary;
+  dictionaryData: DictionaryData;
 
   constructor(private dialogController: DialogController) {
 
   }
 
-  activate(dictionaryData: Dictionary) {
+  activate(dictionaryData: DictionaryData) {
     this.dictionaryData = dictionaryData;
   }
 

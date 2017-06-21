@@ -45,20 +45,20 @@ export class DictionaryDataService {
     return this.http.query(`/base/dictionaryData/${dictCode}/page`, param);
   }
 
-  async saveDictionaryData(dictionaryData: Dictionary): Promise<void> {
-    return await this.http.post(`/base/dictionaryData`, dictionaryData).then(handleResult);
+  saveDictionaryData(dictionaryData: Dictionary) {
+    this.http.post(`/base/dictionaryData`, dictionaryData).then(handleResult);
   }
 
 
-  async updateState(id: string): Promise<void> {
-    return await this.http.put(`/base/dictionaryData/${id}/state`, null).then(handleResult);
+  updateState(id: string) {
+    this.http.put(`/base/dictionaryData/${id}/state`, null).then(handleResult);
   }
 
-  async updateDictionaryData(dictionaryData: Dictionary): Promise<void> {
-    return await this.http.put(`/base/dictionaryData/${dictionaryData.id}`, dictionaryData).then(handleResult);
+  updateDictionaryData(dictionaryData: Dictionary) {
+    this.http.put(`/base/dictionaryData/${dictionaryData.id}`, dictionaryData).then(handleResult);
   }
 
-  async deleteDictionaryData(id: any) {
-    return await this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
+  deleteDictionaryData(id: any) {
+    this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
   }
 }
