@@ -7,6 +7,7 @@ import { DialogController } from "ui";
 @autoinject
 export class EditWorkInfo {
   workInfo: WorkInfo;
+  category = [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "移库", value: 3 }];
 
   constructor(private dialogController: DialogController) {
 
