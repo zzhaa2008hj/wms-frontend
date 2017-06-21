@@ -28,7 +28,7 @@ export class ContractService {
      * @returns {Promise<WorkInfo>}
      */
     async getWarehouses(): Promise<WorkInfo> {
-        let res = await this.http.get(`base/warehouse`);
+        let res = await this.http.get(`base/warehouse/list`);
         return res.content;
     }
 
