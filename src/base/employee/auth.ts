@@ -1,4 +1,4 @@
-import { autoinject } from "aurelia-dependency-injection";
+import {autoinject, inject} from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
 import { customElement } from "aurelia-templating";
 import { EmployeeService } from "../services/employee";
@@ -6,16 +6,14 @@ import { DialogController, DialogService } from "ui";
 import { Employee } from "../models/employee";
 import { OrganizationRole } from "../models/organization-role";
 
-@autoinject
-@customElement('employee-auth')
 export class EmployeeAuth {
 
   employee  = {} as Employee ;
   organizationRoles: OrganizationRole[];
   checkedRoleIds: string[];
 
-  constructor(private employeeService: EmployeeService,
-              private dialogController: DialogController) {
+  constructor(@inject private employeeService: EmployeeService,
+              @inject private dialogController: DialogController) {
   }
 
   async activate(params) {

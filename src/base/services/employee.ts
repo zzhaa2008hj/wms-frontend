@@ -59,7 +59,7 @@ export class EmployeeService {
    * 获取机构角色列表
    */
   async getOrganizationRoles(): Promise<OrganizationRole[]> {
-    let res = await this.http.get('/base/employee/organization/organization-role-list');
+    let res = await this.http.get('/base/employee/organization/role-list');
     return res.content;
   }
 

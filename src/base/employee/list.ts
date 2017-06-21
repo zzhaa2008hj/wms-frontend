@@ -1,7 +1,7 @@
 /**
  * Created by shun on 2017/6/15.
  */
-import {autoinject} from "aurelia-dependency-injection";
+import {autoinject, inject} from "aurelia-dependency-injection";
 import {Router} from "aurelia-router";
 import {EmployeeService} from "../services/employee";
 import {DataSourceFactory} from "../../utils";
@@ -11,7 +11,6 @@ import { EmployeeAuth } from "./auth";
 import { EmployeePassword } from "./reset";
 import {computedFrom} from "aurelia-framework";
 
-@autoinject
 export class EmployeeList {
 
   keywords: string;
@@ -24,10 +23,10 @@ export class EmployeeList {
 
   selection: Employee[] = [];
 
-  constructor(private employeeService: EmployeeService,
-              private router: Router,
-              private dialogService: DialogService,
-              private dataSourceFactory: DataSourceFactory) {
+  constructor(@inject private employeeService: EmployeeService,
+              @inject private router: Router,
+              @inject private dialogService: DialogService,
+              @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.employeeService.queryEmployeesPage(this.keywords),
       pageSize: 10

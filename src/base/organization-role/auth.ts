@@ -1,22 +1,21 @@
 /**
  * Created by shun on 2017/6/20.
  */
-import { Router } from "aurelia-router";
-import { autoinject } from "aurelia-dependency-injection";
+import { Router} from "aurelia-router";
+import { autoinject, inject} from "aurelia-dependency-injection";
 import { DialogService } from "ui";
 import { OrganizationRoleService} from "../services/organization-role";
 import { Menu} from "../models/menu";
 
-@autoinject
 export class AuthMenu {
 
   id: string;
   menuItems: Menu[];
   assignedMenuItems: Menu[];
 
-  constructor(private router: Router,
-              private organizationRoleService: OrganizationRoleService,
-              private dialogService: DialogService) {
+  constructor(@inject private router: Router,
+              @inject private organizationRoleService: OrganizationRoleService,
+              @inject private dialogService: DialogService) {
   }
 
   async activate(params) {
