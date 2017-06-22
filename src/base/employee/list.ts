@@ -126,7 +126,14 @@ export class EmployeeList {
    */
   async resetPassword() {
     let employee = this.selection[0];
-    await this.dialogService.open({ viewModel: EmployeePassword, model: employee });
+    let confirmed = await this.dialogService.confirm({title: "提示", message: `确认重置${employee.name}的密码？`});
+    if (!confirmed) return;
+    try {
+      await this.employeeService.resetPassword(employee.id);
+      await this.dialogService.alert({title: "", message: "重置密码成功！"});
+    } catch (err) {
+      await this.dialogService.alert({title: "", message: err.message, icon: "error"});
+    }
   }
 
 }

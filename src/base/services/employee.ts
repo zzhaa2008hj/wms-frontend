@@ -81,8 +81,8 @@ export class EmployeeService {
   /**
    * 重置密码
    */
-  async resetPassword(id: string, password: string) {
-    await this.http.put(`/base/employee/${id}/reset-password`, { 'password': password }).then(handleResult);
+  async resetPassword(id: string) {
+    await this.http.put(`/base/employee/${id}/reset-password`, null).then(handleResult);
   }
 
   async listEmployee() {
