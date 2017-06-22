@@ -26,12 +26,12 @@ export class EmployeeAdd {
   }
 
   /**
-   * 保存/修改
+   * 保存
    */
   async doSave() {
     try {
       await this.employeeService.saveEmployee(this.employee);
-      await this.dialogService.alert({title: "", message: "编辑成功！"});
+      await this.dialogService.alert({title: "", message: "新增成功！"});
       this.goBack();
     } catch (err) {
       await this.dialogService.alert({title: "", message: err.message, icon: "error"});
