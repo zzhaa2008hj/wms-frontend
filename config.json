@@ -1,19 +1,84 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8090"
+    "baseUrl": "http://localhost:8081"
   },
-  "routes": [
-    { "route": "/report", "name": "report", "title": "报表", "moduleId": "./report/index" },
-    { "route": "/base/dictionary", "name": "dictionary", "title": "数据字典", "moduleId": "./base/dictionary/index" },
-    { "route": "/base/operationLog", "name": "operationLog", "title": "操作日志", "moduleId": "./base/operation-log/index" },
-    { "route": "/base/cargo-category", "name": "cargoCategory", "title": "货物类别", "moduleId": "./base/cargo-category/index" },
-    { "route": "/base/handling-customer", "name": "handlingCustomer", "title": "装卸单位", "moduleId": "./base/customer/handlingCustomer/index" },
-    { "route": "/base/warehouse-customer", "name": "warehouseCustomer", "title": "仓储客户", "moduleId": "./base/customer/warehouseCustomer/index" },
-    { "route": "/base/notice", "name": "notice", "title": "公告", "moduleId": "./base/notice/index" },
-    { "route": "/base/rate", "name": "rate", "title": "基础费率", "moduleId": "./base/rate/index" },
-    { "route": "/base/warehouse", "name": "warehouse", "title": "库区", "moduleId": "./base/warehouse/index" },
-    { "route": "/base/work-info", "name": "workInfo", "title": "作业内容", "moduleId": "./base/work-info/index" },
-    { "route": "/base/employee", "name": "employee", "title": "用户管理", "moduleId": "./base/employee/index" },
-    { "route": "/base/organization-role", "name": "organization-role", "title": "角色管理", "moduleId": "./base/organization-role/index" }
+  "routes": [{
+      "route": "/report",
+      "name": "report",
+      "title": "报表",
+      "moduleId": "./report/index"
+    },
+    {
+      "route": "/base/cargo-category",
+      "name": "cargoCategory",
+      "title": "货物种类",
+      "moduleId": "./base/cargo-category/index"
+    },
+    {
+      "route": "/base/contract",
+      "name": "contract",
+      "title": "合同",
+      "moduleId": "./base/contract/index"
+    },
+    {
+      "route": "/base/handling-customer",
+      "name": "handling-customer",
+      "title": "装卸单位",
+      "moduleId": "./base/customer/handling-customer/index"
+    },
+    {
+      "route": "/base/warehouse-customer",
+      "name": "warehouse-customer",
+      "title": "仓储客户",
+      "moduleId": "./base/customer/warehouse-customer/index"
+    },
+    {
+      "route": "/base/dictionary",
+      "name": "dictionary",
+      "title": "数据字典",
+      "moduleId": "./base/dictionary/index"
+    },
+    {
+      "route": "/base/employee",
+      "name": "employee",
+      "title": "用户",
+      "moduleId": "./base/employee/index"
+    },
+    {
+      "route": "/base/message",
+      "name": "message",
+      "title": "站内信",
+      "moduleId": "./base/message/index"
+    },
+    {
+      "route": "/base/notice",
+      "name": "notice",
+      "title": "公告",
+      "moduleId": "./base/notice/index"
+    },
+    {
+      "route": "/base/operation-log",
+      "name": "operation-log",
+      "title": "操作日志",
+      "moduleId": "./base/operation-log/index"
+    },
+    {
+      "route": "/base/rate",
+      "name": "rate",
+      "title": "基础费率",
+      "moduleId": "./base/rate/index"
+    },
+    {
+      "route": "/base/warehouse",
+      "name": "warehouse",
+      "title": "仓库库区",
+      "moduleId": "./base/warehouse/index"
+    },
+    {
+      "route": "/base/work-info",
+      "name": "workInfo",
+      "title": "作业内容",
+      "moduleId": "./base/work-info/index"
+    }
   ]
 }

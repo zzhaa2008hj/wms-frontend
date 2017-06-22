@@ -1,11 +1,11 @@
-import {autoinject} from "aurelia-dependency-injection";
-import {dateConverter, extractResult, fixDate, handleResult, Query, RestClient} from "../../utils";
-import {Contract} from "../contract/index";
-import {ContractVo} from "../models/contractVo";
-import {WorkInfo} from "../models/work-info";
-import {Rate} from "../models/rate";
-import {RateStep} from "src/base/models/rateStep";
-import {Organization} from "../models/organization";
+import { autoinject } from "aurelia-dependency-injection";
+import { dateConverter, extractResult, fixDate, handleResult, Query, RestClient } from "../../utils";
+import { Contract } from "../contract/index";
+import { ContractVo } from "../models/contractVo";
+import { WorkInfo } from "../models/work-info";
+import { Rate } from "../models/rate";
+import { RateStep } from "src/base/models/rateStep";
+import { Organization } from "../models/organization";
 /**
  * 机构查询条件
  */
@@ -96,7 +96,7 @@ export class ContractService {
         return this.http.delete(`base/contract/${id}`).then(handleResult);
     }
 
-    audit(id: string): Promise<void> {
-        return this.http.put(`base/contract/verifyContract/${id}`, '').then(handleResult);
+    audit(id: string, status: number): Promise<void> {
+        return this.http.put(`base/contract/verifyContract/${id}?status=${status}`, '').then(handleResult);
     }
 }
