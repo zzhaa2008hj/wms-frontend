@@ -18,14 +18,8 @@
                             <label class="form-label">客户名称*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <ak-drop-down-list k-option-label="请选择"
-                                                   k-data-text-field="name"
-                                                   k-data-value-field="id"
-                                                   k-value.two-way="contractVo.contract.customerId"
-                                                   k-data-source.bind="customers"
-                                                   k-widget.two-way="customerInfo"
-                                                   style="width: 100%">
-                                </ak-drop-down-list>
+                                <input type="text" class="form-control"
+                                       value="${contractVo.contract.customerName}" readonly>
                             </div>
                         </div>
                     </div>
@@ -114,7 +108,7 @@
                     <div if.bind="contractVo.contract.contractType==3">
                         <h4>存放库区</h4>
                         <div class="col-md-12">
-                            <label class="form-label">堆放库区*</label>
+                            <label class="form-label">存放库区*</label>
                             <span class="help"></span>
                             <div class="controls right">
                                 <ak-drop-down-list k-option-label="请选择"
@@ -143,7 +137,7 @@
                                         </ak-template>
                                     </ak-col>
                                     <ak-col k-field="unit" k-title="计量单位"></ak-col>
-                                    <ak-col k-field="pricingMode== 1 ? '天': '月'" k-title="计价方式"></ak-col>
+                                    <ak-col k-field="pricingMode== 1 ?  '一般': '阶梯'" k-title="计价方式"></ak-col>
                                     <ak-col k-field="workName" k-title="作业内容"></ak-col>
                                     <ak-col k-field="warehouseType== 1 ? '通用': chargeCategory == 2 ? '保税': '内贸'"
                                             k-title="库位性质"></ak-col>
@@ -152,9 +146,8 @@
                                     <ak-col k-field="warehouseCategory == 1 ? '露天场内': '库区'" k-title="库位类别"></ak-col>
                                     <ak-col k-field="remark" k-title="备注"></ak-col>
                                     <ak-template for="detailTemplate">
-                                        <div>
-                                            <div class="rateSteps"></div>
-                                        </div>
+                                        <div class="rateSteps" if.bind="pricingMode !=1 "></div>
+                                        <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
                                     </ak-template>
                                 </ak-grid>
                             </div>

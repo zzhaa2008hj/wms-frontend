@@ -13,7 +13,7 @@ export class AuditContract {
     contractId: string;
     contractVo: ContractVo;
     contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
-    warehouses: WorkInfo;
+    warehouses: WorkInfo[];
     datasource: kendo.data.DataSource;
 
     /**
@@ -54,7 +54,7 @@ export class AuditContract {
             //库区信息
             this.warehouses = await this.contractService.getWarehouses();
         } else {
-            this.baseRateAndSteps = this.contractVo.rateVos
+            this.baseRateAndSteps = this.contractVo.rateVos;
             this.baseRateStep = this.contractVo.rateStepVos;
         }
     }

@@ -13,10 +13,15 @@ import {Organization} from "../models/organization";
 export class NewContract {
     contractVo: ContractVo;
     contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
-    warehouses: WorkInfo;
-    customers: Organization;
+    warehouses: WorkInfo[];
+
+    customers: Organization[] = [] ;
+    handlingCustomers: Organization[];
+    wareHouseCustomer: Organization[];
+
     customerInfo: kendo.ui.DropDownList;
     datasource: kendo.data.DataSource;
+    customerDatasource: kendo.data.DataSource;
 
     /**
      * 基础费率
@@ -50,21 +55,39 @@ export class NewContract {
                 }
             }
         });
+
+        this.customerDatasource = new kendo.data.DataSource({
+            transport: {
+                read: (options) => {
+                    options.success(this.customers);
+                }
+            }
+        });
     }
+
 
     async activate() {
         this.warehouses = await this.contractService.getWarehouses();
-        this.customers = await  this.contractService.getCustomers();
+        //装卸单位
+        this.handlingCustomers = await  this.contractService.getCustomers(2);
+        //仓储客户
+        this.wareHouseCustomer = await  this.contractService.getCustomers(1);
         this.baseRateAndSteps = await this.contractService.getBaseRate();
         this.baseRateStep = await this.contractService.getBaseRateStep();
     }
 
 
     contractTypeChanged() {
-        let type = this.contractVo.contract.contractType;
-        if (type) {
-            this.datasource.filter({field: 'customerCategory', operator: 'eq', value: type});
+        let contractType = this.contractVo.contract.contractType;
+        this.datasource.filter({field: 'customerCategory', operator: 'eq', value: contractType});
+        //1 :
+        if (contractType == 2) {
+            this.customers = this.handlingCustomers;
+
+        } else {
+            this.customers = this.wareHouseCustomer;
         }
+        this.customerDatasource.read();
     }
 
 
@@ -101,11 +124,11 @@ export class NewContract {
 
     detailInit(e) {
         let detailRow = e.detailRow;
-
         detailRow.find('.rateSteps').kendoGrid({
             dataSource: {
                 transport: {
                     read: (options) => {
+                        console.log(this.baseRateStep)
                         options.success(this.baseRateStep);
                     },
                     update: (options) => {

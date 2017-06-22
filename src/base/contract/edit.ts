@@ -14,8 +14,7 @@ export class EditContract {
 
     contractVo: ContractVo;
     contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
-    warehouses: WorkInfo;
-    customers: Organization;
+    warehouses: WorkInfo[];
     customerInfo: kendo.ui.DropDownList;
     datasource: kendo.data.DataSource;
 
@@ -57,13 +56,12 @@ export class EditContract {
      * 初始化后自动执行
      */
     async activate({id}) {
-        this.customers = await  this.contractService.getCustomers();
         this.contractVo = await this.contractService.getContract(id);
         if (this.contractVo.contract.contractType == 3) {
             //库区信息
             this.warehouses = await this.contractService.getWarehouses();
         } else {
-            this.baseRateAndSteps = this.contractVo.rateVos
+            this.baseRateAndSteps = this.contractVo.rateVos;
             this.baseRateStep = this.contractVo.rateStepVos;
         }
     }
@@ -75,7 +73,6 @@ export class EditContract {
     async update() {
         await this.datasource.sync();
         try {
-            this.contractVo.contract.customerName = this.customerInfo.text();
             let info = this.contractVo;
             await this.contractService.updateContract(this.contractVo.contract.id, info);
             await this.messageDialogService.alert({title: "编辑成功"});

@@ -2,7 +2,7 @@ export interface Organization {
   /**
    * 机构id
    */
-  id: string
+  id: string;
   /**
    * 机构名称
    */
