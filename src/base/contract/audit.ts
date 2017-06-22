@@ -1,18 +1,19 @@
-import { Router } from "aurelia-router";
-import { MessageDialogService } from "ui";
-import { ValidationController } from "aurelia-validation";
-import { autoinject, newInstance } from "aurelia-dependency-injection";
-import { ContractVo } from "../models/contractVo";
-import { ContractService } from "../services/contract";
-import { Rate, RateStep } from "../models/rate";
-import { WorkInfo } from "../models/work-info";
+import {Router} from "aurelia-router";
+import {MessageDialogService} from "ui";
+import {ValidationController} from "aurelia-validation";
+import {autoinject, newInstance} from "aurelia-dependency-injection";
+import {ContractVo} from "../models/contractVo";
+import {ContractService} from "../services/contract";
+import {Rate} from "../models/rate";
+import {RateStep} from "../models/rateStep";
+import {WorkInfo} from "../models/work-info";
 
 @autoinject
 export class AuditContract {
     contractId: string;
     contractVo: ContractVo;
-    contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
-    warehouses: WorkInfo;
+    contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
+    warehouses: WorkInfo[];
     datasource: kendo.data.DataSource;
 
     /**
@@ -26,9 +27,9 @@ export class AuditContract {
     baseRateStep: RateStep[];
 
     constructor(private router: Router,
-        private contractService: ContractService,
-        @newInstance() private validationController: ValidationController,
-        private messageDialogService: MessageDialogService) {
+                private contractService: ContractService,
+                @newInstance() private validationController: ValidationController,
+                private messageDialogService: MessageDialogService) {
         this.datasource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -46,7 +47,7 @@ export class AuditContract {
     /**
      * 初始化后自动执行
      */
-    async activate({ id }) {
+    async activate({id}) {
         this.contractId = id;
         this.contractVo = await this.contractService.getContract(id);
         if (this.contractVo.contract.contractType == 3) {
@@ -62,13 +63,13 @@ export class AuditContract {
         return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
     }
 
-    async audit(status) {
+    async audit() {
         try {
-            await this.contractService.audit(this.contractId, status);
-            await this.messageDialogService.alert({ title: "审核成功" });
+            await this.contractService.audit(this.contractId);
+            await this.messageDialogService.alert({title: "审核成功"});
             this.router.navigateToRoute("list");
         } catch (err) {
-            await this.messageDialogService.alert({ title: "发生错误", message: err.message, icon: 'error' });
+            await this.messageDialogService.alert({title: "发生错误", message: err.message, icon: 'error'});
         }
     }
 
@@ -86,15 +87,15 @@ export class AuditContract {
                         options.success(this.baseRateStep);
                     }
                 },
-                filter: { field: 'rateId', operator: 'eq', value: e.data.id }
+                filter: {field: 'rateId', operator: 'eq', value: e.data.id}
             },
             columns: [
-                { field: 'stepNum', title: '阶梯号' },
-                { field: 'stepStart', title: '开始值' },
-                { field: 'stepEnd', title: '结束值' },
-                { field: 'stepPrice', title: '阶梯价' },
-                { field: 'stepUnit', title: '单位' },
-                { field: 'remark', title: '备注' }
+                {field: 'stepNum', title: '阶梯号'},
+                {field: 'stepStart', title: '开始值'},
+                {field: 'stepEnd', title: '结束值'},
+                {field: 'stepPrice', title: '阶梯价'},
+                {field: 'stepUnit', title: '单位'},
+                {field: 'remark', title: '备注'}
             ]
         });
     }

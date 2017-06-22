@@ -25,15 +25,15 @@ export class ContractService {
 
     /**
      * 查询库区信息
-     * @returns {Promise<WorkInfo>}
+     * @returns {Promise<WorkInfo[]>}
      */
-    async getWarehouses(): Promise<WorkInfo> {
+    async getWarehouses(): Promise<WorkInfo[]> {
         let res = await this.http.get(`base/warehouse/list`);
         return res.content;
     }
 
-    async getCustomers(): Promise<Organization> {
-        let res = await this.http.get(`base/customer/list`);
+    async getCustomers(customerType: number): Promise<Organization[]> {
+        let res = await this.http.get(`base/customer/list?customerType=${customerType}`);
         return res.content;
     }
 

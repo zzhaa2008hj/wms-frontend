@@ -10,7 +10,7 @@ import {Rate} from "../models/rate";
 export class ViewContract {
     contractVo: ContractVo;
     contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
-    warehouses: WorkInfo;
+    warehouses: WorkInfo[];
     datasource: kendo.data.DataSource;
     /**
      * 基础费率
@@ -47,7 +47,7 @@ export class ViewContract {
             //库区信息
             this.warehouses = await this.contractService.getWarehouses();
         } else {
-            this.baseRateAndSteps = this.contractVo.rateVos
+            this.baseRateAndSteps = this.contractVo.rateVos;
             this.baseRateStep = this.contractVo.rateStepVos;
         }
     }
