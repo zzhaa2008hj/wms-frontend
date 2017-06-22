@@ -22,6 +22,7 @@ export class EmployeeAuth {
     this.organizationRoles = await this.employeeService.getOrganizationRoles();
     // 获取员工机构角色列表
     let employeeRoles = await this.employeeService.getEmployeeRoles(params.id);
+    if (!employeeRoles) return;
     this.checkedRoleIds = employeeRoles.map(role => role.id);
   }
 
