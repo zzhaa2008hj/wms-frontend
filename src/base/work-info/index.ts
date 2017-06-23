@@ -5,7 +5,7 @@ export class WorkInfoRouter {
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.map([
-      { route: '', name: 'main', moduleId: './main' },
+      { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
       { route: '/edit', name: 'edit', moduleId: './edit', title: "编辑" },
     ]);
