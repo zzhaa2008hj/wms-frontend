@@ -17,13 +17,6 @@ export class WorkInfoList {
       model: {
         id: 'id',
         parentId: 'parentId',
-        fields: {
-          id: { type: 'string', editable: false, nullable: false },
-          parentId: { nullable: true, type: 'string' },
-          category: { validation: { required: true } },
-          name: { validation: { required: true } },
-          remark: { type: 'string' },
-        },
         expanded: true
       }
     }
@@ -41,7 +34,6 @@ export class WorkInfoList {
 
   async initData() {
     let data = await this.workInfoService.listWorkInfo();
-    console.log(data);
     this.dataSource.data(data);
   }
 
@@ -89,7 +81,6 @@ export class WorkInfoList {
 
   async changeState(item) {
     let id = item.id;
-    console.log(item);
     try {
       if (!item.hasChildren) {
         await this.workInfoService.updateState(id);
