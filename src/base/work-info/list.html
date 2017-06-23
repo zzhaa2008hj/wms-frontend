@@ -1,0 +1,26 @@
+<template>
+  <require from="aurelia-kendoui-bridge/treelist/treelist"></require>
+  <require from="aurelia-kendoui-bridge/treelist/tree-col"></require>
+
+  <button class="btn btn-success btn-small" click.delegate="add()">新增</button>
+  <ak-tree-list k-data-source.bind="dataSource" k-editable.bind="true" k-height.bind="540">
+    <ak-tree-col k-field="name" k-expandable.bind="true" k-title="作业内容" k-width.bind="280"></ak-tree-col>
+    <ak-tree-col k-title="类别" k-width.bind="150">
+      <ak-template>
+        <label if.bind="category == 1">入库</label>
+        <label if.bind="category == 2">出库</label>
+        <label if.bind="category == 3">移库</label>
+      </ak-template>
+    </ak-tree-col>
+    <ak-tree-col k-field="remark" k-title="说明"></ak-tree-col>
+    <ak-tree-col k-title="操作" k-width.bind="250" k-attributes.bind="{style: 'text-align: center'}">
+      <ak-template>
+        <button class="btn btn-success btn-small" click.delegate="add($this)">新增</button>
+        <button class="btn btn-primary btn-small" click.delegate="edit($this)">编辑</button>
+        <button class="btn btn-warning btn-small" if.bind="status == false" click.delegate="changeState($this)">启用</button>
+        <button class="btn btn-warning btn-small" if.bind="status == true" click.delegate="changeState($this)">禁用</button>
+        <button class="btn btn-danger btn-small" click.delegate="delete(id)">删除</button>
+      </ak-template>
+    </ak-tree-col>
+  </ak-tree-list>
+</template>
