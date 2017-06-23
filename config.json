@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8081"
+    "baseUrl": "http://localhost:8090"
   },
   "routes": [{
       "route": "/report",
@@ -79,6 +79,12 @@
       "name": "workInfo",
       "title": "作业内容",
       "moduleId": "./base/work-info/index"
+    },
+    {
+      "route": "/instock/cargo-flow",
+      "name": "cargoFlow",
+      "title": "入库",
+      "moduleId": "./instock/cargo-flow/index"
     }
   ]
 }

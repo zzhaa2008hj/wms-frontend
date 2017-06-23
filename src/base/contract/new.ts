@@ -4,9 +4,8 @@ import {MessageDialogService} from "ui";
 import {ValidationController} from "aurelia-validation";
 import {ContractService} from "../services/contract";
 import {ContractVo} from "../models/contractVo";
-import {Rate} from "../models/rate";
+import { Rate, RateStep } from "../models/rate";
 import {WorkInfo} from "../models/work-info";
-import {RateStep} from "../models/rateStep";
 import {Organization} from "../models/organization";
 
 @autoinject

@@ -1,0 +1,28 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-title no-border">入库新增</h4></div>
+        <div class="grid-body no-border"><br>
+            <form submit.delegate="addNewCargoFlow()">
+                <div class="form-group">
+                    <label class="form-label">标题*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" name="names" value.bind="title" data-bind="titleName">
+                        <input type="hidden" value="title" data-bind="checked: colors" />
+                        <input type="hidden" name="names" value="name1" />
+                        <input type="hidden" name="names" value="name2" />
+                    </div>
+                </div>
+
+
+                <div class="form-actions">
+                    <div class="pull-right">
+                    <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
+                        <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</template>

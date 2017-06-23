@@ -1,5 +1,5 @@
 import { DialogController } from "ui";
-import { Rate, RateStep } from "../../models/Rate";
+import { RateStep } from "../../models/Rate";
 import { autoinject } from "aurelia-dependency-injection";
 /**
  * Created by Hui on 2017/6/14.
