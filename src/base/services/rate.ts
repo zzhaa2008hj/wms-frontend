@@ -48,11 +48,15 @@ export class RateStepService {
     return this.http.post(`/base/rateStep`, rateStep).then(handleResult);
   }
 
-  updateState(id: string) {
-    return this.http.put(`/base/rateStep/${id}`, null).then(handleResult);
-  }
-
   deleteRateStep(id: string) {
     return this.http.delete(`/base/rateStep/${id}`).then(handleResult);
+  }
+
+  listRateSteps(): Promise<any> {
+    return this.http.get(`/base/rateStep/list`);
+  }
+
+  updateRateStep(rateStep: RateStep) {
+    return this.http.put(`/base/rateStep/${rateStep.id}`, rateStep).then(handleResult);
   }
 }

@@ -1,12 +1,13 @@
 import { Router } from "aurelia-router";
-import { MessageDialogService } from "ui";
-import { RateService } from "../services/rate";
+import { DialogService, MessageDialogService } from "ui";
+import { RateService, RateStepService } from "../services/rate";
 import { autoinject } from "aurelia-dependency-injection";
-import { Rate } from "../models/Rate";
+import { Rate, RateStep } from "../models/Rate";
 import { WorkInfoService } from "../services/work-info";
 import { WorkInfo } from "../models/work-info";
 import { CargoCategoryService } from "../services/cargo-category";
 import { treeHelper, TreeHelper } from "../../utils";
+import { NewRateStep } from "./step/new";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -14,6 +15,7 @@ import { treeHelper, TreeHelper } from "../../utils";
 export class NewRate {
   data: any[];
   rate: Rate;
+  rateStep: RateStep;
   //数据字典数据方法完成后从数据字典中获取
   chargeCategory = [{ text: "仓储费", value: 1 },
     { text: "装卸费", value: 2 },
@@ -49,9 +51,7 @@ export class NewRate {
       read: async options => {
         try {
           let items = await this.cargoCategoryService.listCargoCategory();
-          this.helper = treeHelper(items, { childrenKey: 'sub' });
-          let rootItems = this.helper.toTree();
-          options.success(rootItems);
+          options.success(items);
         } catch (err) {
           options.error("", "", err);
         }
@@ -64,13 +64,19 @@ export class NewRate {
       }
     }
   };
-  private helper: TreeHelper<any>;
+
+  dataSourceRateStep = new kendo.data.HierarchicalDataSource({
+    data: this.data
+  });
 
   constructor(private router: Router,
               private rateService: RateService,
+              private rateStepService: RateStepService,
               private workInfoService: WorkInfoService,
+              private dialogService: DialogService,
               private cargoCategoryService: CargoCategoryService,
               private messageDialogService: MessageDialogService) {
+
   }
 
   async addNewRate() {
@@ -90,6 +96,23 @@ export class NewRate {
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
     }
+  }
+
+  async addStep() {
+    let result = await this.dialogService.open({ viewModel: NewRateStep, model: {}, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    this.rateStep = result.output;
+    this.data = [result.output];
+    console.log(this.data);
+    this.dataSourceRateStep.data(this.data);
+    // try {
+    //   await this.rateStepService.saveRateStep(rateStep);
+    //   await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
+    //   this.dataSourceRateStep.read();
+    // } catch (err) {
+    //   await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+    // }
   }
 
   cancel() {
