@@ -23,7 +23,6 @@ export class EmployeeService {
    * 删除员工
    */
   async deleteEmployee(ids: string[]): Promise<void> {
-    await this.http.delete(`/base/employee`).then(handleResult);
     await this.http.createRequest(`/base/employee`).withContent(ids).asDelete().send().then(handleResult);
   }
 
@@ -82,8 +81,8 @@ export class EmployeeService {
   /**
    * 重置密码
    */
-  async resetPassword(id: string, password: string) {
-    await this.http.put(`/base/employee/${id}/reset-password`, { 'password': password }).then(handleResult);
+  async resetPassword(id: string) {
+    await this.http.put(`/base/employee/${id}/reset-password`, null).then(handleResult);
   }
 
   async listEmployee() {

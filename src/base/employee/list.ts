@@ -1,7 +1,7 @@
 /**
  * Created by shun on 2017/6/15.
  */
-import {autoinject} from "aurelia-dependency-injection";
+import {autoinject, inject} from "aurelia-dependency-injection";
 import {Router} from "aurelia-router";
 import {EmployeeService} from "../services/employee";
 import {DataSourceFactory} from "../../utils";
@@ -11,7 +11,6 @@ import { EmployeeAuth } from "./auth";
 import { EmployeePassword } from "./reset";
 import {computedFrom} from "aurelia-framework";
 
-@autoinject
 export class EmployeeList {
 
   keywords: string;
@@ -24,10 +23,10 @@ export class EmployeeList {
 
   selection: Employee[] = [];
 
-  constructor(private employeeService: EmployeeService,
-              private router: Router,
-              private dialogService: DialogService,
-              private dataSourceFactory: DataSourceFactory) {
+  constructor(@inject private employeeService: EmployeeService,
+              @inject private router: Router,
+              @inject private dialogService: DialogService,
+              @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.employeeService.queryEmployeesPage(this.keywords),
       pageSize: 10
@@ -127,7 +126,14 @@ export class EmployeeList {
    */
   async resetPassword() {
     let employee = this.selection[0];
-    await this.dialogService.open({ viewModel: EmployeePassword, model: employee });
+    let confirmed = await this.dialogService.confirm({title: "提示", message: `确认重置${employee.name}的密码？`});
+    if (!confirmed) return;
+    try {
+      await this.employeeService.resetPassword(employee.id);
+      await this.dialogService.alert({title: "", message: "重置密码成功！"});
+    } catch (err) {
+      await this.dialogService.alert({title: "", message: err.message, icon: "error"});
+    }
   }
 
 }
