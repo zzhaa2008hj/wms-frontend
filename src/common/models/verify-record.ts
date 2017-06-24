@@ -14,3 +14,10 @@ export interface VerifyRecord {
   remark: string;
   orgId: string;
 }
+
+export interface VerifyBusiness {
+  batchNumber: string;
+  businessId: string;
+  businessName: string;
+  stageBeforeVerify: number;
+}
