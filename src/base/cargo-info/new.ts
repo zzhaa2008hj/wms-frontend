@@ -2,14 +2,14 @@ import {Router} from "aurelia-router";
 import {autoinject, newInstance} from "aurelia-dependency-injection";
 import {MessageDialogService} from "ui";
 import {ValidationController} from "aurelia-validation";
-import {ContractService} from "../services/contract";
+import {CargoInfoService} from "../services/cargo-info";
 import {ContractVo} from "../models/contractVo";
 import {Rate, RateStep} from "../models/rate";
 import {WorkInfo} from "../models/work-info";
 import {Organization} from "../models/organization";
 
 @autoinject
-export class NewContract {
+export class NewCargoInfo {
     contractVo: ContractVo;
     contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
     warehouses: WorkInfo[];
@@ -33,7 +33,7 @@ export class NewContract {
     baseRateStep: RateStep[];
 
     constructor(private router: Router,
-                private contractService: ContractService,
+                private cargoInfoService: CargoInfoService,
                 @newInstance() private validationController: ValidationController,
                 private messageDialogService: MessageDialogService) {
         this.datasource = new kendo.data.DataSource({
@@ -66,20 +66,19 @@ export class NewContract {
 
 
     async activate() {
-        this.warehouses = await this.contractService.getWarehouses();
-        //装卸单位
-        this.handlingCustomers = await  this.contractService.getCustomers(2);
-        //仓储客户
-        this.wareHouseCustomer = await  this.contractService.getCustomers(1);
-        this.baseRateAndSteps = await this.contractService.getBaseRate();
-        this.baseRateStep = await this.contractService.getBaseRateStep();
+        // this.warehouses = await this.contractService.getWarehouses();
+        // //装卸单位
+        // this.handlingCustomers = await  this.contractService.getCustomers(2);
+        // //仓储客户
+        // this.wareHouseCustomer = await  this.contractService.getCustomers(1);
+        // this.baseRateAndSteps = await this.contractService.getBaseRate();
+        // this.baseRateStep = await this.contractService.getBaseRateStep();
     }
 
 
     contractTypeChanged() {
         let contractType = this.contractVo.contract.contractType;
         this.datasource.filter({field: 'customerCategory', operator: 'eq', value: contractType});
-        //1 :
         if (contractType == 2) {
             this.customers = this.handlingCustomers;
 
@@ -91,25 +90,25 @@ export class NewContract {
 
 
     async save() {
-        await this.datasource.sync();
-        let rateList = this.baseRateAndSteps
-            .filter(x => x.customerCategory == this.contractVo.contract.contractType);
+        // await this.datasource.sync();
+        // let rateList = this.baseRateAndSteps
+        //     .filter(x => x.customerCategory == this.contractVo.contract.contractType);
 
-        rateList.forEach(r => {
-            let id = r.id;
-            let rateSteps = this.baseRateStep.filter(res => res.rateId == id);
-            r.rateStep = rateSteps;
+        // rateList.forEach(r => {
+        //     let id = r.id;
+        //     let rateSteps = this.baseRateStep.filter(res => res.rateId == id);
+        //     r.rateStep = rateSteps;
 
-        });
-        this.contractVo.rateVos = rateList;
-        this.contractVo.contract.customerName = this.customerInfo.text();
-        try {
-            await this.contractService.saveContract(this.contractVo);
-            await this.messageDialogService.alert({title: "新增成功"});
-            this.router.navigateToRoute("list");
-        } catch (err) {
-            await this.messageDialogService.alert({title: "新增失败", message: err.message, icon: 'error'});
-        }
+        // });
+        // this.contractVo.rateVos = rateList;
+        // this.contractVo.contract.customerName = this.customerInfo.text();
+        // try {
+        //     await this.contractService.saveContract(this.contractVo);
+        //     await this.messageDialogService.alert({title: "新增成功"});
+        //     this.router.navigateToRoute("list");
+        // } catch (err) {
+        //     await this.messageDialogService.alert({title: "新增失败", message: err.message, icon: 'error'});
+        // }
     }
 
     updateProp(item, property) {

@@ -4,8 +4,7 @@ import {ValidationController} from "aurelia-validation";
 import {autoinject, newInstance} from "aurelia-dependency-injection";
 import {ContractVo} from "../models/contractVo";
 import {ContractService} from "../services/contract";
-import {Rate} from "../models/rate";
-import {RateStep} from "../models/rateStep";
+import {Rate, RateStep} from "../models/rate";
 import {WorkInfo} from "../models/work-info";
 
 @autoinject
@@ -63,9 +62,9 @@ export class AuditContract {
         return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
     }
 
-    async audit() {
+    async audit(status) {
         try {
-            await this.contractService.audit(this.contractId);
+            await this.contractService.audit(this.contractId, status);
             await this.messageDialogService.alert({title: "审核成功"});
             this.router.navigateToRoute("list");
         } catch (err) {

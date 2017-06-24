@@ -4,10 +4,8 @@ import {ValidationController} from "aurelia-validation";
 import {autoinject, newInstance} from "aurelia-dependency-injection";
 import {ContractVo} from "../models/contractVo";
 import {ContractService} from "../services/contract";
-import {Rate} from "../models/rate";
+import {Rate, RateStep} from "../models/rate";
 import {WorkInfo} from "../models/work-info";
-import {RateStep} from "../models/rateStep";
-import {Organization} from "../models/organization";
 
 @autoinject
 export class EditContract {
