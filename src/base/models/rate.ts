@@ -23,6 +23,8 @@ export interface Rate {
   warehouseCategory: number;
   customerCategory: number;
 
+  rateStep: RateStep[];
+
 }
 
 export interface RateStep {

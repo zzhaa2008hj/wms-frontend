@@ -1,6 +1,5 @@
 import { Contract } from "./contract";
-import { Rate } from "./rate";
-import {RateStep} from "../models/rateStep";
+import {Rate, RateStep} from "./rate";
 export interface ContractVo {
 
   /**
