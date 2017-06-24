@@ -89,7 +89,6 @@ export class WorkInfoList {
         && await this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级作业内容！" })) {
         await this.workInfoService.updateState(id);
       }
-      await this.messageDialogService.alert({ title: "启用禁用成功", message: "启用禁用成功" });
       this.initData();
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
