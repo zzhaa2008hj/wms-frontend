@@ -8,7 +8,6 @@ import {DataSourceFactory} from "../../utils";
 import {DialogService} from "ui";
 import {Employee} from "../models/employee";
 import { EmployeeAuth } from "./auth";
-import { EmployeePassword } from "./reset";
 import {computedFrom} from "aurelia-framework";
 
 export class EmployeeList {
