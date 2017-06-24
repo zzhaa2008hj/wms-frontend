@@ -4,7 +4,6 @@ import { DialogService, MessageDialogService } from 'ui';
 import { NewWorkInfo } from "./new";
 import { EditWorkInfo } from "./edit";
 import { WorkInfo } from "../models/work-info";
-import TreeListDataSource = kendo.data.TreeListDataSource;
 
 @autoinject
 export class WorkInfoList {

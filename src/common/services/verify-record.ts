@@ -1,6 +1,6 @@
-import { RestClient, Query, dateConverter, handleResult } from '../../utils';
 import { autoinject } from 'aurelia-dependency-injection';
-import { VerifyRecord } from '../models/verify-record';
+import { VerifyRecord } from '@app/common/models/verify-record';
+import { RestClient, Query, dateConverter, handleResult } from '@app/utils';
 
 export interface VerifyRecordCriteria {
   batchNumber?: string;
@@ -17,11 +17,11 @@ export class VerifyRecordService {
     return this.http.query(`/base/verifyRecord/page`, criteria).map(dateConverter('operationTime'));
   }
 
-  async addVerifyRecord(verifyRecord: VerifyRecord) {
+  addVerifyRecord(verifyRecord: VerifyRecord): Promise<void> {
     return this.http.post(`/base/verifyRecord`, verifyRecord).then(handleResult);
   }
 
-  updateVerifyRecord(verifyRecord: VerifyRecord) {
+  updateVerifyRecord(verifyRecord: VerifyRecord): Promise<void> {
     return this.http.put(`/base/verifyRecord/${verifyRecord.id}`, verifyRecord).then(handleResult);
   }
 } 

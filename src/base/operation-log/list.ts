@@ -1,8 +1,6 @@
-import { Router } from "aurelia-router";
-import { createDataSource, DataSourceFactory } from '../../utils';
 import { autoinject } from "aurelia-dependency-injection";
-import { DialogController, DialogService } from "ui";
-import { OperationLogService } from '../services/operation-log';
+import { OperationLogService } from '@app/base/services/operation-log';
+import { DataSourceFactory } from '@app/utils';
 import DataSource = kendo.data.DataSource;
 @autoinject
 export class OperationLog {
@@ -16,9 +14,7 @@ export class OperationLog {
     buttonCount: 10
   };
 
-  constructor(private router: Router,
-              private service: OperationLogService,
-              private dialogService: DialogService,
+  constructor(private service: OperationLogService,
               private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.service.queryOperationLog(this.realName),

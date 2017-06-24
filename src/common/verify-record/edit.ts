@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { DialogController } from "ui";
-import { VerifyRecord } from '../models/verify-record';
+import { VerifyRecord } from '@app/common/models/verify-record';
 
 @autoinject
 export class EditVerifyRecord {

@@ -1,8 +1,6 @@
-import { VerifyRecord } from '../models/verify-record';
 import { autoinject } from 'aurelia-dependency-injection';
-import { VerifyRecordService, VerifyRecordCriteria } from '../services/verify-record';
-import { DataSourceFactory } from '../../utils';
-import { DialogService } from 'ui';
+import { VerifyRecordService, VerifyRecordCriteria } from '@app/common/services/verify-record';
+import { DataSourceFactory } from '@app/utils';
 import DataSource = kendo.data.DataSource;
 
 @autoinject
@@ -11,7 +9,6 @@ export class VerifyRecordList {
   dataSource: DataSource;
 
   constructor(private service: VerifyRecordService,
-              private dialogService: DialogService,
               private dataSourceFactory: DataSourceFactory) {
     
   } 
