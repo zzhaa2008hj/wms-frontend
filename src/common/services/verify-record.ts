@@ -14,7 +14,7 @@ export class VerifyRecordService {
   }
 
   queryVerifyRecord(criteria?: VerifyRecordCriteria): Query<VerifyRecord> {
-    return this.http.query(`/base/verifyRecord/page`, criteria).map(dateConverter('createTime', 'modifyTime'));
+    return this.http.query(`/base/verifyRecord/page`, criteria).map(dateConverter('applyTime', 'verifyTime'));
   }
 
   addVerifyRecord(verifyRecord: VerifyRecord): Promise<void> {

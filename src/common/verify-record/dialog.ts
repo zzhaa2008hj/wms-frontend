@@ -30,7 +30,6 @@ export class VerifyRecordDialogList {
         }),
       pageSize: 10
     });
-    console.log(this.dataSource);
   }
 
   async cancel() {
