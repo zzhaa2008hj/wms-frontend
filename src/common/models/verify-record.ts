@@ -9,12 +9,12 @@ export interface VerifyRecord {
   stageBeforeVerify: number;
   stageAfterVerify: number;
   verifyStatus: number;
-  createAccount: string;
-  createTime: Date;
-  createTimeStr: string;
-  modifyAccount: string;
-  modifyTime: Date;
-  modifyTimeStr: string;
+  verifyPerson: string;
+  verifyTime: Date;
+  verifyTimeStr: string;
+  applyPerson: string;
+  applyTime: Date;
+  applyTimeStr: string;
   remark: string;
   orgId: string;
 }
