@@ -1,23 +1,21 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { DialogController } from "ui";
-import { VerifyRecord, VerifyBusiness } from '@app/common/models/verify-record';
+import { VerifyRecord } from '@app/common/models/verify-record';
 
 @autoinject
 export class NewVerifyRecord {
-  verifyRecord: VerifyRecord;
+  verifyRecord: VerifyRecord = {} as VerifyRecord;
 
   constructor(private dialogController: DialogController) {
 
   }
 
-  activate(verifyBusiness: VerifyBusiness) {
-    this.verifyRecord.batchNumber = verifyBusiness.batchNumber;
-    this.verifyRecord.businessId = verifyBusiness.businessId;
-    this.verifyRecord.businessName = verifyBusiness.businessName;
-    this.verifyRecord.stageBeforeVerify = verifyBusiness.stageBeforeVerify;
+  activate(verifyRecord: VerifyRecord) {
+    this.verifyRecord = verifyRecord;
   }
 
   async save() {
+    this.verifyRecord.category = 2;
     await this.dialogController.ok(this.verifyRecord);
   }
 
