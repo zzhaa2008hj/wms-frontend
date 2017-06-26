@@ -43,6 +43,7 @@ export class VerifyRecordList {
     try {
       await this.service.updateVerifyRecord(verifyRecord);
       await this.messageDialogService.alert({ title: "审批成功", message: "审批成功" });
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "审批失败", message: err.message, icon: "error" });
     }

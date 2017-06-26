@@ -4,9 +4,8 @@
       <i class="fa fa-check-square-o"></i> 审批审核记录
     </ux-dialog-header>
     <ux-dialog-body>
-      <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-filterable.bind="true"
-        k-column-menu.bind="true" k-pageable.bind="pageable">
-        <ak-col k-title="类型">
+      <ak-grid k-data-source.bind="dataSource" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+        <ak-col k-title="类型" k-width.bind="100">
           <ak-template>
             <label if.bind="category == 1">审核</label>
             <label if.bind="category == 2">审批</label>
@@ -22,10 +21,10 @@
             <label if.bind="verifyStatus == 0">拒绝</label>
           </ak-template>
         </ak-col>
-        <ak-col k-field="createAccount" k-title="申请人"></ak-col>
-        <ak-col k-field="createTime" k-title="申请时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
-        <ak-col k-field="modifyAccount" k-title="审批人"></ak-col>
-        <ak-col k-field="modifyTime" k-title="审批时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+        <ak-col k-field="applyPerson" k-title="申请人"></ak-col>
+        <ak-col k-field="applyTime" k-title="申请时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+        <ak-col k-field="verifyPerson" k-title="审批人"></ak-col>
+        <ak-col k-field="verifyTime" k-title="审批时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
       </ak-grid>
     </ux-dialog-body>
     <ux-dialog-footer>
