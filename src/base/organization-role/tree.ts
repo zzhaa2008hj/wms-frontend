@@ -1,5 +1,5 @@
 import { autoinject, observable, bindable, customElement, bindingMode } from "aurelia-framework";
-import { treeHelper, TreeHelper } from "../../utils";
+import { treeHelper, TreeHelper } from "@app/utils";
 
 @customElement('menu-tree')
 @autoinject

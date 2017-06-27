@@ -1,8 +1,8 @@
-import { EmployeeService } from "../services/employee";
-import { Employee } from "../models/employee";
-import { OrganizationRole } from "../models/organization-role";
 import { inject } from "aurelia-dependency-injection";
-import { DialogController } from "ui";
+import { EmployeeService } from "@app/base/services/employee";
+import { DialogController} from "ui";
+import { Employee } from "@app/base/models/employee";
+import { OrganizationRole } from "@app/base/models/organization-role";
 
 export class EmployeeAuth {
 

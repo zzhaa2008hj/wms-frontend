@@ -3,8 +3,8 @@ import { DialogController } from "ui";
 import { VerifyRecord } from '@app/common/models/verify-record';
 
 @autoinject
-export class EditVerifyRecord {
-  verifyRecord: VerifyRecord;
+export class NewVerifyRecord {
+  verifyRecord: VerifyRecord = {} as VerifyRecord;
 
   constructor(private dialogController: DialogController) {
 
@@ -15,10 +15,11 @@ export class EditVerifyRecord {
   }
 
   async save() {
+    this.verifyRecord.category = 2;
     await this.dialogController.ok(this.verifyRecord);
   }
 
   async cancel() {
     await this.dialogController.cancel();
   }
-}
+} 
