@@ -15,19 +15,19 @@ export class CargoCategoryService {
     return res.content;
   }
 
-  saveCargoCategory(cargoCategory: CargoCategory) {
-    return this.http.post(`/base/cargoCategory`, cargoCategory).then(handleResult);
+  async saveCargoCategory(cargoCategory: CargoCategory): Promise<void> {
+    return await this.http.post(`/base/cargoCategory`, cargoCategory).then(handleResult);
   }
 
-  updateState(id: string) {
+  updateState(id: string): Promise<void> {
     return this.http.put(`/base/cargoCategory/${id}/state`, null).then(handleResult);
   }
 
-  updateCargoCategory(cargoCategory: CargoCategory) {
+  updateCargoCategory(cargoCategory: CargoCategory): Promise<void> {
     return this.http.put(`/base/cargoCategory/${cargoCategory.id}`, cargoCategory).then(handleResult);
   }
 
-  deleteCargoCategory(id: string) {
+  deleteCargoCategory(id: string): Promise<void> {
     return this.http.delete(`/base/cargoCategory/${id}`).then(handleResult);
   }
 }

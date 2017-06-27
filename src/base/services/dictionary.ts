@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, Query, RestClient } from "../../utils";
+import { handleResult, Query, RestClient } from "../../utils";
 import { Dictionary } from "../models/Dictionary";
 /**
  * Created by Hui on 2017/6/14.
@@ -9,7 +9,7 @@ export class DictionaryService {
   constructor(private http: RestClient) {
   }
 
-  queryDictionaries(param?: { name: string }): Query<any> {
+  queryDictionaries(param?: { name: string }): Query<Dictionary> {
     return this.http.query(`/base/dictionary/page`, param);
   }
 
