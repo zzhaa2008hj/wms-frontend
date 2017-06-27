@@ -10174,3 +10174,51 @@ body.rtl .footer-widget {
 .header-quick-nav {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
 }
+
+.checkbox label::after {
+  left: 0;
+}
+
+.checkbox input[type=checkbox]:checked + label::after {
+  font-family: 'FontAwesome';
+  content: "\f00c";
+  top: 0.5px;
+  left: 0;
+  text-align: center;
+}
+
+.checkbox input[type=checkbox]:indeterminate + label::after {
+  font-family: 'FontAwesome';
+  content: "\f068";
+  top: 0.5px;
+  left: 0;
+  text-align: center;
+}
+
+.checkbox label, .radio label {
+  padding-left: 20px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.checkbox, .radio {
+  display: inline;
+}
+
+.wa-tree ul {
+  list-style: none;
+  margin-left: 20px;
+  padding: 0;
+}
+
+.wa-tree .expand-collapse {
+  display: block;
+  float: left;
+  width: 16px;
+  margin-left: -16px;
+  text-align: center;
+  color: #333;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}

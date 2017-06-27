@@ -1,6 +1,6 @@
-import {Organization} from "../models/organization";
-import {autoinject} from "aurelia-dependency-injection";
-import {dateConverter, extractResult, handleResult, Query, RestClient} from "../../utils";
+import { Organization } from "../models/organization";
+import { autoinject } from "aurelia-dependency-injection";
+import { dateConverter, handleResult, Query, RestClient } from "@app/utils";
 
 /**
  * 机构查询条件

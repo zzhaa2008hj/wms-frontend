@@ -1,6 +1,7 @@
 /**
  * Created by shun on 2017/6/26.
  */
+import {OrderItem} from "./order-item";
 export interface InstockOrder {
     id: string;
     // 货物信息表主键
@@ -27,4 +28,9 @@ export interface InstockOrder {
     remark: string;
 
     orgId: string;
+}
+
+export interface InstockOrderVo {
+    order: InstockOrder;
+    orderItems: OrderItem[];
 }

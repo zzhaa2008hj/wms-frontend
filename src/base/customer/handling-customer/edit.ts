@@ -1,17 +1,15 @@
 import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
-import { ValidationController } from "aurelia-validation";
-import { inject, newInstance } from "aurelia-dependency-injection";
-import { OrganizationService } from "../../services/organization";
-import { Organization } from "../../models/organization";
+import { inject } from "aurelia-dependency-injection";
+import { Organization } from '@app/base/models/organization';
+import { OrganizationService } from '@app/base/services/organization';
 
 export class EditHandlingCustomer {
   org: Organization;
 
-  constructor(@inject private router: Router,
-              @inject private orgService: OrganizationService,
-              @newInstance() private validationController: ValidationController,
-              @inject private messageDialogService: MessageDialogService) {
+  constructor( @inject private router: Router,
+    @inject private orgService: OrganizationService,
+    @inject private messageDialogService: MessageDialogService) {
   }
 
   /**
