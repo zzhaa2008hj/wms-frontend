@@ -5,8 +5,8 @@ import { inject } from "aurelia-dependency-injection";
 import { DataSourceFactory } from "@app/utils";
 import { OrganizationRoleService } from "@app/base/services/organization-role";
 import { DialogService } from "ui";
-import {OrganizationRoleAdd} from "new";
-import {OrganizationRoleEdit} from "edit";
+import {OrganizationRoleAdd} from "./new";
+import {OrganizationRoleEdit} from "./edit";
 import {OrganizationRole} from "@app/base/models/organization-role";
 
 export class RoleList {

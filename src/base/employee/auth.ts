@@ -7,8 +7,8 @@ import { OrganizationRole } from "@app/base/models/organization-role";
 export class EmployeeAuth {
 
   employee  = {} as Employee ;
-  organizationRoles: OrganizationRole[];
-  checkedRoleIds: string[];
+  organizationRoles: OrganizationRole[] = [];
+  checkedRoleIds: string[] = [];
 
   constructor(@inject private employeeService: EmployeeService,
               @inject private dialogController: DialogController) {
@@ -18,9 +18,12 @@ export class EmployeeAuth {
     this.employee = await this.employeeService.getEmployee(params.id);
     // 获取机构所有的角色列表
     this.organizationRoles = await this.employeeService.getOrganizationRoles();
+    if (!this.organizationRoles || this.organizationRoles.length == 0) {
+      return;
+    }
     // 获取员工机构角色列表
     let employeeRoles = await this.employeeService.getEmployeeRoles(params.id);
-    if (!employeeRoles) return;
+    if (!employeeRoles || employeeRoles.length == 0) return;
     this.checkedRoleIds = employeeRoles.map(role => role.id);
   }
 
