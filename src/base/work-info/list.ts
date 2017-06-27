@@ -4,7 +4,6 @@ import { DialogService, MessageDialogService } from 'ui';
 import { NewWorkInfo } from "./new";
 import { EditWorkInfo } from "./edit";
 import { WorkInfo } from "../models/work-info";
-import TreeListDataSource = kendo.data.TreeListDataSource;
 
 @autoinject
 export class WorkInfoList {
@@ -17,13 +16,6 @@ export class WorkInfoList {
       model: {
         id: 'id',
         parentId: 'parentId',
-        fields: {
-          id: { type: 'string', editable: false, nullable: false },
-          parentId: { nullable: true, type: 'string' },
-          category: { validation: { required: true } },
-          name: { validation: { required: true } },
-          remark: { type: 'string' },
-        },
         expanded: true
       }
     }
@@ -41,7 +33,6 @@ export class WorkInfoList {
 
   async initData() {
     let data = await this.workInfoService.listWorkInfo();
-    console.log(data);
     this.dataSource.data(data);
   }
 
@@ -89,7 +80,6 @@ export class WorkInfoList {
 
   async changeState(item) {
     let id = item.id;
-    console.log(item);
     try {
       if (!item.hasChildren) {
         await this.workInfoService.updateState(id);
@@ -98,7 +88,6 @@ export class WorkInfoList {
         && await this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级作业内容！" })) {
         await this.workInfoService.updateState(id);
       }
-      await this.messageDialogService.alert({ title: "启用禁用成功", message: "启用禁用成功" });
       this.initData();
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });

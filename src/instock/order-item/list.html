@@ -1,0 +1,32 @@
+<template>
+    <div class="page-title">
+        <h3>理货报告管理</h3>
+    </div>
+    <div class="row">
+        <div class="input-group">
+            <input class="form-control" type="text" value.bind="batchNumber" placeholder="批次号">
+            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-sortable.bind="true"
+             k-reorderable.bind="true"
+             k-resizable.bind="true"
+             k-filterable.bind="true"
+             k-column-menu.bind="true"
+             k-pageable.bind="pageable"
+             k-on-detail-init.delegate="detailInit($event.detail)">
+        <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+        <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
+        <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+        <ak-col k-field="cargoName" k-title="货名"></ak-col>
+        <ak-col k-field="cargoCategory_name" k-title="货类"></ak-col>
+        <ak-col k-field="instockQuantity" k-title="入库数量"></ak-col>
+        <ak-col k-field="instockNumber" k-title="入库件数"></ak-col>
+        <ak-col k-field="unit" k-title="单位"></ak-col>
+        <ak-col k-field="remark" k-title="备注"></ak-col>
+        <ak-template for="detailTemplate">
+            <div class="rateSteps"></div>
+        </ak-template>
+    </ak-grid>
+</template>

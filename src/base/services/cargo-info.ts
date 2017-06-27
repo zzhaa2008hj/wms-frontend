@@ -5,22 +5,35 @@ import { ContractVo } from "../models/contractVo";
 import { WorkInfo } from "../models/work-info";
 import {Rate, RateStep} from "../models/rate";
 import { Organization } from "../models/organization";
+import {CargoInfo} from "../models/cargo-info";
 /**
  * 机构查询条件
  */
-export interface ContractCriteria {
+export interface CargoInfoCriteria {
     searchName?: string;
-    contractType?: string;
+    instockBeginDate?: Date;
+    instockEndDate?: Date;
 }
 
 @autoinject
-export class ContractService {
+export class CargoInfoService {
     constructor(private http: RestClient) {
     }
 
-    queryContracts(criteria?: ContractCriteria): Query<Contract> {
-        return this.http.query(`base/contract/page`, criteria).map(dateConverter('signDate', 'startTime', 'endTime'));
+    queryCargoInfo(criteria?: CargoInfoCriteria): Query<CargoInfo> {
+        return this.http.query(`base/cargoInfo/page`, criteria);
     }
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 查询库区信息

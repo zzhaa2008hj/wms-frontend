@@ -24,6 +24,7 @@ export interface Rate {
   customerCategory: number;
 
   rateStep: RateStep[];
+
 }
 
 export interface RateStep {

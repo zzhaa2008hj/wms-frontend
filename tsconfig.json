@@ -5,10 +5,18 @@
     "sourceMap": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "rootDir": "src",
     "outDir": "dist",
     "lib": ["es7", "dom", "es2015.promise"],
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "pretty": true,
+    "paths": {
+      "@app/*": ["./src/*"]
+    }
   },
   "exclude": [
     "node_modules"

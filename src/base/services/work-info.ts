@@ -16,18 +16,18 @@ export class WorkInfoService {
   }
 
   saveWorkInfo(workInfo: WorkInfo) {
-    this.http.post(`/base/workInfo`, workInfo).then(handleResult);
+    return this.http.post(`/base/workInfo`, workInfo).then(handleResult);
   }
 
   updateState(id: string) {
-    this.http.put(`/base/workInfo/${id}/state`, null).then(handleResult);
+    return this.http.put(`/base/workInfo/${id}/state`, null).then(handleResult);
   }
 
   updateWorkInfo(workInfo: WorkInfo) {
-    this.http.put(`/base/workInfo/${workInfo.id}`, workInfo).then(handleResult);
+    return this.http.put(`/base/workInfo/${workInfo.id}`, workInfo).then(handleResult);
   }
 
   deleteWorkInfo(id: any) {
-    this.http.delete(`/base/workInfo/${id}`).then(handleResult);
+    return this.http.delete(`/base/workInfo/${id}`).then(handleResult);
   }
 }
