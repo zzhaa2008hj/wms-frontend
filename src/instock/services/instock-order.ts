@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { Query, RestClient, handleResult } from "@app/utils";
-import { InstockOrder } from "@app/instock/models/instock-order";
+import { InstockOrder, InstockOrderVo } from "@app/instock/models/instock-order";
 /**
  * 入库单
  */
@@ -18,7 +18,7 @@ export class InstockOrderService {
   /**
    * 获取单个
    */
-  async getInstockOrder(id: string): Promise<InstockOrder> {
+  async getInstockOrder(id: string): Promise<InstockOrderVo> {
     let res = await this.http.get(`/instock/order/${id}`);
     return res.content;
   }
