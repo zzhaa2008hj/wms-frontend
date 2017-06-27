@@ -15,7 +15,7 @@
         <ak-col k-field="businessTypeStr" k-title="业务类型"></ak-col>
         <ak-col k-field="businessName" k-title="业务单号"></ak-col>
         <ak-col k-field="remark" k-title="说明"></ak-col>
-        <ak-col k-title="结果">
+        <ak-col k-title="结果" k-width.bind="100">
           <ak-template>
             <label if.bind="verifyStatus == 1">通过</label>
             <label if.bind="verifyStatus == 0">拒绝</label>
