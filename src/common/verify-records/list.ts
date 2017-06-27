@@ -36,7 +36,8 @@ export class VerifyRecordList {
 
   async edit(id) {
     let selectedItem = await this.service.getVerifyRecord(id);
-    let result = await this.dialogService.open({ viewModel: EditVerifyRecord, model: selectedItem, lock: true })
+    let result = await this.dialogService
+      .open({ viewModel: EditVerifyRecord, model: selectedItem, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     let verifyRecord = result.output;
@@ -48,7 +49,6 @@ export class VerifyRecordList {
       await this.messageDialogService.alert({ title: "审批失败", message: err.message, icon: "error" });
     }
   }
-
 
   async list() {
     let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: {}, lock: true })
