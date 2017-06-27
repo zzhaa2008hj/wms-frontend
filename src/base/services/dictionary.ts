@@ -46,19 +46,19 @@ export class DictionaryDataService {
   }
 
   saveDictionaryData(dictionaryData: Dictionary) {
-    this.http.post(`/base/dictionaryData`, dictionaryData).then(handleResult);
+    return  this.http.post(`/base/dictionaryData`, dictionaryData).then(handleResult);
   }
 
 
   updateState(id: string) {
-    this.http.put(`/base/dictionaryData/${id}/state`, null).then(handleResult);
+    return  this.http.put(`/base/dictionaryData/${id}/state`, null).then(handleResult);
   }
 
   updateDictionaryData(dictionaryData: Dictionary) {
-    this.http.put(`/base/dictionaryData/${dictionaryData.id}`, dictionaryData).then(handleResult);
+    return  this.http.put(`/base/dictionaryData/${dictionaryData.id}`, dictionaryData).then(handleResult);
   }
 
   deleteDictionaryData(id: any) {
-    this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
+    return this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
   }
 }

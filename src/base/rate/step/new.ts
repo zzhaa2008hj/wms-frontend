@@ -14,12 +14,7 @@ export class NewRateStep {
 
   }
 
-  activate(id: string) {
-    this.rateId = id;
-  }
-
   async save() {
-    this.rateStep.rateId = this.rateId;
     await this.dialogController.ok(this.rateStep);
   }
 

@@ -1,6 +1,6 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
-import { RateService } from "../services/rate";
+import { RateService, RateStepService } from "../services/rate";
 import { autoinject } from "aurelia-dependency-injection";
 import { Rate, RateStep } from "../models/Rate";
 import { WorkInfoService } from "../services/work-info";
@@ -61,6 +61,7 @@ export class NewRate {
 
   constructor(private router: Router,
               private rateService: RateService,
+              private rateStepService: RateStepService,
               private workInfoService: WorkInfoService,
               private dialogService: DialogService,
               private cargoCategoryService: CargoCategoryService,
@@ -68,7 +69,11 @@ export class NewRate {
 
   }
 
-  async activate() {
+  async activate(params) {
+    this.rate = await this.rateService.getRate(params.id);
+    this.rateStep = await this.rateStepService.listRateStepByRateId(params.id);
+    console.log(this.rate);
+    this.dataSourceRateStep.data(this.rateStep);
     this.initData();
   }
 
@@ -101,16 +106,16 @@ export class NewRate {
     this.rate.cargoCategoryId = selectedItem.id;
   }
 
-  async addNewRate() {
+  async updateRate() {
     if (this.rateStep) {
       Object.assign(this.rate, { rateStep: this.rateStep });
     }
     try {
-      await this.rateService.saveRate(this.rate);
-      await this.messageDialogService.alert({ title: "新增成功" });
-      // this.router.navigateToRoute("list");
+      await this.rateService.updateRate(this.rate);
+      await this.messageDialogService.alert({ title: "修改成功" });
+      this.router.navigateToRoute("list");
     } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
     }
   }
 
