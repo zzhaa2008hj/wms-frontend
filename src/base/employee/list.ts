@@ -6,7 +6,7 @@ import {EmployeeService} from "@app/base/services/employee";
 import {DataSourceFactory} from "@app/utils";
 import {DialogService} from "ui";
 import {Employee} from "@app/base/models/employee";
-import { EmployeeAuth } from "auth";
+import { EmployeeAuth } from "./auth";
 import {computedFrom} from "aurelia-framework";
 
 export class EmployeeList {
