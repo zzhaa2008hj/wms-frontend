@@ -3,7 +3,6 @@ import { MessageDialogService } from "ui";
 import { autoinject } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { CargoInfo } from "@app/base/models/cargo-info";
-import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 /**
  * Created by Hui on 2017/6/23.
@@ -12,20 +11,20 @@ import { CargoFlow } from "@app/instock/models/cargo-flow";
 export class NewCargoFlow {
   cargoFlow: CargoFlow;
   cargoInfo: CargoInfo;
-  cargoItem: CargoItem[];
+  // cargoItem: CargoItem[];
   selectedCargoInfo: any;
   //入库新增先要录入客户基础信息,基础信息新增后 录入
   constructor(private router: Router,
               private cargoFlowService: CargoFlowService,
-              private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService) {
   }
 
-  async activate() {
-    // 获取基础信息
-    this.cargoInfo = await this.cargoInfoService.// 通过基础信息id获取一个批次货物明细
-      this.cargoItem = await cargoFlowService.listCargoItems(this.cargoInfo.id);
-  }
+  // async activate() {
+  //   // 获取基础信息
+  //   this.cargoInfo = await this.cargoInfoService.
+  //     // 通过基础信息id获取一个批次货物明细
+  //     this.cargoItem = await cargoFlowService.listCargoItems(this.cargoInfo.id);
+  // }
 
   onSelectCargoInfo(e) {
     let dataItem = this.selectedCargoInfo.dataItem(e.item);
