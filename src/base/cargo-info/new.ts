@@ -1,45 +1,60 @@
-import {Router} from "aurelia-router";
-import {autoinject, newInstance} from "aurelia-dependency-injection";
-import {MessageDialogService} from "ui";
-import {ValidationController} from "aurelia-validation";
-import {CargoInfoService} from "../services/cargo-info";
-import {ContractVo} from "../models/contractVo";
-import {Rate, RateStep} from "../models/rate";
-import {WorkInfo} from "../models/work-info";
-import {Organization} from "../models/organization";
+import { Router } from "aurelia-router";
+import { autoinject, newInstance } from "aurelia-dependency-injection";
+import { MessageDialogService, DialogService } from "ui";
+import { CargoInfoService } from "../services/cargo-info";
+import { ValidationController } from "aurelia-validation";
+import { CargoInfo, CargoInfoVo, CargoItem } from '../models/cargo-info';
+import { Contract } from '../models/contract';
+import { Organization } from '../models/organization';
+import { ContractCriteria } from '../services/contract';
+import { NewCargoItem } from './item-new';
+import { CargoInfoList } from './list';
 
 @autoinject
 export class NewCargoInfo {
-    contractVo: ContractVo;
-    contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
-    warehouses: WorkInfo[];
+    // contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
+    // warehouses: WorkInfo[];
 
-    customers: Organization[] = [] ;
-    handlingCustomers: Organization[];
-    wareHouseCustomer: Organization[];
+    // customers: Organization[] = [];
+    // handlingCustomers: Organization[];
+    // wareHouseCustomer: Organization[];
 
-    customerInfo: kendo.ui.DropDownList;
+    // customerInfo: kendo.ui.DropDownList;
+    // datasource: kendo.data.DataSource;
+    // customerDatasource: kendo.data.DataSource;
+
+    // /**
+    //  * 基础费率
+    //  */
+    // baseRateAndSteps: Rate[];
+
+    // /**
+    //  * 基础阶梯费率
+    //  */
+    // baseRateStep: RateStep[];
+    unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
+    agents: Organization[];
+    customers: Organization[];
+    cargoInfoVo: CargoInfoVo;
+    cargoInfo = {} as CargoInfo;
+    cargoItems = [] as CargoItem[];
+    contract: Contract[];
+    contractId = '';
+    index = 1;
+
     datasource: kendo.data.DataSource;
-    customerDatasource: kendo.data.DataSource;
-
-    /**
-     * 基础费率
-     */
-    baseRateAndSteps: Rate[];
-
-    /**
-     * 基础阶梯费率
-     */
-    baseRateStep: RateStep[];
+    customerInfo: kendo.ui.DropDownList;
+    agentInfo: kendo.ui.DropDownList;
 
     constructor(private router: Router,
-                private cargoInfoService: CargoInfoService,
-                @newInstance() private validationController: ValidationController,
-                private messageDialogService: MessageDialogService) {
+        private cargoInfoService: CargoInfoService,
+        @newInstance() private validationController: ValidationController,
+        private messageDialogService: MessageDialogService,
+        private dialogService: DialogService) {
         this.datasource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
-                    options.success(this.baseRateAndSteps);
+                    options.success(this.cargoItems);
                 },
                 update: (options) => {
                     options.success();
@@ -54,122 +69,108 @@ export class NewCargoInfo {
                 }
             }
         });
-
-        this.customerDatasource = new kendo.data.DataSource({
-            transport: {
-                read: (options) => {
-                    options.success(this.customers);
-                }
-            }
-        });
     }
 
 
     async activate() {
-        // this.warehouses = await this.contractService.getWarehouses();
+        // this.warehouses = await this.cargoInfoService.getWarehouses();
         // //装卸单位
-        // this.handlingCustomers = await  this.contractService.getCustomers(2);
+        // this.handlingCustomers = await this.cargoInfoService.getCustomers(2);
         // //仓储客户
-        // this.wareHouseCustomer = await  this.contractService.getCustomers(1);
-        // this.baseRateAndSteps = await this.contractService.getBaseRate();
-        // this.baseRateStep = await this.contractService.getBaseRateStep();
+        // this.wareHouseCustomer = await this.cargoInfoService.getCustomers(1);
+        // this.baseRateAndSteps = await this.cargoInfoService.getBaseRate();
+        // this.baseRateStep = await this.cargoInfoService.getBaseRateStep();
+        //let aa = await this.cargoInfoService.getBatchNumber();
+        //console.log(aa)
+        // 仓储代理商
+        this.agents = await this.cargoInfoService.getCustomers(1);
+        //仓储客户
+        this.customers = await this.cargoInfoService.getCustomers(1);
+        //仓储合同
+        this.contract = await this.cargoInfoService.getContracts(1);
+        //把没有仓储合同的客户排除掉
+        this.contract.forEach(r => {
+            this.customers = this.customers.filter(x => x.id != r.customerId);
+        });
+
+        this.cargoInfo.warehouseType = "1";
+        this.cargoInfo.cargoForm = "1";
+        this.cargoInfo.cargoType = "1";
+
     }
-
-
-    contractTypeChanged() {
-        let contractType = this.contractVo.contract.contractType;
-        this.datasource.filter({field: 'customerCategory', operator: 'eq', value: contractType});
-        if (contractType == 2) {
-            this.customers = this.handlingCustomers;
-
-        } else {
-            this.customers = this.wareHouseCustomer;
+    async addCargoItem() {
+        if (!this.contractId) {
+            this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
+            return;
         }
-        this.customerDatasource.read();
+        let result = await this.dialogService.open({ viewModel: NewCargoItem, model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType }, lock: true })
+            .whenClosed();
+        if (result.wasCancelled) return;
+        //let workInfo = result.output;
+        result.output.batchNumber = this.index;
+        this.index++;
+        this.cargoItems.push(result.output);
+        this.datasource.read();
     }
 
 
+    customerChanged() {
+        let contractInfo = this.contract.filter(x => x.customerId == this.cargoInfo.customerId);
+        if (contractInfo.length == 0) {
+            this.messageDialogService.alert({ title: '客户选择错误', message: '该客户没有合同，请选择有合同的客户！不然无法新增货物' });
+            return;
+        }
+        this.contractId = contractInfo[0].id;
+    }
+
+    async delete(batchNumber) {
+        let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定删除该货物吗？" });
+        if (confirm) {
+            this.cargoItems = this.cargoItems.filter(x => x.batchNumber != batchNumber);
+            this.datasource.read();
+        }
+    }
+
+    async update(batchNumber) {
+        let cargoItemList = this.cargoItems.filter(x => x.batchNumber == batchNumber);
+        if (cargoItemList.length == 0) {
+            this.messageDialogService.alert({ title: '错误', message: '该货物不存在！' });
+            return;
+        }
+        let cargoItemInfo = cargoItemList[0];
+        let result = await this.dialogService.open({
+            viewModel: NewCargoItem,
+            model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType, cargoItemInfo },
+            lock: true
+        }).whenClosed();
+        if (result.wasCancelled) return;
+        this.cargoItems = this.cargoItems.filter(x => x.batchNumber != batchNumber);
+        this.cargoItems.push(result.output);
+        this.datasource.read();
+
+    }
     async save() {
-        // await this.datasource.sync();
-        // let rateList = this.baseRateAndSteps
-        //     .filter(x => x.customerCategory == this.contractVo.contract.contractType);
+        this.cargoInfo.agentName = this.agentInfo.text();
+        this.cargoInfo.customerName = this.customerInfo.text();
+        this.cargoInfoVo.cargoInfo = this.cargoInfo;
+        this.cargoInfoVo.cargoItems = this.cargoItems;
 
-        // rateList.forEach(r => {
-        //     let id = r.id;
-        //     let rateSteps = this.baseRateStep.filter(res => res.rateId == id);
-        //     r.rateStep = rateSteps;
-
-        // });
-        // this.contractVo.rateVos = rateList;
-        // this.contractVo.contract.customerName = this.customerInfo.text();
-        // try {
-        //     await this.contractService.saveContract(this.contractVo);
-        //     await this.messageDialogService.alert({title: "新增成功"});
-        //     this.router.navigateToRoute("list");
-        // } catch (err) {
-        //     await this.messageDialogService.alert({title: "新增失败", message: err.message, icon: 'error'});
-        // }
+        try {
+            await this.cargoInfoService.saveCargoInfo(this.cargoInfoVo);
+            await this.messageDialogService.alert({ title: "新增成功" });
+            this.router.navigateToRoute("list");
+        } catch (err) {
+            await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+        }
     }
 
     updateProp(item, property) {
-        item.trigger('change', {field: property});
+        item.trigger('change', { field: property });
         item.dirty = true;
     }
 
     cancel() {
         this.router.navigateToRoute("list");
-    }
-
-    detailInit(e) {
-        let detailRow = e.detailRow;
-        detailRow.find('.rateSteps').kendoGrid({
-            dataSource: {
-                transport: {
-                    read: (options) => {
-                        console.log(this.baseRateStep)
-                        options.success(this.baseRateStep);
-                    },
-                    update: (options) => {
-                        options.success();
-                    },
-                    destroy: (options) => {
-                        options.success();
-                    }
-                },
-                schema: {
-                    model: {
-                        id: 'id',
-                        fields: {
-                            stepNum: {editable: false},
-                            stepStart: {editable: false},
-                            stepEnd: {editable: false},
-                            stepPrice: {editable: true, notify: true},
-                            stepUnit: {editable: false},
-                            remark: {editable: false}
-                        }
-                    }
-                },
-                filter: {field: 'rateId', operator: 'eq', value: e.data.id}
-            },
-
-            editable: true,
-            columns: [
-                {field: 'stepNum', title: '阶梯号'},
-                {field: 'stepStart', title: '开始值'},
-                {field: 'stepEnd', title: '结束值'},
-                {
-                    field: 'stepPrice',
-                    title: '阶梯价'
-                    //template: '<input type="text" value.bind=" stepPrice & validate & notify">'
-
-                },
-                {field: 'stepUnit', title: '单位'},
-                {field: 'remark', title: '备注'}
-            ],
-            save: function (e) {
-                e.sender.saveChanges();
-            }
-        });
     }
 
 }
