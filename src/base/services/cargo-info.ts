@@ -1,10 +1,12 @@
 import { autoinject } from "aurelia-dependency-injection";
+import { dateConverter, fixDate, handleResult, Query, RestClient } from '../../utils';
+import { CargoCategory } from '../models/cargo-category';
+import { CargoInfo, CargoInfoVo, CargoRate, CargoRateStep } from '../models/cargo-info';
+import { Contract } from '../models/contract';
+import { Organization } from '../models/organization';
+import { Rate } from '../models/rate';
+import { RateStep } from '../models/rate';
 import { ContractVo } from "../models/contractVo";
-import { WorkInfo } from "../models/work-info";
-import {Rate, RateStep} from "../models/rate";
-import { Organization } from "../models/organization";
-import {CargoInfo} from "../models/cargo-info";
-import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 /**
  * 机构查询条件
  */
@@ -19,65 +21,59 @@ export class CargoInfoService {
     constructor(private http: RestClient) {
     }
 
-    queryCargoInfo(criteria?: CargoInfoCriteria): Query<CargoInfo> {
+    queryCargoInfo(criteria?: CargoInfoCriteria): Query<CargoInfo[]> {
         return this.http.query(`base/cargoInfo/page`, criteria);
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /**
-     * 查询库区信息
-     * @returns {Promise<WorkInfo[]>}
+     * 获取货物种类信息
      */
-    async getWarehouses(): Promise<WorkInfo[]> {
-        let res = await this.http.get(`base/warehouse/list`);
+    async getCargoCategories(): Promise<CargoCategory[]> {
+        let res = await this.http.get(`base/cargoCategory/list?status=true`);
         return res.content;
     }
 
+    /**
+     * 获取合同信息
+     * @param contractType
+     */
+    async getContracts(contractType: number): Promise<Contract[]> {
+        let res = await this.http.get(`base/contract/list?contractType=${contractType}`);
+        return res.content;
+    }
+
+    /**
+     * 获取该合同下的所有货物费率信息
+     * @param contractId
+     * @param wareHouseType
+     */
+    async getContractCargoRates(contractId: string, wareHouseType: string): Promise<CargoRate[]> {
+        let res = await this.http.
+            get(`base/contract/contractRateList?contractId=${contractId}&wareHouseType=${wareHouseType}`);
+        return res.content;
+    }
+
+    /**
+     * 获取该合同下的所有货物阶梯费率信息
+     * @param contractId
+     */
+    async getContractCargoRateSteps(contractId: string): Promise<CargoRateStep[]> {
+        let res = await this.http.get(`base/contract/contractRateStepList?contractId=${contractId}`);
+        return res.content;
+    }
+
+    /**
+     * 获取客户信息
+     * @param customerType
+     */
     async getCustomers(customerType: number): Promise<Organization[]> {
         let res = await this.http.get(`base/customer/list?customerType=${customerType}`);
         return res.content;
     }
 
-    /**
-     * 获取基础费率和阶梯费率
-     * @returns {Promise<RateAndRateStep[]>}
-     */
-    async getBaseRate(): Promise<Rate[]> {
-        let res = await this.http.get(`base/rate/list`);
-        return res.content;
-    }
+    getBatchNumber(): Promise<void> {
+        return this.http.get(`/base/code/generate?type=0`).then(handleResult);
 
-    /**
-     * 获取阶梯费率
-     * @returns {Promise<RateStep[]>}
-     */
-    async getBaseRateStep(): Promise<RateStep[]> {
-        let res = await this.http.get(`base/rateStep/list`);
-        return res.content;
-    }
-
-    /**
-     * 获取单个合同信息
-     * @param id
-     * @returns {Promise<ContractVo>}
-     */
-    async getContract(id: string): Promise<ContractVo> {
-        return this.http.get(`base/contract/${id}`)
-            .then(res => {
-                let contractVo = res.content;
-                fixDate(contractVo.contract, 'signDate', 'startTime', 'endTime');
-                return contractVo;
-            });
     }
 
     /**
@@ -85,9 +81,10 @@ export class CargoInfoService {
      * @param contractVo
      * @returns {Promise<void>}
      */
-    saveContract(contractVo: ContractVo): Promise<void> {
-        return this.http.post(`base/contract`, contractVo).then(handleResult);
+    saveCargoInfo(cargoInfoVo: CargoInfoVo): Promise<void> {
+        return this.http.post(`base/cargoInfo`, cargoInfoVo).then(handleResult);
     }
+
 
     /**
      * 编辑保存
