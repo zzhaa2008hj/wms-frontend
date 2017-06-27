@@ -86,7 +86,7 @@ export class EmployeeService {
   }
 
   async listEmployee(): Promise<Employee[]> {
-    let res = await this.http.get(`/rest/employee/list`);
+    let res = await this.http.get(`/base/employee/list`);
     return res.content;
   }
 }

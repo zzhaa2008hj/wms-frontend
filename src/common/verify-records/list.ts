@@ -2,10 +2,10 @@ import { autoinject } from 'aurelia-dependency-injection';
 import { VerifyRecordService } from '@app/common/services/verify-record';
 import { DataSourceFactory } from '@app/utils';
 import { DialogService, MessageDialogService } from 'ui';
-import { EditVerifyRecord } from '@app/common/verify-record/edit';
+import { EditVerifyRecord } from '@app/common/verify-records/edit';
 import { VerifyRecord } from '@app/common/models/verify-record';
-import { NewVerifyRecord } from '@app/common/verify-record/new';
-import { VerifyRecordDialogList } from '@app/common/verify-record/dialog';
+import { NewVerifyRecord } from '@app/common/verify-records/new';
+import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import DataSource = kendo.data.DataSource;
 
 @autoinject
