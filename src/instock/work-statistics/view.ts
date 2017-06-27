@@ -2,16 +2,20 @@ import { autoinject } from "aurelia-dependency-injection";
 import { WorkOrder, WorkStatistics } from "@app/instock/models/work";
 import { WorkStatisticsService } from "@app/instock/services/work-statistics";
 import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
+import { CargoFlowService } from "@app/instock/services/cargo-flow";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 
 @autoinject
 export class ViewWorkStatistics {
   workStatistics: WorkStatistics;
   datasource: kendo.data.DataSource;
   listWorkOrders: WorkOrder[];
+  cargoFlow: CargoFlow;
 
   constructor(private workStatisticsService: WorkStatisticsService,
               private workOrderService: WorkOrderService,
-              private workOrderItemService: WorkOderItemService) {
+              private workOrderItemService: WorkOderItemService,
+              private cargoFlowService: CargoFlowService) {
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -31,6 +35,8 @@ export class ViewWorkStatistics {
     console.log(this.workStatistics.businessId);
     this.listWorkOrders = await this.workOrderService.getWorkOders(this.workStatistics.businessId);
     /*通过统计表的业务主键查询 流水信息*/
+    this.cargoFlow = await this.cargoFlowService.getCargoFlowsById(this.workStatistics.businessId);
+
   }
 
   detailInit(e) {
@@ -57,5 +63,9 @@ export class ViewWorkStatistics {
         { field: 'customerName', title: '作业单位名称' },
       ]
     });
+  }
+
+  formatCategory(category: number) {
+    return ['入库', '出库', '移库'][category - 1];
   }
 }
