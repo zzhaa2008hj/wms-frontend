@@ -1,14 +1,14 @@
-import {Router} from "aurelia-router";
-import {autoinject} from "aurelia-dependency-injection";
-import {ContractVo} from "../models/contractVo";
-import {ContractService} from "../services/contract";
-import {WorkInfo} from "../models/work-info";
-import {Rate, RateStep} from "../models/rate";
+import { Router } from "aurelia-router";
+import { autoinject } from "aurelia-dependency-injection";
+import { ContractVo } from "../models/contractVo";
+import { ContractService } from "../services/contract";
+import { WorkInfo } from "../models/work-info";
+import { Rate, RateStep } from "../models/rate";
 
 @autoinject
 export class ViewContract {
     contractVo: ContractVo;
-    contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
+    contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
     warehouses: WorkInfo[];
     datasource: kendo.data.DataSource;
     /**
@@ -22,7 +22,7 @@ export class ViewContract {
     baseRateStep: RateStep[];
 
     constructor(private router: Router,
-                private contractService: ContractService) {
+        private contractService: ContractService) {
         this.datasource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -40,7 +40,7 @@ export class ViewContract {
     /**
      * 初始化后自动执行
      */
-    async activate({id}) {
+    async activate({ id }) {
         this.contractVo = await this.contractService.getContract(id);
         if (this.contractVo.contract.contractType == 3) {
             //库区信息
@@ -70,15 +70,15 @@ export class ViewContract {
                         options.success(this.baseRateStep);
                     }
                 },
-                filter: {field: 'rateId', operator: 'eq', value: e.data.id}
+                filter: { field: 'rateId', operator: 'eq', value: e.data.id }
             },
             columns: [
-                {field: 'stepNum', title: '阶梯号'},
-                {field: 'stepStart', title: '开始值'},
-                {field: 'stepEnd', title: '结束值'},
-                {field: 'stepPrice', title: '阶梯价'},
-                {field: 'stepUnit', title: '单位'},
-                {field: 'remark', title: '备注'}
+                { field: 'stepNum', title: '阶梯号' },
+                { field: 'stepStart', title: '开始值' },
+                { field: 'stepEnd', title: '结束值' },
+                { field: 'stepPrice', title: '阶梯价' },
+                { field: 'stepUnit', title: '单位' },
+                { field: 'remark', title: '备注' }
             ]
         });
     }

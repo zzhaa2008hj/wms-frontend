@@ -1,20 +1,19 @@
-import {Router} from "aurelia-router";
-import {autoinject, newInstance} from "aurelia-dependency-injection";
-import {MessageDialogService} from "ui";
-import {ValidationController} from "aurelia-validation";
-import {ContractService} from "../services/contract";
-import {ContractVo} from "../models/contractVo";
-import {Rate, RateStep} from "../models/rate";
-import {WorkInfo} from "../models/work-info";
-import {Organization} from "../models/organization";
+import { Router } from "aurelia-router";
+import { autoinject } from "aurelia-dependency-injection";
+import { MessageDialogService } from "ui";
+import { ContractService } from "../services/contract";
+import { ContractVo } from "../models/contractVo";
+import { Rate, RateStep } from "../models/rate";
+import { WorkInfo } from "../models/work-info";
+import { Organization } from "../models/organization";
 
 @autoinject
 export class NewContract {
     contractVo: ContractVo;
-    contractTypes = [{"name": "客户仓储", "type": 1}, {"name": "装卸单位", "type": 2}, {"name": "库区租赁", "type": 3}];
+    contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
     warehouses: WorkInfo[];
 
-    customers: Organization[] = [] ;
+    customers: Organization[] = [];
     handlingCustomers: Organization[];
     wareHouseCustomer: Organization[];
 
@@ -33,9 +32,8 @@ export class NewContract {
     baseRateStep: RateStep[];
 
     constructor(private router: Router,
-                private contractService: ContractService,
-                @newInstance() private validationController: ValidationController,
-                private messageDialogService: MessageDialogService) {
+        private contractService: ContractService,
+        private messageDialogService: MessageDialogService) {
         this.datasource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -68,9 +66,9 @@ export class NewContract {
     async activate() {
         this.warehouses = await this.contractService.getWarehouses();
         //装卸单位
-        this.handlingCustomers = await  this.contractService.getCustomers(2);
+        this.handlingCustomers = await this.contractService.getCustomers(2);
         //仓储客户
-        this.wareHouseCustomer = await  this.contractService.getCustomers(1);
+        this.wareHouseCustomer = await this.contractService.getCustomers(1);
         this.baseRateAndSteps = await this.contractService.getBaseRate();
         this.baseRateStep = await this.contractService.getBaseRateStep();
     }
@@ -78,7 +76,7 @@ export class NewContract {
 
     contractTypeChanged() {
         let contractType = this.contractVo.contract.contractType;
-        this.datasource.filter({field: 'customerCategory', operator: 'eq', value: contractType});
+        this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: contractType });
         //1 :
         if (contractType == 2) {
             this.customers = this.handlingCustomers;
@@ -105,15 +103,15 @@ export class NewContract {
         this.contractVo.contract.customerName = this.customerInfo.text();
         try {
             await this.contractService.saveContract(this.contractVo);
-            await this.messageDialogService.alert({title: "新增成功"});
+            await this.messageDialogService.alert({ title: "新增成功" });
             this.router.navigateToRoute("list");
         } catch (err) {
-            await this.messageDialogService.alert({title: "新增失败", message: err.message, icon: 'error'});
+            await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
         }
     }
 
     updateProp(item, property) {
-        item.trigger('change', {field: property});
+        item.trigger('change', { field: property });
         item.dirty = true;
     }
 
@@ -141,31 +139,31 @@ export class NewContract {
                     model: {
                         id: 'id',
                         fields: {
-                            stepNum: {editable: false},
-                            stepStart: {editable: false},
-                            stepEnd: {editable: false},
-                            stepPrice: {editable: true, notify: true},
-                            stepUnit: {editable: false},
-                            remark: {editable: false}
+                            stepNum: { editable: false },
+                            stepStart: { editable: false },
+                            stepEnd: { editable: false },
+                            stepPrice: { editable: true, notify: true },
+                            stepUnit: { editable: false },
+                            remark: { editable: false }
                         }
                     }
                 },
-                filter: {field: 'rateId', operator: 'eq', value: e.data.id}
+                filter: { field: 'rateId', operator: 'eq', value: e.data.id }
             },
 
             editable: true,
             columns: [
-                {field: 'stepNum', title: '阶梯号'},
-                {field: 'stepStart', title: '开始值'},
-                {field: 'stepEnd', title: '结束值'},
+                { field: 'stepNum', title: '阶梯号' },
+                { field: 'stepStart', title: '开始值' },
+                { field: 'stepEnd', title: '结束值' },
                 {
                     field: 'stepPrice',
                     title: '阶梯价'
                     //template: '<input type="text" value.bind=" stepPrice & validate & notify">'
 
                 },
-                {field: 'stepUnit', title: '单位'},
-                {field: 'remark', title: '备注'}
+                { field: 'stepUnit', title: '单位' },
+                { field: 'remark', title: '备注' }
             ],
             save: function (e) {
                 e.sender.saveChanges();
