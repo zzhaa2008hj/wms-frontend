@@ -1,15 +1,17 @@
 import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
-import { autoinject } from "aurelia-dependency-injection";
+import { newInstance, inject } from 'aurelia-dependency-injection';
 import { ContractVo } from "@app/base/models/contractVo";
 import { ContractService } from "@app/base/services/contract";
 import { Rate, RateStep } from "@app/base/models/rate";
 import { WorkInfo } from "@app/base/models/work-info";
+import { ValidationController, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from "@app/validation/support";
+import { Contract } from '@app/base/models/contract';
 
-@autoinject
 export class EditContract {
 
-    contractVo: ContractVo;
+    contractVo: ContractVo = {} as ContractVo;
     contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
     warehouses: WorkInfo[];
     customerInfo: kendo.ui.DropDownList;
@@ -25,9 +27,10 @@ export class EditContract {
      */
     baseRateStep: RateStep[];
 
-    constructor(private router: Router,
-        private contractService: ContractService,
-        private messageDialogService: MessageDialogService) {
+    constructor(@inject private router: Router,
+        @inject private contractService: ContractService,
+        @inject private messageDialogService: MessageDialogService,
+        @newInstance() private validationController: ValidationController) {
         this.datasource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -46,6 +49,7 @@ export class EditContract {
                 }
             }
         });
+        validationController.addRenderer(formValidationRenderer);        
     }
 
     /**
@@ -53,6 +57,7 @@ export class EditContract {
      */
     async activate({ id }) {
         this.contractVo = await this.contractService.getContract(id);
+        this.contractVo.contract.contractTypeStr = this.contractTypes[this.contractVo.contract.contractType - 1].name;
         if (this.contractVo.contract.contractType == 3) {
             //库区信息
             this.warehouses = await this.contractService.getWarehouses();
@@ -60,10 +65,7 @@ export class EditContract {
             this.baseRateAndSteps = this.contractVo.rateVos;
             this.baseRateStep = this.contractVo.rateStepVos;
         }
-    }
-
-    formatMethod(type: number) {
-        return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
+        this.validationController.addObject(this.contractVo, validationRules);
     }
 
     async update() {
@@ -140,3 +142,9 @@ export class EditContract {
     }
 
 }
+
+const validationRules = ValidationRules
+  .ensure((contract: Contract) => contract.contractName)
+  .displayName('合同名称')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .rules;

@@ -3,9 +3,7 @@ import { VerifyRecordService } from '@app/common/services/verify-record';
 import { DataSourceFactory } from '@app/utils';
 import { DialogService, MessageDialogService } from 'ui';
 import { EditVerifyRecord } from '@app/common/verify-records/edit';
-import { VerifyRecord } from '@app/common/models/verify-record';
-import { NewVerifyRecord } from '@app/common/verify-records/new';
-import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
+import { ConstantValues } from '@app/common/models/constant-values';
 import DataSource = kendo.data.DataSource;
 
 @autoinject
@@ -18,7 +16,7 @@ export class VerifyRecordList {
     pageSizes: true,
     buttonCount: 10
   };
-  businessTypes: string[] = ["入库", "出库", "货权转移", "货位转移", "货物质押", "合同"];
+  businessTypes: string[] = ConstantValues.BusinessTypes;
 
   constructor(private service: VerifyRecordService,
               private dialogService: DialogService,
@@ -47,32 +45,6 @@ export class VerifyRecordList {
       this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "审批失败", message: err.message, icon: "error" });
-    }
-  }
-
-  async list() {
-    let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: {}, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
-  }
-
-  async add() {
-    let verifyRecord: VerifyRecord = {} as VerifyRecord;
-    verifyRecord.batchNumber = "123";
-    verifyRecord.businessId = "321";
-    verifyRecord.businessName = "234";
-    verifyRecord.businessType = 1;
-    verifyRecord.stageBeforeVerify = 1;
-    let result = await this.dialogService
-      .open({ viewModel: NewVerifyRecord, model: verifyRecord, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
-    let res = result.output;
-    try {
-      await this.service.addVerifyRecord(res);
-      await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
-    } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
   }
 

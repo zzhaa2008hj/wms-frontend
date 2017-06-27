@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { DialogController } from "ui";
 import { VerifyRecord } from '@app/common/models/verify-record';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class NewVerifyRecord {
@@ -12,6 +13,7 @@ export class NewVerifyRecord {
 
   activate(verifyRecord: VerifyRecord) {
     this.verifyRecord = verifyRecord;
+    this.verifyRecord.businessTypeStr = ConstantValues.BusinessTypes[this.verifyRecord.businessType - 1];
   }
 
   async save() {
