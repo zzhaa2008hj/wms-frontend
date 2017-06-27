@@ -1,20 +1,19 @@
 <template>
-    <ux-dialog>
-        <ux-dialog-header show-close-button.bind="true">
-            角色授权
-        </ux-dialog-header>
-        <ux-dialog-body>
-                <div if.bind="organizationRoles.length == 0" class="form-group">
-                    没有角色可被授权
-                </div>
-                <div class="form-group" repeat.for="role of organizationRoles" if.bind="organizationRoles.length != 0">
-                    <input type="checkbox" model.bind="role.id" checked.bind="checkedRoleIds">
-                    ${role.name}
-                </div>
-        </ux-dialog-body>
-        <ux-dialog-footer >
-            <button class="btn btn-primary" click.trigger="ok()" if.bind="organizationRoles.length != 0">确定</button>
-            <button class="btn" click.trigger="cancel()">取消</button>
-        </ux-dialog-footer>
-    </ux-dialog>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      角色授权
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div if.bind="organizationRoles.length == 0" class="form-group">
+        没有角色可被授权
+      </div>
+      <div class="form-group" if.bind="organizationRoles.length != 0" repeat.for="role of organizationRoles">
+        <input type="checkbox" model.bind="role.id" checked.bind="checkedRoleIds"> ${role.name}
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="ok()" if.bind="organizationRoles.length != 0">确定</button>
+      <button class="btn" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
 </template>
