@@ -34,3 +34,14 @@ export class HeapInfoService {
     });
   }
 }
+
+@autoinject
+export class TallyItemService {
+  constructor(private http: RestClient) {
+  }
+
+  listOrderItems(instockOrderItemId: string): Promise<any> {
+    return this.http.get(`instock/instockTallyItem/list/${instockOrderItemId}`)
+      .then(res => res.content.map(dateConverter("instockDate")));
+  }
+}
