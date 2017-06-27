@@ -1,11 +1,9 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { dateConverter, fixDate, handleResult, Query, RestClient } from '../../utils';
+import { handleResult, Query, RestClient } from '@app/utils';
 import { CargoCategory } from '../models/cargo-category';
 import { CargoInfo, CargoInfoVo, CargoRate, CargoRateStep } from '../models/cargo-info';
 import { Contract } from '../models/contract';
 import { Organization } from '../models/organization';
-import { Rate } from '../models/rate';
-import { RateStep } from '../models/rate';
 import { ContractVo } from "../models/contractVo";
 /**
  * 机构查询条件

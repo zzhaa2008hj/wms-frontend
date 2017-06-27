@@ -1,14 +1,11 @@
 import { Router } from "aurelia-router";
-import { autoinject, newInstance } from "aurelia-dependency-injection";
+import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { CargoInfoService } from "../services/cargo-info";
-import { ValidationController } from "aurelia-validation";
 import { CargoInfo, CargoInfoVo, CargoItem } from '../models/cargo-info';
 import { Contract } from '../models/contract';
 import { Organization } from '../models/organization';
-import { ContractCriteria } from '../services/contract';
 import { NewCargoItem } from './item-new';
-import { CargoInfoList } from './list';
 
 @autoinject
 export class NewCargoInfo {
@@ -48,7 +45,6 @@ export class NewCargoInfo {
 
     constructor(private router: Router,
         private cargoInfoService: CargoInfoService,
-        @newInstance() private validationController: ValidationController,
         private messageDialogService: MessageDialogService,
         private dialogService: DialogService) {
         this.datasource = new kendo.data.DataSource({
@@ -103,7 +99,8 @@ export class NewCargoInfo {
             this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
             return;
         }
-        let result = await this.dialogService.open({ viewModel: NewCargoItem, model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType }, lock: true })
+        let result = await this.dialogService.open({ viewModel: NewCargoItem,
+                model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType }, lock: true })
             .whenClosed();
         if (result.wasCancelled) return;
         //let workInfo = result.output;

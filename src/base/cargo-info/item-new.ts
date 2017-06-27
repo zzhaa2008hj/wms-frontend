@@ -1,7 +1,5 @@
-import { Router } from "aurelia-router";
-import { autoinject, newInstance } from 'aurelia-dependency-injection';
-import { ValidationController } from 'aurelia-validation';
-import { DialogController, DialogService, MessageDialogService } from 'ui';
+import { autoinject } from 'aurelia-dependency-injection';
+import { DialogController } from 'ui';
 import { CargoCategory } from '../models/cargo-category';
 import { CargoItem, CargoRate, CargoRateStep } from '../models/cargo-info';
 import { CargoInfoService } from '../services/cargo-info';
@@ -22,12 +20,8 @@ export class NewCargoItem {
 
     cargoRates: CargoRate[];
 
-    constructor(private router: Router,
-        private cargoInfoService: CargoInfoService,
-        private dialogController: DialogController,
-        @newInstance() private validationController: ValidationController,
-        private messageDialogService: MessageDialogService,
-        private dialogService: DialogService) {
+    constructor(private cargoInfoService: CargoInfoService,
+        private dialogController: DialogController) {
         this.cargoRateDataSource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
