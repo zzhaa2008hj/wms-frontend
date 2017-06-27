@@ -1,0 +1,42 @@
+<template>
+  <div class="page-title">
+    <h3>审批审核记录</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <button class="btn btn-success btn-small" click.delegate="list()">列表</button>
+      <button class="btn btn-success btn-small" click.delegate="add()">新增</button>
+    </div>
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" value.bind="batchNumber" placeholder="请输入批次号">
+      <div class="input-group-addon" click.delegate="search()"><em class="fa fa-search"></em></div>
+    </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-title="类型" k-width.bind="100">
+      <ak-template>
+        <label if.bind="category == 1">审核</label>
+        <label if.bind="category == 2">审批</label>
+      </ak-template>
+    </ak-col>
+    <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+    <ak-col k-field="businessTypeStr" k-title="业务类型"></ak-col>
+    <ak-col k-field="businessName" k-title="业务单号"></ak-col>
+    <ak-col k-field="remark" k-title="说明"></ak-col>
+    <ak-col k-title="结果" k-width.bind="100">
+      <ak-template>
+        <label if.bind="verifyStatus == 1">通过</label>
+        <label if.bind="verifyStatus == 0">拒绝</label>
+      </ak-template>
+    </ak-col>
+    <ak-col k-field="applyPerson" k-title="申请人"></ak-col>
+    <ak-col k-field="applyTime" k-title="申请时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <ak-col k-field="verifyPerson" k-title="审批人"></ak-col>
+    <ak-col k-field="verifyTime" k-title="审批时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <ak-col k-title="操作">
+      <ak-template>
+        <button class="btn btn-success btn-small" if.bind="category == 2" click.delegate="edit(id)">审批</button>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
+</template>
