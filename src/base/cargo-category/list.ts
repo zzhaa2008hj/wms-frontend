@@ -40,7 +40,6 @@ export class CargoCategoryList {
 
   async initData() {
     let data = await this.cargoCategoryService.listCargoCategory();
-    console.log(data);
     this.dataSource.data(data);
   }
 
@@ -88,7 +87,6 @@ export class CargoCategoryList {
 
   async changeState(item) {
     let id = item.id;
-    console.log(item);
     try {
       if (!item.hasChildren) {
         await this.cargoCategoryService.updateState(id);
