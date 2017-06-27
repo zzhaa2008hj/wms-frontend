@@ -1,9 +1,9 @@
 /**
  * Created by shun on 2017/6/19.
  */
-import {OrganizationRole} from "../models/organization-role";
-import {Menu} from "../models/menu";
-import {Query, handleResult, RestClient} from "../../utils";
+import {OrganizationRole} from "@app/base/models/organization-role";
+import {Menu} from "@app/base/models/menu";
+import {Query, handleResult, RestClient} from "@app/utils";
 import {autoinject} from "aurelia-dependency-injection";
 
 @autoinject
@@ -22,19 +22,19 @@ export class OrganizationRoleService {
   /**
    * 新增
    */
-  async add(role: OrganizationRole) {
+  async add(role: OrganizationRole): Promise<void> {
     await this.http.post('/base/org-role', role).then(handleResult);
   }
   /**
    * 修改
    */
-  async edit(id: string, role: OrganizationRole) {
+  async edit(id: string, role: OrganizationRole): Promise<void> {
     await this.http.put(`/base/org-role/${id}`, role).then(handleResult);
   }
   /**
    * 删除
    */
-  async deleteOrganizationRole(id: string) {
+  async deleteOrganizationRole(id: string): Promise<void> {
     await this.http.delete(`/base/org-role/${id}`).then(handleResult);
   }
 
@@ -57,7 +57,7 @@ export class OrganizationRoleService {
   /**
    * 菜单授权
    */
-  async assignOrgRoleMenu(roleId: string, menuIds: string[]) {
+  async assignOrgRoleMenu(roleId: string, menuIds: string[]): Promise<void> {
     await this.http.put(`/base/org-role/menu/${roleId}`, menuIds).then(handleResult);
   }
 }

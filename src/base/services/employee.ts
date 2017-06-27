@@ -1,9 +1,9 @@
 /**
  * Created by shun on 2017/6/15.
  */
-import { Employee } from "../models/employee";
-import { OrganizationRole } from "../models/organization-role";
-import { Query, handleResult, RestClient } from "../../utils";
+import { Employee } from "@app/base/models/employee";
+import { OrganizationRole } from "@app/base/models/organization-role";
+import { Query, handleResult, RestClient } from "@app/utils";
 import { autoinject } from "aurelia-dependency-injection";
 
 @autoinject
@@ -36,7 +36,7 @@ export class EmployeeService {
   /**
    * 保存员工
    */
-  async saveEmployee(employee: Employee) {
+  async saveEmployee(employee: Employee): Promise<void> {
     await this.http.post('/base/employee', employee).then(handleResult);
   }
 
@@ -51,7 +51,7 @@ export class EmployeeService {
   /**
    * 修改员工
    */
-  async updateEmployee(id: string, employee: Employee) {
+  async updateEmployee(id: string, employee: Employee): Promise<void> {
     await this.http.put(`/base/employee/${id}`, employee).then(handleResult);
   }
 
@@ -74,18 +74,18 @@ export class EmployeeService {
   /**
    * 授权角色
    */
-  async updateAuthorization(id: string, checkedRoleIds: string[]) {
+  async updateAuthorization(id: string, checkedRoleIds: string[]): Promise<void> {
     await this.http.put(`/base/employee/auth/${id}`, checkedRoleIds).then(handleResult);
   }
 
   /**
    * 重置密码
    */
-  async resetPassword(id: string) {
+  async resetPassword(id: string): Promise<void> {
     await this.http.put(`/base/employee/${id}/reset-password`, null).then(handleResult);
   }
 
-  async listEmployee() {
+  async listEmployee(): Promise<Employee[]> {
     let res = await this.http.get(`/rest/employee/list`);
     return res.content;
   }

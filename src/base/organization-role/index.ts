@@ -1,5 +1,5 @@
 import {Router, RouterConfiguration} from "aurelia-router";
-import {autoinject, Container} from "aurelia-dependency-injection";
+import {autoinject} from "aurelia-dependency-injection";
 
 @autoinject
 export class RoleList {

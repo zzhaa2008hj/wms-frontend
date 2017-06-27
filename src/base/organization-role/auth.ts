@@ -2,10 +2,10 @@
  * Created by shun on 2017/6/20.
  */
 import { Router} from "aurelia-router";
-import { autoinject, inject} from "aurelia-dependency-injection";
+import { inject} from "aurelia-dependency-injection";
 import { DialogService } from "ui";
-import { OrganizationRoleService} from "../services/organization-role";
-import { Menu} from "../models/menu";
+import { OrganizationRoleService} from "@app/base/services/organization-role";
+import { Menu} from "@app/base/models/menu";
 
 export class AuthMenu {
 

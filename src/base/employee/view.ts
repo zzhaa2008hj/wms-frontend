@@ -1,7 +1,7 @@
-import { autoinject, inject} from "aurelia-dependency-injection";
+import { inject} from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
-import { EmployeeService } from "../services/employee";
-import { Employee } from "../models/employee";
+import { EmployeeService } from "@app/base/services/employee";
+import { Employee } from "@app/base/models/employee";
 
 export class EmployeeEdit {
 

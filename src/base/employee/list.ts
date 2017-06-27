@@ -1,14 +1,12 @@
 /**
  * Created by shun on 2017/6/15.
  */
-import {autoinject, inject} from "aurelia-dependency-injection";
-import {Router} from "aurelia-router";
-import {EmployeeService} from "../services/employee";
-import {DataSourceFactory} from "../../utils";
+import {inject} from "aurelia-dependency-injection";
+import {EmployeeService} from "@app/base/services/employee";
+import {DataSourceFactory} from "@app/utils";
 import {DialogService} from "ui";
-import {Employee} from "../models/employee";
-import { EmployeeAuth } from "./auth";
-import { EmployeePassword } from "./reset";
+import {Employee} from "@app/base/models/employee";
+import { EmployeeAuth } from "auth";
 import {computedFrom} from "aurelia-framework";
 
 export class EmployeeList {
@@ -24,7 +22,6 @@ export class EmployeeList {
   selection: Employee[] = [];
 
   constructor(@inject private employeeService: EmployeeService,
-              @inject private router: Router,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
