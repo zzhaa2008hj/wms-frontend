@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { Query, RestClient } from "@app/utils";
+import { dateConverter, Query, RestClient } from "@app/utils";
 import { WorkOrder, WorkOrderItem } from "@app/instock/models/work";
 /**
  * 查询条件
@@ -18,7 +18,8 @@ export class WorkOrderService {
   }
 
   getWorkOders(businessId: string): Promise<WorkOrder []> {
-    return this.http.get(`/instock/warehouseWorkOrder/list/${businessId}`).then(res => res.content);
+    return this.http.get(`/instock/warehouseWorkOrder/list/${businessId}`)
+      .then(res => res.content.map(dateConverter("workDate")));
   }
 }
 
