@@ -20,57 +20,6 @@
         <ak-col k-title="计量单位" k-field="orderNumber"></ak-col>
         <ak-col k-title="阶段" k-field="unit"></ak-col>
         <ak-col k-title="是否有拆单" k-field="title"></ak-col>
-        <ak-template for="detailTemplate">
-            <div class="tabstrip">
-                <ul>
-                    <li>货物信息</li>
-                    <li>车辆信息</li>
-                    <li>作业信息</li>
-                </ul>
-                <div>
-                    <ak-grid k-data-source.bind="dataSourceCargoItem"
-                             k-pageable.bind="pageable"
-                             k-sortable.bind="true">
-                        <ak-col k-title="批次号" k-field="batchNumber"></ak-col>
-                        <ak-col k-title="入库数量" k-field="actualQuantity"></ak-col>
-                        <ak-col k-title="入库件数" k-field="actualNumber"></ak-col>
-                        <ak-col k-title="计量单位" k-field="orderNumber"></ak-col>
-                        <ak-col k-title="集装箱号" k-field="containerNumber"></ak-col>
-                        <ak-col k-title="操作">
-                            <ak-template>
-                                <button class="btn btn-warning btn-small" if.bind="visible == 1" click.delegate="changeVisible(id)">
-                                    隐藏
-                                </button>
-                                <button class="btn btn-primary btn-small" if.bind="visible == 2" click.delegate="changeVisible(id)">
-                                    显示
-                                </button>
-                            </ak-template>
-                        </ak-col>
-                    </ak-grid>
-                </div>
-                <div>
-                    <ak-grid k-data-source.bind="dataSourceVehicle"
-                             k-pageable.bind="pageable"
-                             k-sortable.bind="true">
-                        <ak-col k-title="批次号" k-field="batchNumber"></ak-col>
-                        <ak-col k-title="入库数量" k-field="actualQuantity"></ak-col>
-                        <ak-col k-title="入库件数" k-field="actualNumber"></ak-col>
-                        <ak-col k-title="计量单位" k-field="orderNumber"></ak-col>
-                        <ak-col k-title="集装箱号" k-field="containerNumber"></ak-col>
-                        <ak-col k-title="操作">
-                            <ak-template>
-                                <button class="btn btn-warning btn-small" if.bind="visible == 1" click.delegate="changeVisible(id)">
-                                    隐藏
-                                </button>
-                                <button class="btn btn-primary btn-small" if.bind="visible == 2" click.delegate="changeVisible(id)">
-                                    显示
-                                </button>
-                            </ak-template>
-                        </ak-col>
-                    </ak-grid>
-                </div>
-            </div>
-        </ak-template>
         <ak-col k-title="操作">
             <ak-template>
                 <button class="btn btn-warning btn-small" if.bind="visible == 1" click.delegate="changeVisible(id)">
@@ -79,6 +28,8 @@
                 <button class="btn btn-primary btn-small" if.bind="visible == 2" click.delegate="changeVisible(id)">
                     显示
                 </button>
+                <a class="btn btn-sm btn-small btn-primary" route-href="route: details">详情</a>
+
             </ak-template>
         </ak-col>
     </ak-grid>

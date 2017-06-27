@@ -38,35 +38,14 @@
                         <label class="form-label">作业内容*</label>
                         <span class="help"></span>
                         <button class="btn btn-cons btn-small" type="button"
-                                click.delegate="isWorkInfo = !isWorkInfo">请选择...</button>
-                        <ak-treeview if.bind="isWorkInfo"
-                                k-data-source.bind="dataSourceWorkInfo"
-                                k-drag-and-drop.bind="true"
-                                k-widget.bind="selectedWorkInfo"
-                                k-on-change.trigger="onSelectedWorkInfoChange($event)">
-                            <ak-template>
-                                <div>
-                                    ${name}
-                                </div>
-                            </ak-template>
-                        </ak-treeview>
+                                click.delegate="selectWorkInfo()">请选择...</button>
                     </div>
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">货物类别*</label>
                         <span class="help"></span>
                             <button class="btn btn-cons btn-small" type="button"
-                                    click.delegate="isCargoCategory = !isCargoCategory" >请选择...</button>
-                            <ak-treeview if.bind="isCargoCategory"
-                                    k-data-source.bind="dataSourceCargoCategory"
-                                    k-drag-and-drop.bind="true"
-                                    k-widget.bind="selectedCargoCategory"
-                                    k-on-change.trigger="onSelectedCargoCategoryChange($event)">
-                                <ak-template>
-                                    <div>
-                                        ${categoryName}
-                                    </div>
-                                </ak-template>
-                            </ak-treeview>
+                                    click.delegate="selectCargoCategory()" >请选择...</button>
+
                     </div>
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">品牌</label>

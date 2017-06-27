@@ -1,8 +1,8 @@
 import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
 import { autoinject } from "aurelia-dependency-injection";
-import { CargoFlow } from "../models/cargo-flow";
-import { CargoFlowService } from "../services/cargo-flow";
+import { CargoFlow } from "@app/instock/cargo-flow/list";
+import { CargoFlowService } from "@app/instock/services/cargo-flow";
 /**
  * Created by Hui on 2017/6/23.
  */

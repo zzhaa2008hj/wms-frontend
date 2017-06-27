@@ -1,0 +1,23 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 作业内容
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <ak-treeview k-data-source.bind="dataSourceWorkInfo"
+                         k-drag-and-drop.bind="true"
+                         k-widget.bind="selectedWorkInfo"
+                         k-on-change.trigger="onSelectedWorkInfoChange($event)">
+                <ak-template>
+                    <div>
+                        ${name}
+                    </div>
+                </ak-template>
+            </ak-treeview>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">保存</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>
