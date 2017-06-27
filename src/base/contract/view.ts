@@ -1,9 +1,9 @@
 import { Router } from "aurelia-router";
 import { autoinject } from "aurelia-dependency-injection";
 import { ContractVo } from "../models/contractVo";
-import { ContractService } from "../services/contract";
-import { WorkInfo } from "../models/work-info";
-import { Rate, RateStep } from "../models/rate";
+import { ContractService } from "@app/base/services/contract";
+import { WorkInfo } from "@app/base/models/work-info";
+import { Rate, RateStep } from "@app/base/models/rate";
 
 @autoinject
 export class ViewContract {

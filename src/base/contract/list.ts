@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
-import { DataSourceFactory } from "../../utils";
-import { ContractService } from "../services/contract";
+import { DataSourceFactory } from "@app/utils";
+import { ContractService } from "@app/base/services/contract";
 
 @autoinject
 export class ContractList {

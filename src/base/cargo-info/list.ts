@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
-import { DataSourceFactory } from "../../utils";
-import { CargoInfoService } from "../services/cargo-info";
+import { DataSourceFactory } from "@app/utils";
+import { CargoInfoService } from "@app/base/services/cargo-info";
 
 @autoinject
 export class CargoInfoList {

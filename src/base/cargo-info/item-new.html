@@ -15,7 +15,7 @@
                                     <label class="form-label">货物名称*</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <input type="text" class="form-control" value.bind="cargoItem.cargo_name & validate">
+                                        <input type="text" class="form-control" value.bind="cargoItem.cargo_name ">
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                                     <label class="form-label">指令数量*</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <input type="text" class="form-control" value.bind="cargoItem.orderQuantity & validate">
+                                        <input type="text" class="form-control" value.bind="cargoItem.orderQuantity ">
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +80,7 @@
                                             <ak-col k-field="rateCategory == 1 ? '仓储费': rateCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
                                             <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="费用类型"></ak-col>
                                             <ak-col k-title="单价">
-                                                <ak-template><input type="text" value.bind="price & validate & notify">
+                                                <ak-template><input type="text" value.bind="price  & notify">
                                                 </ak-template>
                                             </ak-col>
                                             <ak-col k-field="unit" k-title="计量单位"></ak-col>
