@@ -2,15 +2,13 @@ import {Router} from "aurelia-router";
 import {inject} from "aurelia-dependency-injection";
 import {InstockOrderVo} from "@app/instock/models/instock-order";
 import {InstockOrderService} from "@app/instock/services/instock-order";
-import { DataSourceFactory } from "@app/utils";
 
 export class InstockOrderView {
     instockOrderVo: InstockOrderVo;
     datasource: kendo.data.DataSource;
 
     constructor(@inject private router: Router,
-                @inject private instockOrderService: InstockOrderService,
-                @inject private dataSourceFactory: DataSourceFactory) {
+                @inject private instockOrderService: InstockOrderService) {
     }
 
     /**
