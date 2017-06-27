@@ -4,11 +4,15 @@
         <div class="grid-body no-border"><br>
             <form submit.delegate="addNewCargoFlow()">
                 <div class="form-group">
-                    <label class="form-label">标题*</label>
+                    <label class="form-label">批次号*</label>
                     <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" name="names" value.bind="title">
-                    </div>
+                    <ak-drop-down-list  k-widget.two-way="selectedCargoInfo"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="batchNumber"
+                                       k-data-value-field="batchNumber"
+                                       k-data-source.bind="cargoInfo"
+                                       k-on-select.delegate="onSelectCargoInfo($event.detail)">
+                    </ak-drop-down-list>
                 </div>
 
 
