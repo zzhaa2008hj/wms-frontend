@@ -6,6 +6,8 @@ export interface VerifyRecordCriteria {
   batchNumber?: string;
   category?: string;
   businessName?: string;
+  businessId?: string;
+  businessType?: number;
 }
 
 @autoinject

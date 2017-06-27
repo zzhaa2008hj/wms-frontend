@@ -41,7 +41,6 @@ export class WarehouseList {
 
   async initData() {
     let data = await this.warehouseService.listWarehouse();
-    console.log(data);
     this.dataSource.data(data);
   }
 
@@ -89,7 +88,6 @@ export class WarehouseList {
 
   async changeState(item) {
     let id = item.id;
-    console.log(item);
     try {
       if (!item.hasChildren) {
         await this.warehouseService.updateState(id);
