@@ -90,7 +90,7 @@ export interface CargoItem {
 
     freeDays: string;
 
-    cargoRate: CargoRate[];
+    cargoRates: CargoRate[];
 
     // cargoRateSteps: CargoRateStep[];
 }

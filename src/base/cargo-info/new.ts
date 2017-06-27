@@ -1,11 +1,11 @@
 import { Router } from "aurelia-router";
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
-import { CargoInfoService } from "../services/cargo-info";
-import { CargoInfo, CargoInfoVo, CargoItem } from '../models/cargo-info';
-import { Contract } from '../models/contract';
-import { Organization } from '../models/organization';
-import { NewCargoItem } from './item-new';
+import { CargoInfoService } from "@app/base/services/cargo-info";
+import { CargoInfo, CargoInfoVo, CargoItem } from '@app/base/models/cargo-info';
+import { Contract } from '@app/base/models/contract';
+import { Organization } from '@app/base/models/organization';
+import { NewCargoItem } from '@app/base/cargo-info/item-new';
 
 @autoinject
 export class NewCargoInfo {
@@ -32,7 +32,7 @@ export class NewCargoInfo {
     unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
     agents: Organization[];
     customers: Organization[];
-    cargoInfoVo: CargoInfoVo;
+    cargoInfoVo = {} as CargoInfoVo;
     cargoInfo = {} as CargoInfo;
     cargoItems = [] as CargoItem[];
     contract: Contract[];
@@ -76,8 +76,8 @@ export class NewCargoInfo {
         // this.wareHouseCustomer = await this.cargoInfoService.getCustomers(1);
         // this.baseRateAndSteps = await this.cargoInfoService.getBaseRate();
         // this.baseRateStep = await this.cargoInfoService.getBaseRateStep();
-        //let aa = await this.cargoInfoService.getBatchNumber();
-        //console.log(aa)
+        let res = await this.cargoInfoService.getBatchNumber();
+        this.cargoInfo.batchNumber = res.message;
         // 仓储代理商
         this.agents = await this.cargoInfoService.getCustomers(1);
         //仓储客户
@@ -85,9 +85,18 @@ export class NewCargoInfo {
         //仓储合同
         this.contract = await this.cargoInfoService.getContracts(1);
         //把没有仓储合同的客户排除掉
-        this.contract.forEach(r => {
-            this.customers = this.customers.filter(x => x.id != r.customerId);
+        let customersWithContract = [];
+        this.customers.forEach(r => {
+            this.contract.every(x => {
+                if (r.id == x.customerId) {
+                    customersWithContract.push(r);
+                    return false;
+                }
+                return true;
+            });
+
         });
+        this.customers = customersWithContract;
 
         this.cargoInfo.warehouseType = "1";
         this.cargoInfo.cargoForm = "1";
@@ -99,8 +108,10 @@ export class NewCargoInfo {
             this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
             return;
         }
-        let result = await this.dialogService.open({ viewModel: NewCargoItem,
-                model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType }, lock: true })
+        let result = await this.dialogService.open({
+            viewModel: NewCargoItem,
+            model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType }, lock: true
+        })
             .whenClosed();
         if (result.wasCancelled) return;
         //let workInfo = result.output;
@@ -152,13 +163,14 @@ export class NewCargoInfo {
         this.cargoInfoVo.cargoInfo = this.cargoInfo;
         this.cargoInfoVo.cargoItems = this.cargoItems;
 
-        try {
-            await this.cargoInfoService.saveCargoInfo(this.cargoInfoVo);
-            await this.messageDialogService.alert({ title: "新增成功" });
-            this.router.navigateToRoute("list");
-        } catch (err) {
-            await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
-        }
+        console.log(this.cargoInfoVo)
+        // try {
+        //     await this.cargoInfoService.saveCargoInfo(this.cargoInfoVo);
+        //     await this.messageDialogService.alert({ title: "新增成功" });
+        //     this.router.navigateToRoute("list");
+        // } catch (err) {
+        //     await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+        // }
     }
 
     updateProp(item, property) {

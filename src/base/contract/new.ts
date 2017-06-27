@@ -1,11 +1,11 @@
 import { Router } from "aurelia-router";
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
-import { ContractService } from "../services/contract";
-import { ContractVo } from "../models/contractVo";
-import { Rate, RateStep } from "../models/rate";
-import { WorkInfo } from "../models/work-info";
-import { Organization } from "../models/organization";
+import { ContractService } from "@app/base/services/contract";
+import { ContractVo } from "@app/base/models/contractVo";
+import { Rate, RateStep } from "@app/base/models/rate";
+import { WorkInfo } from "@app/base/models/work-info";
+import { Organization } from "@app/base/models/organization";
 
 @autoinject
 export class NewContract {
