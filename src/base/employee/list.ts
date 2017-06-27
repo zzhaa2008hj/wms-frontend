@@ -6,8 +6,8 @@ import {EmployeeService} from "@app/base/services/employee";
 import {DataSourceFactory} from "@app/utils";
 import {DialogService} from "ui";
 import {Employee} from "@app/base/models/employee";
-import { EmployeeAuth } from "./auth";
 import {computedFrom} from "aurelia-framework";
+import { EmployeeAuth } from '@app/base/employee/auth';
 
 export class EmployeeList {
 
@@ -22,7 +22,6 @@ export class EmployeeList {
   selection: Employee[] = [];
 
   constructor(@inject private employeeService: EmployeeService,
-              @inject private router: Router,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
@@ -92,7 +91,7 @@ export class EmployeeList {
   /**
    * 批量禁用启用
    */
-  private async updateStatus(status: string) {
+  async updateStatus(status: string) {
     let employees = this.selection;
     if (employees.length == 0) return;
     let ids = employees.map(emp => emp.id);
