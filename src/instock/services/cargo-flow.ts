@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, Query, RestClient } from "../../utils";
-import { CargoFlow } from "../models/cargo-flow";
+import { handleResult, Query, RestClient } from "@app/utils";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -13,12 +14,22 @@ export class CargoFlowService {
     return this.http.query(`/instock/cargo-flow/page`, param);
   }
 
-  async saveCargoFlow(cargoFlow: CargoFlow) {
-    await this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
+  saveCargoFlow(cargoFlow: CargoFlow): Promise<void> {
+    return this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
   }
 
-  async updateVisible(id: string) {
-    await this.http.put(`/instock/cargo-flow/${id}`, null).then(handleResult);
+  updateVisible(id: string): Promise<void> {
+    return this.http.put(`/instock/cargo-flow/${id}`, null).then(handleResult);
   }
 
+
+  async listCargoInfos(): Promise<CargoInfo> {
+    let res = await this.http.get(`/base/cargoInfo/list`);
+    return res.content;
+  }
+
+  async listCargoItems(cargoInfoId: string): Promise<CargoItem> {
+    let res = await  this.http.get(`/instock/cargo-flow/${cargoInfoId}/cargoItemList`);
+    return res.content;
+  }
 }

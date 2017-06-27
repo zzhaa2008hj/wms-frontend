@@ -20,4 +20,33 @@ export interface CargoFlow {
   stage: number;
   remark: string;
   orgId: string;
+
+  //入库货物信息
+  cargoItem: InstockCargoItem[];
+  //车辆信息
+  vehicle: Vehicle[];
+}
+export interface InstockCargoItem {
+  id: string;
+  instockFlowId: string;
+  batchNumber: string;
+  instockFlowNumber: string;
+  cargoItemId: string;
+  orderQuantity: number;
+  orderNumber: number;
+  actualQuantity: number;
+  actualNumber: number;
+  unit: string;
+  containerNumber: string;
+  remark: string;
+  orgId: string;
+}
+export interface Vehicle {
+  instockGoodsId: string;
+  plateNumber: string;
+  driverName: string;
+  driverIdentityNumber: string;
+  phoneNumber: string;
+  remark: string;
+  orgId: string;
 }
