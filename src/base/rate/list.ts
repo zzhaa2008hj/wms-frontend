@@ -1,7 +1,7 @@
-import { RateService } from "../services/rate";
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
-import { DataSourceFactory } from "../../utils";
+import { RateService } from "@app/base/services/rate";
+import { DataSourceFactory } from "@app/utils";
 @autoinject
 export class Rate {
   searchName: string;

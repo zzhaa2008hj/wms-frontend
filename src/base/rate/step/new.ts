@@ -1,6 +1,6 @@
 import { DialogController } from "ui";
-import { Rate, RateStep } from "../../models/Rate";
 import { autoinject } from "aurelia-dependency-injection";
+import { RateStep } from "@app/base/models/rate";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -14,12 +14,7 @@ export class NewRateStep {
 
   }
 
-  activate(id: string) {
-    this.rateId = id;
-  }
-
   async save() {
-    this.rateStep.rateId = this.rateId;
     await this.dialogController.ok(this.rateStep);
   }
 

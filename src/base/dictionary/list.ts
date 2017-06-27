@@ -1,9 +1,9 @@
-import { DictionaryService } from "../services/dictionary";
 import { autoinject } from "aurelia-dependency-injection";
 import { DialogService, MessageDialogService } from "ui";
-import { createDataSource } from "../../utils";
 import { EditDictionary } from "./edit";
 import { NewDictionary } from "./new";
+import { createDataSource } from "@app/utils";
+import { DictionaryService } from "@app/base/services/dictionary";
 @autoinject
 export class Dictionary {
   searchName: string;

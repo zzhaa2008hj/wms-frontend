@@ -22,6 +22,7 @@ export class EmployeeList {
   selection: Employee[] = [];
 
   constructor(@inject private employeeService: EmployeeService,
+              @inject private router: Router,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({

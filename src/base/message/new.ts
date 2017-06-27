@@ -1,11 +1,9 @@
+import { autoinject } from "aurelia-dependency-injection";
+import { MessageService } from "@app/base/services/message";
 import { Router } from "aurelia-router";
+import { EmployeeService } from "@app/base/services/employee";
 import { MessageDialogService } from "ui";
-import { MessageResultService, MessageService } from "../services/message";
-import { autoinject, inject } from "aurelia-dependency-injection";
-import { Message } from "../models/Message";
-import { EmployeeService } from "../services/employee";
-import { OrganizationService } from "../services/organization";
-import { observable } from "aurelia-framework";
+import { Message } from "@app/base/models/message";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -18,17 +16,19 @@ export class NewMessage {
   dataSourceReceiver = new kendo.data.DataSource({
     serverFiltering: true,
     transport: {
-      read:async options => {
+      read: async options => {
         try {
           if (!this.selectedCategory) {
             options.success([]);
           }
+          let res;
           if (this.selectedCategory.value() == 1) {
-            this.employeeService.listEmployee().then(options.success);
+            res = await this.employeeService.listEmployee();
           }
           if (this.selectedCategory.value() == 2) {
-            this.messageService.listCustomer().then(options.success);
+            res = await this.messageService.listCustomer();
           }
+          options.success(res);
         } catch (err) {
           options.error("", "", err);
         }

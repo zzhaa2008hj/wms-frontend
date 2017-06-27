@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-export class WarehouseRouter {
+export class CargoFlowRouter {
 
   router: Router;
 
@@ -8,6 +8,7 @@ export class WarehouseRouter {
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
       { route: '/edit', name: 'edit', moduleId: './edit', title: "编辑" },
+      { route: '/details', name: 'details', moduleId: './details', title: "详情" }
     ]);
     this.router = router;
 

@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, Query, RestClient } from "../../utils";
-import { Rate, RateStep } from "../models/Rate";
+import { handleResult, Query, RestClient } from "@app/utils";
+import { Rate, RateStep } from "@app/base/models/rate";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -13,25 +13,26 @@ export class RateService {
     return this.http.query(`/base/rate/page`, param);
   }
 
-  saveRate(rate: Rate) {
-    this.http.post(`/base/rate`, rate).then(handleResult);
+  saveRate(rate: Rate): Promise<void> {
+    return this.http.post(`/base/rate`, rate).then(handleResult);
   }
 
 
-  updateState(id: string) {
-    this.http.put(`/base/rate/${id}`, null).then(handleResult);
+  updateState(id: string): Promise<void> {
+    return this.http.put(`/base/rate/${id}`, null).then(handleResult);
   }
 
   async getRate(id: string): Promise<Rate> {
-    return await this.http.get(`/base/rate/${id}`);
+    let res = await this.http.get(`/base/rate/${id}`);
+    return res.content;
   }
 
-  updateRate(rate: Rate) {
-    this.http.put(`/base/rate/${rate.id}`, rate).then(handleResult);
+  updateRate(rate: Rate): Promise<void> {
+    return this.http.put(`/base/rate/${rate.id}`, rate).then(handleResult);
   }
 
-  deleteRate(id: string) {
-    this.http.delete(`/base/rate/${id}`).then(handleResult);
+  deleteRate(id: string): Promise<void> {
+    return this.http.delete(`/base/rate/${id}`).then(handleResult);
   }
 }
 
@@ -40,19 +41,8 @@ export class RateStepService {
   constructor(private http: RestClient) {
   }
 
-  queryRateSteps(rateId: string): Query<RateStep> {
-    return this.http.query(`/base/rateStep/${rateId}/page`);
-  }
-
-  saveRateStep(rateStep: RateStep) {
-    return this.http.post(`/base/rateStep`, rateStep).then(handleResult);
-  }
-
-  updateState(id: string) {
-    return this.http.put(`/base/rateStep/${id}`, null).then(handleResult);
-  }
-
-  deleteRateStep(id: string) {
-    return this.http.delete(`/base/rateStep/${id}`).then(handleResult);
+  async listRateStepByRateId(rateId: string): Promise<RateStep[]> {
+    let res = await this.http.get(`/base/rateStep/${rateId}`);
+    return res.content;
   }
 }

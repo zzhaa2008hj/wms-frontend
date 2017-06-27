@@ -1,8 +1,8 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { MessageService } from "@app/base/services/message";
+import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 @autoinject
-export class Message {
+export class CargoFlow {
   searchName: string;
 
   pageable = {
@@ -12,10 +12,10 @@ export class Message {
   };
   private dataSource: kendo.data.DataSource;
 
-  constructor(private messageService: MessageService,
+  constructor(private cargoFlowService: CargoFlowService,
               private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.messageService.queryMessages({ keywords: this.searchName }),
+      query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName }),
       pageSize: 10
     });
   }
@@ -23,6 +23,5 @@ export class Message {
   select() {
     this.dataSource.read();
   }
-
 
 }

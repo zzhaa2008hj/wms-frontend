@@ -1,6 +1,6 @@
-import { CargoCategory } from "../models/cargo-category";
 import { autoinject } from "aurelia-dependency-injection";
 import { DialogController } from "ui";
+import { CargoCategory } from "@app/base/models/cargo-category";
 /**
  * Created by Hui on 2017/6/14.
  */

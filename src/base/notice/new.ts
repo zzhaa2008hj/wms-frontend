@@ -1,11 +1,8 @@
 import { Router } from "aurelia-router";
 import { MessageDialogService } from "ui";
-import { NoticeService } from "../services/notice";
 import { autoinject } from "aurelia-dependency-injection";
-import { Notice } from "../models/Notice";
-import { WorkInfoService } from "../services/work-info";
-import { WorkInfo } from "../models/work-info";
-import { CargoCategoryService } from "../services/cargo-category";
+import { Notice } from "@app/base/models/notice";
+import { NoticeService } from "@app/base/services/notice";
 /**
  * Created by Hui on 2017/6/14.
  */

@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, Query, RestClient } from "../../utils";
-import { Dictionary } from "../models/Dictionary";
+import { handleResult, Query, RestClient } from "@app/utils";
+import { Dictionary } from "@app/base/models/dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -9,7 +9,7 @@ export class DictionaryService {
   constructor(private http: RestClient) {
   }
 
-  queryDictionaries(param?: { name: string }): Query<any> {
+  queryDictionaries(param?: { name: string }): Query<Dictionary> {
     return this.http.query(`/base/dictionary/page`, param);
   }
 
@@ -46,19 +46,19 @@ export class DictionaryDataService {
   }
 
   saveDictionaryData(dictionaryData: Dictionary) {
-    this.http.post(`/base/dictionaryData`, dictionaryData).then(handleResult);
+    return  this.http.post(`/base/dictionaryData`, dictionaryData).then(handleResult);
   }
 
 
   updateState(id: string) {
-    this.http.put(`/base/dictionaryData/${id}/state`, null).then(handleResult);
+    return  this.http.put(`/base/dictionaryData/${id}/state`, null).then(handleResult);
   }
 
   updateDictionaryData(dictionaryData: Dictionary) {
-    this.http.put(`/base/dictionaryData/${dictionaryData.id}`, dictionaryData).then(handleResult);
+    return  this.http.put(`/base/dictionaryData/${dictionaryData.id}`, dictionaryData).then(handleResult);
   }
 
   deleteDictionaryData(id: any) {
-    this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
+    return this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
   }
 }

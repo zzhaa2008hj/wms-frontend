@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, RestClient } from "../../utils";
-import { CargoCategory } from "../models/cargo-category";
+import { handleResult, RestClient } from "@app/utils";
+import { CargoCategory } from "@app/base/models/cargo-category";
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -15,19 +15,19 @@ export class CargoCategoryService {
     return res.content;
   }
 
-  saveCargoCategory(cargoCategory: CargoCategory) {
-    this.http.post(`/base/cargoCategory`, cargoCategory).then(handleResult);
+  saveCargoCategory(cargoCategory: CargoCategory): Promise<void> {
+    return this.http.post(`/base/cargoCategory`, cargoCategory).then(handleResult);
   }
 
-  updateState(id: string) {
-    this.http.put(`/base/cargoCategory/${id}/state`, null).then(handleResult);
+  updateState(id: string): Promise<void> {
+    return this.http.put(`/base/cargoCategory/${id}/state`, null).then(handleResult);
   }
 
-  updateCargoCategory(cargoCategory: CargoCategory) {
-    this.http.put(`/base/cargoCategory/${cargoCategory.id}`, cargoCategory).then(handleResult);
+  updateCargoCategory(cargoCategory: CargoCategory): Promise<void> {
+    return this.http.put(`/base/cargoCategory/${cargoCategory.id}`, cargoCategory).then(handleResult);
   }
 
-  deleteCargoCategory(id: string) {
-    this.http.delete(`/base/cargoCategory/${id}`).then(handleResult);
+  deleteCargoCategory(id: string): Promise<void> {
+    return this.http.delete(`/base/cargoCategory/${id}`).then(handleResult);
   }
 }
