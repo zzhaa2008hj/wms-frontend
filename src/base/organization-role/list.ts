@@ -1,14 +1,13 @@
 /**
  * Created by shun on 2017/6/19.
  */
-import { autoinject, inject } from "aurelia-dependency-injection";
-import { Router } from "aurelia-router";
-import { DataSourceFactory } from "../../utils";
-import { OrganizationRoleService } from "../services/organization-role";
+import { inject } from "aurelia-dependency-injection";
+import { DataSourceFactory } from "@app/utils";
+import { OrganizationRoleService } from "@app/base/services/organization-role";
 import { DialogService } from "ui";
-import {OrganizationRoleAdd} from "./new";
-import {OrganizationRoleEdit} from "./edit";
-import {OrganizationRole} from "../models/organization-role";
+import {OrganizationRoleAdd} from "new";
+import {OrganizationRoleEdit} from "edit";
+import {OrganizationRole} from "@app/base/models/organization-role";
 
 export class RoleList {
   name: string;
@@ -20,8 +19,7 @@ export class RoleList {
     buttonCount: 10
   };
 
-  constructor(@inject private router: Router,
-              @inject private roleService: OrganizationRoleService,
+  constructor(@inject private roleService: OrganizationRoleService,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({

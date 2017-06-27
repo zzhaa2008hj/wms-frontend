@@ -1,12 +1,12 @@
 /**
  * Created by shun on 2017/6/16.
  */
-import {autoinject, inject} from "aurelia-dependency-injection";
+import {inject} from "aurelia-dependency-injection";
 import {Router} from "aurelia-router";
-import {EmployeeService} from "../services/employee";
-import {Employee} from "../models/employee";
-import {OrganizationRole} from "../models/organization-role";
-import { DialogController, DialogService } from "ui";
+import {EmployeeService} from "@app/base/services/employee";
+import {Employee} from "@app/base/models/employee";
+import {OrganizationRole} from "@app/base/models/organization-role";
+import {DialogService } from "ui";
 
 export class EmployeeAdd {
 

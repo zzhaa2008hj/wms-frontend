@@ -1,11 +1,11 @@
 /**
  * Created by shun on 2017/6/20.
  */
-import {autoinject, inject, newInstance} from "aurelia-dependency-injection";
-import {OrganizationRole} from "../models/organization-role";
-import { DialogController, DialogService } from "ui";
+import {inject, newInstance} from "aurelia-dependency-injection";
+import {OrganizationRole} from "@app/base/models/organization-role";
+import { DialogController} from "ui";
 import { ValidationController , ValidationRules } from "aurelia-validation";
-import { formValidationRenderer } from "../../validation/support";
+import { formValidationRenderer } from "@app/validation/support";
 
 export class OrganizationRoleEdit {
 
