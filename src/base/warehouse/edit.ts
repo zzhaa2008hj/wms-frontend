@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { DialogController } from "ui";
-import { Warehouse } from "../models/warehouse";
+import { Warehouse } from "@app/base/models/warehouse";
 /**
  * Created by Hui on 2017/6/14.
  */

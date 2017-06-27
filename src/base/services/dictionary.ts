@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, Query, RestClient } from "../../utils";
-import { Dictionary } from "../models/Dictionary";
+import { handleResult, Query, RestClient } from "@app/utils";
+import { Dictionary } from "@app/base/models/dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */

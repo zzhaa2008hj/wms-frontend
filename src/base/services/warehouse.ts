@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, RestClient } from "../../utils";
-import { Warehouse } from "../models/warehouse";
+import { handleResult, RestClient } from "@app/utils";
+import { Warehouse } from "@app/base/models/warehouse";
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -15,19 +15,19 @@ export class WarehouseService {
     return res.content;
   }
 
-  saveWarehouse(warehouse: Warehouse) {
-    this.http.post(`/base/warehouse`, warehouse).then(handleResult);
+  saveWarehouse(warehouse: Warehouse): Promise<void> {
+    return this.http.post(`/base/warehouse`, warehouse).then(handleResult);
   }
 
-  updateState(id: string) {
-    this.http.put(`/base/warehouse/${id}/state`, null).then(handleResult);
+  updateState(id: string): Promise<void> {
+    return this.http.put(`/base/warehouse/${id}/state`, null).then(handleResult);
   }
 
-  updateWarehouse(warehouse: Warehouse) {
-    this.http.put(`/base/warehouse/${warehouse.id}`, warehouse).then(handleResult);
+  updateWarehouse(warehouse: Warehouse): Promise<void> {
+    return this.http.put(`/base/warehouse/${warehouse.id}`, warehouse).then(handleResult);
   }
 
-  deleteWarehouse(id: string) {
-    this.http.delete(`/base/warehouse/${id}`).then(handleResult);
+  deleteWarehouse(id: string): Promise<void> {
+    return this.http.delete(`/base/warehouse/${id}`).then(handleResult);
   }
 }

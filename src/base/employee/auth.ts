@@ -1,10 +1,8 @@
-import {autoinject, inject} from "aurelia-dependency-injection";
-import { Router } from "aurelia-router";
-import { customElement } from "aurelia-templating";
 import { EmployeeService } from "../services/employee";
-import { DialogController, DialogService } from "ui";
 import { Employee } from "../models/employee";
 import { OrganizationRole } from "../models/organization-role";
+import { inject } from "aurelia-dependency-injection";
+import { DialogController } from "ui";
 
 export class EmployeeAuth {
 

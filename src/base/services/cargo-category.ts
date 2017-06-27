@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, RestClient } from "../../utils";
-import { CargoCategory } from "../models/cargo-category";
+import { handleResult, RestClient } from "@app/utils";
+import { CargoCategory } from "@app/base/models/cargo-category";
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -15,8 +15,8 @@ export class CargoCategoryService {
     return res.content;
   }
 
-  async saveCargoCategory(cargoCategory: CargoCategory): Promise<void> {
-    return await this.http.post(`/base/cargoCategory`, cargoCategory).then(handleResult);
+  saveCargoCategory(cargoCategory: CargoCategory): Promise<void> {
+    return this.http.post(`/base/cargoCategory`, cargoCategory).then(handleResult);
   }
 
   updateState(id: string): Promise<void> {

@@ -2,9 +2,8 @@ import { autoinject } from 'aurelia-framework';
 import { DialogService, MessageDialogService } from 'ui';
 import { NewCargoCategory } from "./new";
 import { EditCargoCategory } from "./edit";
-import TreeListDataSource = kendo.data.TreeListDataSource;
-import { CargoCategory } from "../models/cargo-category";
-import { CargoCategoryService } from "../services/cargo-category";
+import { CargoCategoryService } from "@app/base/services/cargo-category";
+import { CargoCategory } from "@app/base/models/cargo-category";
 
 @autoinject
 export class CargoCategoryList {

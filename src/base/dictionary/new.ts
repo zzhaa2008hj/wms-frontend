@@ -1,8 +1,6 @@
-import { Router } from "aurelia-router";
-import { DialogController, MessageDialogService } from "ui";
-import { DictionaryService } from "../services/dictionary";
 import { autoinject } from "aurelia-dependency-injection";
-import { Dictionary } from "../models/Dictionary";
+import { DialogController } from "ui";
+import { Dictionary } from "@app/base/models/dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */

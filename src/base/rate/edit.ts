@@ -1,12 +1,12 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
-import { RateService, RateStepService } from "../services/rate";
 import { autoinject } from "aurelia-dependency-injection";
-import { Rate, RateStep } from "../models/Rate";
-import { WorkInfoService } from "../services/work-info";
-import { CargoCategoryService } from "../services/cargo-category";
-import { treeHelper, TreeHelper } from "../../utils";
 import { NewRateStep } from "./step/new";
+import { Rate } from "@app/base/models/rate";
+import { TreeHelper, treeHelper } from "@app/utils";
+import { RateService, RateStepService } from "@app/base/services/rate";
+import { WorkInfoService } from "@app/base/services/work-info";
+import { CargoCategoryService } from "@app/base/services/cargo-category";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -71,7 +71,8 @@ export class NewRate {
 
   async activate(params) {
     this.rate = await this.rateService.getRate(params.id);
-    this.rateStep = await this.rateStepService.listRateStepByRateId(params.id);
+    let res = await this.rateStepService.listRateStepByRateId(params.id);
+    this.rateStep.push(res) ;
     console.log(this.rate);
     this.dataSourceRateStep.data(this.rateStep);
     this.initData();

@@ -1,7 +1,7 @@
-import { NoticeService } from "../services/notice";
-import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
-import { DataSourceFactory } from "../../utils";
+import { NoticeService } from "@app/base/services/notice";
+import { DataSourceFactory } from "@app/utils";
+import { autoinject } from "aurelia-dependency-injection";
 @autoinject
 export class Notice {
   searchName: string;

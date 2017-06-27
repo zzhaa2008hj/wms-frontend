@@ -2,9 +2,8 @@ import { autoinject } from 'aurelia-framework';
 import { DialogService, MessageDialogService } from 'ui';
 import { NewWarehouse } from "./new";
 import { EditWarehouse } from "./edit";
-import TreeListDataSource = kendo.data.TreeListDataSource;
-import { Warehouse } from "../models/warehouse";
-import { WarehouseService } from "../services/warehouse";
+import { Warehouse } from "@app/base/models/warehouse";
+import { WarehouseService } from "@app/base/services/warehouse";
 
 @autoinject
 export class WarehouseList {

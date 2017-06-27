@@ -1,9 +1,9 @@
 import { autoinject } from 'aurelia-framework';
-import { WorkInfoService } from '../services/work-info';
 import { DialogService, MessageDialogService } from 'ui';
 import { NewWorkInfo } from "./new";
 import { EditWorkInfo } from "./edit";
-import { WorkInfo } from "../models/work-info";
+import { WorkInfo } from "@app/base/models/work-info";
+import { WorkInfoService } from "@app/base/services/work-info";
 
 @autoinject
 export class WorkInfoList {

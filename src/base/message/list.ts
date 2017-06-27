@@ -1,7 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { MessageDialogService } from "ui";
-import { DataSourceFactory } from "../../utils";
-import { MessageService } from "../services/message";
+import { MessageService } from "@app/base/services/message";
+import { DataSourceFactory } from "@app/utils";
 @autoinject
 export class Message {
   searchName: string;
@@ -14,8 +13,7 @@ export class Message {
   private dataSource: kendo.data.DataSource;
 
   constructor(private messageService: MessageService,
-              private dataSourceFactory: DataSourceFactory,
-              private messageDialogService: MessageDialogService) {
+              private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.messageService.queryMessages({ keywords: this.searchName }),
       pageSize: 10

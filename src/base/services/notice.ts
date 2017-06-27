@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { extractResult, handleResult, Query, RestClient } from "../../utils";
-import { Notice } from "../models/notice";
+import { handleResult, Query, RestClient } from "@app/utils";
+import { Notice } from "@app/base/models/notice";
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -13,12 +13,12 @@ export class NoticeService {
     return this.http.query(`/base/notice/page`, param);
   }
 
-  async saveNotice(notice: Notice): Promise<void> {
-    await this.http.post(`/base/notice`, notice).then(handleResult);
+  saveNotice(notice: Notice): Promise<void> {
+    return this.http.post(`/base/notice`, notice).then(handleResult);
   }
 
-  async updateVisible(id: string): Promise<void> {
-    await this.http.put(`/base/notice/${id}`, null).then(handleResult);
+  updateVisible(id: string): Promise<void> {
+    return this.http.put(`/base/notice/${id}`, null).then(handleResult);
   }
 
 }

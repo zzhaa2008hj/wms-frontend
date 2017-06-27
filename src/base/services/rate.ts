@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, Query, RestClient } from "../../utils";
-import { Rate, RateStep } from "../models/Rate";
+import { handleResult, Query, RestClient } from "@app/utils";
+import { Rate, RateStep } from "@app/base/models/rate";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -41,7 +41,7 @@ export class RateStepService {
   constructor(private http: RestClient) {
   }
 
-  async listRateStepByRateId(rateId: string): Promise<RateStep> {
+  async listRateStepByRateId(rateId: string): Promise<RateStep[]> {
     let res = await this.http.get(`/base/rateStep/${rateId}`);
     return res.content;
   }
