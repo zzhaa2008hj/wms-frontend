@@ -9,54 +9,48 @@
                     <ak-drop-down-list k-widget.two-way="selectedCargoInfo"
                                        k-option-label="请选择..."
                                        k-data-text-field="batchNumber"
-                                       k-data-value-field="id"
                                        k-data-source.bind="baseCargoInfo"
-                                       k-on-select.delegate="onSelectCargoInfo($event.detail)"
-                                       id="baseCargoInfos">
-
-                    </ak-drop-down-list>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">货物明细*</label>
-                    <span class="help"></span>
-                    <ak-drop-down-list k-auto-bind.bind="false"
-                                       k-cascade-from="baseCargoInfos"
-                                       k-widget.two-way="selectedCargoItem"
-                                       k-option-label="请选择..."
-                                       k-data-text-field="cargoName"
-                                       k-data-source.bind="baseCargoItem"
-                                       k-on-select.delegate="onSelectCargoItem($event.detail)">
+                                       k-on-select.delegate="onSelectCargoInfo($event.detail)">
                     </ak-drop-down-list>
                 </div>
                 <div class="form-group">
                     <label class="form-label">是否为最后一批*</label>
                     <span class="help"></span>
                     <div class="controls">
-                        <label>
-                            <input type="radio" class="form-label" checked.bind="cargoFlow.lastBatch" value="1"
-                                   name="lastBatch">是
-                        </label>
-                        <label>
-                            <input type="radio" class="form-label" checked.bind="cargoFlow.lastBatch" value="2"
-                                   name="lastBatch">否
-                        </label>
+                        <input type="radio" class="form-label" checked.bind="cargoFlow.lastBatch" value="1"
+                               name="lastBatch">是
+                        <input type="radio" class="form-label" checked.bind="cargoFlow.lastBatch" value="2"
+                               name="lastBatch">否
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">联系人*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="cargoFlow.contactPerson">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">联系方式*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="cargoFlow.contactNumber">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.trigger="addVehicle()">
                         新增入库车辆</a></div>
                 </div>
-                <ak-grid k-data-source.bind="dataSourceRateStep">
+                <ak-grid k-data-source.bind="dataSourceVehicle">
                     <ak-col k-field="platNumber" k-title="车牌号"></ak-col>
                     <ak-col k-field="driverNumber" k-title="司机名称"></ak-col>
                     <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
                     <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
-                    <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
                     <ak-col k-field="remark" k-title="备注"></ak-col>
                     <ak-col k-title="操作">
                         <ak-template>
-                            <button class="btn btn-warning btn-small" click.delegate="editVehicle($this)">编辑</button>
-                            <button class="btn btn-warning btn-small" click.delegate="deleteVehicle($this)">删除</button>
+                            <button class="btn btn-primary btn-small" click.delegate="editVehicle($this)">编辑</button>
+                            <button class="btn btn-danger btn-small" click.delegate="deleteVehicle($this)">删除</button>
                         </ak-template>
                     </ak-col>
                 </ak-grid>

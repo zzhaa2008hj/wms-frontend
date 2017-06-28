@@ -8,7 +8,8 @@ export class CargoFlowRouter {
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
       { route: '/edit', name: 'edit', moduleId: './edit', title: "编辑" },
-      { route: '/details', name: 'details', moduleId: './details', title: "详情" }
+      { route: '/details', name: 'details', moduleId: './details', title: "详情" },
+
     ]);
     this.router = router;
 

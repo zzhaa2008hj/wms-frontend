@@ -23,13 +23,18 @@ export class CargoFlowService {
   }
 
 
-  async listCargoInfos(): Promise<CargoInfo> {
+  async listBaseCargoInfos(): Promise<CargoInfo> {
     let res = await this.http.get(`/base/cargoInfo/list`);
     return res.content;
   }
 
-  async listCargoItems(cargoInfoId: string): Promise<CargoItem> {
-    let res = await  this.http.get(`/instock/cargo-flow/${cargoInfoId}/cargoItemList`);
+  async listBaseCargoItems(cargoInfoId: string): Promise<CargoItem> {
+    let res = await  this.http.get(`/instock/cargo-flow/${cargoInfoId}/baseCargoItemList`);
+    return res.content;
+  }
+
+  async getBaseCargoItemById(id: string): Promise<CargoItem> {
+    let res = await this.http.get(`/instock/cargo-flow/${id}/baseCargoItem`);
     return res.content;
   }
 }

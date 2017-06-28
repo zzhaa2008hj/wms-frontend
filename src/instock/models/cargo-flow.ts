@@ -13,7 +13,7 @@ export interface CargoFlow {
   orderQuantity: number;
   orderNumber: number;
   unit: string;
-  lastBatch: number;
+  lastBatch: string;
   contactPerson: string;
   contactNumber: string;
   status: number;
@@ -21,10 +21,8 @@ export interface CargoFlow {
   remark: string;
   orgId: string;
 
-  //入库货物信息
-  cargoItem: InstockCargoItem[];
   //车辆信息
-  vehicle: Vehicle[];
+  vehicles: Vehicle[];
 }
 export interface InstockCargoItem {
   id: string;
@@ -49,4 +47,7 @@ export interface Vehicle {
   phoneNumber: string;
   remark: string;
   orgId: string;
+
+  //入库货物信息
+  cargoItems: InstockCargoItem[];
 }

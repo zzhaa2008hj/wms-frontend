@@ -4,8 +4,8 @@ import { autoinject } from "aurelia-dependency-injection";
 import { NewRateStep } from "./step/new";
 import { Rate } from "@app/base/models/rate";
 import { RateService, RateStepService } from "@app/base/services/rate";
-import { WorkInfoTree } from "@app/base/rate/workInfoTree";
-import { CargoCategoryTree } from "@app/base/rate/cargoCategoryTree";
+import { WorkInfoTree } from "@app/base/rate/work-info-tree";
+import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
 /**
  * Created by Hui on 2017/6/14.
  */
