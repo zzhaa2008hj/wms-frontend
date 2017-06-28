@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-export class OperationLog {
+export class OperationLogs {
 
   router: Router;
 
