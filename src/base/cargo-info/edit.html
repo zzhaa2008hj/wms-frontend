@@ -19,8 +19,12 @@
                             <label class="form-label">库区性质*</label>
                             <span class="help"></span>
                             <div class="form-controls">
-                                <input type="radio" class="form-controls" name="warehouseType" value="1" checked.bind="cargoInfo.warehouseType" />公共<br>
-                                <input type="radio" class="form-controls" name="warehouseType" value="2" checked.bind="cargoInfo.warehouseType" />承包
+                                <label if.bind="cargoInfo.warehouseType == 1">
+                                    <input type="radio" class="form-controls" name="warehouseType" value="1" checked.bind="cargoInfo.warehouseType.toString()" />公共<br>
+                                </label>
+                                <label if.bind="cargoInfo.warehouseType == 2">
+                                    <input type="radio" class="form-controls" name="warehouseType" value="2" checked.bind="cargoInfo.warehouseType.toString()" />承包<br>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -29,8 +33,12 @@
                             <label class="form-label">货物形式*</label>
                             <span class="help"></span>
                             <div class="form-controls">
-                                <input type="radio" class="form-controls" name="cargoForm" value="1" checked.bind="cargoInfo.cargoForm" />散装<br>
-                                <input type="radio" class="form-controls" name="cargoForm" value="2" checked.bind="cargoInfo.cargoForm" />集装箱
+                                <label if.bind="cargoInfo.cargoForm == 1">
+                                    <input type="radio" class="form-controls" name="cargoForm" value="1" checked.bind="cargoInfo.cargoForm.toString()" />散装<br>
+                                </label>
+                                <label if.bind="cargoInfo.cargoForm == 2">
+                                    <input type="radio" class="form-controls" name="cargoForm" value="2" checked.bind="cargoInfo.cargoForm.toString()" />集装箱<br>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -39,8 +47,12 @@
                             <label class="form-label">货物性质*</label>
                             <span class="help"></span>
                             <div class="form-controls">
-                                <input type="radio" class="form-controls" name="cargoType" value="1" checked.bind="cargoInfo.cargoType" />内贸<br>
-                                <input type="radio" class="form-controls" name="cargoType" value="2" checked.bind="cargoInfo.cargoType" />保税
+                                <label if.bind="cargoInfo.cargoType == 1">
+                                    <input type="radio" class="form-controls" name="cargoType" value="1" checked.bind="cargoInfo.cargoType.toString()" />内贸<br>
+                                </label>
+                                <label if.bind="cargoInfo.cargoType == 2">
+                                    <input type="radio" class="form-controls" name="cargoType" value="2" checked.bind="cargoInfo.cargoType.toString()" />保税<br>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -60,9 +72,7 @@
                             <label class="form-label">代理商名称*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="cargoInfo.agentId"
-                                    k-data-source.bind="agents" k-widget.two-way="agentInfo" style="width: 100%">
-                                </ak-drop-down-list>
+                                <input type="text" class="form-control" value.bind="cargoInfo.agentName" readonly>
                             </div>
                         </div>
                     </div>
@@ -71,9 +81,7 @@
                             <label class="form-label">客户名称*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="cargoInfo.customerId"
-                                    k-data-source.bind="customers" k-widget.two-way="customerInfo" style="width: 100%" k-on-change.delegate="customerChanged()">
-                                </ak-drop-down-list>
+                                   <input type="text" class="form-control" value.bind="cargoInfo.customerName" readonly>
                             </div>
                         </div>
                     </div>
@@ -95,12 +103,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">备注</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark ">
+                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark">
                             </div>
                         </div>
                     </div>
@@ -110,7 +118,6 @@
                     <div class="col-md-12">
                         <span class="help"></span>
                         <div class="controls right">
-                            <a class="btn btn-primary" click.delegate="addCargoItem()">新增货物</a>
                             <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
                                 <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
                                 <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
@@ -123,7 +130,6 @@
                                 <ak-col k-title="操作">
                                     <ak-template>
                                         <a class="btn btn-small" click.delegate="update(batchNumber)">修改</a>
-                                        <a class="btn btn-danger btn-small" click.delegate="delete(batchNumber)">删除</a>
                                     </ak-template>
                                 </ak-col>
                             </ak-grid>
