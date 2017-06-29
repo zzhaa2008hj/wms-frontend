@@ -1,0 +1,84 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 新增
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="form-group">
+                <label class="form-label">车牌号*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="vehicle.platNumber ">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">司机名称*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="vehicle.driverNumber ">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">身份证号*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="vehicle.driverIdentityNumber ">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">电话*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="vehicle.phoneNumber ">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="vehicle.remark">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">载运方式*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="radio" class="form-label" checked.bind="isContainer" value="1"
+                           name="isContainer">散货
+                    <input type="radio" class="form-label" checked.bind="isContainer" value="2"
+                           name="isContainer">集装箱
+                </div>
+            </div>
+            <div class="form-group" if.bind="isContainer == 1">
+                <label class="form-label">货物明细*</label>
+                <span class="help"></span>
+                <ak-multiselect k-placeholder="请选择..."
+                                k-data-text-field="cargoName"
+                                k-data-value-field="id"
+                                k-value.two-way="selectedCargoItemIds"
+                                k-data-source.bind="baseCargoItem">
+                </ak-multiselect>
+            </div>
+            <div if.bind="isContainer == 2">
+                <div class="row">
+                    <div class="col-md-9">
+                        <a class="btn btn-sm btn-small btn-success" click.trigger="addContainer()">新增货物明细</a>
+                    </div>
+                </div>
+                <ak-grid k-data-source.bind="dataSourceContainer">
+                    <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                    <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+                    <ak-col k-title="操作">
+                        <ak-template>
+                            <button class="btn btn-danger btn-small" click.delegate="deleteContainer($this)">删除</button>
+                        </ak-template>
+                    </ak-col>
+                </ak-grid>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">保存</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

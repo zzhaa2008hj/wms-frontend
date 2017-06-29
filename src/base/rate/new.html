@@ -37,16 +37,17 @@
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">作业内容*</label>
                         <span class="help"></span>
-                        <button class="btn btn-cons btn-small" type="button"
-                                click.delegate="selectWorkInfo()">请选择...</button>
+                        <input type="text" class="form-label" value.bind="rate.workName" disabled>
+                        <a class="btn btn-small" type="button" click.delegate="selectWorkInfo()">请选择...</a>
                     </div>
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">货物类别*</label>
                         <span class="help"></span>
-                            <button class="btn btn-cons btn-small" type="button"
-                                    click.delegate="selectCargoCategory()" >请选择...</button>
-
-                    </div>
+                        <div class="form-label">
+                            <input type="text" class="form-label" value.bind="rate.cargoCategoryName" disabled>
+                            <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择...</a>
+                        </div>
+                          </div>
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">品牌</label>
                         <span class="help"></span>
@@ -105,21 +106,21 @@
                                        k-data-source.bind="pricingMode">
                     </ak-drop-down-list>
                 </div>
-                <div  if.bind="rate.pricingMode == 2">
+                <div if.bind="rate.pricingMode == 2">
                     <div class="row">
                         <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.trigger="addStep()">
                             阶梯费率设置</a></div>
                     </div>
                     <ak-grid k-data-source.bind="dataSourceRateStep">
                         <ak-col k-field="stepNum" k-title="阶梯号"></ak-col>
-                        <ak-col k-field="stepStart" k-title="开始值" ></ak-col>
-                        <ak-col k-field="stepEnd" k-title="结束值" ></ak-col>
+                        <ak-col k-field="stepStart" k-title="开始值"></ak-col>
+                        <ak-col k-field="stepEnd" k-title="结束值"></ak-col>
                         <ak-col k-field="stepPrice" k-title="阶梯价"></ak-col>
-                        <ak-col k-field="stepUnit" k-title="单位" ></ak-col>
-                        <ak-col k-field="remark" k-title="备注" ></ak-col>
+                        <ak-col k-field="stepUnit" k-title="单位"></ak-col>
+                        <ak-col k-field="remark" k-title="备注"></ak-col>
                         <ak-col k-title="操作">
                             <ak-template>
-                                <button class="btn btn-warning btn-small"  click.delegate="deleteStep($this)">删除
+                                <button class="btn btn-warning btn-small" click.delegate="deleteStep($this)">删除
                                 </button>
                             </ak-template>
                         </ak-col>
