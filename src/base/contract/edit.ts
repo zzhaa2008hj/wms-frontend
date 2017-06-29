@@ -69,7 +69,7 @@ export class EditContract {
     }
 
     async update() {
-        await this.datasource.sync();
+        this.datasource.sync();
         try {
             let info = this.contractVo;
             await this.contractService.updateContract(this.contractVo.contract.id, info);
