@@ -9,7 +9,7 @@ import { CargoFlow, Vehicle } from "@app/instock/models/cargo-flow";
  * Created by Hui on 2017/6/23.
  */
 @autoinject
-export class NewCargoFlow {
+export class EditCargoFlow {
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   baseCargoInfo = {
@@ -37,12 +37,16 @@ export class NewCargoFlow {
               private messageDialogService: MessageDialogService) {
   }
 
+  async activate(params) {
+    this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
+    this.cargoFlow.lastBatch = this.cargoFlow.lastBatch.toString();
+  }
+
   onSelectCargoInfo(e) {
     let dataItem = this.selectedCargoInfo.dataItem(e.item);
     this.cargoFlow = dataItem;
     this.cargoFlow.cargoInfoId = dataItem.id;
     this.cargoFlow.id = null;
-    this.cargoFlow.contactNumber = null;
     this.cargoFlow.lastBatch = "1";
   }
 
@@ -95,11 +99,11 @@ export class NewCargoFlow {
     console.log(this.cargoFlow);
     try {
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
-      await this.messageDialogService.alert({ title: "新增成功" });
+      await this.messageDialogService.alert({ title: "修改成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
       await
-        this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+        this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
     }
   }
 

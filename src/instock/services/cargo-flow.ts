@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, Query, RestClient } from "@app/utils";
+import { dateConverter, fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 /**
@@ -11,7 +11,7 @@ export class CargoFlowService {
   }
 
   queryCargoFlows(param: { keywords: string }): Query<CargoFlow> {
-    return this.http.query(`/instock/cargo-flow/page`, param);
+    return this.http.query<CargoFlow>(`/instock/cargo-flow/page`, param).map(flow => fixDate(flow, 'instockDate');
   }
 
   saveCargoFlow(cargoFlow: CargoFlow): Promise<void> {
@@ -35,6 +35,11 @@ export class CargoFlowService {
 
   async getBaseCargoItemById(id: string): Promise<CargoItem> {
     let res = await this.http.get(`/instock/cargo-flow/${id}/baseCargoItem`);
+    return res.content;
+  }
+
+  async getCargoFlowById(id: string): Promise<CargoFlow> {
+    let res = await this.http.get(`/instock/cargo-flow/${id}`);
     return res.content;
   }
 }

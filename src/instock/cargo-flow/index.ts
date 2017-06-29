@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-export class CargoFlowRouter {
+export class CargoFlow {
 
   router: Router;
 
@@ -7,7 +7,7 @@ export class CargoFlowRouter {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
-      { route: '/edit', name: 'edit', moduleId: './edit', title: "编辑" },
+      { route: '/:id/edit', name: 'edit', moduleId: './edit', title: "编辑" },
       { route: '/details', name: 'details', moduleId: './details', title: "详情" },
 
     ]);

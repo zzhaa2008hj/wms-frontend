@@ -12,14 +12,14 @@
     <ak-grid k-data-source.bind="dataSource"
              k-pageable.bind="pageable"
              k-sortable.bind="true">
-        <ak-col k-title="入库日期" k-field="instockData" k-formate="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
-        <ak-col k-title="业务状态" k-field="status"></ak-col>
-        <ak-col k-title="入库流水单号" k-field="visible==1 ? '显示':'隐藏'"></ak-col>
+        <ak-col k-title="入库日期" k-field="instockDate" k-format="{0:yyyy-MM-dd}"></ak-col>
+        <ak-col k-title="入库流水单号" k-field="instockFlowNumber"></ak-col>
         <ak-col k-title="指令数量" k-field="orderQuantity"></ak-col>
         <ak-col k-title="指令件数" k-field="orderNumber"></ak-col>
-        <ak-col k-title="计量单位" k-field="orderNumber"></ak-col>
-        <ak-col k-title="阶段" k-field="unit"></ak-col>
-        <ak-col k-title="是否有拆单" k-field="title"></ak-col>
+        <ak-col k-title="计量单位" k-field="unit"></ak-col>
+        <ak-col k-title="阶段" k-field="stage"></ak-col>
+        <ak-col k-title="业务状态" k-field="status"></ak-col>
+        <ak-col k-title="是否有拆单" k-field="separated"></ak-col>
         <ak-col k-title="操作">
             <ak-template>
                 <button class="btn btn-warning btn-small" if.bind="visible == 1" click.delegate="changeVisible(id)">
@@ -28,6 +28,7 @@
                 <button class="btn btn-primary btn-small" if.bind="visible == 2" click.delegate="changeVisible(id)">
                     显示
                 </button>
+                <a class="btn btn-sm btn-small btn-primary" route-href="route: edit; params.bind: { id: id }">修改</a>
                 <a class="btn btn-sm btn-small btn-primary" route-href="route: details">详情</a>
 
             </ak-template>
