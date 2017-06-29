@@ -1,7 +1,10 @@
 <template>
     <div class="row">
         <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增入库指令</a></div>
-        <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入批次号、代理商名称或客户名称">
+        <!--<input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockBeginDate" type="text" class="form-control">
+        <input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockendDate" type="text" class="form-control">-->
+        <div class="input-group">
+            <input class="form-control" type="text" value.bind="cargoInfoCriteria.searchName" placeholder="输入批次号、代理商或客户名称">
             <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
         </div>
     </div>
@@ -9,17 +12,15 @@
         k-column-menu.bind="true" k-pageable.bind="pageable">
         <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
         <ak-col k-field="agentName" k-title="代理商"></ak-col>
-        <ak-col k-field="customerName" k-title="客户名称">
-            <ak-template>${formatMethod(contractType)}</ak-template>
-        </ak-col>
+        <ak-col k-field="customerName" k-title="客户名称"></ak-col>
         <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
         <ak-col k-field="orderQuantity" k-title="指令重量">指令重量</ak-col>
         <ak-col k-field="remark" k-title="备注"></ak-col>
         <ak-col k-title="操作">
             <ak-template>
-                <a class="btn btn-small" if.bind="status != 1" route-href="route: edit; params.bind: { id: id }">编辑</a>
-                <a class="btn btn-small" if.bind="status == 1" route-href="route: details; params.bind: { id: id }">详情</a>
-                <a class="btn btn-danger btn-small" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
+                <a class="btn btn-small" if.bind="cargoFlowSize == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
+                <a class="btn btn-small" if.bind="cargoFlowSize != 0" route-href="route: details; params.bind: { id: id }">详情</a>
+                <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
             </ak-template>
         </ak-col>
     </ak-grid>

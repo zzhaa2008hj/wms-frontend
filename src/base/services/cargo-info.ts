@@ -1,10 +1,9 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient, extractResult } from '@app/utils';
-import { CargoCategory } from '../models/cargo-category';
-import { CargoInfo, CargoInfoVo, CargoRate, CargoRateStep } from '../models/cargo-info';
-import { Contract } from '../models/contract';
-import { ContractVo } from '../models/contractVo';
-import { Organization } from '../models/organization';
+import { CargoCategory } from '@app/base/models/cargo-category';
+import { CargoInfo, CargoItem, CargoRate, CargoRateStep } from '@app/base/models/cargo-info';
+import { Contract } from '@app/base/models/contract';
+import { Organization } from '@app/base/models/organization';
 /**
  * 机构查询条件
  */
@@ -81,36 +80,43 @@ export class CargoInfoService {
     /**
      * 新增保存
      * @param contractVo
-     * @returns {Promise<void>}
      */
-    saveCargoInfo(cargoInfoVo: CargoInfoVo): Promise<void> {
-        return this.http.post(`base/cargoInfo`, cargoInfoVo).then(handleResult);
+    saveCargoInfo(cargoInfo: CargoInfo): Promise<void> {
+        return this.http.post(`base/cargoInfo`, cargoInfo).then(handleResult);
     }
 
+    /**
+     * 查询单个客户货物信息
+     * @param cargoInfoId
+     */
+    async getCargoInfo(id: string): Promise<CargoInfo> {
+        let res = await this.http.get(`base/cargoInfo/${id}`);
+        return res.content;
+    }
 
-
-
-
+    /**
+     * 查询货物明细
+     * @param id 
+     */
+    async getCargoItems(id: string): Promise<CargoItem[]> {
+        let res = await this.http.get(`base/cargoInfo/cargoItem/${id}`);
+        return res.content;
+    }
 
     /**
      * 编辑保存
      * @param contractVo
-     * @returns {Promise<void>}
      */
-    updateContract(contractId: string, contractVo: ContractVo): Promise<void> {
-        return this.http.put(`base/contract/${contractId}`, contractVo).then(handleResult);
+    updateCargoInfo(cargoInfo: CargoInfo, cargoInfoId: string): Promise<void> {
+        return this.http.put(`base/cargoInfo/${cargoInfoId}`, cargoInfo).then(handleResult);
     }
 
     /**
-     * 删除合同
-     * @param id
-     * @returns {Promise<void>}
+     * 删除入库指令
+     * @param id 
      */
     delete(id: string): Promise<void> {
-        return this.http.delete(`base/contract/${id}`).then(handleResult);
+        return this.http.delete(`base/cargoInfo/${id}`).then(handleResult);
     }
 
-    audit(id: string, status: number): Promise<void> {
-        return this.http.put(`base/contract/verifyContract/${id}?status=${status}`, '').then(handleResult);
-    }
 }
