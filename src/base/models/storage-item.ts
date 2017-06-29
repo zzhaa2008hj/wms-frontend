@@ -29,6 +29,7 @@ export interface StorageItem {
 }
 
 export interface StorageItemHistory extends StorageItem{
+    // 类型  调整 or 抹平
     type: number;
-    businessName: string;
+    businessType: number;
 }
