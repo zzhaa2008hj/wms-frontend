@@ -37,7 +37,7 @@ export class App {
   configureRouter(config: RouterConfiguration, router: Router) {
     // let auth = this.accountService.getMenu();
     // let auths = new Set(auth.map((a) => a.url));
-    // let routes = this.config.routes.filter((a) => auths.has(a.url)).map(route => Object.assign({}, route, { nav: true }));
+    // let routes = this.config.routes.filter((a) => auths.has(a.code)).map(route => Object.assign({}, route, { nav: true }));
 
 
     let routes = this.config.routes.map(route => Object.assign({}, route, { nav: true }));
