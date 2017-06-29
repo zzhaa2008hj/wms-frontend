@@ -89,7 +89,7 @@ export class NewContract {
 
 
     async save() {
-        await this.datasource.sync();
+        this.datasource.sync();
         let rateList = this.baseRateAndSteps
             .filter(x => x.customerCategory == this.contractVo.contract.contractType);
 

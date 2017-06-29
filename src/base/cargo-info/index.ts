@@ -14,5 +14,5 @@ export class CargoInfo {
     ]);
     this.router = router;
   }
-  
+
 }

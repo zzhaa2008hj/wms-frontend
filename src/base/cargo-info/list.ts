@@ -1,11 +1,11 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
-import { CargoInfoService } from "@app/base/services/cargo-info";
+import { CargoInfoService, CargoInfoCriteria } from "@app/base/services/cargo-info";
 
 @autoinject
 export class CargoInfoList {
-    searchName: string;
+    cargoInfoCriteria: CargoInfoCriteria;
 
     dataSource: kendo.data.DataSource;
     pageable = {
@@ -18,14 +18,14 @@ export class CargoInfoList {
         private messageDialogService: MessageDialogService,
         private dataSourceFactory: DataSourceFactory) {
         this.dataSource = this.dataSourceFactory.create({
-            query: () => this.cargoInfoService.queryCargoInfo({ searchName: this.searchName }),
+            query: () => this.cargoInfoService.queryCargoInfo(this.cargoInfoCriteria),
             pageSize: 10
         });
     }
 
 
     async delete(id) {
-        let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定删除该角色！" });
+        let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定删除该入库指令吗？" });
         if (confirm) {
             try {
                 await this.cargoInfoService.delete(id);

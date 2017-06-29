@@ -5,8 +5,6 @@ import { ContractService } from "@app/base/services/contract";
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { VerifyRecordService, VerifyRecordCriteria } from '@app/common/services/verify-record';
-import { Contract } from '@app/base/contract/index';
-import { ContractVo } from '@app/base/models/contractVo';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 
 @autoinject
@@ -22,10 +20,10 @@ export class ContractList {
   contractTypes: string[] = ["客户仓储", "装卸单位", "库区租赁"];
 
   constructor(private contractService: ContractService,
-              private messageDialogService: MessageDialogService,
-              private dialogService: DialogService,
-              private verifyRecordService: VerifyRecordService,
-              private dataSourceFactory: DataSourceFactory) {
+    private messageDialogService: MessageDialogService,
+    private dialogService: DialogService,
+    private verifyRecordService: VerifyRecordService,
+    private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.contractService.queryContracts({ searchName: this.searchName }).map(res => {
         res.contractTypeStr = this.contractTypes[res.contractType - 1];

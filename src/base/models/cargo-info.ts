@@ -1,13 +1,9 @@
-export interface CargoInfoVo {
-    cargoInfo: CargoInfo;
-    cargoItems: CargoItem[];
-}
-
-
 /**
  *  客户货物信息
  */
 export interface CargoInfo {
+    cargoFlowSize: number;
+
     id: string;
 
     batchNumber: string;
@@ -29,17 +25,17 @@ export interface CargoInfo {
     /**
      * 公共/承包
      */
-    warehouseType: string;
+    warehouseType: number;
 
     /**˙
      * 内贸/保税
      */
-    cargoType: string;
+    cargoType: number;
 
     /**
      * 散货/集装箱
      */
-    cargoForm: string;
+    cargoForm: number;
 
     unit: string;
 
@@ -61,7 +57,9 @@ export interface CargoInfo {
 
     finished: number;
 
-    // cargoItems: CargoItem[];
+    remark: string;
+    
+    cargoItems: CargoItem[];
 }
 
 /**
@@ -92,7 +90,7 @@ export interface CargoItem {
 
     cargoRates: CargoRate[];
 
-    // cargoRateSteps: CargoRateStep[];
+    remark: string;
 }
 
 /**

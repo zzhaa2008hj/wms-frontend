@@ -2,7 +2,7 @@
     <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
     <ux-dialog>
         <ux-dialog-header show-close-button.bind="true">
-            <i class="fa fa-check-square-o"></i> 新增货物
+            <i class="fa fa-check-square-o"></i> 编辑货物明细信息
         </ux-dialog-header>
         <ux-dialog-body>
             <div class="grid simple">
@@ -19,22 +19,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <!--<div class="form-group">
+                            <div class="col-md-3">                         
+                                <div class="form-group">
                                     <label class="form-label">货物种类*</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <ak-drop-down-list k-option-label="请选择" k-data-text-field="categoryName" k-data-value-field="id" k-value.two-way="cargoItem.cargoCategoryId"
-                                            k-data-source.bind="cargoCategoryDataSource" k-widget.two-way="cargoCategory" style="width: 100%"
-                                            k-on-change.delegate="cargoCategoryChanged()">
-                                        </ak-drop-down-list>
-                                    </div>
-                                </div>-->
-                                <label class="form-label">货物种类*</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName" readonly >
-                                    <div class="input-group-btn">
-                                        <a class="btn" click.delegate="selectCargoCategory()">选择</a>
+                                        <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -43,7 +33,7 @@
                                     <label class="form-label">指令数量*</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <input type="number" class="form-control" value.bind="cargoItem.orderQuantity & toInt">
+                                        <input type="text" class="form-control" value.bind="cargoItem.orderQuantity & toInt">
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +42,7 @@
                                     <label class="form-label">指令件数</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <input type="number" class="form-control" value.bind="cargoItem.orderNumber & toInt">
+                                        <input type="text" class="form-control" value.bind="cargoItem.orderNumber & toInt">
                                     </div>
                                 </div>
                             </div>
