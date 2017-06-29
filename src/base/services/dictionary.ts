@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
-import { Dictionary } from "@app/base/models/dictionary";
+import { Dictionary, DictionaryData } from "@app/base/models/dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -60,5 +60,13 @@ export class DictionaryDataService {
 
   deleteDictionaryData(id: any) {
     return this.http.delete(`/base/dictionaryData/${id}`).then(handleResult);
+  }
+
+  /**
+   * 根据dictCode获取字典数据列表
+   */
+  async getDictionaryDatas(dictCode: string): Promise<DictionaryData[]> {
+    let result = await this.http.get(`/base/dictionaryData/${dictCode}/list`);
+    return result.content;
   }
 }

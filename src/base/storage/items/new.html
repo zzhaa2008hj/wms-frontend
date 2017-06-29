@@ -1,0 +1,94 @@
+<template>
+    <div class="grid simple">
+         <div class="grid-title no-border">新增</h4></div>
+    <div class="grid-body no-border">
+            <form submit.delegate="save()">
+            <div class="form-group">
+                <label class="form-label">类型*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <ak-drop-down-list 
+                        k-option-label="请选择"
+                        k-data-text-field="name" 
+                        k-data-value-field="id"
+                        k-value.two-way="storageItem.type"
+                        k-data-source.bind="types">
+                    </ak-drop-down-list>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">业务类型*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <ak-drop-down-list 
+                        k-option-label="请选择"
+                        k-data-text-field="name" 
+                        k-data-value-field="id"
+                        k-value.two-way="storageItem.businessType"
+                        k-data-source.bind="businessTypes">
+                    </ak-drop-down-list>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">库区名称*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <ak-drop-down-list 
+                        k-option-label="请选择"
+                        k-data-text-field="name" 
+                        k-data-value-field="id"
+                        k-widget.two-way="warehouse"
+                        k-data-source.bind="warehouses">
+                    </ak-drop-down-list>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">集装箱号</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="storageItem.containerNumber">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">堆存数量</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="storageItem.storageQuantity">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">堆存件数</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="storageItem.storageNumber">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">计量单位*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <ak-drop-down-list 
+                        k-option-label="请选择"
+                        k-data-text-field="dictDataName" 
+                        k-data-value-field="dictDataName"
+                        k-value.two-way="storageItem.unit"
+                        k-data-source.bind="units">
+                    </ak-drop-down-list>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">入库时间*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" ak-datepicker="k-value.two-way : storageItem.instockDate & validate" required>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="pull-right">
+                    <button class="btn btn-primary" click.trigger="save()">保存</button>
+                    <button class="btn btn-white" click.trigger="cancel()">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>
