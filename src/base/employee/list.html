@@ -21,23 +21,14 @@
         </div>
 
         <div class="col-md-5 col-md-offset-4">
-            <div class="input-group"><input class="form-control" type="text" value.bind="keywords"
-                                            placeholder="请输入员工姓名/手机号码/邮箱地址">
+            <div class="input-group"><input class="form-control" type="text" value.bind="keywords" placeholder="请输入员工姓名/手机号码/邮箱地址">
                 <div class="input-group-addon" click.trigger="find()"><em class="fa fa-search"></em></div>
             </div>
         </div>
     </div>
-    <ak-grid k-data-source.bind="dataSource"
-             k-sortable.bind="true"
-             k-selectable="[row, multiple]"
-             k-reorderable.bind="true"
-             k-groupable.bind="true"
-             k-resizable.bind="true"
-             k-filterable.bind="true"
-             k-column-menu.bind="true"
-             k-pageable.bind="pageable"
-             k-on-change.delegate="selectionChange($event)"
-    >
+    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-selectable="[row, multiple]" k-reorderable.bind="true"
+        k-groupable.bind="true" k-resizable.bind="true" k-filterable.bind="true" k-column-menu.bind="true" k-pageable.bind="pageable"
+        k-on-change.delegate="selectionChange($event)">
 
         <ak-col k-field="name" k-title="员工姓名" k-width.bind="120">
             <ak-template><a route-href="route: view; params.bind: { id }">${name}</a></ak-template>

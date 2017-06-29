@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-dependency-injection';
-import { RestClient, Query, dateConverter } from '@app/utils';
-import { OperationLog } from "src/base/models/operation-log";
+import { RestClient, Query, fixDate } from '@app/utils';
+import { OperationLog } from '@app/base/models/operation-log';
 
 @autoinject
 export class OperationLogService {
@@ -8,6 +8,7 @@ export class OperationLogService {
   }
 
   queryOperationLog(realName?: string): Query<OperationLog> {
-    return this.http.query(`/base/operationLog/page`, { realName }).map(dateConverter('operationTime'));
+    return this.http.query<OperationLog>(`/base/operationLog/page`, { realName })
+      .map(log => fixDate(log, 'operationTime'));
   }
 }
