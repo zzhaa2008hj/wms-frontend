@@ -9,7 +9,7 @@ import { NewCargoItem } from '@app/base/cargo-info/item-new';
 
 @autoinject
 export class NewCargoInfo {
-    unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
+    //unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
     agents: Organization[];
     customers: Organization[];
     cargoInfo = {} as CargoInfo;
@@ -70,9 +70,9 @@ export class NewCargoInfo {
         });
         this.customers = customersWithContract;
 
-        this.cargoInfo.warehouseType = "1";
-        this.cargoInfo.cargoForm = "1";
-        this.cargoInfo.cargoType = "1";
+        this.cargoInfo.warehouseType = 1;
+        this.cargoInfo.cargoForm = 1;
+        this.cargoInfo.cargoType = 1;
 
     }
     async addCargoItem() {
@@ -130,18 +130,25 @@ export class NewCargoInfo {
 
     }
     async save() {
-        this.cargoInfo.agentName = this.agentInfo.text();
-        this.cargoInfo.customerName = this.customerInfo.text();
+        this.cargoInfo.orderQuantity  = 0;
+        this.cargoInfo.orderNumber = 0;
+      
+        this.cargoItems.forEach(r =>  {console.log(r.orderQuantity+1);console.log(typeof(r.orderQuantity)); this.cargoInfo.orderQuantity += parseInt(r.orderQuantity)})
+        this.cargoItems.forEach(r => this.cargoInfo.orderNumber += parseInt(r.orderNumber as any)) 
+        console.log(this.cargoInfo.orderQuantity)
+        console.log(this.cargoInfo.orderNumber)
+        // this.cargoInfo.agentName = this.agentInfo.text();
+        // this.cargoInfo.customerName = this.customerInfo.text();
         //this.cargoInfoVo.cargoInfo = this.cargoInfo;
-        this.cargoInfo.cargoItems = this.cargoItems;
+        // this.cargoInfo.cargoItems = this.cargoItems;
 
-        try {
-            await this.cargoInfoService.saveCargoInfo(this.cargoInfo);
-            await this.messageDialogService.alert({ title: "新增成功" });
-            this.router.navigateToRoute("list");
-        } catch (err) {
-            await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
-        }
+        // try {
+        //     await this.cargoInfoService.saveCargoInfo(this.cargoInfo);
+        //     await this.messageDialogService.alert({ title: "新增成功" });
+        //     this.router.navigateToRoute("list");
+        // } catch (err) {
+        //     await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+        // }
     }
 
     cancel() {

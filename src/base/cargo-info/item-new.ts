@@ -1,5 +1,6 @@
+import { CargoCategoryTree } from '@app/base/cargo-info//cargo-category-tree';
 import { autoinject } from 'aurelia-dependency-injection';
-import { DialogController } from 'ui';
+import { DialogController, DialogService } from 'ui';
 import { CargoCategory } from '@app/base/models/cargo-category';
 import { CargoItem, CargoRate, CargoRateStep } from '@app/base/models/cargo-info';
 import { CargoInfoService } from '@app/base/services/cargo-info';
@@ -10,7 +11,7 @@ export class NewCargoItem {
 
     unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
     cargoCategoryDataSource: CargoCategory[];
-    cargoCategory: kendo.ui.DropDownList;
+    cargoCategory = {} as CargoCategory;
 
     cargoRateDataSource: kendo.data.DataSource;
 
@@ -21,7 +22,8 @@ export class NewCargoItem {
     cargoRates: CargoRate[];
 
     constructor(private cargoInfoService: CargoInfoService,
-        private dialogController: DialogController) {
+        private dialogController: DialogController,
+        private dialogService: DialogService) {
         this.cargoRateDataSource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -80,17 +82,25 @@ export class NewCargoItem {
 
     }
 
-
     cargoCategoryChanged() {
         this.cargoRates = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
         this.cargoRateDataSource.read();
     }
 
+    async selectCargoCategory() {
+        let result = await this.dialogService.open({ viewModel: CargoCategoryTree, model: this.cargoCategoryDataSource, lock: true })
+            .whenClosed();
+        if (result.wasCancelled) return;
+        if (!this.cargoItem.cargoCategoryId ||  this.cargoItem.cargoCategoryId != result.output.id) {
+            this.cargoItem.cargoCategoryName = result.output.categoryName;
+            this.cargoItem.cargoCategoryId = result.output.id;
+            this.cargoCategoryChanged();
+        }
 
+    }
     async save() {
         await this.cargoRateDataSource.sync();
-        this.cargoItem.cargoCategoryName = this.cargoCategory.text();
-
+        
         let cargoRateList = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
         cargoRateList.forEach(r => {
             let id = r.id;

@@ -7,7 +7,7 @@ import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 
 @autoinject
 export class EditCargoInfo {
-    unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
+   // unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
     cargoInfo = {} as CargoInfo;
     cargoItems = [] as CargoItem[];
     cargoInfoId = '';

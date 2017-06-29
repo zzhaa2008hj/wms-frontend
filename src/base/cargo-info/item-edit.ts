@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-dependency-injection';
-import { DialogController } from 'ui';
 import { CargoItem, CargoRate } from '@app/base/models/cargo-info';
+import { DialogController } from 'ui';
 
 @autoinject
 export class EditCargoItem {
@@ -37,7 +37,7 @@ export class EditCargoItem {
     async activate({ cargoItemInfo }) {
         this.cargoItem = cargoItemInfo;
         this.cargoRates = cargoItemInfo.cargoRates;
-    }
+    }  
 
     async save() {
         await this.cargoRateDataSource.sync();
