@@ -20,7 +20,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <label class="form-label">货物种类*</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
@@ -29,6 +29,13 @@
                                             k-on-change.delegate="cargoCategoryChanged()">
                                         </ak-drop-down-list>
                                     </div>
+                                </div>-->
+                                <label class="form-label">货物种类*</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName" readonly >
+                                    <div class="input-group-btn">
+                                        <a class="btn" click.delegate="selectCargoCategory()">选择</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -36,7 +43,7 @@
                                     <label class="form-label">指令数量*</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <input type="text" class="form-control" value.bind="cargoItem.orderQuantity ">
+                                        <input type="number" class="form-control" value.bind="cargoItem.orderQuantity & toInt">
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +52,7 @@
                                     <label class="form-label">指令件数</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <input type="text" class="form-control" value.bind="cargoItem.orderNumber">
+                                        <input type="number" class="form-control" value.bind="cargoItem.orderNumber & toInt">
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +76,7 @@
                                     </div>
                                 </div>
                             </div>
-                             <div class="col-md-12">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">备注</label>
                                     <span class="help"></span>

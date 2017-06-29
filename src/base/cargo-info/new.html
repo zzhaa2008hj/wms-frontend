@@ -19,8 +19,8 @@
                             <label class="form-label">库区性质*</label>
                             <span class="help"></span>
                             <div class="form-controls">
-                                <input type="radio" class="form-controls" name="warehouseType" value="1" checked.bind="cargoInfo.warehouseType" />公共<br>
-                                <input type="radio" class="form-controls" name="warehouseType" value="2" checked.bind="cargoInfo.warehouseType" />承包
+                                <input type="radio" class="form-controls" name="warehouseType" model.bind="1" checked.bind="cargoInfo.warehouseType" />公共<br>
+                                <input type="radio" class="form-controls" name="warehouseType" model.bind="2" checked.bind="cargoInfo.warehouseType" />承包
                             </div>
                         </div>
                     </div>
@@ -29,8 +29,8 @@
                             <label class="form-label">货物形式*</label>
                             <span class="help"></span>
                             <div class="form-controls">
-                                <input type="radio" class="form-controls" name="cargoForm" value="1" checked.bind="cargoInfo.cargoForm" />散装<br>
-                                <input type="radio" class="form-controls" name="cargoForm" value="2" checked.bind="cargoInfo.cargoForm" />集装箱
+                                <input type="radio" class="form-controls" name="cargoForm" model.bind="1" checked.bind="cargoInfo.cargoForm" />散装<br>
+                                <input type="radio" class="form-controls" name="cargoForm" model.bind="2" checked.bind="cargoInfo.cargoForm" />集装箱
                             </div>
                         </div>
                     </div>
@@ -39,19 +39,8 @@
                             <label class="form-label">货物性质*</label>
                             <span class="help"></span>
                             <div class="form-controls">
-                                <input type="radio" class="form-controls" name="cargoType" value="1" checked.bind="cargoInfo.cargoType" />内贸<br>
-                                <input type="radio" class="form-controls" name="cargoType" value="2" checked.bind="cargoInfo.cargoType" />保税
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">计量单位</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="dictName" k-data-value-field="dictName" k-value.two-way="cargoInfo.unit"
-                                    k-data-source.bind="unitDatasource" style="width: 100%">
-                                </ak-drop-down-list>
+                                <input type="radio" class="form-controls" name="cargoType" model.bind="1" checked.bind="cargoInfo.cargoType" />内贸<br>
+                                <input type="radio" class="form-controls" name="cargoType" model.bind="2" checked.bind="cargoInfo.cargoType" />保税
                             </div>
                         </div>
                     </div>
@@ -82,7 +71,7 @@
                             <label class="form-label">指令数量*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control" value.bind="cargoInfo.orderQuantity ">
+                                <input type="text" class="form-control" int-value.bind="cargoInfo.orderQuantity" readonly>
                             </div>
                         </div>
                     </div>
@@ -91,7 +80,7 @@
                             <label class="form-label">指令件数*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control" value.bind="cargoInfo.orderNumber ">
+                                <input type="number" class="form-control" int-value.bind="cargoInfo.orderNumber" readonly>
                             </div>
                         </div>
                     </div>
@@ -100,7 +89,7 @@
                             <label class="form-label">备注</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark ">
+                                <textarea type="number" class="form-control" value.bind="cargoInfo.remark ">
                             </div>
                         </div>
                     </div>

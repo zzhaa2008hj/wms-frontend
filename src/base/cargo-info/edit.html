@@ -20,10 +20,10 @@
                             <span class="help"></span>
                             <div class="form-controls">
                                 <label if.bind="cargoInfo.warehouseType == 1">
-                                    <input type="radio" class="form-controls" name="warehouseType" value="1" checked.bind="cargoInfo.warehouseType.toString()" />公共<br>
+                                    <input type="radio" class="form-controls" name="warehouseType" model.bind="1" checked.bind="cargoInfo.warehouseType" />公共<br>
                                 </label>
                                 <label if.bind="cargoInfo.warehouseType == 2">
-                                    <input type="radio" class="form-controls" name="warehouseType" value="2" checked.bind="cargoInfo.warehouseType.toString()" />承包<br>
+                                    <input type="radio" class="form-controls" name="warehouseType" model.bind="2" checked.bind="cargoInfo.warehouseType" />承包<br>
                                 </label>
                             </div>
                         </div>
@@ -34,10 +34,10 @@
                             <span class="help"></span>
                             <div class="form-controls">
                                 <label if.bind="cargoInfo.cargoForm == 1">
-                                    <input type="radio" class="form-controls" name="cargoForm" value="1" checked.bind="cargoInfo.cargoForm.toString()" />散装<br>
+                                    <input type="radio" class="form-controls" name="cargoForm" model.bind="1" checked.bind="cargoInfo.cargoForm" />散装<br>
                                 </label>
                                 <label if.bind="cargoInfo.cargoForm == 2">
-                                    <input type="radio" class="form-controls" name="cargoForm" value="2" checked.bind="cargoInfo.cargoForm.toString()" />集装箱<br>
+                                    <input type="radio" class="form-controls" name="cargoForm" model.bind="2" checked.bind="cargoInfo.cargoForm" />集装箱<br>
                                 </label>
                             </div>
                         </div>
@@ -48,22 +48,11 @@
                             <span class="help"></span>
                             <div class="form-controls">
                                 <label if.bind="cargoInfo.cargoType == 1">
-                                    <input type="radio" class="form-controls" name="cargoType" value="1" checked.bind="cargoInfo.cargoType.toString()" />内贸<br>
+                                    <input type="radio" class="form-controls" name="cargoType" model.bind="1" checked.bind="cargoInfo.cargoType.toString()" />内贸<br>
                                 </label>
                                 <label if.bind="cargoInfo.cargoType == 2">
-                                    <input type="radio" class="form-controls" name="cargoType" value="2" checked.bind="cargoInfo.cargoType.toString()" />保税<br>
+                                    <input type="radio" class="form-controls" name="cargoType" model.bind="2" checked.bind="cargoInfo.cargoType.toString()" />保税<br>
                                 </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">计量单位</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="dictName" k-data-value-field="dictName" k-value.two-way="cargoInfo.unit"
-                                    k-data-source.bind="unitDatasource" style="width: 100%">
-                                </ak-drop-down-list>
                             </div>
                         </div>
                     </div>
@@ -81,7 +70,7 @@
                             <label class="form-label">客户名称*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                   <input type="text" class="form-control" value.bind="cargoInfo.customerName" readonly>
+                                <input type="text" class="form-control" value.bind="cargoInfo.customerName" readonly>
                             </div>
                         </div>
                     </div>
@@ -90,7 +79,7 @@
                             <label class="form-label">指令数量*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control" value.bind="cargoInfo.orderQuantity ">
+                                <input type="text" class="form-control" value.bind="cargoInfo.orderQuantity " readonly>
                             </div>
                         </div>
                     </div>
@@ -99,16 +88,16 @@
                             <label class="form-label">指令件数*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control" value.bind="cargoInfo.orderNumber ">
+                                <input type="text" class="form-control" value.bind="cargoInfo.orderNumber " readonly>
                             </div>
                         </div>
                     </div>
-                     <div class="col-md-12">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">备注</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark">
+                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark" >
                             </div>
                         </div>
                     </div>

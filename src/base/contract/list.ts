@@ -5,8 +5,6 @@ import { ContractService } from "@app/base/services/contract";
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { VerifyRecordService, VerifyRecordCriteria } from '@app/common/services/verify-record';
-import { Contract } from '@app/base/contract/index';
-import { ContractVo } from '@app/base/models/contractVo';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 
 @autoinject

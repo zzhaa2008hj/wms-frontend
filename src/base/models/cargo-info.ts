@@ -25,17 +25,17 @@ export interface CargoInfo {
     /**
      * 公共/承包
      */
-    warehouseType: string;
+    warehouseType: number;
 
     /**˙
      * 内贸/保税
      */
-    cargoType: string;
+    cargoType: number;
 
     /**
      * 散货/集装箱
      */
-    cargoForm: string;
+    cargoForm: number;
 
     unit: string;
 
