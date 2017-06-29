@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-dependency-injection';
 import { VerifyRecord } from '@app/common/models/verify-record';
-import { RestClient, Query, dateConverter, handleResult } from '@app/utils';
+import { RestClient, Query, handleResult, fixDate } from '@app/utils';
 
 export interface VerifyRecordCriteria {
   batchNumber?: string;
@@ -16,7 +16,8 @@ export class VerifyRecordService {
   }
 
   queryVerifyRecord(criteria?: VerifyRecordCriteria): Query<VerifyRecord> {
-    return this.http.query(`/base/verifyRecord/page`, criteria).map(dateConverter('applyTime', 'verifyTime'));
+    return this.http.query<VerifyRecord>(`/base/verifyRecord/page`, criteria)
+      .map(record => fixDate(record, 'applyTime', 'verifyTime'));
   }
 
   addVerifyRecord(verifyRecord: VerifyRecord): Promise<void> {
