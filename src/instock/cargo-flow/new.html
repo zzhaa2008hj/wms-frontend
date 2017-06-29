@@ -1,4 +1,5 @@
 <template>
+    <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
     <div class="grid simple">
         <div class="grid-title no-border">新增入库</h4></div>
         <div class="grid-body no-border"><br>
@@ -37,11 +38,64 @@
                         <input type="text" class="form-control" value.bind="cargoFlow.contactNumber">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.trigger="addVehicle()">
-                        新增入库车辆</a></div>
-                </div>
-                <ak-grid k-data-source.bind="dataSourceVehicle">
+                <ak-grid k-data-source.bind="dataSourceCargoItem">
+                    <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                    <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                    <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                    <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                    <ak-col k-field="actualQuantity" k-title="入库数量">
+                        <ak-template>
+                            <input type="text" value.bind="actualQuantity & notify"/>
+                        </ak-template>
+                    </ak-col>
+                    <ak-col k-field="actualNumber" k-title="入库件数">
+                        <ak-template>
+                            <input type="text" value.bind="actualNumber & notify"/>
+                        </ak-template>
+                    </ak-col>
+                    <ak-col k-field="containerNumber" k-title="集装箱号">
+                        <ak-template>
+                            <input type="text" value.bind="containerNumber & notify"/>
+                        </ak-template>
+                    </ak-col>
+                    <ak-col k-field="remark" k-title="备注">
+                        <ak-template>
+                            <input type="text" value.bind="remark & notify"/>
+                        </ak-template>
+                    </ak-col>
+                    <ak-col k-title="操作">
+                        <ak-template>
+                            <button class="btn btn-success btn-small" click.delegate="addVehicle($this)">添加车辆
+                            </button>
+                        </ak-template>
+                    </ak-col>
+
+                    <!--<ak-template for="detailTemplate">-->
+                    <!--<div class="tabstrip">-->
+                    <!--<div class="orders"></div>-->
+                    <!--<ak-grid k-data-source.bind="vehicles">-->
+                    <!--<ak-col k-field="platNumber" k-title="车牌号"></ak-col>-->
+                    <!--<ak-col k-field="driverNumber" k-title="司机名称"></ak-col>-->
+                    <!--<ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>-->
+                    <!--<ak-col k-field="phoneNumber" k-title="电话"></ak-col>-->
+                    <!--<ak-col k-field="remark" k-title="备注"></ak-col>-->
+                    <!--<ak-col k-title="操作">-->
+                    <!--<ak-template>-->
+                    <!--<button class="btn btn-danger btn-small" click.delegate="deleteVehicle($this)">-->
+                    <!--删除-->
+                    <!--</button>-->
+                    <!--</ak-template>-->
+                    <!--</ak-col>-->
+                    <!--</ak-grid>-->
+                    <!--</div>-->
+                    <!--</ak-template>-->
+                </ak-grid>
+                <ak-grid k-data-source.bind="dataSourceVehicle" k-editable.bind="true">
+                    <ak-col k-title="货物名称" >
+                        <ak-template>
+                            <input type="text" class="form-label" value.bind="cargoName" disabled/>
+                        </ak-template>
+                    </ak-col>
                     <ak-col k-field="platNumber" k-title="车牌号"></ak-col>
                     <ak-col k-field="driverNumber" k-title="司机名称"></ak-col>
                     <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
@@ -49,14 +103,13 @@
                     <ak-col k-field="remark" k-title="备注"></ak-col>
                     <ak-col k-title="操作">
                         <ak-template>
-                            <button class="btn btn-primary btn-small" click.delegate="editVehicle($this)">编辑</button>
                             <button class="btn btn-danger btn-small" click.delegate="deleteVehicle($this)">删除</button>
                         </ak-template>
                     </ak-col>
                 </ak-grid>
                 <div class="form-actions">
                     <div class="pull-right">
-                        <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
+   " clic               <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
                         <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
                     </div>
                 </div>

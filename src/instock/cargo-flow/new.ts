@@ -3,31 +3,56 @@ import { DialogService, MessageDialogService } from "ui";
 import { autoinject } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
-import { EditVehicle } from "@app/instock/cargo-flow/vehicle/edit";
-import { CargoFlow, Vehicle } from "@app/instock/models/cargo-flow";
+import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
 /**
  * Created by Hui on 2017/6/23.
  */
 @autoinject
 export class NewCargoFlow {
+  cargoItems = [] as InstockCargoItem[];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   baseCargoInfo = {
     transport: {
       read: async options => {
-        try {
-          let res = await this.cargoFlowService.listBaseCargoInfos();
-          options.success(res);
-        } catch (err) {
-          options.error("", "", err);
-        }
+        await this.cargoFlowService.listBaseCargoInfos()
+          .then(options.success)
+          .catch(err => options.error("", "", err));
       }
     }
   };
-  vehicles = [] as Vehicle[];
-  vehicle = new Array;
-  dataSourceVehicle = new kendo.data.HierarchicalDataSource({
-    data: []
+  dataSourceCargoItem = new kendo.data.DataSource({
+    transport: {
+      read: (options) => {
+        options.success(this.cargoItems);
+      },
+      update: (options) => {
+        options.success();
+      },
+      create: (options) => {
+        options.success();
+      },
+      destroy: (options) => {
+        options.success();
+      }
+    }
+  });
+  vehicle = [];
+  dataSourceVehicle = new kendo.data.DataSource({
+    transport: {
+      read: (options) => {
+        options.success(this.vehicle);
+      },
+      update: (options) => {
+        options.success();
+      },
+      create: (options) => {
+        options.success();
+      },
+      destroy: (options) => {
+        options.success();
+      }
+    }
   });
   containerNumber = "";
   //入库新增先要录入客户基础信息,基础信息新增后 录入
@@ -37,62 +62,63 @@ export class NewCargoFlow {
               private messageDialogService: MessageDialogService) {
   }
 
-  onSelectCargoInfo(e) {
+  async onSelectCargoInfo(e) {
     let dataItem = this.selectedCargoInfo.dataItem(e.item);
     this.cargoFlow = dataItem;
     this.cargoFlow.cargoInfoId = dataItem.id;
     this.cargoFlow.id = null;
     this.cargoFlow.contactNumber = null;
     this.cargoFlow.lastBatch = "1";
+    let res = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
+    Object.assign(this.cargoItems, res);
+    this.cargoItems.forEach(ci => {
+      let r = [0, 1, 2, 3].sort(() => Math.random() - 0.5).toString();
+      Object.assign(ci, { sign: r });
+    });
+    console.log(this.cargoItems);
+    this.dataSourceCargoItem.read();
   }
 
-  async addVehicle() {
+  async addVehicle(cargoItem) {
     let result = await this.dialogService.open({
       viewModel: NewVehicle,
-      model: this.cargoFlow.cargoInfoId,
+      model: cargoItem,
       lock: true
     }).whenClosed();
     if (result.wasCancelled) return;
     if (result.output) {
-      let r = [0, 1, 2, 3].sort(() => Math.random() - 0.5).toString();
-      let ob = {};
-      Object.assign(ob, result.output);
-      Object.assign(ob, { sign: r });
-      this.vehicle.push(ob);
-      this.dataSourceVehicle.data(this.vehicle);
+      this.vehicle.push(result.output);
+      this.dataSourceVehicle.read();
     }
   }
 
-  async editVehicle(e) {
-    let result = await this.dialogService.open({ viewModel: EditVehicle, model: e, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
-    let vehicle = result.output;
-    for (let o of this.vehicle) {
-      if (vehicle.sign == o.sign) {
-        let index = this.vehicle.indexOf(o);
-        this.vehicle.splice(index, 1, vehicle);
-      }
-    }
-    this.dataSourceVehicle.data(this.vehicle);
-  }
-
-  deleteVehicle(e) {
-    for (let o of this.vehicle) {
-      if (e.sign == o.sign) {
-        let index = this.vehicle.indexOf(o);
-        this.vehicle.splice(index, 1);
-      }
-    }
-    this.dataSourceVehicle.data(this.vehicle);
-  }
+  // deleteVehicle(e) {
+  //   console.log(e);
+  //   this.vehicless.forEach(item => {
+  //     item.vehicles.forEach(v => {
+  //       if (e.sign == v.sign) {
+  //         let index = item.indexOf(e);
+  //         item.vehicles.splice(index, 1);
+  //       }
+  //     });
+  //   });
+  // }
 
   async addNewCargoFlow() {
     if (this.vehicle) {
-      this.vehicles = this.vehicle;
-      Object.assign(this.cargoFlow, { vehicles: this.vehicles });
+      for (let ci of this.cargoItems) {
+        let vs = [];
+        this.vehicle.forEach(v => {
+          if (ci.sign == v.sign) {
+            vs.push(v);
+          }
+        });
+        Object.assign(ci, { vehicles: vs });
+      }
     }
-    console.log(this.cargoFlow);
+    if(this.cargoItems){
+      Object.assign(this.cargoFlow, { cargoItems: this.cargoItems });
+    }
     try {
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "新增成功" });
@@ -104,6 +130,8 @@ export class NewCargoFlow {
   }
 
   cancel() {
-    this.router.navigateToRoute("list");
+    console.log(this.vehicle);
+    console.log(this.cargoItems);
+    // this.router.navigateToRoute("list");
   }
 }
