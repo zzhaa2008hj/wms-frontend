@@ -1,0 +1,40 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i>
+            <div>新增${appName}的机构类型</div>
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div style="width: 640px">
+                <div class="form-group">
+                    <div class="form-label">客户入库货物</div>
+                    <div class="controls">
+                        <ak-drop-down-list class="form-control"
+                                           k-option-label="请选择入库货物..."
+                                           k-data-text-field="cargoName"
+                                           k-data-value-field="id"
+                                           k-value.two-way="workOrder.businessId"
+                                           k-data-source.bind="cargoItemsSource"
+                                           style="width: 60%">
+                        </ak-drop-down-list>
+                    </div>
+                </div>
+            </div>
+            <div class="form-label">入库货物车辆</div>
+            <div class="controls">
+                <ak-drop-down-list class="form-control"
+                                   k-option-label="请选择货物车辆..."
+                                   k-data-text-field="plateNumber"
+                                   k-widget.two-way="selectedVehicle"
+                                   k-data-source.bind="instockVehicleSource"
+                                   k-on-select.delegate="onSelectVehicle($even.detail)"
+                                   style="width: 60%;">
+                </ak-drop-down-list>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">保存</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

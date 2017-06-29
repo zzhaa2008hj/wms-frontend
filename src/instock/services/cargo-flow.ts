@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { dateConverter, fixDate, handleResult, Query, RestClient } from "@app/utils";
+import { handleResult, Query, RestClient } from "@app/utils";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 /**
@@ -38,8 +38,11 @@ export class CargoFlowService {
     return res.content;
   }
 
-  async getCargoFlowById(id: string): Promise<CargoFlow> {
-    let res = await this.http.get(`/instock/cargo-flow/${id}`);
-    return res.content;
+  getCargoFlowsById(id: string): Promise<CargoFlow> {
+    return this.http.get(`/instock/cargo-flow/${id} `)
+      .then(res => {
+        fixDate(res.content, "instockDate");
+        return res.content;
+      });
   }
 }

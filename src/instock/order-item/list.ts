@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { HeapInfoService, OrderItemService } from "@app/instock/services/order-item";
+import { OrderItemService, TallyItemService } from "@app/instock/services/order-item";
 import { DataSourceFactory } from "@app/utils";
 
 @autoinject
@@ -14,7 +14,7 @@ export class OrderItemList {
   };
 
   constructor(private orderItemService: OrderItemService,
-              private heapInfoService: HeapInfoService,
+              private tallyItemService: TallyItemService,
               private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.orderItemService.queryOrderItems({ batchNumber: this.batchNumber }),
@@ -32,7 +32,7 @@ export class OrderItemList {
       dataSource: {
         transport: {
           read: (options) => {
-            this.heapInfoService.listHeapInfoes(e.data.id)
+            this.tallyItemService.listOrderItems(e.data.id)
               .then(options.success)
               .catch(err => options.error("", "", err));
           }
@@ -40,11 +40,11 @@ export class OrderItemList {
         filter: { field: 'instockOrderItemId', operator: 'eq', value: e.data.id }
       },
       columns: [
-        { field: 'instockDate', title: '入库时间', format : "{0:yyyy-MM-dd}" },
-        { field: 'warehouseName', title: '库区名称' },
-        { field: 'storageQuantity', title: '堆存数量' },
-        { field: 'storageNumber', title: '堆存件数' },
-        { field: 'containerNumber', title: '集装箱号' },
+        { field: 'instockDate', title: '入库时间', format: "{0:yyyy-MM-dd}" },
+        { field: 'cargoCategoryName', title: '货类' },
+        { field: 'cargoSubCategoryName', title: '品牌' },
+        { field: 'tallyQuantity', title: '理货数量' },
+        { field: 'tallyNumber', title: '理货件数' },
         { field: 'unit', title: '计量单位' }
       ]
     });

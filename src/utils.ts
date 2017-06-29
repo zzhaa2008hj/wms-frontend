@@ -40,14 +40,26 @@ export function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
 }
 
 /**
+ * 修正对象的字段值
+ * 有些对象字段类型为Date，但是json数据传过来是string或者number，需要处理下
+ * @param obj 
+ * @param keys 
+ * @param fix 
+ */
+export function fix<K extends string, U, T extends Record<K, U>>(obj: T, keys: K[], fix: (v: any) => U): T {
+  keys.forEach(key => {
+    if (obj[key]) obj[key] = fix(obj[key]);
+  });
+  return obj;
+}
+
+/**
  * 修正数据对象的Date类型字段 （原先字段实际为number类型）
  * @param obj 
  * @param keys 
  */
-export function fixDate<K extends string, T extends Record<K, Date>>(obj: T, ...keys: K[]): void {
-  keys.forEach(key => {
-    if (obj[key]) obj[key] = new Date(obj[key]);
-  });
+export function fixDate<K extends string, T extends Record<K, Date>>(obj: T, ...keys: K[]): T {
+  return fix(obj, keys, v => new Date(v));
 }
 
 
@@ -62,9 +74,12 @@ export abstract class RestClient extends HttpClient {
 
 }
 
+
 /**
  * 返回转换日期字段的函数
  * @param keys 需要转换成Date类型的字段
+ * @deprecated
+ * @see fixDate
  */
 export function dateConverter<T>(...keys: string[]): (obj: T) => T  {
   return obj => {
@@ -121,7 +136,7 @@ export class DataSourceFactory {
 
   create({readAll, query, pageSize, error: onError}: DataSourceOptions2) {
     let serverPaging: boolean;
-    let read: Function;
+    let read: (options: any) => void;
     let schema: any;
     if (query) {
       serverPaging = true;
