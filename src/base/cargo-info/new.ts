@@ -91,6 +91,8 @@ export class NewCargoInfo {
         this.index++;
         this.cargoItems.push(result.output);
         this.datasource.read();
+
+        this.orderNumChange();
     }
 
 
@@ -108,6 +110,8 @@ export class NewCargoInfo {
         if (confirm) {
             this.cargoItems = this.cargoItems.filter(x => x.batchNumber != batchNumber);
             this.datasource.read();
+
+            this.orderNumChange();
         }
     }
 
@@ -117,7 +121,7 @@ export class NewCargoInfo {
             this.messageDialogService.alert({ title: '错误', message: '该货物不存在！' });
             return;
         }
-        let cargoItemInfo = cargoItemList[0]; 
+        let cargoItemInfo = cargoItemList[0];
         let result = await this.dialogService.open({
             viewModel: NewCargoItem,
             model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType, cargoItemInfo },
@@ -128,29 +132,30 @@ export class NewCargoInfo {
         this.cargoItems.push(result.output);
         this.datasource.read();
 
+        this.orderNumChange();
+
     }
     async save() {
-        this.cargoInfo.orderQuantity  = 0;
-        this.cargoInfo.orderNumber = 0;
-      
-        this.cargoItems.forEach(r =>  {console.log(r.orderQuantity+1);console.log(typeof(r.orderQuantity)); this.cargoInfo.orderQuantity += parseInt(r.orderQuantity)})
-        this.cargoItems.forEach(r => this.cargoInfo.orderNumber += parseInt(r.orderNumber as any)) 
-        console.log(this.cargoInfo.orderQuantity)
-        console.log(this.cargoInfo.orderNumber)
-        // this.cargoInfo.agentName = this.agentInfo.text();
-        // this.cargoInfo.customerName = this.customerInfo.text();
-        //this.cargoInfoVo.cargoInfo = this.cargoInfo;
-        // this.cargoInfo.cargoItems = this.cargoItems;
+        this.cargoInfo.agentName = this.agentInfo.text();
+        this.cargoInfo.customerName = this.customerInfo.text();
+       // this.cargoInfoVo.cargoInfo = this.cargoInfo;
+        this.cargoInfo.cargoItems = this.cargoItems;
 
-        // try {
-        //     await this.cargoInfoService.saveCargoInfo(this.cargoInfo);
-        //     await this.messageDialogService.alert({ title: "新增成功" });
-        //     this.router.navigateToRoute("list");
-        // } catch (err) {
-        //     await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
-        // }
+        try {
+            await this.cargoInfoService.saveCargoInfo(this.cargoInfo);
+            await this.messageDialogService.alert({ title: "新增成功" });
+            this.router.navigateToRoute("list");
+        } catch (err) {
+            await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+        }
     }
 
+    orderNumChange() {
+        this.cargoInfo.orderQuantity = 0;
+        this.cargoInfo.orderNumber = 0;
+        this.cargoItems.forEach(r => this.cargoInfo.orderQuantity += r.orderQuantity)
+        this.cargoItems.forEach(r => this.cargoInfo.orderNumber += r.orderNumber)
+    }
     cancel() {
         this.router.navigateToRoute("list");
     }

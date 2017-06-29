@@ -79,7 +79,7 @@
                             <label class="form-label">指令数量*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control" value.bind="cargoInfo.orderQuantity " readonly>
+                                <input type="number" class="form-control" value.bind="cargoInfo.orderQuantity & toInt" readonly>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                             <label class="form-label">指令件数*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control" value.bind="cargoInfo.orderNumber " readonly>
+                                <input type="number" class="form-control" value.bind="cargoInfo.orderNumber & toInt" readonly>
                             </div>
                         </div>
                     </div>

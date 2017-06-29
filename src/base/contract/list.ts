@@ -20,10 +20,10 @@ export class ContractList {
   contractTypes: string[] = ["客户仓储", "装卸单位", "库区租赁"];
 
   constructor(private contractService: ContractService,
-              private messageDialogService: MessageDialogService,
-              private dialogService: DialogService,
-              private verifyRecordService: VerifyRecordService,
-              private dataSourceFactory: DataSourceFactory) {
+    private messageDialogService: MessageDialogService,
+    private dialogService: DialogService,
+    private verifyRecordService: VerifyRecordService,
+    private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.contractService.queryContracts({ searchName: this.searchName }).map(res => {
         res.contractTypeStr = this.contractTypes[res.contractType - 1];

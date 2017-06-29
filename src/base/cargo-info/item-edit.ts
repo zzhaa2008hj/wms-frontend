@@ -37,7 +37,7 @@ export class EditCargoItem {
     async activate({ cargoItemInfo }) {
         this.cargoItem = cargoItemInfo;
         this.cargoRates = cargoItemInfo.cargoRates;
-    }  
+    }
 
     async save() {
         await this.cargoRateDataSource.sync();

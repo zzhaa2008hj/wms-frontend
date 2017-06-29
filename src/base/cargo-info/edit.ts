@@ -7,7 +7,7 @@ import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 
 @autoinject
 export class EditCargoInfo {
-   // unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
+    // unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
     cargoInfo = {} as CargoInfo;
     cargoItems = [] as CargoItem[];
     cargoInfoId = '';
@@ -16,7 +16,7 @@ export class EditCargoInfo {
     constructor(private router: Router,
         private cargoInfoService: CargoInfoService,
         private messageDialogService: MessageDialogService,
-        private dialogService: DialogService) { 
+        private dialogService: DialogService) {
         this.datasource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -61,9 +61,12 @@ export class EditCargoInfo {
         this.cargoItems.push(result.output);
         this.datasource.read();
 
+        this.orderNumChange();
+
     }
     async save() {
-       // this.cargoInfoVo.cargoInfo = this.cargoInfo;
+
+        // this.cargoInfoVo.cargoInfo = this.cargoInfo;
         this.cargoInfo.cargoItems = this.cargoItems;
         try {
             await this.cargoInfoService.updateCargoInfo(this.cargoInfo, this.cargoInfoId);
@@ -72,6 +75,13 @@ export class EditCargoInfo {
         } catch (err) {
             await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: 'error' });
         }
+    }
+
+    orderNumChange() {
+        this.cargoInfo.orderQuantity = 0;
+        this.cargoInfo.orderNumber = 0;
+        this.cargoItems.forEach(r => this.cargoInfo.orderQuantity += r.orderQuantity)
+        this.cargoItems.forEach(r => this.cargoInfo.orderNumber += r.orderNumber)
     }
 
     cancel() {

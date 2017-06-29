@@ -91,7 +91,7 @@ export class NewCargoItem {
         let result = await this.dialogService.open({ viewModel: CargoCategoryTree, model: this.cargoCategoryDataSource, lock: true })
             .whenClosed();
         if (result.wasCancelled) return;
-        if (!this.cargoItem.cargoCategoryId ||  this.cargoItem.cargoCategoryId != result.output.id) {
+        if (!this.cargoItem.cargoCategoryId || this.cargoItem.cargoCategoryId != result.output.id) {
             this.cargoItem.cargoCategoryName = result.output.categoryName;
             this.cargoItem.cargoCategoryId = result.output.id;
             this.cargoCategoryChanged();
@@ -100,7 +100,7 @@ export class NewCargoItem {
     }
     async save() {
         await this.cargoRateDataSource.sync();
-        
+
         let cargoRateList = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
         cargoRateList.forEach(r => {
             let id = r.id;
