@@ -5,6 +5,7 @@ import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
 import { EditVehicle } from "@app/instock/cargo-flow/vehicle/edit";
 import { CargoFlow, Vehicle } from "@app/instock/models/cargo-flow";
+import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -33,6 +34,7 @@ export class EditCargoFlow {
   //入库新增先要录入客户基础信息,基础信息新增后 录入
   constructor(private router: Router,
               private cargoFlowService: CargoFlowService,
+              private vehicleService: InstockVehicleService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService) {
   }
@@ -40,6 +42,7 @@ export class EditCargoFlow {
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoFlow.lastBatch = this.cargoFlow.lastBatch.toString();
+    this.vehicles = await this.vehicleService.listVehiclesByItems(params.id);
   }
 
   onSelectCargoInfo(e) {

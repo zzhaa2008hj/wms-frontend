@@ -22,10 +22,13 @@ export interface CargoFlow {
   remark: string;
   orgId: string;
 
-  //车辆信息
-  vehicles: Vehicle[];
+  //入库货物信息
+  cargoItems: InstockCargoItem[];
 }
 export interface InstockCargoItem {
+  //唯一性标识
+  sign?: string;
+
   id: string;
   instockFlowId: string;
   batchNumber: string;
@@ -39,8 +42,15 @@ export interface InstockCargoItem {
   containerNumber: string;
   remark: string;
   orgId: string;
+
+  //车辆信息
+  vehicles: Vehicle[];
 }
+
 export interface Vehicle {
+  //唯一性标识
+  sign?: string;
+
   instockGoodsId: string;
   plateNumber: string;
   driverName: string;
@@ -48,7 +58,4 @@ export interface Vehicle {
   phoneNumber: string;
   remark: string;
   orgId: string;
-
-  //入库货物信息
-  cargoItems: InstockCargoItem[];
 }

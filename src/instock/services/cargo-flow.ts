@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, Query, RestClient } from "@app/utils";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -11,7 +11,11 @@ export class CargoFlowService {
   }
 
   queryCargoFlows(param: { keywords: string }): Query<CargoFlow> {
-    return this.http.query<CargoFlow>(`/instock/cargo-flow/page`, param).map(flow => fixDate(flow, 'instockDate');
+    return this.http.query<CargoFlow>(`/instock/cargo-flow/page`, param)
+      .map(res => {
+        fixDate(res, 'instockDate');
+        return res;
+      });
   }
 
   saveCargoFlow(cargoFlow: CargoFlow): Promise<void> {
@@ -38,7 +42,7 @@ export class CargoFlowService {
     return res.content;
   }
 
-  getCargoFlowsById(id: string): Promise<CargoFlow> {
+  getCargoFlowById(id: string): Promise<CargoFlow> {
     return this.http.get(`/instock/cargo-flow/${id} `)
       .then(res => {
         fixDate(res.content, "instockDate");
