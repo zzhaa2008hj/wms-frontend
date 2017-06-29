@@ -3,16 +3,16 @@ import { MessageService } from "@app/base/services/message";
 import { Router } from "aurelia-router";
 import { EmployeeService } from "@app/base/services/employee";
 import { MessageDialogService } from "ui";
-import { Message } from "@app/base/models/message";
+import { Message, MessageVo, MessageResult } from '@app/base/models/message';
+import { observable } from 'aurelia-framework';
 /**
  * Created by Hui on 2017/6/14.
  */
 @autoinject
 export class NewMessage {
   message: Message;
-  category = [{ text: "内部", value: 1 }, { text: "外部", value: 2 }];
-  selectedCategory: any;
-  selectedReceiver: any;
+  @observable selectedCategory: number;
+  selectedReceiver: any = [];
   dataSourceReceiver = new kendo.data.DataSource({
     serverFiltering: true,
     transport: {
@@ -22,10 +22,10 @@ export class NewMessage {
             options.success([]);
           }
           let res;
-          if (this.selectedCategory.value() == 1) {
+          if (this.selectedCategory == 1) {
             res = await this.employeeService.listEmployee();
           }
-          if (this.selectedCategory.value() == 2) {
+          if (this.selectedCategory == 2) {
             res = await this.messageService.listCustomer();
           }
           options.success(res);
@@ -40,13 +40,27 @@ export class NewMessage {
               private messageService: MessageService,
               private employeeService: EmployeeService,
               private messageDialogService: MessageDialogService) {
+    this.selectedCategory = 1;
+  }
+
+  selectedCategoryChanged() {
+    this.dataSourceReceiver.read();
   }
 
   async addNewMessage() {
     try {
-      this.message.receiverId = this.selectedReceiver.value();
-      this.message.receiverName = this.selectedReceiver.text();
-      await this.messageService.saveMessage(this.message);
+      let messageVo = {} as MessageVo;
+      messageVo.message = this.message;
+      let receivers: MessageResult[] = [];
+      receivers = this.selectedReceiver.value().map(res => {
+        let msgRes = {} as MessageResult;
+        msgRes.receiverId = res.id;
+        msgRes.receiverName = res.name;
+        return msgRes;
+      });
+      messageVo.receivers = receivers;
+
+      await this.messageService.saveMessage(messageVo);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {

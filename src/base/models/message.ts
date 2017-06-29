@@ -2,18 +2,27 @@
  * Created by Hui on 2017/6/19.
  */
 export interface Message {
+  id?: string;
   orgId: string;
-// message
   category: number;
   title: string;
   content: string;
   senderId: string;
   sender: string;
   sendDate: Date;
+}
 
-  // messageResult
+export interface MessageResult {
+  id?: string;
+  orgId: string;
   messageId: string;
-  harRead: number;
+  hasRead: number;
   receiverId: string;
   receiverName: string;
+  modifyTime: Date;
+}
+
+export interface MessageVo {
+  message: Message;
+  receivers: MessageResult[];
 }
