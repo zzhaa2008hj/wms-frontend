@@ -1,11 +1,12 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { dateConverter, Query, RestClient } from "@app/utils";
+import { dateConverter, handleResult, Query, RestClient } from "@app/utils";
 import { WorkOrder, WorkOrderItem } from "@app/instock/models/work";
 /**
  * 查询条件
  */
 export interface WorkOrderCriteria {
   searchName?: string;
+  businessId?: string;
 }
 
 @autoinject
@@ -21,6 +22,10 @@ export class WorkOrderService {
     return this.http.get(`/instock/warehouseWorkOrder/list/${businessId}`)
       .then(res => res.content.map(dateConverter("workDate")));
   }
+
+  saveWorkOrder(workOrder: WorkOrder): Promise<void> {
+    return this.http.post(`/instock/warehouseWorkOrder`, workOrder).then(handleResult);
+  }
 }
 
 @autoinject
@@ -30,5 +35,9 @@ export class WorkOderItemService {
 
   getWorkOrderItems(workOrderId: string): Promise<WorkOrderItem[]> {
     return this.http.get(`/instock/warehouseWorkOrderItem/list/${workOrderId}`).then(res => res.content);
+  }
+
+  saveWorkOrderItem(workOrderItem: WorkOrderItem): Promise<void> {
+    return this.http.post(`/instock/warehouseWorkOrderItem`, workOrderItem).then(handleResult);
   }
 }
