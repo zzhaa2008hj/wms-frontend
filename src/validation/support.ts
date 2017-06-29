@@ -1,4 +1,4 @@
-import { validationMessages, ValidationRenderer, RenderInstruction } from "aurelia-validation";
+import { ValidationRenderer, RenderInstruction } from "aurelia-validation";
 
 export const formValidationRenderer: ValidationRenderer = {
   render(instruction: RenderInstruction) {
