@@ -15,6 +15,12 @@
       "moduleId": "./base/cargo-category/index"
     },
     {
+      "route": "/base/cargo-info",
+      "name": "cargoInfo",
+      "title": "入库指令",
+      "moduleId": "./base/cargo-info/index"
+    },
+    {
       "route": "/base/contract",
       "name": "contract",
       "title": "合同",
@@ -86,5 +92,6 @@
       "title": "入库",
       "moduleId": "./instock/cargo-flow/index"
     }
+
   ]
 }

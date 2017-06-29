@@ -2,7 +2,7 @@
     <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
     <ux-dialog>
         <ux-dialog-header show-close-button.bind="true">
-            <i class="fa fa-check-square-o"></i> 新增货物
+            <i class="fa fa-check-square-o"></i> 编辑货物明细信息
         </ux-dialog-header>
         <ux-dialog-body>
             <div class="grid simple">
@@ -24,10 +24,7 @@
                                     <label class="form-label">货物种类*</label>
                                     <span class="help"></span>
                                     <div class="form-controls">
-                                        <ak-drop-down-list k-option-label="请选择" k-data-text-field="categoryName" k-data-value-field="id" k-value.two-way="cargoItem.cargoCategoryId"
-                                            k-data-source.bind="cargoCategoryDataSource" k-widget.two-way="cargoCategory" style="width: 100%"
-                                            k-on-change.delegate="cargoCategoryChanged()">
-                                        </ak-drop-down-list>
+                                        <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-                             <div class="col-md-12">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">备注</label>
                                     <span class="help"></span>
