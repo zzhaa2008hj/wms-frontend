@@ -36,9 +36,9 @@ export class StorageService {
   }
 
   /**
-   * 修改库存
+   * 保存库存明细
    */
-  async add(id: string, storageItem: StorageItemHistory): Promise<void> {
-    await this.http.put(`/base/storage/item/${id}`, storageItem).then(handleResult);
+  async saveItem(id: string, storageItem: StorageItemHistory): Promise<void> {
+    await this.http.post(`/base/storage/${id}/item`, storageItem).then(handleResult);
   }
 }

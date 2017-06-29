@@ -1,0 +1,37 @@
+<template>
+    <div class="page-title">
+        <h3>入库单明细</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <div class="input-group">
+                <a class="btn btn-success" route-href="route: new; params.bind: { id: storageInfoId }">新增</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                <input class="form-control" type="text" value.bind="keywords" placeholder="请输入客户名称/代理名称/批次号">
+                <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+            </div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-sortable.bind="true"
+             k-reorderable.bind="true"
+             k-resizable.bind="true"
+             k-filterable.bind="true"
+             k-column-menu.bind="true"
+             k-pageable.bind="pageable">
+        <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+        <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+        <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
+        <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+        <ak-col k-field="unit" k-title="单位"></ak-col>
+        <ak-col k-field="instockDate" k-title="入库时间" k-format="{0:yyyy-MM-dd}"></ak-col>
+        <ak-col k-title="操作">
+            <ak-template>
+                <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">修改</a>
+            </ak-template>
+        </ak-col>
+    </ak-grid>
+</template>

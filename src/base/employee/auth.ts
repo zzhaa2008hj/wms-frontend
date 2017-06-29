@@ -15,7 +15,7 @@ export class EmployeeAuth {
   }
 
   async activate(params) {
-    this.employee = await this.employeeService.getEmployee(params.id);
+    this.employee = params;
     // 获取机构所有的角色列表
     this.organizationRoles = await this.employeeService.getOrganizationRoles();
     if (!this.organizationRoles || this.organizationRoles.length == 0) {
