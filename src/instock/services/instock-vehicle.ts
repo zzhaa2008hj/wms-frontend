@@ -16,4 +16,5 @@ export class InstockVehicleService {
   listInstockVehicles(goodsId: string): Promise<InstockVehicle[]> {
     return this.http.get(`instock/vehicle/list/${goodsId}`).then(res => res.content);
   }
+
 }

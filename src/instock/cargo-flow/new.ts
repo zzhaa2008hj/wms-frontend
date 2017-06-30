@@ -3,13 +3,13 @@ import { DialogService, MessageDialogService } from "ui";
 import { autoinject } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
-import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 /**
  * Created by Hui on 2017/6/23.
  */
 @autoinject
 export class NewCargoFlow {
-  cargoItems = [] as InstockCargoItem[];
+  cargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   baseCargoInfo = {
@@ -35,7 +35,7 @@ export class NewCargoFlow {
       destroy: (options) => {
         options.success();
       }
-    }
+    },
   });
   vehicle = [];
   dataSourceVehicle = new kendo.data.DataSource({
@@ -74,8 +74,9 @@ export class NewCargoFlow {
     this.cargoItems.forEach(ci => {
       let r = [0, 1, 2, 3].sort(() => Math.random() - 0.5).toString();
       Object.assign(ci, { sign: r });
+      ci.cargoItemId = ci.id;
+      ci.id = null;
     });
-    console.log(this.cargoItems);
     this.dataSourceCargoItem.read();
   }
 
@@ -92,32 +93,34 @@ export class NewCargoFlow {
     }
   }
 
-  // deleteVehicle(e) {
-  //   console.log(e);
-  //   this.vehicless.forEach(item => {
-  //     item.vehicles.forEach(v => {
-  //       if (e.sign == v.sign) {
-  //         let index = item.indexOf(e);
-  //         item.vehicles.splice(index, 1);
-  //       }
-  //     });
-  //   });
-  // }
+  deleteVehicle(e) {
+      this.vehicle.forEach(v => {
+        if (e.sign == v.sign) {
+          let index = this.vehicle.indexOf(v);
+          this.vehicle.splice(index, 1);
+        }
+      });
+    this.dataSourceVehicle.read();
+  }
 
   async addNewCargoFlow() {
-    if (this.vehicle) {
-      for (let ci of this.cargoItems) {
+    let vehicles = [];
+    Object.assign(vehicles, this.dataSourceVehicle.data());
+    let cargoItems = [];
+    Object.assign(cargoItems, this.dataSourceCargoItem.data());
+    if (vehicles) {
+      cargoItems.forEach(ci => {
         let vs = [];
-        this.vehicle.forEach(v => {
+        vehicles.forEach(v => {
           if (ci.sign == v.sign) {
             vs.push(v);
           }
-        });
+        })
         Object.assign(ci, { vehicles: vs });
-      }
+      });
     }
-    if(this.cargoItems){
-      Object.assign(this.cargoFlow, { cargoItems: this.cargoItems });
+    if (cargoItems) {
+      Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
     try {
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
@@ -130,8 +133,6 @@ export class NewCargoFlow {
   }
 
   cancel() {
-    console.log(this.vehicle);
-    console.log(this.cargoItems);
-    // this.router.navigateToRoute("list");
+    this.router.navigateToRoute("list");
   }
 }

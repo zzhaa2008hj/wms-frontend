@@ -37,11 +37,6 @@ export class CargoFlowService {
     return res.content;
   }
 
-  async getBaseCargoItemById(id: string): Promise<CargoItem> {
-    let res = await this.http.get(`/instock/cargo-flow/${id}/baseCargoItem`);
-    return res.content;
-  }
-
   getCargoFlowById(id: string): Promise<CargoFlow> {
     return this.http.get(`/instock/cargo-flow/${id} `)
       .then(res => {
