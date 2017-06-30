@@ -53,14 +53,14 @@
                 <label class="form-label">堆存数量</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="storageItem.storageQuantity">
+                    <input type="number" class="form-control" value.bind="storageItem.storageQuantity">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">堆存件数</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="storageItem.storageNumber">
+                    <input type="number" class="form-control" value.bind="storageItem.storageNumber">
                 </div>
             </div>
             <div class="form-group">
@@ -80,7 +80,15 @@
                 <label class="form-label">入库时间*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" ak-datepicker="k-value.two-way : storageItem.instockDate & validate" required>
+                    <input type="text" class="form-control" ak-datetimepicker="k-value.two-way : storageItem.instockDate & validate" 
+                    required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">坐标</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="storageItem.position">
                 </div>
             </div>
             <div class="form-actions">

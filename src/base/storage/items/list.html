@@ -27,11 +27,7 @@
         <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
         <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
         <ak-col k-field="unit" k-title="单位"></ak-col>
-        <ak-col k-field="instockDate" k-title="入库时间" k-format="{0:yyyy-MM-dd}"></ak-col>
-        <ak-col k-title="操作">
-            <ak-template>
-                <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">修改</a>
-            </ak-template>
-        </ak-col>
+        <ak-col k-field="instockDate" k-title="入库时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+        
     </ak-grid>
 </template>
