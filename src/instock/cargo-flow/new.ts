@@ -115,7 +115,7 @@ export class NewCargoFlow {
           if (ci.sign == v.sign) {
             vs.push(v);
           }
-        })
+        });
         Object.assign(ci, { vehicles: vs });
       });
     }
