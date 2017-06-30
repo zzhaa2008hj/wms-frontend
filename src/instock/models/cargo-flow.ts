@@ -58,4 +58,5 @@ export interface Vehicle {
   phoneNumber: string;
   remark: string;
   orgId: string;
+  cargoName: string;
 }

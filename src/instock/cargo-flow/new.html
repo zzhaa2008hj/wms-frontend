@@ -39,13 +39,14 @@
                     </div>
                 </div>
                 <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">
-                    <ak-col k-field="cargoName" k-title="货物名称" ></ak-col>
+                    <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                    <ak-col k-field="instockFlowNumber" k-title="入库流水单号 " ></ak-col>
                     <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
                     <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
-                    <ak-col k-field="unit" k-title="计量单位" k-locked.bind="true" ></ak-col>
+                    <ak-col k-field="unit" k-title="计量单位"></ak-col>
                     <ak-col k-field="actualQuantity" k-title="入库数量"></ak-col>
-                    <ak-col  k-field="actualNumber" k-title="入库件数"></ak-col>
-                    <ak-col  k-field="containerNumber" k-title="集装箱号"></ak-col>
+                    <ak-col k-field="actualNumber" k-title="入库件数"></ak-col>
+                    <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
                     <ak-col k-field="remark" k-title="备注"></ak-col>
                     <ak-col k-title="操作">
                         <ak-template>
@@ -55,13 +56,13 @@
                     </ak-col>
                 </ak-grid>
                 <ak-grid k-data-source.bind="dataSourceVehicle" k-editable.bind="true">
-                    <ak-col k-title="货物名称" >
+                    <ak-col k-title="货物名称">
                         <ak-template>
                             <input type="text" class="form-label" value.bind="cargoName" disabled/>
                         </ak-template>
                     </ak-col>
-                    <ak-col k-field="platNumber" k-title="车牌号"></ak-col>
-                    <ak-col k-field="driverNumber" k-title="司机名称"></ak-col>
+                    <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
+                    <ak-col k-field="driverName" k-title="司机名称"></ak-col>
                     <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
                     <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
                     <ak-col k-field="remark" k-title="备注"></ak-col>
@@ -73,7 +74,7 @@
                 </ak-grid>
                 <div class="form-actions">
                     <div class="pull-right">
-   " clic               <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
+                        <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
                         <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
                     </div>
                 </div>

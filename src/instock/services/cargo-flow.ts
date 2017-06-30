@@ -18,11 +18,6 @@ export class CargoFlowService {
     await this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
   }
 
-  async updateVisible(id: string) {
-    await this.http.put(`/instock/cargo-flow/${id}`, null).then(handleResult);
-  }
-
-
   async listBaseCargoInfos(): Promise<CargoInfo> {
     let res = await this.http.get(`/base/cargoInfo/list`);
     return res.content;
@@ -43,5 +38,9 @@ export class CargoFlowService {
 
   audit(id: string, verifyStatus: number): Promise<void> {
     return this.http.put(`/instock/cargo-flow/audit/${id}/?verifyStatus=${verifyStatus}`, '').then(handleResult);
+  }
+
+  updateCargoFlow(cargoFlow: CargoFlow): Promise<void> {
+    return this.http.put(`/instock/cargo-flow/${cargoFlow.id}`, cargoFlow).then(handleResult);
   }
 }
