@@ -19,6 +19,7 @@ export interface CargoFlow {
   contactNumber: string;
   status: number;
   stage: number;
+  instockStageName: string;
   remark: string;
   orgId: string;
 
