@@ -14,14 +14,13 @@ export class CargoFlowService {
     return this.http.query<CargoFlow>(`/instock/cargo-flow/page`, param).map(flow => fixDate(flow, 'instockDate'));
   }
 
-  saveCargoFlow(cargoFlow: CargoFlow): Promise<void> {
-    return this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
+  async saveCargoFlow(cargoFlow: CargoFlow) {
+    await this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
   }
 
-  updateVisible(id: string): Promise<void> {
-    return this.http.put(`/instock/cargo-flow/${id}`, null).then(handleResult);
+  async updateVisible(id: string) {
+    await this.http.put(`/instock/cargo-flow/${id}`, null).then(handleResult);
   }
-
 
   async listBaseCargoInfos(): Promise<CargoInfo> {
     let res = await this.http.get(`/base/cargoInfo/list`);
@@ -44,5 +43,9 @@ export class CargoFlowService {
         fixDate(res.content, "instockDate");
         return res.content;
       });
+  }
+
+  audit(id: string, verifyStatus: number): Promise<void> {
+    return this.http.put(`/instock/cargo-flow/audit/${id}/?verifyStatus=${verifyStatus}`, '').then(handleResult);
   }
 }
