@@ -22,4 +22,6 @@ export interface CargoItem {
   remark: string;
 
   orgId: string;
+  cargoName: string;
+  cargoCategoryName: string;
 }

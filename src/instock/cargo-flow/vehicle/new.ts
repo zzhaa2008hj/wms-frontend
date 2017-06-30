@@ -12,10 +12,14 @@ export class NewVehicle {
   }
 
   activate(cargoItem: any) {
-    Object.assign(this.vehicle, { sign: cargoItem.sign, cargoName: cargoItem.cargoName });
+    Object.assign(this.vehicle, cargoItem);
+    if (cargoItem.id) {
+      this.vehicle.instockGoodsId = cargoItem.id;
+    }
   }
 
   async save() {
+    console.log(this.vehicle)
     await this.dialogController.ok(this.vehicle);
   }
 

@@ -29,7 +29,7 @@ export interface InstockCargoItem {
   //唯一性标识
   sign?: string;
 
-  id?: string;
+  id: string;
   instockFlowId: string;
   batchNumber: string;
   instockFlowNumber: string;
@@ -42,6 +42,8 @@ export interface InstockCargoItem {
   containerNumber: string;
   remark: string;
   orgId: string;
+  cargoName: string;
+  cargoCategoryName: string;
 
   //车辆信息
   vehicles: Vehicle[];
@@ -58,4 +60,5 @@ export interface Vehicle {
   phoneNumber: string;
   remark: string;
   orgId: string;
+  cargoName: string;
 }

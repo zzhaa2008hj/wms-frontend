@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
+import { Router } from "aurelia-router";
 @autoinject
 export class CargoFlow {
   searchName: string;

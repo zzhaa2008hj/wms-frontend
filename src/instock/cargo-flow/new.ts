@@ -94,12 +94,12 @@ export class NewCargoFlow {
   }
 
   deleteVehicle(e) {
-      this.vehicle.forEach(v => {
-        if (e.sign == v.sign) {
-          let index = this.vehicle.indexOf(v);
-          this.vehicle.splice(index, 1);
-        }
-      });
+    this.vehicle.forEach(v => {
+      if (e.sign == v.sign) {
+        let index = this.vehicle.indexOf(v);
+        this.vehicle.splice(index, 1);
+      }
+    });
     this.dataSourceVehicle.read();
   }
 
