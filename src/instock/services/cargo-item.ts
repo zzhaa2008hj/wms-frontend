@@ -20,7 +20,7 @@ export class CargoItemService {
   }
 
   getCargoItemsByFlowId(flowId: string): Promise<CargoItem[]> {
-    return this.http.get(`/instock/cargo-itemlist/${flowId}`).then(res => res.content);
+    return this.http.get(`/instock/cargo-item/list/${flowId}`).then(res => res.content);
   }
 
 }
