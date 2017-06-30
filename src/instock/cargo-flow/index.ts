@@ -9,7 +9,7 @@ export class CargoFlowRouter {
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
       { route: '/edit', name: 'edit', moduleId: './edit', title: "编辑" },
       { route: '/details', name: 'details', moduleId: './details', title: "详情" },
-
+      { route: '/verify/:id', name: 'verify', moduleId: './verify/index', title: "库场审核" }
     ]);
     this.router = router;
 

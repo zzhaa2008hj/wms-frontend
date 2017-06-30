@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, Query, RestClient } from "@app/utils";
+import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 /**
@@ -43,5 +43,9 @@ export class CargoFlowService {
         fixDate(res.content, "instockDate");
         return res.content;
       });
+  }
+
+  audit(id: string, verifyStatus: number): Promise<void> {
+    return this.http.put(`/instock/cargo-flow/audit/${id}/?verifyStatus=${verifyStatus}`, '').then(handleResult);
   }
 }
