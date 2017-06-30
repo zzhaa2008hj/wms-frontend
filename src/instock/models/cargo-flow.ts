@@ -29,7 +29,7 @@ export interface InstockCargoItem {
   //唯一性标识
   sign?: string;
 
-  id: string;
+  id?: string;
   instockFlowId: string;
   batchNumber: string;
   instockFlowNumber: string;

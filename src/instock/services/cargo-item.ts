@@ -23,4 +23,7 @@ export class CargoItemService {
     return this.http.get(`/instock/cargo-itemlist/${flowId}`).then(res => res.content);
   }
 
+  async listCargoitemsByFlowId(cargoFlowId: string): Promise<any> {
+    return await this.http.get(`instock/cargo-flow/${cargoFlowId}/voList`);
+  }
 }

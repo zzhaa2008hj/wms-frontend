@@ -12,7 +12,6 @@ export class NewVehicle {
   }
 
   activate(cargoItem: any) {
-    console.log(cargoItem);
     Object.assign(this.vehicle, { sign: cargoItem.sign, cargoName: cargoItem.cargoName });
   }
 

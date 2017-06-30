@@ -19,7 +19,7 @@ export class WorkOrder {
   }
 
   async activate(params) {
-    let res = await this.cargoFlowService.getCargoFlowsById(params.id);
+    let res = await this.cargoFlowService.getCargoFlowById(params.id);
     Object.assign(this.cargoFlow, res);
   }
 }

@@ -35,7 +35,7 @@ export class ViewWorkStatistics {
     console.log(this.workStatistics.businessId);
     this.listWorkOrders = await this.workOrderService.getWorkOders(this.workStatistics.businessId);
     /*通过统计表的业务主键查询 流水信息*/
-    this.cargoFlow = await this.cargoFlowService.getCargoFlowsById(this.workStatistics.businessId);
+    this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.workStatistics.businessId);
 
   }
 
