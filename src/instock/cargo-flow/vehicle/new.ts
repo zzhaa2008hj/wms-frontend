@@ -19,7 +19,6 @@ export class NewVehicle {
   }
 
   async save() {
-    console.log(this.vehicle)
     await this.dialogController.ok(this.vehicle);
   }
 

@@ -16,7 +16,7 @@ export class CargoFlow {
     pageSizes: true,
     buttonCount: 10
   };
-  instockStages: string[] = ConstantValues.InstockStages;  
+  instockStages: string[] = ConstantValues.InstockStages;
   private dataSource: kendo.data.DataSource;
 
   constructor(private cargoFlowService: CargoFlowService,

@@ -1,0 +1,96 @@
+<template>
+    <div class="page-title">
+        <h3>基础信息</h3>
+        <div>
+            <div>
+                <label class="label">批次号:</label>
+                <input value.bind="cargoFlow.batchNumber" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">入库流水单号:</label>
+                <input value.bind="cargoFlow.instockFlowNumber" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">入库日期:</label>
+                <input value.bind="cargoFlow.instockDate" format="{yyyy-MM-dd}" readonly/>
+                <span>&nbsp;&nbsp;</span>
+            </div>
+            <div>
+                <label class="label">提单号:</label>
+                <input value.bind="cargoInfo.billLadingNumber" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">合同编号:</label>
+                <input value.bind="cargoInfo.contractNumber" readonly/>
+                <span>&nbsp;&nbsp;</span>
+            </div>
+            <div>
+                <label class="label">货物性质:</label>
+                <input value.bind="cargoInfo.cargoType==1?'内贸':'保税'" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">货物形式:</label>
+                <input value.bind="cargoInfo.cargoForm==1?'散货':'集装箱'" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">库区性质:</label>
+                <input value.bind="cargoInfo.warehouseType==1?'公共':'承包'" readonly/>
+                <span>&nbsp;&nbsp;</span>
+            </div>
+            <div>
+                <label class="label">代理商名称:</label>
+                <input value.bind="cargoFlow.agentName" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">客户名称:</label>
+                <input value.bind="cargoFlow.customerName" readonly/>
+                <span>&nbsp;&nbsp;</span>
+            </div>
+            <div>
+                <label class="label">联系人:</label>
+                <input value.bind="cargoFlow.contactPerson" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">联系电话:</label>
+                <input value.bind="cargoFlow.contactNumber" readonly/>
+                <span>&nbsp;&nbsp;</span>
+            </div>
+            <div>
+                <label class="label">阶段:</label>
+                <input value="${formatStage(cargoFlow.stage)}" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">业务状态:</label>
+                <input value.bind="cargoFlow.status==0?'初始阶段':'待商务审核'" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">审核人:</label>
+                <input value.bind="cargoFlow.auditorName" readonly/>
+                <span>&nbsp;&nbsp;</span>
+                <label class="label">审核时间:</label>
+                <input value.bind="cargoFlow.auditTime" readonly/>
+                <span>&nbsp;&nbsp;</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-title">
+        <h3>货物信息</h3>
+        <ak-grid k-data-source.bind="dataSourceCargoItem">
+            <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+            <ak-col k-field="instockFlowNumber" k-title="入库流水单号 "></ak-col>
+            <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
+            <ak-col k-field="freeDays" k-title="免堆期 "></ak-col>
+            <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+            <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+            <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+            <ak-col k-field="actualQuantity" k-title="入库数量"></ak-col>
+            <ak-col k-field="actualNumber" k-title="入库件数"></ak-col>
+            <ak-col k-field="unit" k-title="计量单位"></ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+        </ak-grid>
+    </div>
+
+    <div class="page-title">
+        <h3>车辆信息</h3>
+        <ak-grid k-data-source.bind="dataSourceVehicle">
+            <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+            <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
+            <ak-col k-field="driverName" k-title="司机名称"></ak-col>
+            <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
+            <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+        </ak-grid>
+    </div>
+</template>
