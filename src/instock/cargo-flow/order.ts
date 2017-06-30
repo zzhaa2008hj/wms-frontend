@@ -11,6 +11,7 @@ export class Order {
   cargoFlow: CargoFlow;
   cargoItems: CargoItem[];
   organization: Organization;
+
   constructor(private cargoFlowService: CargoFlowService,
               private cargoItemService: CargoItemService,
               private organizationService: OrganizationService) {
@@ -22,8 +23,8 @@ export class Order {
     this.organization = await this.organizationService.getOrganization(this.cargoFlow.orgId);
     console.log(this.organization);
     console.log(this.cargoItems);
-    for (let i = 1; i < this.cargoItems.length; i++) {
-      this.cargoItems[i].sequence = i;
+    for (let i = 0; i < this.cargoItems.length; i++) {
+      this.cargoItems[i].sequence = i + 1;
     }
   }
 }
