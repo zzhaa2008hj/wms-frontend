@@ -27,7 +27,7 @@ export class EditContract {
      */
     baseRateStep: RateStep[];
 
-    constructor(@inject private router: Router,
+    constructor( @inject private router: Router,
         @inject private contractService: ContractService,
         @inject private messageDialogService: MessageDialogService,
         @newInstance() private validationController: ValidationController) {
@@ -49,7 +49,7 @@ export class EditContract {
                 }
             }
         });
-        validationController.addRenderer(formValidationRenderer);        
+        validationController.addRenderer(formValidationRenderer);
     }
 
     /**
@@ -69,7 +69,7 @@ export class EditContract {
     }
 
     async update() {
-        await this.datasource.sync();
+        this.datasource.sync();
         try {
             let info = this.contractVo;
             await this.contractService.updateContract(this.contractVo.contract.id, info);
@@ -144,7 +144,7 @@ export class EditContract {
 }
 
 const validationRules = ValidationRules
-  .ensure((contract: Contract) => contract.contractName)
-  .displayName('合同名称')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .rules;
+    .ensure((contract: Contract) => contract.contractName)
+    .displayName('合同名称')
+    .required().withMessage(`\${$displayName} 不能为空`)
+    .rules;

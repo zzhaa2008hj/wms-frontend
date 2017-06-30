@@ -1,6 +1,6 @@
 import { Organization } from "../models/organization";
 import { autoinject } from "aurelia-dependency-injection";
-import { dateConverter, handleResult, Query, RestClient } from "@app/utils";
+import { handleResult, Query, RestClient, fixDate } from "@app/utils";
 
 /**
  * 机构查询条件
@@ -16,7 +16,8 @@ export class OrganizationService {
     }
 
     queryOrganizations(criteria?: OrganizationCriteria): Query<Organization> {
-        return this.http.query(`base/customer/page`, criteria).map(dateConverter('createTime'));
+        return this.http.query<Organization>(`base/customer/page`, criteria)
+                            .map(org => fixDate(org, 'createTime'));
     }
 
     async getOrganization(id: string): Promise<Organization> {

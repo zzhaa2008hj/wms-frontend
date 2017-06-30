@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { fixDate, handleResult, Query, RestClient } from "@app/utils";
-import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
+import { handleResult, Query, RestClient, fixDate } from "@app/utils";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -11,19 +11,15 @@ export class CargoFlowService {
   }
 
   queryCargoFlows(param: { keywords: string }): Query<CargoFlow> {
-    return this.http.query<CargoFlow>(`/instock/cargo-flow/page`, param)
-      .map(res => {
-        fixDate(res, 'instockDate');
-        return res;
-      });
+    return this.http.query<CargoFlow>(`/instock/cargo-flow/page`, param).map(flow => fixDate(flow, 'instockDate'));
   }
 
-  saveCargoFlow(cargoFlow: CargoFlow): Promise<void> {
-    return this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
+  async saveCargoFlow(cargoFlow: CargoFlow) {
+    await this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
   }
 
-  updateVisible(id: string): Promise<void> {
-    return this.http.put(`/instock/cargo-flow/${id}`, null).then(handleResult);
+  async updateVisible(id: string) {
+    await this.http.put(`/instock/cargo-flow/${id}`, null).then(handleResult);
   }
 
 
@@ -43,5 +39,9 @@ export class CargoFlowService {
         fixDate(res.content, "instockDate");
         return res.content;
       });
+  }
+
+  audit(id: string, verifyStatus: number): Promise<void> {
+    return this.http.put(`/instock/cargo-flow/audit/${id}/?verifyStatus=${verifyStatus}`, '').then(handleResult);
   }
 }

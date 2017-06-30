@@ -4,7 +4,7 @@
 import {StorageInfo} from "@app/base/models/storage-info";
 import {StorageItem, StorageItemHistory} from "@app/base/models/storage-item";
 import {StorageHistory} from "@app/base/models/storage-history";
-import {Query, handleResult, RestClient} from "@app/utils";
+import {Query, handleResult, RestClient, fixDate} from "@app/utils";
 import {autoinject} from "aurelia-dependency-injection";
 
 @autoinject
@@ -24,21 +24,22 @@ export class StorageService {
    * id 库存
    */
   queryStorageItemPage(id: string, keywords?: string): Query<StorageItem> {
-    return this.http.query(`/base/storage/${id}/item/page`, {keywords});
+    return this.http.query<StorageItem>(`/base/storage/${id}/item/page`, {keywords})
+    .map(item => fixDate(item, 'instockDate'));
   }
 
   /**
    * 查询库存流水
    * batchNumber 批次号
    */
-  queryStorageHistoryPage(batchNumber: string, searchParams: Object): Query<StorageHistory> {
-    return this.http.query(`/base/storage/history/${batchNumber}/page`, searchParams);
+  queryStorageHistoryPage(searchParams: Object): Query<StorageHistory> {
+    return this.http.query<StorageHistory>(`/base/storage/history/page`, searchParams).map(h => fixDate(h, 'date'));
   }
 
   /**
-   * 修改库存
+   * 保存库存明细
    */
-  async add(id: string, storageItem: StorageItemHistory): Promise<void> {
-    await this.http.put(`/base/storage/item/${id}`, storageItem).then(handleResult);
+  async saveItem(id: string, storageItem: StorageItemHistory): Promise<void> {
+    await this.http.post(`/base/storage/${id}/item`, storageItem).then(handleResult);
   }
 }

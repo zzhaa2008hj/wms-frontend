@@ -30,7 +30,8 @@
                 </button>
                 <a class="btn btn-sm btn-small btn-primary" route-href="route: edit; params.bind: { id: id }">修改</a>
                 <a class="btn btn-sm btn-small btn-primary" route-href="route: details">详情</a>
-
+                <a class="btn btn-sm btn-small btn-primary" route-href="route: verify; params.bind:{id}"
+                   if.bind="stage==6">库场审核</a>
             </ak-template>
         </ak-col>
     </ak-grid>

@@ -5,7 +5,7 @@ export interface Warehouse {
   id?: string;
   parentId?: string;
   category: number;
-  name: boolean;
+  name: string;
   type: number;
   remark: string;
   orgId: string;

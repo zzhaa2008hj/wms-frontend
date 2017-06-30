@@ -51,5 +51,8 @@ export interface Organization {
    * 传真号码
    */
   faxNumber: string;
-
+  /**
+   * 创建时间
+   */
+  createTime: Date;
 }
