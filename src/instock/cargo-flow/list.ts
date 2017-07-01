@@ -24,4 +24,17 @@ export class CargoFlow {
     this.dataSource.read();
   }
 
+  formatStage(stage: number) {
+    return ['初始阶段',
+      '待商务审核',
+      '商务审核未通过',
+      '商务审核通过',
+      '已生成入库指令单',
+      '入库作业中',
+      '作业完成（待审核）',
+      '库场审核未通过',
+      '已生成理货报告',
+      '已生成入库单',
+      '入库完成'][stage];
+  }
 }

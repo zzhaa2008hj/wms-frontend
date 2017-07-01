@@ -12,7 +12,7 @@ import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
 @autoinject
 export class NewRate {
   rate: Rate;
-  rateStep = new Array;
+  rateStep = [];
   //数据字典数据方法完成后从数据字典中获取
   chargeCategory = [{ text: "仓储费", value: 1 },
     { text: "装卸费", value: 2 },
@@ -44,8 +44,10 @@ export class NewRate {
   async activate(params) {
     this.rate = await this.rateService.getRate(params.id);
     let res = await this.rateStepService.listRateStepByRateId(params.id);
-    this.rateStep.push(res) ;
-    this.dataSourceRateStep.data(this.rateStep);
+    if (res) {
+      Object.assign(this.rateStep, res);
+      this.dataSourceRateStep.data(this.rateStep);
+    }
   }
 
   async selectWorkInfo() {
@@ -56,6 +58,7 @@ export class NewRate {
     this.rate.workName = workInfo.name;
     this.rate.workId = workInfo.id;
   }
+
   async selectCargoCategory() {
     let result = await this.dialogService.open({ viewModel: CargoCategoryTree, model: {}, lock: true })
       .whenClosed();

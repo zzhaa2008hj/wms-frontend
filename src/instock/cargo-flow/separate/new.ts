@@ -9,7 +9,7 @@ import { CargoFlow } from "@app/instock/models/cargo-flow";
  * Created by Hui on 2017/6/30.
  */
 @autoinject
-export class Details {
+export class NewSeparate {
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
   cargoItems = [];
