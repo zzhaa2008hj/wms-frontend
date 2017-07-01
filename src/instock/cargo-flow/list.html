@@ -23,11 +23,7 @@
         <ak-col k-title="指令数量" k-field="orderQuantity" k-width.bind="160"></ak-col>
         <ak-col k-title="指令件数" k-field="orderNumber" k-width.bind="160"></ak-col>
         <ak-col k-title="计量单位" k-field="unit" k-width.bind="160"></ak-col>
-        <ak-col k-title="阶段"  k-width.bind="160">
-            <ak-template>
-                <input type="text" style="border: 0" value="${formatStage(stage)}" readonly/>
-            </ak-template>
-        </ak-col>
+        <ak-col k-title="阶段" k-field="instockStageName" k-width.bind="160"></ak-col>
         <!--<ak-col k-title="业务状态" k-field="status==0?'入库':'出库'"></ak-col>-->
         <ak-col k-title="是否有拆单" k-field="separated" k-width.bind="100"></ak-col>
         <ak-col k-title="操作">
