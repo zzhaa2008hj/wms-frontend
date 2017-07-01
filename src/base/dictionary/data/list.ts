@@ -1,10 +1,10 @@
 import { DialogService, MessageDialogService } from "ui";
-import { DataSourceFactory } from "../../../utils";
-import { DictionaryDataService } from "../../services/dictionary";
 import { inject } from "aurelia-dependency-injection";
-import { Dictionary } from "../../models/dictionary";
 import { NewDictionaryData } from "./new";
 import { EditDictionaryData } from "./edit";
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DataSourceFactory } from '@app/utils';
+import { Dictionary } from '@app/base/models/dictionary';
 
 export class DictionaryData {
   searchName: string;
@@ -40,14 +40,16 @@ export class DictionaryData {
   }
 
   async add() {
-    let result = await this.dialogService.open({
-      viewModel: NewDictionaryData,
-      model: { dictCode: this.dictionary.dictCode },
-      lock: true
-    })
+    let result = await this.dialogService
+      .open({
+        viewModel: NewDictionaryData,
+        model: this.dictionary.dictCode,
+        lock: true
+      })
       .whenClosed();
     if (result.wasCancelled) return;
     try {
+      console.log(result.output)
       await this.dictionaryDataService.saveDictionaryData(result.output);
       await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
       this.dataSource.read();

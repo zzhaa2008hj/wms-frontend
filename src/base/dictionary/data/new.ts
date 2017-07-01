@@ -1,6 +1,6 @@
 import { DialogController } from "ui";
-import { Dictionary, DictionaryData } from "../../models/Dictionary";
 import { inject } from "aurelia-dependency-injection";
+import { DictionaryData, Dictionary } from '@app/base/models/dictionary';
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -8,15 +8,14 @@ export class NewDictionaryData {
   dictionaryData: DictionaryData;
   dictCode: string;
 
-
   constructor(@inject private dialogController: DialogController) {
 
   }
 
-  activate(dictionary: Dictionary) {
-    this.dictCode = dictionary.dictCode;
+  activate(dictCode: string) {
+    console.log(dictCode)
+    this.dictCode = dictCode;
   }
-
 
   async save() {
     if (this.dictCode) {
