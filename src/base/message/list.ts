@@ -33,7 +33,7 @@ export class Message {
       columns: [
         { field: 'receiverName', title: '接收人' },
         { field: 'hasRead == 1? "已读":"未读"', title: '是否已读' },
-        { field: 'modifyTime', title: '读取时间', format: '{0:yyyy-MM-dd HH:mm:ss}' }
+        { field: 'modifyTime', title: '阅读时间', format: '{0:yyyy-MM-dd HH:mm:ss}' }
       ]
     });
   }
@@ -41,6 +41,4 @@ export class Message {
   select() {
     this.dataSource.read();
   }
-
-
 }

@@ -11,6 +11,10 @@ export interface CargoItem {
 
   cargoItemId: string;
 
+  cargoName: string;
+
+  cargoCategoryName: string;
+
   orderQuantity: number;
 
   orderNumber: number;
@@ -22,6 +26,10 @@ export interface CargoItem {
   remark: string;
 
   orgId: string;
+
   cargoName: string;
+
   cargoCategoryName: string;
+
+  sequence: number;
 }

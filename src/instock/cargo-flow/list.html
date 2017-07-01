@@ -15,29 +15,34 @@
     </div>
     <ak-grid k-data-source.bind="dataSource"
              k-pageable.bind="pageable"
-             k-sortable.bind="true">
-        <ak-col k-title="入库日期" k-field="instockDate" k-format="{0:yyyy-MM-dd}"></ak-col>
+             k-sortable.bind="true"
+             k-resizable.bind="true">
+        <ak-col k-title="入库日期" k-field="instockDate" k-width.bind="120" k-format="{0:yyyy-MM-dd}"></ak-col>
         <ak-col k-title="批次号" k-field="batchNumber"></ak-col>
-        <ak-col k-title="入库流水单号" k-field="instockFlowNumber"></ak-col>
-        <ak-col k-title="指令数量" k-field="orderQuantity"></ak-col>
-        <ak-col k-title="指令件数" k-field="orderNumber"></ak-col>
-        <ak-col k-title="计量单位" k-field="unit"></ak-col>
-        <ak-col k-title="阶段" k-width.bind="150">
+        <ak-col k-title="入库流水单号" k-field="instockFlowNumber" k-width.bind="160"></ak-col>
+        <ak-col k-title="指令数量" k-field="orderQuantity" k-width.bind="160"></ak-col>
+        <ak-col k-title="指令件数" k-field="orderNumber" k-width.bind="160"></ak-col>
+        <ak-col k-title="计量单位" k-field="unit" k-width.bind="160"></ak-col>
+        <ak-col k-title="阶段"  k-width.bind="160">
             <ak-template>
                 <input type="text" style="border: 0" value="${formatStage(stage)}" readonly/>
             </ak-template>
         </ak-col>
-        <ak-col k-title="业务状态" k-field="status==0?'入库':'出库'"></ak-col>
-        <ak-col k-title="是否有拆单" k-field="separated"></ak-col>
+        <!--<ak-col k-title="业务状态" k-field="status==0?'入库':'出库'"></ak-col>-->
+        <ak-col k-title="是否有拆单" k-field="separated" k-width.bind="100"></ak-col>
         <ak-col k-title="操作">
             <ak-template>
-                <a class="btn btn-sm btn-small btn-primary" route-href="route: edit; params.bind: { id: id }">修改
-                </a>
-                <a class="btn btn-sm btn-small btn-default" route-href="route: details; params.bind: { id: id }">详情</a>
-                <a class="btn btn-sm btn-small btn-warning" route-href="route: separate; params.bind: { id: id }">拆单
-                </a>
-                <a class="btn btn-sm btn-small btn-primary" route-href="route: verify; params.bind:{id}"
-                   if.bind="stage==6">库场审核</a>
+                <a class="btn btn-sm btn-small btn-primary" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }">修改</a>
+                <button class="btn btn-small" if.bind="stage > 2 && stage < 10" click.delegate="rollBack($this)">撤回</button>
+                <a class="btn btn-sm btn-small btn-primary" route-href="route: details; params.bind: { id: id }">详情</a>
+                <button class="btn btn-small" click.delegate="verifyHistory(id)">流程</button>
+                <a class="btn btn-sm btn-small" route-href="route: order; params.bind:{id}" if.bind="stage == 3">生成入库指令</a>
+                <a class="btn btn-sm btn-small" route-href="route: order; params.bind:{id}" if.bind="stage == 4">查看入库指令</a>
+                <button class="btn btn-small" if.bind="stage == 4" click.delegate="verifyHistory(id)">作业开始</button>
+                <button class="btn btn-small" if.bind="stage == 5" click.delegate="verifyHistory(id)">作业完成</button>
+                <a class="btn btn-sm btn-small btn-primary" if.bind="stage == 6" route-href="route: verify; params.bind:{id}">库场审核</a>
+                <button class="btn btn-small" if.bind="stage == 8" click.delegate="verifyHistory(id)">生成理货报告</button>
+                <a class="btn btn-sm btn-small btn-warning" route-href="route: separate; params.bind: { id: id }">拆单</a>
             </ak-template>
         </ak-col>
     </ak-grid>
