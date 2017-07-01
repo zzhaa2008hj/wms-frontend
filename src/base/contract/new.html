@@ -12,7 +12,7 @@
                             <ak-drop-down-list k-option-label="请选择"
                                                k-data-text-field="name"
                                                k-data-value-field="type"
-                                               k-value.two-way="contractVo.contract.contractType"
+                                               k-value.two-way="contract.contractType"
                                                k-data-source.bind="contractTypes"
                                                k-on-change.delegate="contractTypeChanged()"
                                                style="width: 100%">
@@ -27,7 +27,7 @@
                                 <ak-drop-down-list k-option-label="请选择"
                                                    k-data-text-field="name"
                                                    k-data-value-field="id"
-                                                   k-value.two-way="contractVo.contract.customerId"
+                                                   k-value.two-way="contract.customerId"
                                                    k-data-source.bind="customerDatasource"
                                                    k-widget.two-way="customerInfo"
                                                    style="width: 100%">
@@ -41,7 +41,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.contractNumber & validate">
+                                       value.bind="contract.contractNumber & validate">
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.contractName & validate">
+                                       value.bind="contract.contractName & validate">
                             </div>
                         </div>
                     </div>
@@ -60,8 +60,8 @@
                             <label class="form-label">合同金额*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.contractAmount & validate">
+                                <input type="number" class="form-control"
+                                       value.bind="contract.contractAmount & validate">
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                             <label class="form-label">合同开始日期*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input ak-datepicker="k-value.two-way : contractVo.contract.startTime & validate"
+                                <input ak-datepicker="k-value.two-way : contract.startTime & validate"
                                        style="width: 100%" type="text" class="form-control">
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                             <label class="form-label">合同结束日期*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input ak-datepicker="k-value.two-way : contractVo.contract.endTime & validate"
+                                <input ak-datepicker="k-value.two-way : contract.endTime & validate"
                                        style="width: 100%" type="text" class="form-control">
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                             <label class="form-label">签订日期*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input ak-datepicker="k-value.two-way : contractVo.contract.signDate & validate"
+                                <input ak-datepicker="k-value.two-way : contract.signDate & validate"
                                        style="width: 100%" type="text" class="form-control">
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.signer & validate">
+                                       value.bind="contract.signer & validate">
                             </div>
                         </div>
                     </div>
@@ -110,14 +110,14 @@
                             <label class="form-label">备注</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="contractVo.contract.remark & validate">
+                                <textarea type="text" class="form-control"
+                                       value.bind="contract.remark & validate">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row column-seperation">
-                    <div if.bind="contractVo.contract.contractType==3">
+                    <div if.bind="contract.contractType==3">
                         <h4>存放库区</h4>
                         <div class="col-md-12">
                             <label class="form-label">存放库区*</label>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                     </div>
-                    <template if.bind="contractVo.contract.contractType==1 || contractVo.contract.contractType==2">
+                    <template if.bind="contract.contractType==1 || contract.contractType==2">
                         <h4>合同费率</h4>
                         <div class="col-md-12">
                             <span class="help"></span>
