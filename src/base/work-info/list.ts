@@ -10,30 +10,26 @@ export class WorkInfoList {
 
   selectedItem: WorkInfo;
 
-  private dataSource = new kendo.data.TreeListDataSource({
-    data: [],
-    schema: {
-      model: {
-        id: 'id',
-        parentId: 'parentId',
-        expanded: true
-      }
-    }
-  });
+  private dataSource: kendo.data.TreeListDataSource;
 
   constructor(private workInfoService: WorkInfoService,
-    private dialogService: DialogService,
-    private messageDialogService: MessageDialogService) {
-
-  }
-
-  async activate() {
-    this.initData();
-  }
-
-  async initData() {
-    let data = await this.workInfoService.listWorkInfo();
-    this.dataSource.data(data);
+              private dialogService: DialogService,
+              private messageDialogService: MessageDialogService) {
+    this.dataSource = new kendo.data.TreeListDataSource({
+      transport: {
+        read: (options) => {
+          this.workInfoService.listWorkInfo()
+            .then(options.success, er => options.error('', '', er));
+        }
+      },
+      schema: {
+        model: {
+          id: 'id',
+          parentId: 'parentId',
+          expanded: true
+        }
+      }
+    });
   }
 
   async add(item) {
@@ -45,7 +41,7 @@ export class WorkInfoList {
     try {
       await this.workInfoService.saveWorkInfo(workInfo);
       await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
-      this.initData();
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
@@ -60,7 +56,7 @@ export class WorkInfoList {
     try {
       await this.workInfoService.updateWorkInfo(workInfo);
       await this.messageDialogService.alert({ title: "编辑成功", message: "编辑成功！" });
-      this.initData();
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: "error" });
     }
@@ -71,7 +67,7 @@ export class WorkInfoList {
       if (await this.messageDialogService.confirm({ title: "删除:", message: "删除后无法恢复" })) {
         await this.workInfoService.deleteWorkInfo(id);
         await this.messageDialogService.alert({ title: "删除成功", message: "删除成功" });
-        this.initData();
+        this.dataSource.read();
       }
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
@@ -88,7 +84,7 @@ export class WorkInfoList {
         && await this.messageDialogService.confirm({ title: "注意", message: "将同时启用或禁用下级作业内容！" })) {
         await this.workInfoService.updateState(id);
       }
-      this.initData();
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
     }

@@ -31,9 +31,6 @@
         <ak-col k-title="操作">
             <ak-template>
                 <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">编辑</a>
-                <a class="btn btn-small btn-success" if.bind="pricingMode == 2"
-                   route-href="route: step; params.bind: { id: id }">阶梯费率设置
-                </a>
                 <button class="btn btn-warning btn-small"  click.delegate="delete(id)">删除</button>
             </ak-template>
         </ak-col>
