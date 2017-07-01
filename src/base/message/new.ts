@@ -49,6 +49,7 @@ export class NewMessage {
 
   async addNewMessage() {
     try {
+      this.message.category = this.selectedCategory;
       let messageVo = {} as MessageVo;
       messageVo.message = this.message;
       let receivers: MessageResult[] = [];
