@@ -109,6 +109,9 @@ export class NewCargoItem {
         });
         this.cargoItem.cargoRates = cargoRateList;
 
+        if (!this.cargoItem.freeDays) {
+            this.cargoItem.freeDays = "0";
+        }
         await this.dialogController.ok(this.cargoItem);
 
     }
