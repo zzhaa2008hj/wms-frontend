@@ -1,5 +1,5 @@
 import { Contract } from "./contract";
-import {Rate, RateStep} from "./rate";
+import { Rate, RateStep } from "./rate";
 export interface ContractVo {
 
   /**
@@ -10,11 +10,12 @@ export interface ContractVo {
   /**
    *  库区id
    */
-  warehouseId: string ;
+  warehouseId: string;
+  warehouseName?: string;
 
   rateVos: Rate[];
 
-  rateStepVos : RateStep[];
+  rateStepVos: RateStep[];
 
-  time: Date ;
+  time: Date;
 }
