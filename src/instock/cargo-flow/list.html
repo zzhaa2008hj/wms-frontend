@@ -25,7 +25,7 @@
         <ak-col k-title="计量单位" k-field="unit" k-width.bind="160"></ak-col>
         <ak-col k-title="阶段" k-field="instockStageName" k-width.bind="160"></ak-col>
         <!--<ak-col k-title="业务状态" k-field="status==0?'入库':'出库'"></ak-col>-->
-        <ak-col k-title="是否有拆单" k-field="separated" k-width.bind="100"></ak-col>
+        <ak-col k-title="是否有拆单" k-field="separated==1?'有':''" k-width.bind="100"></ak-col>
         <ak-col k-title="操作">
             <ak-template>
                 <a class="btn btn-sm btn-small btn-primary" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }">修改</a>

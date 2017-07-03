@@ -62,7 +62,7 @@ export class NewSeparate {
   deleteCargoItem(e) {
     this.cargoItems.forEach(ci => {
       if (e.id == ci.id) {
-        let index = this.vehicles.indexOf(ci);
+        let index = this.cargoItems.indexOf(ci);
         this.cargoItems.splice(index, 1);
         //同时删除车辆信息
         this.vehicles.forEach(v => {
@@ -81,6 +81,11 @@ export class NewSeparate {
       if (e.id == v.id) {
         let index = this.vehicles.indexOf(v);
         this.vehicles.splice(index, 1);
+        let judge = this.vehicles.filter(vv => vv.instockGoodsId == v.instockGoodsId);
+        if (judge.length == 0) {
+          e.id = v.instockGoodsId;
+          this.deleteCargoItem(e);
+        }
       }
     });
     this.dataSourceVehicle.data(this.vehicles);

@@ -18,4 +18,8 @@ export class CargoFlowSeparateService {
     await this.http.post(`/instock/cargo-flow-separate`, cargoFlow).then(handleResult);
   }
 
+  async getCargoFlowSeparateById(id) {
+    let res = await this.http.get(`/instock/cargo-flow-separate/${id}`);
+    return res.content;
+  }
 }
