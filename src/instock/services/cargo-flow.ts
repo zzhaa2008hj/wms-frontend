@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient, fixDate } from "@app/utils";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
+import { ChangeHistory } from '@app/common/models/change-history';
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -24,7 +25,7 @@ export class CargoFlowService {
   }
 
   async listBaseCargoItems(cargoInfoId: string): Promise<CargoItem> {
-    let res = await  this.http.get(`/instock/cargo-flow/${cargoInfoId}/baseCargoItemList`);
+    let res = await this.http.get(`/instock/cargo-flow/${cargoInfoId}/baseCargoItemList`);
     return res.content;
   }
 
@@ -43,5 +44,18 @@ export class CargoFlowService {
   async getCargoFlowByFlowNumber(flowNumber: string) {
     return this.http.get(`/instock/cargo-flow/${flowNumber}/flowNumber `)
       .then(res => fixDate(res.content, "instockDate"));
+  }
+
+  /**
+   * 
+   * 
+   * @param {string} id 
+   * @param {string} historyId 
+   * @returns {Promise<ChangeHistory<ContractVo>>} 
+   * @memberof CargoFlowService
+   */
+  async getChangeHistory(id: string, historyId: string): Promise<ChangeHistory<CargoFlow>> {
+    let res = await this.http.get(`/instock/cargo-flow/${id}/changeHistory/${historyId}`);
+    return res.content;
   }
 }
