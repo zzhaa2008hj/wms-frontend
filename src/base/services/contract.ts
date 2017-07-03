@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
-import { ChangeHistory } from '@app/base/models/change-history';
+import { ChangeHistory } from '@app/common/models/change-history';
 import { Contract } from '@app/base/models/contract';
 import { ContractVo } from '@app/base/models/contractVo';
 import { WorkInfo } from '@app/base/models/work-info';

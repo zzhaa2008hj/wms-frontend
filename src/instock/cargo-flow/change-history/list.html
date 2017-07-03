@@ -1,0 +1,14 @@
+<template>
+  <div>
+    <!--<i>合同&nbsp&nbsp${contract.contractName}&nbsp&nbsp的修改记录</i>-->
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true">
+    <ak-col k-field="createAccount" k-title="修改人" k-width.bind="180"></ak-col>
+    <ak-col k-field="createTime" k-title="修改时间" k-width.bind="180" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <ak-col k-title="操作" k-width.bind="250">
+      <ak-template>
+        <button class="btn btn-small" click.delegate="detail(id)">查看</button>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
+</template>
