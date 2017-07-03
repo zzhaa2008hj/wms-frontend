@@ -92,6 +92,12 @@
       "title": "作业内容",
       "moduleId": "./base/work-info/index",
       "url":"13"
+    },
+    {
+      "route": "/instock/cargo-flow",
+      "name": "cargoFlow",
+      "title": "入库",
+      "moduleId": "./instock/cargo-flow/index"
     }
   ]
 }

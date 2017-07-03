@@ -42,7 +42,7 @@ export class RateStepService {
   }
 
   async listRateStepByRateId(rateId: string): Promise<RateStep[]> {
-    let res = await this.http.get(`/base/rateStep/${rateId}`);
+    let res = await this.http.get(`/base/rateStep/${rateId}/rateId`);
     return res.content;
   }
 }

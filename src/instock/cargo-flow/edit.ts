@@ -75,14 +75,12 @@ export class EditCargoFlow {
         this.vehicles.splice(index, 1);
       }
     });
-    console.log(this.vehicles);
     this.dataSourceVehicle.data(this.vehicles);
   }
 
   async updateCargoFlow() {
     let vehicles = [];
     Object.assign(vehicles, this.dataSourceVehicle.data());
-    console.log(vehicles)
     let cargoItems = [];
     Object.assign(cargoItems, this.dataSourceCargoItem.data());
     if (vehicles) {
@@ -99,7 +97,6 @@ export class EditCargoFlow {
     if (cargoItems) {
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
-    console.log(this.cargoFlow);
     try {
       await this.cargoFlowService.updateCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "修改成功" });
@@ -111,7 +108,6 @@ export class EditCargoFlow {
   }
 
   cancel() {
-    console.log(this.dataSourceVehicle.data());
     this.router.navigateToRoute("list");
   }
 }

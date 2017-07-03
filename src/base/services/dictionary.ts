@@ -17,13 +17,13 @@ export class DictionaryService {
     return await this.http.post(`/base/dictionary`, dictionary).then(handleResult);
   }
 
-
   async updateState(id: string): Promise<void> {
     return await this.http.put(`/base/dictionary/${id}/state`, null).then(handleResult);
   }
 
-  async getDictionary(id: string): Promise<any> {
-    return await this.http.get(`/base/dictionary/${id}`);
+  async getDictionary(id: string): Promise<Dictionary> {
+    let res = await this.http.get(`/base/dictionary/${id}`);
+    return res.content;
   }
 
   async updateDictionary(dictionary: Dictionary): Promise<void> {
@@ -33,7 +33,6 @@ export class DictionaryService {
   async deleteDictionary(id: any) {
     return await this.http.delete(`/base/dictionary/${id}`).then(handleResult);
   }
-
 }
 
 @autoinject

@@ -65,6 +65,7 @@ export class ContractList {
     try {
       await this.verifyRecordService.addVerifyRecord(res);
       await this.messageDialogService.alert({ title: "撤回成功", message: "撤回成功！" });
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "撤回失败", message: err.message, icon: "error" });
     }
