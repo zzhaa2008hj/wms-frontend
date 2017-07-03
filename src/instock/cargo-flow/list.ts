@@ -1,3 +1,4 @@
+import { autoinject } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
@@ -18,7 +19,7 @@ import { AppRouter } from "aurelia-router";
 
 export class CargoFlow {
   searchName: string;
-  
+
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -43,9 +44,9 @@ export class CargoFlow {
     if (this.routerParams.infoId) {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService
-          .queryCargoFlows({ 
-            infoId: this.routerParams.infoId, 
-            keywords: this.searchName 
+          .queryCargoFlows({
+            infoId: this.routerParams.infoId,
+            keywords: this.searchName
           }).map(res => {
             res.instockStageName = this.instockStages[res.stage + 1];
             return res;
@@ -188,6 +189,6 @@ export class CargoFlow {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
-    
-  
+
+
 }
