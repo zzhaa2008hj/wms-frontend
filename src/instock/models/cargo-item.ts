@@ -27,9 +27,5 @@ export interface CargoItem {
 
   orgId: string;
 
-  cargoName: string;
-
-  cargoCategoryName: string;
-
   sequence: number;
 }

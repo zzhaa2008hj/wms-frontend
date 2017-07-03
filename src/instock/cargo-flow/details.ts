@@ -5,6 +5,7 @@ import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { ConstantValues } from "@app/common/models/constant-values";
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -12,12 +13,9 @@ import { CargoFlow } from "@app/instock/models/cargo-flow";
 export class Details {
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
+  instockStages: string[] = ConstantValues.InstockStages;
   cargoItems = [];
   dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
-  vehicles = [];
-  dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
 
@@ -30,34 +28,45 @@ export class Details {
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlow.cargoInfoId);
-
+    this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
     let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
-    if (cargoItems) {
-      for (let ci of cargoItems) {
-        let cargoItem = await this.cargoItemService.getBaseCargoItemById(ci.cargoItemId);
-        Object.assign(ci, { cargoSubCatergoryName: cargoItem.cargoSubCatergoryName, freeDays: cargoItem.freeDays });
-        let vehicles = await this.vehicleService.listInstockVehicles(ci.id);
-        vehicles.forEach(v => {
-          Object.assign(v, { cargoName: ci.cargoName });
-          this.vehicles.push(v);
-        });
-      }
-    }
     this.dataSourceCargoItem.data(cargoItems);
-    this.dataSourceVehicle.data(this.vehicles);
   }
 
-  formatStage(stage: number) {
-    return ['初始阶段',
-      '待商务审核',
-      '商务审核未通过',
-      '商务审核通过',
-      '已生成入库指令单',
-      '入库作业中',
-      '作业完成（待审核）',
-      '库场审核未通过',
-      '已生成理货报告',
-      '已生成入库单',
-      '入库完成'][stage];
+  detailInit(e) {
+    let detailRow = e.detailRow;
+
+    detailRow.find('.tabstrip').kendoTabStrip({
+      animation: {
+        open: { effects: 'fadeIn' }
+      }
+    });
+
+    detailRow.find('.orders').kendoGrid({
+      dataSource: {
+        transport: {
+          read: async options => {
+            await this.vehicleService.listInstockVehicles(e.data.id)
+              .then(options.success)
+              .catch(err => options.errot("", "", err));
+          }
+        }
+      },
+      scrollable: false,
+      sortable: true,
+      columns: [
+        { field: 'plateNumber', title: '车牌号' },
+        { field: 'driverName', title: '司机名称' },
+        { field: 'driverIdentityNumber', title: '身份证号' },
+        { field: 'phoneNumber', title: '电话' },
+        { field: 'remark', title: '备注' },
+      ]
+    });
   }
+
+  onDataBound(e) {
+    let grid = e.sender;
+    grid.expandRow(grid.tbody.find('tr.k-master-row').first());
+  }
+
 }

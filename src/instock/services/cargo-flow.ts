@@ -28,12 +28,8 @@ export class CargoFlowService {
     return res.content;
   }
 
-  getCargoFlowById(id: string): Promise<CargoFlow> {
-    return this.http.get(`/instock/cargo-flow/${id} `)
-      .then(res => {
-        fixDate(res.content, "instockDate");
-        return res.content;
-      });
+  async getCargoFlowById(id: string): Promise<CargoFlow> {
+    return this.http.get(`/instock/cargo-flow/${id} `).then(res => fixDate(res.content, "instockDate"));
   }
 
   audit(id: string, verifyStatus: number): Promise<void> {

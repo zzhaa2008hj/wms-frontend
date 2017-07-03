@@ -6,5 +6,4 @@ export interface CargoFlowSeparate {
   secondNumberAfterSeparate: string;
   orgId: string;
 
-
 }
