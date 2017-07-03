@@ -22,6 +22,7 @@
         <a class="btn btn-small btn-info" if.bind="cargoFlowSize != 0" route-href="route: details; params.bind: { id: id }">详情</a>
         <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
         <button class="btn btn-small" click.delegate="verifyHistory(id)">查看入库信息</button>
+        <a class="btn btn-warning btn-small" click.delegate="createInstockOrder($this)" if.bind="instockStatus == 9 ">生成入库单</a>
       </ak-template>
     </ak-col>
   </ak-grid>
