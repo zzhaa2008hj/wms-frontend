@@ -32,6 +32,7 @@
         <button class="btn btn-small" if.bind="status == 3" click.delegate="rollBack($this)">撤回</button>
         <a class="btn btn-success btn-small" if.bind="status == 2 || status == 0" click.delegate="delete(id)">删除</a>
         <button class="btn btn-small" click.delegate="verifyHistory(id)">流程</button>
+        <a class="btn btn-small" route-href="route: changeHistory; params.bind: { id: id }">修改记录</a>
       </ak-template>
     </ak-col>
   </ak-grid>
