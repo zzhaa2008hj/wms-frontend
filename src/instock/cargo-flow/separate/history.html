@@ -15,5 +15,11 @@
         <ak-col k-title="拆单前流水单号" k-field="numberBeforeSeparate"></ak-col>
         <ak-col k-title="拆单后流水单号1" k-field="firstNumberAfterSeparate"></ak-col>
         <ak-col k-title="拆单后流水单号2" k-field="secondNumberAfterSeparate"></ak-col>
+        <ak-col k-title="操作">
+            <ak-template>
+                <a class="btn btn-sm btn-small btn-primary"
+                   route-href="route: separateDetail; params.bind: { id: id }">详情</a>
+            </ak-template>
+        </ak-col>
     </ak-grid>
 </template>

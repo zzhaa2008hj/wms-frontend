@@ -39,4 +39,9 @@ export class CargoFlowService {
   updateCargoFlow(cargoFlow: CargoFlow): Promise<void> {
     return this.http.put(`/instock/cargo-flow/${cargoFlow.id}`, cargoFlow).then(handleResult);
   }
+
+  async getCargoFlowByFlowNumber(flowNumber: string) {
+    return this.http.get(`/instock/cargo-flow/${flowNumber}/flowNumber `)
+      .then(res => fixDate(res.content, "instockDate"));
+  }
 }

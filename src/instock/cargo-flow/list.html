@@ -1,18 +1,17 @@
 <template>
-  <div class="page-title">
-    <h3>入库流水</h3>
-  </div>
-  <div class="row">
-    <div class="col-md-9">
-      <a class="btn btn-sm btn-small btn-success" route-href="route: new">新增</a>
-      <a class="btn btn-sm btn-small btn-default" route-href="route: separateHistory">拆单历史记录</a>
-      <button class="btn btn-small" click.delegate="verifyHistory(id)">生成理货报告</button>
-      <button class="btn btn-small" click.delegate="verifyHistory(id)">生成入库单</button>
+    <div class="page-title">
+        <h3>入库流水</h3>
     </div>
-    <div class="col-md-3">
-      <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="sssss">
-        <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-      </div>
+    <div class="row">
+        <div class="col-md-9">
+            <a class="btn btn-sm btn-small btn-success" route-href="route: new">新增</a>
+            <a class="btn btn-sm btn-small btn-default" route-href="route: separateHistory">拆单历史记录</a>
+        </div>
+
+        <div class="input-group">
+            <input class="form-control" type="text" value.bind="searchName" placeholder="请输入流水号">
+            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+        </div>
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true" k-resizable.bind="true">
