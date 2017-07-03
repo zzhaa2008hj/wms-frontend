@@ -41,8 +41,10 @@ export class EditCargoItem {
 
     async save() {
         await this.cargoRateDataSource.sync();
+        if (!this.cargoItem.freeDays) {
+            this.cargoItem.freeDays = "0";
+        }
         await this.dialogController.ok(this.cargoItem);
-
     }
 
     async cancel() {

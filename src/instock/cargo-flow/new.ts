@@ -68,7 +68,7 @@ export class NewCargoFlow {
     this.cargoFlow.cargoInfoId = dataItem.id;
     this.cargoFlow.id = null;
     this.cargoFlow.contactNumber = null;
-    this.cargoFlow.lastBatch = 1;
+    this.cargoFlow.lastBatch = 2;
     let res = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
     Object.assign(this.cargoItems, res);
     this.cargoItems.forEach(ci => {
