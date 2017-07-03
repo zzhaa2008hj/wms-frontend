@@ -60,6 +60,14 @@ async function configureRestClient(baseUrl: string, container: Container) {
       .withHeader('accept', 'application/json')
       .withInterceptor({
         responseError: res => {
+          if (res.statusCode >= 500) {
+            if (res.mimeType == 'application/json') {
+              console.error(res.content.message);
+            } else {
+              console.error(res.response);
+            }
+            return Promise.reject(new Error(`服务器错误[${res.statusCode}]`));
+          }
           if (res.mimeType == 'application/json') {
             return Promise.reject(new Error(res.content.message));
           } else {

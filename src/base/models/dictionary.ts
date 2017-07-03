@@ -6,14 +6,11 @@ export interface Dictionary {
   dictCode: string;
   status: boolean;
   orgId: string;
-
-  // Dictionary
   dictName: string;
   remark: string;
-
 }
 
-export  interface DictionaryData{
+export interface DictionaryData {
   id?: string;
   dictCode: string;
   status: boolean;

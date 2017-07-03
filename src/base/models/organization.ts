@@ -8,6 +8,10 @@ export interface Organization {
    */
   name: string;
   /**
+   *  机构简称
+   */
+  shortName: string;
+  /**
    * 机构邮箱
    */
   email: string;
@@ -55,4 +59,8 @@ export interface Organization {
    * 创建时间
    */
   createTime: Date;
+  /**
+   * 备注
+   */
+  remark: string;
 }

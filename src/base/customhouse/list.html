@@ -1,0 +1,34 @@
+<template>
+    <div class="row">
+        <div class="col-md-2">
+            <ak-drop-down-list 
+                        k-option-label="请选择类别"
+                        k-data-text-field="name" 
+                        k-data-value-field="id"
+                        k-value.two-way="search.category"
+                        k-data-source.bind="types">
+            </ak-drop-down-list>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" type="text" value.bind="search.customhouseFlowNumber" placeholder="流转单号">
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" type="text" value.bind="search.customhouseRecordNumber" placeholder="备案号">
+        </div>
+         <div class="col-md-1">
+            <div class="input-group-addon" click.delegate="find()"><em class="fa fa-search"></em></div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-sortable.bind="true"
+             k-reorderable.bind="true"
+             k-resizable.bind="true"
+             k-filterable.bind="true"
+             k-column-menu.bind="true"
+             k-pageable.bind="pageable">
+        <ak-col k-field="categoryName" k-title="类别"></ak-col>
+        <ak-col k-field="customhouseFlowNumber" k-title="流转单号"></ak-col>
+        <ak-col k-field="customhouseRecordNumber" k-title="备案号"></ak-col>
+        <ak-col k-field="clearanceStatusName" k-title="放行状态"></ak-col>
+    </ak-grid>
+</template>

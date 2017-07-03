@@ -7,6 +7,12 @@ import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { ConstantValues } from '@app/common/models/constant-values';
+import { VerifyBusinessDialogNew } from "@app/instock/cargo-flow/verify-business/new";
+import { VerifyCustomhouseDialogNew } from "@app/instock/cargo-flow/verify-customhouse/new";
+import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
+import { CustomhouseClearanceService } from "@app/base/services/customhouse";
+import { VerifyCustomhouseDialogEdit } from "@app/instock/cargo-flow/verify-customhouse/edit";
+
 @autoinject
 export class CargoFlow {
   searchName: string;
@@ -23,7 +29,8 @@ export class CargoFlow {
               private dialogService: DialogService,
               private verifyRecordService: VerifyRecordService,
               private messageDialogService: MessageDialogService,
-              private dataSourceFactory: DataSourceFactory) {
+              private dataSourceFactory: DataSourceFactory,
+              private customhouseService: CustomhouseClearanceService) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
         .map(res => {
@@ -71,4 +78,61 @@ export class CargoFlow {
       .whenClosed();
     if (result.wasCancelled) return;
   }
+
+  /**
+   * 商务审核
+   */
+  async verifyBusiness(id) {
+    let result = await this.dialogService.open({ viewModel: VerifyBusinessDialogNew, model: {}, lock: true })
+    .whenClosed();
+    if (result.wasCancelled) return;
+    try {
+      let record = result.output as VerifyRecord;
+      record.businessId = id;
+      await this.cargoFlowService.audit(record.businessId, record.verifyStatus);
+      await this.dialogService.alert({ title: "提示", message: "审核成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  /**
+   * 单证审核
+   */
+  async verifyCustomhouse(id) {
+    let customhouseClearance = await this.customhouseService.getCustomhouseClearanceByType(1, id);
+    // 修改
+    if (customhouseClearance) {
+      let result = await this.dialogService.open({ viewModel: VerifyCustomhouseDialogEdit, model: customhouseClearance, lock: true }).whenClosed();
+      if (result.wasCancelled) return;
+      try {
+        let customhouse = result.output as CustomhouseClearanceVo;
+        customhouse.flowId = id;
+        customhouse.type = 1;
+        await this.customhouseService.updateCustomhouseClearance(customhouseClearance.id, customhouse);
+        await this.dialogService.alert({ title: "提示", message: "审核成功！" });
+        this.dataSource.read();
+        return;
+      } catch (err) {
+        await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+        return;
+      }
+    }
+    // 新增
+    let result = await this.dialogService.open({ viewModel: VerifyCustomhouseDialogNew, model: {}, lock: true }).whenClosed();
+    if (result.wasCancelled) return;
+    try {
+      let customhouse = result.output as CustomhouseClearanceVo;
+      customhouse.flowId = id;
+      customhouse.type = 1;
+      await this.customhouseService.saveCustomhouseClearance(customhouse);
+      await this.dialogService.alert({ title: "提示", message: "审核成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+    
+  
 }

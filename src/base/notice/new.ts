@@ -8,18 +8,17 @@ import { NoticeService } from "@app/base/services/notice";
  */
 @autoinject
 export class NewNotice {
-  notice: Notice;
-  //数据字典数据方法完成后从数据字典中获取
-  category = [{ text: "内部公告", value: 1 }, { text: "外部公告", value: 2 }];
-  visible = [{ text: "显示", value: 1 }, { text: "隐藏", value: 2 }];
+  notice: Notice = {} as Notice;
 
   constructor(private router: Router,
               private noticeService: NoticeService,
               private messageDialogService: MessageDialogService) {
+    this.notice.category = 1;
   }
 
   async addNewNotice() {
     try {
+      this.notice.visible = 1;
       await this.noticeService.saveNotice(this.notice);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
