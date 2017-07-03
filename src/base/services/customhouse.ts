@@ -22,4 +22,20 @@ export class CustomhouseClearanceService {
   async saveCustomhouseClearance(customhouse: CustomhouseClearanceVo): Promise<void> {
     await this.http.post(`/base/customhouse-clearance`, customhouse).then(handleResult);
   }
+
+  /**
+   * 获取放行单
+   */
+  async getCustomhouseClearanceByType(type: number, flowId: string): Promise<CustomhouseClearance> {
+    let res = await this.http.get(`/base/customhouse-clearance/type/${type}/${flowId}`);
+    return res.content;
+  }
+
+  /**
+   * 修改海关放行 / 单证审核
+   * @param customhouse
+   */
+  async updateCustomhouseClearance(id: string, customhouse: CustomhouseClearanceVo): Promise<void> {
+    await this.http.put(`/base/customhouse-clearance/${id}`, customhouse).then(handleResult);
+  }
 }
