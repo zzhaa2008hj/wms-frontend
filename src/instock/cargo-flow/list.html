@@ -37,6 +37,8 @@
         <button class="btn btn-small" if.bind="stage == 5" click.delegate="verifyHistory(id)">作业完成</button>
         <a class="btn btn-sm btn-small btn-primary" if.bind="stage == 6" route-href="route: verify; params.bind:{id}">库场审核</a>
         <a class="btn btn-sm btn-small btn-warning" route-href="route: separate; params.bind: { id: id }">拆单</a>
+        <button class="btn btn-small btn-primary" if.bind="stage == 1" click.delegate="verifyBusiness(id)">商务审核</button>
+        <button class="btn btn-small btn-primary" click.delegate="verifyCustomhouse(id)">单证审核</button>
       </ak-template>
     </ak-col>
   </ak-grid>

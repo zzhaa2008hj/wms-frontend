@@ -13,7 +13,7 @@ export class CustomhouseList {
   };
 
   types = [{id: 1, name: '入库'}, {id: 2, name: '出库'}];
-  clearanceStatus = [ {id: '1', name: '未放行'}, {id: '2', name: '已放行'}];
+  clearanceStatus = [ {id: false, name: '未放行'}, {id: true, name: '已放行'}];
 
   dataSource: kendo.data.DataSource;
   pageable = {
