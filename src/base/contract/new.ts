@@ -28,6 +28,9 @@ export class NewContract {
     datasource: kendo.data.DataSource;
     customerDatasource: kendo.data.DataSource;
 
+    startDatePicker: kendo.ui.DatePicker;
+    endDatePicker: kendo.ui.DatePicker;
+
     /**
      * 基础费率
      */
@@ -61,8 +64,12 @@ export class NewContract {
             },
             schema: {
                 model: {
-                    id: 'id'
+                    id: 'id',
+                    fields: {
+                        price: { type: 'number', validation: { required: true, min: 1 } }
+                    }
                 }
+
             }
         });
 
@@ -90,6 +97,43 @@ export class NewContract {
         this.baseRateStep = await this.contractService.getBaseRateStep();
     }
 
+    validateProperty(propertyName: string) {
+        this.validationController.validate({ object: this.contract, propertyName });
+    }
+
+    startChange() {
+        let startDate = this.startDatePicker.value();
+        let endDate = this.endDatePicker.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            this.endDatePicker.min(startDate);
+        } else if (endDate) {
+            this.startDatePicker.max(new Date(endDate));
+        } else {
+            endDate = new Date();
+            this.startDatePicker.max(endDate);
+            this.endDatePicker.min(endDate);
+        }
+    }
+
+    endChange() {
+        let endDate = this.endDatePicker.value();
+        let startDate = this.startDatePicker.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            this.startDatePicker.max(endDate);
+        } else if (startDate) {
+            this.endDatePicker.min(new Date(startDate));
+        } else {
+            endDate = new Date();
+            this.startDatePicker.max(endDate);
+            this.endDatePicker.min(endDate);
+        }
+    }
 
     contractTypeChanged() {
         // let contractType = this.contractVo.contract.contractType;
@@ -109,6 +153,7 @@ export class NewContract {
     async save() {
         this.datasource.sync();
         let { valid } = await this.validationController.validate();
+        console.log(valid)
         if (!valid) return;
         let rateList = this.baseRateAndSteps
             .filter(x => x.customerCategory == this.contract.contractType);
@@ -163,7 +208,7 @@ export class NewContract {
                             stepNum: { editable: false },
                             stepStart: { editable: false },
                             stepEnd: { editable: false },
-                            stepPrice: { editable: true, notify: true },
+                            stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 1,maxLength:17}, title: '阶梯价' },
                             stepUnit: { editable: false },
                             remark: { editable: false }
                         }
@@ -193,6 +238,7 @@ export class NewContract {
     }
 
 }
+
 const validationRules = ValidationRules
     .ensure((contract: Contract) => contract.contractType)
     .displayName('合同类型')

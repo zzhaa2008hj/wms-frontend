@@ -15,8 +15,10 @@
                                                k-value.two-way="contract.contractType"
                                                k-data-source.bind="contractTypes"
                                                k-on-change.delegate="contractTypeChanged()"
+                                                k-on-close.delegate="validateProperty('contractType')"
                                                style="width: 100%">
                             </ak-drop-down-list>
+                            <input class="form-control"  type="hidden" value.bind="contract.contractType & validate ">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -30,8 +32,10 @@
                                                    k-value.two-way="contract.customerId"
                                                    k-data-source.bind="customerDatasource"
                                                    k-widget.two-way="customerInfo"
+                                                   k-on-close.delegate="validateProperty('customerId')"
                                                    style="width: 100%">
                                 </ak-drop-down-list>
+                                <input class="form-control"  type="hidden" value.bind="contract.customerId & validate ">
                             </div>
                         </div>
                     </div>
@@ -70,7 +74,8 @@
                             <label class="form-label">合同开始日期*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input ak-datepicker="k-value.two-way : contract.startTime & validate"
+                                <input ak-datepicker="k-value.two-way : contract.startTime & validate ; k-widget.two-way: startDatePicker"
+                                         k-on-change.delegate="startChange()"
                                        style="width: 100%" type="text" class="form-control">
                             </div>
                         </div>
@@ -80,7 +85,8 @@
                             <label class="form-label">合同结束日期*</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <input ak-datepicker="k-value.two-way : contract.endTime & validate"
+                                <input ak-datepicker="k-value.two-way : contract.endTime & validate ; k-widget.two-way: endDatePicker"  
+                                        k-on-change.delegate="endChange()"
                                        style="width: 100%" type="text" class="form-control">
                             </div>
                         </div>
@@ -148,6 +154,7 @@
                                         <ak-template><input type="text" value.bind="price & validate & notify">
                                         </ak-template>
                                     </ak-col>
+                                    <ak-col k-field="price" k-title="单价"></ak-col>
                                     <ak-col k-field="unit" k-title="计量单位"></ak-col>
                                     <ak-col k-field="pricingMode== 1 ?  '一般': '阶梯'" k-title="计价方式"></ak-col>
                                     <ak-col k-field="workName" k-title="作业内容"></ak-col>

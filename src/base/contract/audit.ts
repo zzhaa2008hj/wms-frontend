@@ -57,7 +57,7 @@ export class AuditContract {
     }
 
     formatMethod(type: number) {
-        return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
+        return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';   
     }
 
     async audit(status) {
