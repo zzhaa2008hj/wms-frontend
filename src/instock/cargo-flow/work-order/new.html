@@ -2,7 +2,7 @@
     <ux-dialog>
         <ux-dialog-header show-close-button.bind="true">
             <i class="fa fa-check-square-o"></i>
-            <div>新增${appName}的机构类型</div>
+            <div>新增${cargoFlow.id}的作业</div>
         </ux-dialog-header>
         <ux-dialog-body>
             <div style="width: 640px">
@@ -20,16 +20,65 @@
                     </div>
                 </div>
             </div>
-            <div class="form-label">入库货物车辆</div>
-            <div class="controls">
-                <ak-drop-down-list class="form-control"
-                                   k-option-label="请选择货物车辆..."
-                                   k-data-text-field="plateNumber"
-                                   k-widget.two-way="selectedVehicle"
-                                   k-data-source.bind="instockVehicleSource"
-                                   k-on-select.delegate="onSelectVehicle($even.detail)"
-                                   style="width: 60%;">
-                </ak-drop-down-list>
+            <div style="width: 640px">
+                <div class="form-group">
+                    <div class="form-label">车牌号</div>
+                    <div class="controls">
+                        <ak-combobox class="form-control"
+                                     k-placeholder="请选择/手动输入"
+                                     k-data-text-field="plateNumber"
+                                     k-widget.two-way="selectedVehicle"
+                                     k-data-source.bind="instockVehicleSource"
+                                     k-on-select.delegate="onSelectVehicle($even.detail)"
+                                     style="width: 60%;">
+                        </ak-combobox>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 640px">
+                <div class="form-group">
+                    <div class="form-label">司机名称</div>
+                    <div class="controls">
+                        <ak-combobox class="form-control"
+                                     k-placeholder="请选择/手动输入"
+                                     k-data-text-field="plateNumber"
+                                     k-widget.two-way="selectedVehicle"
+                                     k-data-source.bind="instockVehicleSource"
+                                     k-on-select.delegate="onSelectVehicle($even.detail)"
+                                     style="width: 60%;">
+                        </ak-combobox>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 640px">
+                <div class="form-group">
+                    <div class="form-label">身份证号</div>
+                    <div class="controls">
+                        <ak-combobox class="form-control"
+                                     k-placeholder="请选择/手动输入"
+                                     k-data-text-field="plateNumber"
+                                     k-widget.two-way="selectedVehicle"
+                                     k-data-source.bind="instockVehicleSource"
+                                     k-on-select.delegate="onSelectVehicle($even.detail)"
+                                     style="width: 60%;">
+                        </ak-combobox>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 640px">
+                <div class="form-group">
+                    <div class="form-label">电话</div>
+                    <div class="controls">
+                        <ak-combobox class="form-control"
+                                     k-placeholder="请选择/手动输入"
+                                     k-data-text-field="plateNumber"
+                                     k-widget.two-way="selectedVehicle"
+                                     k-data-source.bind="instockVehicleSource"
+                                     k-on-select.delegate="onSelectVehicle($even.detail)"
+                                     style="width: 60%;">
+                        </ak-combobox>
+                    </div>
+                </div>
             </div>
         </ux-dialog-body>
         <ux-dialog-footer>
