@@ -13,9 +13,7 @@ export class CustomhouseList {
   };
 
   types = [{id: 1, name: '入库'}, {id: 2, name: '出库'}];
-  typeMap = {1: '入库', 2: '出库'};
   clearanceStatus = [ {id: '1', name: '未放行'}, {id: '2', name: '已放行'}];
-  clearanceStatusMap = {1: '未放行', 2: '已放行'};
 
   dataSource: kendo.data.DataSource;
   pageable = {
@@ -29,8 +27,8 @@ export class CustomhouseList {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.customhouseService.queryCustomhouseClearancePage(this.search)
       .map(c => {
-        c.categoryName = this.typeMap[c.category];
-        c.clearanceStatusName = this.clearanceStatusMap[c.category];
+        c.categoryName = this.types.find(t => t.id == c.category).name;
+        c.clearanceStatusName = this.clearanceStatus.find(t => t.id == c.clearanceStatus).name;
         return c;
       }),
       pageSize: 10
