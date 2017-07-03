@@ -14,7 +14,7 @@ export interface CustomhouseClearance {
 
   customhouseRecordNumber: string; //备案号
 
-  clearanceStatus: number; //放行状态 1 未放行 2 已放行
+  clearanceStatus: string; //放行状态 1 未放行 2 已放行
 
   categoryName?: string;
   clearanceStatusName?: string;
