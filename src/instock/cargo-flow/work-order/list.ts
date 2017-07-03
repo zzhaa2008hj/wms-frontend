@@ -59,9 +59,11 @@ export class WorkOrders {
   }
 
   async addItem(id: string) {
-    let data;
-    Object.assign(data, { batchNumber: this.cargoFlow.batchNumber, workOrderId: id });
-    let res = await this.dialogService.open({ viewModel: NewWorkOrderItem, model: data, lock: true }).whenClosed();
+    let res = await this.dialogService.open({
+      viewModel: NewWorkOrderItem,
+      model: { batchNumber: this.cargoFlow.batchNumber, workOrderId: id },
+      lock: true
+    }).whenClosed();
     if (res.wasCancelled) return;
     try {
       await this.workOrderItemService.saveWorkOrderItem(res.output);

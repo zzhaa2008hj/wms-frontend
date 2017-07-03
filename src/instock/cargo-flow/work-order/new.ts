@@ -6,7 +6,7 @@ import { DialogController } from "ui";
 import { InstockVehicle } from "@app/instock/models/instock-vehicle";
 import { WorkOrder } from "@app/instock/models/work";
 import { Subscription } from "aurelia-event-aggregator";
-import { BindingEngine } from "aurelia-binding";
+import { BindingEngine } from "aurelia-framework";
 
 export class NewWorkOrder {
   selectedVehicle: any;
@@ -40,6 +40,8 @@ export class NewWorkOrder {
               @inject private bindingEngine: BindingEngine,
               @inject private instockVehicleService: InstockVehicleService,
               @inject private dialogController: DialogController) {
+    console.log("0000000000000000000");
+    console.log(this.cargoFlow);
   }
 
   bind() {
