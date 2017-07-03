@@ -1,5 +1,4 @@
 <template>
-    <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
     <div class="grid simple">
         <div class="grid-title no-border">新增入库</h4></div>
         <div class="grid-body no-border"><br>
@@ -32,7 +31,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">联系方式*</label>
+                    <label class="form-label">联系电话*</label>
                     <span class="help"></span>
                     <div class="controls">
                         <input type="text" class="form-control" value.bind="cargoFlow.contactNumber">
@@ -40,7 +39,6 @@
                 </div>
                 <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">
                     <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-                    <ak-col k-field="instockFlowNumber" k-title="入库流水单号 " ></ak-col>
                     <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
                     <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
                     <ak-col k-field="unit" k-title="计量单位"></ak-col>
@@ -58,7 +56,7 @@
                 <ak-grid k-data-source.bind="dataSourceVehicle" k-editable.bind="true">
                     <ak-col k-title="货物名称">
                         <ak-template>
-                            <input type="text" class="form-label" value.bind="cargoName" disabled/>
+                            <input style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
                         </ak-template>
                     </ak-col>
                     <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>

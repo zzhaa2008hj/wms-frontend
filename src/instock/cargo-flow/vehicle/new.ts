@@ -13,6 +13,7 @@ export class NewVehicle {
 
   activate(cargoItem: any) {
     Object.assign(this.vehicle, cargoItem);
+    this.vehicle.remark = null;
     if (cargoItem.id) {
       this.vehicle.instockGoodsId = cargoItem.id;
     }

@@ -2,19 +2,22 @@ import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { autoinject } from "aurelia-dependency-injection";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
+import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from "@app/common/models/constant-values";
+import { CargoFlowSeparate } from "@app/instock/models/cargo-flow-separate";
+import { DialogService, MessageDialogService } from "ui";
 import { Router } from "aurelia-router";
-import { CargoFlowSeparateService } from "@app/instock/services/cargo-flow-seperate";
-import { MessageDialogService } from "ui";
+import { NewSeparate } from "@app/instock/cargo-flow/separate/new";
 /**
  * Created by Hui on 2017/6/30.
  */
 @autoinject
-export class NewSeparate {
+export class Detail {
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
+  cargoFlowSeparate: CargoFlowSeparate;
   cargoItems = [];
   instockStages: string[] = ConstantValues.InstockStages;
   dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
@@ -33,14 +36,16 @@ export class NewSeparate {
 
   constructor(private cargoFlowService: CargoFlowService,
               private router: Router,
-              private cargoFlowSeparateService: CargoFlowSeparateService,
+              private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
+              private cargoInfoService: CargoInfoService,
               private cargoItemService: CargoItemService,
               private vehicleService: InstockVehicleService) {
   }
 
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
+    this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlow.cargoInfoId);
     this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
     let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     if (cargoItems) {
@@ -54,26 +59,12 @@ export class NewSeparate {
         });
       }
     }
-    this.cargoItems = cargoItems;
     this.dataSourceCargoItem.data(cargoItems);
     this.dataSourceVehicle.data(this.vehicles);
-  }
 
-  deleteCargoItem(e) {
-    this.cargoItems.forEach(ci => {
-      if (e.id == ci.id) {
-        let index = this.vehicles.indexOf(ci);
-        this.cargoItems.splice(index, 1);
-        //同时删除车辆信息
-        this.vehicles.forEach(v => {
-          if (v.instockGoodsId == ci.id) {
-            this.deleteVehicle(v);
-          }
-        });
-      }
-    });
-    this.dataSourceCargoItem.data(this.cargoItems);
-    this.dataSourceVehicle.data(this.vehicles);
+    this.cargoItems = cargoItems;
+    this.dataSourceSeparateCargoItem.data(this.cargoItems);
+    this.dataSourceSeparateVehicle.data(this.vehicles);
   }
 
   deleteVehicle(e) {
@@ -83,9 +74,18 @@ export class NewSeparate {
         this.vehicles.splice(index, 1);
       }
     });
-    this.dataSourceVehicle.data(this.vehicles);
+    this.dataSourceSeparateVehicle.data(this.vehicles);
   }
 
+  async add() {
+    let result = await this.dialogService.open({
+      viewModel: NewSeparate,
+      model: { cargoFlow: this.cargoFlow, cargoItems: this.cargoItems },
+      lock: true
+    }).whenClosed();
+    if (result.wasCancelled) return;
+    console.log(result.output);
+  }
 
   async addCargoFlowSeparate() {
     let vehicles = [];
@@ -107,7 +107,7 @@ export class NewSeparate {
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
     try {
-      await this.cargoFlowSeparateService.saveCargoFlowSeparate(this.cargoFlow);
+      await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
@@ -119,5 +119,4 @@ export class NewSeparate {
   cancel() {
     this.router.navigateToRoute("list");
   }
-
 }

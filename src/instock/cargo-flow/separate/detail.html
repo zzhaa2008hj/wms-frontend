@@ -1,6 +1,7 @@
 <template>
     <div class="page-title">
-        <h3>基础信息</h3>
+        <h3>客户入库货物详情</h3>
+        <h4>基础信息</h4>
         <div>
             <div>
                 <label class="label">批次号:</label>
@@ -10,7 +11,7 @@
                 <input value.bind="cargoFlow.instockFlowNumber" readonly/>
                 <span>&nbsp;&nbsp;</span>
                 <label class="label">入库日期:</label>
-                <input value="${cargoFlow.instockDate }" format="{0:yyyy-MM-dd}" readonly/>
+                <input value.bind="cargoFlow.instockDate" format="{yyyy-MM-dd}" readonly/>
                 <span>&nbsp;&nbsp;</span>
             </div>
             <div>
@@ -60,13 +61,8 @@
                 <span>&nbsp;&nbsp;</span>
             </div>
         </div>
-    </div>
-
-    <div class="page-title">
-        <h3>货物信息</h3>
-        <ak-grid k-data-source.bind="dataSourceCargoItem"
-                 k-on-data-bound.delegate="onDataBound($event.detail)"
-                 k-on-detail-init.delegate="detailInit($event.detail)">
+        <h4>货物信息</h4>
+        <ak-grid k-data-source.bind="dataSourceCargoItem">
             <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
             <ak-col k-field="instockFlowNumber" k-title="入库流水单号 "></ak-col>
             <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
@@ -77,17 +73,61 @@
             <ak-col k-field="actualNumber" k-title="入库件数"></ak-col>
             <ak-col k-field="unit" k-title="计量单位"></ak-col>
             <ak-col k-field="remark" k-title="备注"></ak-col>
-            <ak-template for="detailTemplate">
-                <div class="tabstrip">
-                    <ul>
-                        <li class="k-state-active">车辆信息</li>
-                    </ul>
-                    <div>
-                        <div class="orders"></div>
-                    </div>
-                </div>
-            </ak-template>
         </ak-grid>
+        <!--<h4>车辆信息</h4>-->
+        <!--<ak-grid k-data-source.bind="dataSourceVehicle">-->
+            <!--<ak-col k-field="cargoName" k-title="货物名称"></ak-col>-->
+            <!--<ak-col k-field="plateNumber" k-title="车牌号"></ak-col>-->
+            <!--<ak-col k-field="driverName" k-title="司机名称"></ak-col>-->
+            <!--<ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>-->
+            <!--<ak-col k-field="phoneNumber" k-title="电话"></ak-col>-->
+            <!--<ak-col k-field="remark" k-title="备注"></ak-col>-->
+        <!--</ak-grid>-->
     </div>
+    <div class="form-actions">
+        <div>
+            <button class="btn btn-primary btn-cons" type="button" click.delegate="add()"><i class="icon-ok"></i> 新增拆单
+            </button>
+        </div>
     </div>
+    <form submit.delegate="addCargoFlowSeparate()">
+        <div class="page-title">
+            <h3>拆单货物</h3>
+            <h4>货物信息</h4>
+            <ak-grid k-data-source.bind="dataSourceSeparateCargoItem" k-editable.bind="true">
+                <ak-col k-field="cargoName" k-title="货物名称" >
+                    <ak-template>
+                        <input type="text" style="border: 0" value.bind="cargoName" readonly/>
+                    </ak-template>
+                </ak-col>
+                <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+                <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                <ak-col k-field="actualQuantity" k-title="入库数量"></ak-col>
+                <ak-col k-field="actualNumber" k-title="入库件数"></ak-col>
+                <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                <ak-col k-field="remark" k-title="备注"></ak-col>
+            </ak-grid>
+            <ak-grid k-data-source.bind="dataSourceSeparateVehicle" k-editable.bind="true">
+                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
+                <ak-col k-field="driverName" k-title="司机名称"></ak-col>
+                <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
+                <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
+                <ak-col k-field="remark" k-title="备注"></ak-col>
+                <ak-col k-title="操作">
+                    <ak-template>
+                        <button class="btn btn-danger btn-small" click.delegate="deleteVehicle($this)">删除</button>
+                    </ak-template>
+                </ak-col>
+            </ak-grid>
+        </div>
+        <div class="form-actions">
+            <div class="pull-right">
+                <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
+                <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+            </div>
+        </div>
+    </form>
+
 </template>
