@@ -18,12 +18,15 @@ export interface Contract {
   contractAmount: number;
 
   startTime: Date;
+  startTimeStr: string;
 
   endTime: Date;
+  endTimeStr: string;
 
   signer: string;
 
   signDate: Date;
+  signDateStr: string;
 
   auditorId: string;
 
