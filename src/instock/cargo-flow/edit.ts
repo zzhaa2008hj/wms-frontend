@@ -87,6 +87,8 @@ export class EditCargoFlow {
     let orderNumber = 0;
     if (vehicles || cargoItems) {
       cargoItems.forEach(ci => {
+        orderQuantity += ci.orderQuantity;
+        orderNumber += ci.orderNumber;
         let vs = [];
         vehicles.forEach(v => {
           if (ci.id == v.instockGoodsId) {
