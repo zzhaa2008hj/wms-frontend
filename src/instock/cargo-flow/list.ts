@@ -13,10 +13,12 @@ import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/instock/cargo-flow/verify-customhouse/edit";
 import { inject } from 'aurelia-framework';
 import { RouterParams } from '@app/common/models/router-params';
+import { InstockOrderService } from "@app/instock/services/instock-order";
+import { AppRouter } from "aurelia-router";
 
 export class CargoFlow {
   searchName: string;
-
+  
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -24,14 +26,16 @@ export class CargoFlow {
   };
   instockStages: string[] = ConstantValues.InstockStages;
   private dataSource: kendo.data.DataSource;
-
+  private grid: any;
   constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private dialogService: DialogService,
               @inject private verifyRecordService: VerifyRecordService,
               @inject private messageDialogService: MessageDialogService,
               @inject private dataSourceFactory: DataSourceFactory,
               @inject private customhouseService: CustomhouseClearanceService,
-              @inject('routerParams') private routerParams: RouterParams) {
+              @inject('routerParams') private routerParams: RouterParams,
+              @inject private instockOrderService: InstockOrderService,
+              @inject private appRouter: AppRouter) {
 
   }
 
@@ -161,5 +165,29 @@ export class CargoFlow {
     }
   }
 
+  /**
+   * 生成入库单
+   */
+  async createInstockOrder() {
+    let selectedRows = Array.from(this.grid.select());
+    if (selectedRows.length == 0) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
+      return;
+    }
+    let ids = selectedRows.map(row => this.grid.dataItem(row).id);
 
+    try {
+      let conformed = await this.messageDialogService.confirm({ title: "提示", message: "确认生成入库单？" });
+      if (!conformed) return;
+      await this.instockOrderService.createInstockOrder(ids);
+      await this.messageDialogService.alert({ title: "提示", message: "生成成功！" });
+      // this.dataSource.read();
+      // 跳转 到入库单页面
+      this.appRouter.navigateToRoute('instock-order');
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+    
+  
 }

@@ -26,7 +26,7 @@ export class InstockOrderService {
   /**
    * 生成入库单
    */
-  createInstockOrder(batchNumber: string): Promise<void> {
-    return this.http.post(`/instock/order/${batchNumber}`, {}).then(handleResult);
+  createInstockOrder(ids: string[]): Promise<void> {
+    return this.http.post('/instock/order', ids).then(handleResult);
   }
 }
