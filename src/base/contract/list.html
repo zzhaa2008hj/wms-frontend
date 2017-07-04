@@ -15,13 +15,13 @@
     <ak-col k-field="signDate" k-title="签订日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-field="startTime" k-title="合同开始时间" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-field="endTime" k-title="合同结束时间" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
-    <ak-col k-field="status" k-title="业务状态" k-width.bind="150">
+    <ak-col k-title="业务状态" k-width.bind="150">
       <ak-template>
-        <label if.bind="status == -1">撤回中</label>
-        <label if.bind="status == 0">审批退回</label>
-        <label if.bind="status == 1">待审核</label>
-        <label if.bind="status == 2">未通过审核</label>
-        <label if.bind="status == 3">审核通过</label>
+        <i if.bind="status == -1">撤回中</i>
+        <i if.bind="status == 0">审批退回</i>
+        <i if.bind="status == 1">待审核</i>
+        <i if.bind="status == 2">未通过审核</i>
+        <i if.bind="status == 3">审核通过</i>
       </ak-template>
     </ak-col>
     <ak-col k-title="操作" k-width.bind="250" k-locked.bind="true" k-lockable.bind="false">
