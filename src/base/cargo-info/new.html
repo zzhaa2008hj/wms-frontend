@@ -50,8 +50,9 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="cargoInfo.agentId"
-                                    k-data-source.bind="agents" k-widget.two-way="agentInfo" style="width: 100%">
+                                    k-data-source.bind="agents" k-widget.two-way="agentInfo" style="width: 100%" k-on-close.delegate="validateProperty('agentId')">
                                 </ak-drop-down-list>
+                                <input class="form-control" type="hidden" value.bind="cargoInfo.agentId & validate ">
                             </div>
                         </div>
                     </div>
@@ -61,8 +62,10 @@
                             <span class="help"></span>
                             <div class="controls">
                                 <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="cargoInfo.customerId"
-                                    k-data-source.bind="customers" k-widget.two-way="customerInfo" style="width: 100%" k-on-change.delegate="customerChanged()">
+                                    k-data-source.bind="customers" k-widget.two-way="customerInfo" style="width: 100%" k-on-change.delegate="customerChanged()"
+                                    k-on-close.delegate="validateProperty('customerId')">
                                 </ak-drop-down-list>
+                                <input class="form-control" type="hidden" value.bind="cargoInfo.customerId & validate ">
                             </div>
                         </div>
                     </div>

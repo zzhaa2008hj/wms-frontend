@@ -48,7 +48,7 @@ export class EditContract {
                 model: {
                     id: 'id',
                     fields: {
-                        price: { type: 'number', validation: { required: true, min: 0 }, editable: true },
+                        price: { type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, editable: true },
                         chargeCategory: { editable: false },
                         chargeType: { editable: false },
                         unit: { editable: false },
@@ -78,6 +78,7 @@ export class EditContract {
         if (this.contract.contractType == 3) {
             //库区信息
             this.warehouses = await this.contractService.getWarehouses();
+            this.validationController.addObject(this.contractVo, warehouseIdRules);
         } else {
             this.baseRateAndSteps = this.contractVo.rateVos;
             this.baseRateStep = this.contractVo.rateStepVos;
@@ -111,6 +112,9 @@ export class EditContract {
         this.router.navigateToRoute("list");
     }
 
+    validateVoProperty(propertyName: string) {
+        this.validationController.validate({ object: this.contractVo, propertyName });
+    }
     detailInit(e) {
         let detailRow = e.detailRow;
 
@@ -134,7 +138,7 @@ export class EditContract {
                             stepNum: { editable: false },
                             stepStart: { editable: false },
                             stepEnd: { editable: false },
-                            stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, maxLength: 17 }, title: '阶梯价' },
+                            stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, title: '阶梯价' },
                             stepUnit: { editable: false },
                             remark: { editable: false }
                         }
@@ -187,9 +191,9 @@ const validationRules = ValidationRules
     .ensure((contract: Contract) => contract.contractAmount)
     .displayName('合同金额')
     .required().withMessage(`\${$displayName} 不能为空`)
-   // .maxLength(17).withMessage(`\${$displayName} 过长`)
-    .satisfies(x => x <= 1000000000000000 && x >= 0)
-    .withMessage(`\${$displayName} 不在规定范围内`)
+    // .maxLength(17).withMessage(`\${$displayName} 过长`)
+    .satisfies(x => !x || (x <= 1000000000000000 && x >= 0))
+    .withMessage(`\${$displayName} 为无效值(过大或过小)`)
 
     .ensure((contract: Contract) => contract.startTime)
     .displayName('合同开始日期')
@@ -211,4 +215,10 @@ const validationRules = ValidationRules
     .ensure((contract: Contract) => contract.remark)
     .displayName('备注')
     .maxLength(500).withMessage(`\${$displayName} 过长`)
+    .rules;
+
+const warehouseIdRules = ValidationRules
+    .ensure((contractVo: ContractVo) => contractVo.warehouseId)
+    .displayName('存放库区')
+    .required().withMessage(`\${$displayName} 不能为空`)
     .rules;
