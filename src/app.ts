@@ -1,14 +1,11 @@
 import { inject, computedFrom } from "aurelia-framework";
 import { Router, RouterConfiguration } from "aurelia-router";
-import { AccountService } from "./base/services/account";
-
 
 export class App {
 
   router: Router;
 
-  constructor(@inject('config') private config: any,
-              @inject private accountService: AccountService) {
+  constructor(@inject('config') private config: any) {
 
   }
 
