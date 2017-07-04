@@ -6,6 +6,10 @@ import { InstockVehicle } from "@app/instock/models/instock-vehicle";
  */
 export interface InstockVehicleCriteria {
   searchName?: string;
+  plateNumber?: string;
+  driverName?: string;
+  driverIdentityNumber?: string;
+  phoneNumber?: string;
 }
 
 @autoinject
@@ -14,6 +18,10 @@ export class InstockVehicleService {
   }
 
   listInstockVehicles(goodsId: string): Promise<InstockVehicle[]> {
+    return this.http.get(`instock/vehicle/list/${goodsId}`).then(res => res.content);
+  }
+
+getInstockVehicles(goodsId: string): Promise<InstockVehicle[]> {
     return this.http.get(`instock/vehicle/list/${goodsId}`).then(res => res.content);
   }
 }
