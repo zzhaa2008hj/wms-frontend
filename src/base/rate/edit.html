@@ -33,19 +33,20 @@
                                        k-data-source.bind="customerCategory">
                     </ak-drop-down-list>
                 </div>
+                <div class="form-group" if.bind="rate.chargeCategory != 4">
+                    <label class="form-label">货物类别*</label>
+                    <span class="help"></span>
+                    <div class="form-label">
+                        <input type="text" class="form-label" value.bind="rate.cargoCategoryName" disabled>
+                        <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择...</a>
+                    </div>
+                </div>
                 <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3 || rate.chargeCategory == 5">
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">作业内容*</label>
                         <span class="help"></span>
                         <button class="btn btn-cons btn-small" type="button"
                                 click.delegate="selectWorkInfo()">请选择...</button>
-                    </div>
-                    <div class="form-group" if.bind="rate.chargeCategory != 0">
-                        <label class="form-label">货物类别*</label>
-                        <span class="help"></span>
-                        <button class="btn btn-cons btn-small" type="button"
-                                click.delegate="selectCargoCategory()" >请选择...</button>
-
                     </div>
                     <div class="form-group" if.bind="rate.chargeCategory != 0">
                         <label class="form-label">品牌</label>
