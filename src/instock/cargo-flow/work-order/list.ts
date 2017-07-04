@@ -3,7 +3,6 @@ import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
 import { DialogService } from "ui";
-import { NewWorkOrder } from "@app/instock/cargo-flow/work-order/new";
 import { NewWorkOrderItem } from "@app/instock/cargo-flow/work-order/new-item";
 export class WorkOrders {
   dataSource: kendo.data.DataSource;
@@ -45,7 +44,7 @@ export class WorkOrders {
     });
   }
 
-  async add() {
+ /* async add() {
     let data = this.cargoFlow;
     let res = await this.dialogService.open({ viewModel: NewWorkOrder, model: data, lock: true }).whenClosed();
     if (res.wasCancelled) return;
@@ -56,12 +55,14 @@ export class WorkOrders {
     } catch (err) {
       await this.dialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
-  }
+  }*/
 
   async addItem(id: string) {
-    let data;
-    Object.assign(data, { batchNumber: this.cargoFlow.batchNumber, workOrderId: id });
-    let res = await this.dialogService.open({ viewModel: NewWorkOrderItem, model: data, lock: true }).whenClosed();
+    let res = await this.dialogService.open({
+      viewModel: NewWorkOrderItem,
+      model: { batchNumber: this.cargoFlow.batchNumber, workOrderId: id },
+      lock: true
+    }).whenClosed();
     if (res.wasCancelled) return;
     try {
       await this.workOrderItemService.saveWorkOrderItem(res.output);

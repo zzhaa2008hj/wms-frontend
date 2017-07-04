@@ -9,6 +9,11 @@ export interface WorkOrderCriteria {
   businessId?: string;
 }
 
+export interface WorkOrderAndItems {
+  warehouseWorkOrder?: WorkOrder;
+  list?: WorkOrderItem[];
+}
+
 @autoinject
 export class WorkOrderService {
   constructor(private http: RestClient) {
@@ -25,6 +30,10 @@ export class WorkOrderService {
 
   saveWorkOrder(workOrder: WorkOrder): Promise<void> {
     return this.http.post(`/instock/warehouseWorkOrder`, workOrder).then(handleResult);
+  }
+
+  saveWorkOrderAndItems(workOrderAndItems: WorkOrderAndItems): Promise<void> {
+    return this.http.post(`/instock/warehouseWorkOrder/saveWorkAndItems`, workOrderAndItems).then(handleResult);
   }
 }
 

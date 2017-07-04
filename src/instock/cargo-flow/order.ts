@@ -16,7 +16,6 @@ export class Order {
               private cargoItemService: CargoItemService,
               private organizationService: OrganizationService) {
   }
-
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);

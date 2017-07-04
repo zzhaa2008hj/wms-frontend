@@ -1,7 +1,9 @@
 import { Router, RouterConfiguration } from "aurelia-router";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
-import { Container } from "aurelia-dependency-injection";
+import { autoinject, Container } from "aurelia-dependency-injection";
+
+@autoinject
 export class WorkOrder {
   router: Router;
   cargoFlow = {} as CargoFlow;
@@ -14,6 +16,8 @@ export class WorkOrder {
   configureRouter(config: RouterConfiguration, router: Router) {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
+      { route: '/new/:id', name: 'new', moduleId: './new', title: '新增作业' },
+      { route: '/new-item/:id', name: 'new-item', moduleId: './new-item', title: '新增作业过程' }
     ]);
     this.router = router;
   }
