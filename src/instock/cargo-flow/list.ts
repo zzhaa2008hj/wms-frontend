@@ -1,4 +1,3 @@
-import { autoinject } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
@@ -12,8 +11,9 @@ import { VerifyCustomhouseDialogNew } from "@app/instock/cargo-flow/verify-custo
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/instock/cargo-flow/verify-customhouse/edit";
+import { inject } from 'aurelia-framework';
+import { RouterParams } from '@app/common/models/router-params';
 
-@autoinject
 export class CargoFlow {
   searchName: string;
 
@@ -25,20 +25,39 @@ export class CargoFlow {
   instockStages: string[] = ConstantValues.InstockStages;
   private dataSource: kendo.data.DataSource;
 
-  constructor(private cargoFlowService: CargoFlowService,
-              private dialogService: DialogService,
-              private verifyRecordService: VerifyRecordService,
-              private messageDialogService: MessageDialogService,
-              private dataSourceFactory: DataSourceFactory,
-              private customhouseService: CustomhouseClearanceService) {
-    this.dataSource = this.dataSourceFactory.create({
-      query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
-        .map(res => {
-          res.instockStageName = this.instockStages[res.stage + 1];
-          return res;
-        }),
-      pageSize: 10
-    });
+  constructor(@inject private cargoFlowService: CargoFlowService,
+              @inject private dialogService: DialogService,
+              @inject private verifyRecordService: VerifyRecordService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject private customhouseService: CustomhouseClearanceService,
+              @inject('routerParams') private routerParams: RouterParams) {
+
+  }
+
+  activate() {
+    if (this.routerParams.infoId) {
+      this.dataSource = this.dataSourceFactory.create({
+        query: () => this.cargoFlowService
+          .queryCargoFlows({ 
+            infoId: this.routerParams.infoId, 
+            keywords: this.searchName 
+          }).map(res => {
+            res.instockStageName = this.instockStages[res.stage + 1];
+            return res;
+          }),
+        pageSize: 10
+      });
+    } else {
+      this.dataSource = this.dataSourceFactory.create({
+        query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
+          .map(res => {
+            res.instockStageName = this.instockStages[res.stage + 1];
+            return res;
+          }),
+        pageSize: 10
+      });
+    }
   }
 
   select() {
@@ -84,7 +103,7 @@ export class CargoFlow {
    */
   async verifyBusiness(id) {
     let result = await this.dialogService.open({ viewModel: VerifyBusinessDialogNew, model: {}, lock: true })
-    .whenClosed();
+      .whenClosed();
     if (result.wasCancelled) return;
     try {
       let record = result.output as VerifyRecord;
@@ -133,6 +152,6 @@ export class CargoFlow {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
-    
-  
+
+
 }

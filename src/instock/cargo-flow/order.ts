@@ -18,7 +18,7 @@ export class Order {
   }
 
   async activate(params) {
-    this.cargoFlow = await this.cargoFlowService.getCargoFlowsById(params.id);
+    this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     this.organization = await this.organizationService.getOrganization(this.cargoFlow.orgId);
     console.log(this.organization);
