@@ -82,8 +82,8 @@ export class ContractService {
      * @param contractVo
      * @returns {Promise<void>}
      */
-    updateContract(contractId: string, contractVo: ContractVo): Promise<void> {
-        return this.http.put(`base/contract/${contractId}`, contractVo).then(handleResult);
+    updateContract(contractVo: ContractVo): Promise<void> {
+        return this.http.put(`base/contract/${contractVo.contract.id}`, contractVo).then(handleResult);
     }
 
     /**
