@@ -1,6 +1,6 @@
 import { DialogController } from "ui";
 import { inject } from "aurelia-dependency-injection";
-import { DictionaryData, Dictionary } from '@app/base/models/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 /**
  * Created by Hui on 2017/6/14.
  */

@@ -1,26 +1,22 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
-import { autoinject } from "aurelia-dependency-injection";
+import { inject } from 'aurelia-dependency-injection';
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { RouterParams } from '@app/common/models/router-params';
+import { CargoInfoService } from '@app/base/services/cargo-info';
+import { CargoInfo } from '@app/base/models/cargo-info';
 /**
  * Created by Hui on 2017/6/23.
  */
-@autoinject
 export class NewCargoFlow {
   cargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
-  baseCargoInfo = {
-    transport: {
-      read: async options => {
-        await this.cargoFlowService.listBaseCargoInfos()
-          .then(options.success)
-          .catch(err => options.error("", "", err));
-      }
-    }
-  };
+  infoId: string;
+  baseCargoInfo: Array<CargoInfo>;
+
   dataSourceCargoItem = new kendo.data.DataSource({
     transport: {
       read: (options) => {
@@ -56,19 +52,43 @@ export class NewCargoFlow {
   });
   containerNumber = "";
   //入库新增先要录入客户基础信息,基础信息新增后 录入
-  constructor(private router: Router,
-              private cargoFlowService: CargoFlowService,
-              private dialogService: DialogService,
-              private messageDialogService: MessageDialogService) {
+  constructor(@inject private router: Router,
+              @inject private cargoFlowService: CargoFlowService,
+              @inject private dialogService: DialogService,
+              @inject private cargoInfoService: CargoInfoService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject('routerParams') private routerParams: RouterParams) {
+  }
+
+  async activate() {
+    this.infoId = this.routerParams.infoId;
+    this.baseCargoInfo = await this.cargoFlowService.listBaseCargoInfos();
+    if (this.routerParams.infoId) {
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      this.setCargoFlowInfo(cargoInfo);
+      this.getBaseCargoItems();
+    }
   }
 
   async onSelectCargoInfo(e) {
-    let dataItem = this.selectedCargoInfo.dataItem(e.item);
-    this.cargoFlow = dataItem;
+    let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
+    this.setCargoFlowInfo(dataItem);
+    this.getBaseCargoItems();
+  }
+
+  setCargoFlowInfo(dataItem: CargoInfo) {
+    this.cargoFlow.agentId = dataItem.agentId;
+    this.cargoFlow.agentName = dataItem.agentName;
+    this.cargoFlow.customerId = dataItem.customerId;
+    this.cargoFlow.customerName = dataItem.customerName;
+    this.cargoFlow.batchNumber = dataItem.batchNumber;
     this.cargoFlow.cargoInfoId = dataItem.id;
     this.cargoFlow.id = null;
     this.cargoFlow.contactNumber = null;
-    this.cargoFlow.lastBatch = 1;
+    this.cargoFlow.lastBatch = 0;
+  }
+
+  async getBaseCargoItems() {
     let res = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
     Object.assign(this.cargoItems, res);
     this.cargoItems.forEach(ci => {

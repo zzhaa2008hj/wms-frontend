@@ -18,13 +18,19 @@
     </div>
     <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true" k-resizable.bind="true">
         <ak-col k-title="入库日期" k-field="instockDate" k-width.bind="120" k-format="{0:yyyy-MM-dd}"></ak-col>
+        <ak-col k-title="批次号" k-field="batchNumber" k-width.bind="160"></ak-col>
         <ak-col k-title="入库流水单号" k-field="instockFlowNumber" k-width.bind="160"></ak-col>
         <ak-col k-title="指令数量" k-field="orderQuantity" k-width.bind="160"></ak-col>
         <ak-col k-title="指令件数" k-field="orderNumber" k-width.bind="160"></ak-col>
         <ak-col k-title="计量单位" k-field="unit" k-width.bind="160"></ak-col>
         <ak-col k-title="阶段" k-field="instockStageName" k-width.bind="160"></ak-col>
         <!--<ak-col k-title="业务状态" k-field="status"></ak-col>-->
-        <ak-col k-title="是否有拆单" k-field="separated" k-width.bind="100"></ak-col>
+        <ak-col k-title="是否有拆单" k-width.bind="100">
+            <ak-template>
+                <label if.bind="separated == 1">是</label>
+                <label if.bind="separated == 0">否</label>
+            </ak-template>
+        </ak-col>
         <ak-col k-title="操作">
             <ak-template>
                 <a class="btn btn-sm btn-small btn-primary" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }">修改</a>
