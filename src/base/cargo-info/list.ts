@@ -2,7 +2,6 @@ import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
 import { CargoInfoService, CargoInfoCriteria } from "@app/base/services/cargo-info";
-import { InstockOrderService } from "@app/instock/services/instock-order";
 
 @autoinject
 export class CargoInfoList {
@@ -16,7 +15,6 @@ export class CargoInfoList {
     };
 
     constructor(private cargoInfoService: CargoInfoService,
-        private instockOrderService: InstockOrderService,
         private messageDialogService: MessageDialogService,
         private dataSourceFactory: DataSourceFactory) {
         this.dataSource = this.dataSourceFactory.create({
@@ -41,22 +39,5 @@ export class CargoInfoList {
 
     select() {
         this.dataSource.read();
-    }
-
-    /**
-     * 生成入库单
-     * @param info 
-     */
-    async createInstockOrder(info) {
-        let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定生成入库单？" });
-        if (confirm) {
-            try {
-                await this.instockOrderService.createInstockOrder(info.batchNumber);
-                await this.messageDialogService.alert({ title: "提示", message: "生成入库单成功！" });
-                this.dataSource.read();
-            } catch (err) {
-                await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
-            }
-        }
     }
 }
