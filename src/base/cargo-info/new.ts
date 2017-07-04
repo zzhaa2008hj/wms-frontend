@@ -1,11 +1,13 @@
 import { Router } from "aurelia-router";
-import { autoinject } from "aurelia-dependency-injection";
+import { autoinject, Container } from 'aurelia-dependency-injection';
 import { MessageDialogService, DialogService } from "ui";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { Contract } from '@app/base/models/contract';
 import { Organization } from '@app/base/models/organization';
 import { NewCargoItem } from '@app/base/cargo-info/item-new';
+import { ValidationControllerFactory, ValidationController, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from '@app/validation/support';
 
 @autoinject
 export class NewCargoInfo {
@@ -21,11 +23,17 @@ export class NewCargoInfo {
     datasource: kendo.data.DataSource;
     customerInfo: kendo.ui.DropDownList;
     agentInfo: kendo.ui.DropDownList;
+    validationController: ValidationController;
 
     constructor(private router: Router,
         private cargoInfoService: CargoInfoService,
         private messageDialogService: MessageDialogService,
-        private dialogService: DialogService) {
+        private dialogService: DialogService,
+        validationControllerFactory: ValidationControllerFactory, container: Container) {
+        this.validationController = validationControllerFactory.create();
+        this.validationController.addRenderer(formValidationRenderer);
+        container.registerInstance(ValidationController, this.validationController);
+
         this.datasource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -48,6 +56,8 @@ export class NewCargoInfo {
 
 
     async activate() {
+        this.validationController.addObject(this.cargoInfo, validationRules);
+
         let res = await this.cargoInfoService.getBatchNumber();
         this.cargoInfo.batchNumber = res.message;
         // 仓储代理商
@@ -75,6 +85,11 @@ export class NewCargoInfo {
         this.cargoInfo.cargoType = 1;
 
     }
+
+    validateProperty(propertyName: string) {
+        this.validationController.validate({ object: this.cargoInfo, propertyName });
+    }
+
     async addCargoItem() {
         if (!this.contractId) {
             this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
@@ -97,8 +112,12 @@ export class NewCargoInfo {
 
 
     customerChanged() {
+        if(!this.cargoInfo.customerId){
+            return;
+        }
         let contractInfo = this.contract.filter(x => x.customerId == this.cargoInfo.customerId);
         if (contractInfo.length == 0) {
+            this.contractId = "";
             this.messageDialogService.alert({ title: '客户选择错误', message: '该客户没有合同，请选择有合同的客户！不然无法新增货物' });
             return;
         }
@@ -136,10 +155,18 @@ export class NewCargoInfo {
 
     }
     async save() {
+        if (this.cargoItems.length == 0) {
+            this.messageDialogService.alert({ title: '货物明细错误', message: '货物明细列表不能为空！' });
+            return;
+        }
+
         this.cargoInfo.agentName = this.agentInfo.text();
         this.cargoInfo.customerName = this.customerInfo.text();
-       // this.cargoInfoVo.cargoInfo = this.cargoInfo;
+        // this.cargoInfoVo.cargoInfo = this.cargoInfo;
         this.cargoInfo.cargoItems = this.cargoItems;
+
+        let { valid } = await this.validationController.validate();
+        if (!valid) return;
 
         try {
             await this.cargoInfoService.saveCargoInfo(this.cargoInfo);
@@ -161,3 +188,16 @@ export class NewCargoInfo {
     }
 
 }
+const validationRules = ValidationRules
+    .ensure((cargoInfo: CargoInfo) => cargoInfo.agentId)
+    .displayName('代理商名称')
+    .required().withMessage(`\${$displayName} 不能为空`)
+
+    .ensure((cargoInfo: CargoInfo) => cargoInfo.customerId)
+    .displayName('客户名称')
+    .required().withMessage(`\${$displayName} 不能为空`)
+
+    .ensure((cargoInfo: CargoInfo) => cargoInfo.remark)
+    .displayName('备注')
+    .maxLength(500).withMessage(`\${$displayName} 过长`)
+    .rules;

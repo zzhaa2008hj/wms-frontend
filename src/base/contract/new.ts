@@ -66,7 +66,17 @@ export class NewContract {
                 model: {
                     id: 'id',
                     fields: {
-                        price: { type: 'number', validation: { required: true, min: 1 } }
+                        price: { type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, editable: true, nullable: false },
+                        chargeCategory: { editable: false },
+                        chargeType: { editable: false },
+                        unit: { editable: false },
+                        pricingMode: { editable: false },
+                        workName: { editable: false },
+                        warehouseType: { editable: false },
+                        cargoCategoryName: { editable: false },
+                        cargoSubCategoryName: { editable: false },
+                        warehouseCategory: { editable: false },
+                        remark: { editable: false }
                     }
                 }
 
@@ -82,6 +92,13 @@ export class NewContract {
         });
     }
 
+    parse(index: number, arr: string[]) {
+        if (!index) {
+            return "无";
+        }
+        return arr[index - 1];
+
+    }
 
     async activate() {
         //this.validationController.addObject(this.contractVo, validationRules);
@@ -99,6 +116,10 @@ export class NewContract {
 
     validateProperty(propertyName: string) {
         this.validationController.validate({ object: this.contract, propertyName });
+    }
+
+    validateVoProperty(propertyName: string) {
+        this.validationController.validate({ object: this.contractVo, propertyName });
     }
 
     startChange() {
@@ -146,14 +167,20 @@ export class NewContract {
         } else {
             this.customers = this.wareHouseCustomer;
         }
+
+        if (contractType == 3) {
+            this.validationController.addObject(this.contractVo, warehouseIdRules);
+        } else {
+            this.validationController.removeObject(this.contractVo);
+        }
         this.customerDatasource.read();
     }
 
 
     async save() {
-        this.datasource.sync();
+        await this.datasource.sync();
+
         let { valid } = await this.validationController.validate();
-        console.log(valid)
         if (!valid) return;
         let rateList = this.baseRateAndSteps
             .filter(x => x.customerCategory == this.contract.contractType);
@@ -208,7 +235,7 @@ export class NewContract {
                             stepNum: { editable: false },
                             stepStart: { editable: false },
                             stepEnd: { editable: false },
-                            stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 1,maxLength:17}, title: '阶梯价' },
+                            stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000}, title: '阶梯价' },
                             stepUnit: { editable: false },
                             remark: { editable: false }
                         }
@@ -261,7 +288,9 @@ const validationRules = ValidationRules
     .ensure((contract: Contract) => contract.contractAmount)
     .displayName('合同金额')
     .required().withMessage(`\${$displayName} 不能为空`)
-    .maxLength(17).withMessage(`\${$displayName} 过长`)
+    .satisfies(x => !x || (x <= 1000000000000000 && x >= 0))
+    .withMessage(`\${$displayName} 为无效值(过大或过小)`)
+    //.maxLength(17).withMessage(`\${$displayName} 过长`)
 
     .ensure((contract: Contract) => contract.startTime)
     .displayName('合同开始日期')
@@ -283,4 +312,10 @@ const validationRules = ValidationRules
     .ensure((contract: Contract) => contract.remark)
     .displayName('备注')
     .maxLength(500).withMessage(`\${$displayName} 过长`)
+    .rules;
+
+const warehouseIdRules = ValidationRules
+    .ensure((contractVo: ContractVo) => contractVo.warehouseId)
+    .displayName('存放库区')
+    .required().withMessage(`\${$displayName} 不能为空`)
     .rules;

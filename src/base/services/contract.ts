@@ -1,12 +1,10 @@
+import { Contract } from '../models/contract';
 import { autoinject } from "aurelia-dependency-injection";
-import { fixDate, handleResult, Query, RestClient } from "@app/utils";
-import { ChangeHistory } from '@app/common/models/change-history';
-import { Contract } from '@app/base/models/contract';
-import { ContractVo } from '@app/base/models/contractVo';
-import { WorkInfo } from '@app/base/models/work-info';
-import { Organization } from '@app/base/models/organization';
-import { Rate, RateStep } from '@app/base/models/rate';
-
+import { dateConverter, fixDate, handleResult, Query, RestClient } from "@app/utils";
+import { ContractVo } from "../models/contractVo";
+import { WorkInfo } from "../models/work-info";
+import {Rate, RateStep} from "../models/rate";
+import { Organization } from "../models/organization";
 /**
  * 机构查询条件
  */
@@ -27,10 +25,10 @@ export class ContractService {
 
   /**
    * 获取修改记录
-   * 
-   * @param {string} id 
-   * @param {string} historyId 
-   * @returns {Promise<ChangeHistory<ContractVo>>} 
+   *
+   * @param {string} id
+   * @param {string} historyId
+   * @returns {Promise<ChangeHistory<ContractVo>>}
    * @memberof ContractService
    */
   async getChangeHistory(id: string, historyId: string): Promise<ChangeHistory<ContractVo>> {
@@ -86,9 +84,9 @@ export class ContractService {
 
   /**
    * 获取单个合同的基本信息
-   * 
-   * @param {string} id 
-   * @returns {Promise<Contract>} 
+   *
+   * @param {string} id
+   * @returns {Promise<Contract>}
    * @memberof ContractService
    */
   async getContractBaseInfo(id: string): Promise<Contract> {
@@ -108,14 +106,14 @@ export class ContractService {
     return this.http.post(`base/contract`, contractVo).then(handleResult);
   }
 
-  /**
-   * 编辑保存
-   * @param contractVo
-   * @returns {Promise<void>}
-   */
-  updateContract(contractId: string, contractVo: ContractVo): Promise<void> {
-    return this.http.put(`base/contract/${contractId}`, contractVo).then(handleResult);
-  }
+    /**
+     * 编辑保存
+     * @param contractVo
+     * @returns {Promise<void>}
+     */
+    updateContract(contractVo: ContractVo): Promise<void> {
+        return this.http.put(`base/contract/${contractVo.contract.id}`, contractVo).then(handleResult);
+    }
 
   /**
    * 删除合同
