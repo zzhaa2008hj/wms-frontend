@@ -82,9 +82,9 @@ export class NewCargoFlow {
     this.cargoFlow.customerId = dataItem.customerId;
     this.cargoFlow.customerName = dataItem.customerName;
     this.cargoFlow.batchNumber = dataItem.batchNumber;
+    this.cargoFlow.unit = dataItem.unit;
     this.cargoFlow.cargoInfoId = dataItem.id;
     this.cargoFlow.id = null;
-    this.cargoFlow.contactNumber = null;
     this.cargoFlow.lastBatch = 0;
   }
 
@@ -128,8 +128,12 @@ export class NewCargoFlow {
     Object.assign(vehicles, this.dataSourceVehicle.data());
     let cargoItems = [];
     Object.assign(cargoItems, this.dataSourceCargoItem.data());
-    if (vehicles) {
+    if (vehicles || cargoItems) {
+      let orderQuantity = 0;
+      let orderNumber = 0;
       cargoItems.forEach(ci => {
+        orderQuantity += ci.orderQuantity;
+        orderNumber += ci.orderNumber;
         let vs = [];
         vehicles.forEach(v => {
           if (ci.sign == v.sign) {
@@ -138,9 +142,10 @@ export class NewCargoFlow {
         });
         Object.assign(ci, { vehicles: vs });
       });
-    }
-    if (cargoItems) {
+      this.cargoFlow.orderQuantity = orderQuantity;
+      this.cargoFlow.orderNumber = orderNumber;
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
+      console.log(this.cargoFlow);
     }
     try {
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);

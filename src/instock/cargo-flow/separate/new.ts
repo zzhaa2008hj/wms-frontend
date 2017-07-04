@@ -97,7 +97,9 @@ export class NewSeparate {
     Object.assign(vehicles, this.dataSourceVehicle.data());
     let cargoItems = [];
     Object.assign(cargoItems, this.dataSourceCargoItem.data());
-    if (vehicles) {
+    let orderQuantity = 0;
+    let orderNumber = 0;
+    if (vehicles || cargoItems) {
       cargoItems.forEach(ci => {
         let vs = [];
         vehicles.forEach(v => {
@@ -107,10 +109,10 @@ export class NewSeparate {
         });
         Object.assign(ci, { vehicles: vs });
       });
-    }
-    if (cargoItems) {
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
+    this.cargoFlow.orderQuantity = orderQuantity;
+    this.cargoFlow.orderNumber = orderNumber;
     try {
       await this.cargoFlowSeparateService.saveCargoFlowSeparate(this.cargoFlow);
       await this.messageDialogService.alert({ title: "新增成功" });
