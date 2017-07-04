@@ -104,7 +104,11 @@ export class CargoFlow {
     let customhouseClearance = await this.customhouseService.getCustomhouseClearanceByType(1, id);
     // 修改
     if (customhouseClearance) {
-      let result = await this.dialogService.open({ viewModel: VerifyCustomhouseDialogEdit, model: customhouseClearance, lock: true }).whenClosed();
+      let result = await this.dialogService.open({
+        viewModel: VerifyCustomhouseDialogEdit,
+        model: customhouseClearance,
+        lock: true
+      }).whenClosed();
       if (result.wasCancelled) return;
       try {
         let customhouse = result.output as CustomhouseClearanceVo;
@@ -120,7 +124,11 @@ export class CargoFlow {
       }
     }
     // 新增
-    let result = await this.dialogService.open({ viewModel: VerifyCustomhouseDialogNew, model: {}, lock: true }).whenClosed();
+    let result = await this.dialogService.open({
+      viewModel: VerifyCustomhouseDialogNew,
+      model: {},
+      lock: true
+    }).whenClosed();
     if (result.wasCancelled) return;
     try {
       let customhouse = result.output as CustomhouseClearanceVo;
@@ -133,6 +141,6 @@ export class CargoFlow {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
-    
-  
+
+
 }
