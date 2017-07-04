@@ -4,7 +4,7 @@ import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { CargoFlowSeparateService } from "@app/instock/services/cargo-flow-seperate";
 /**
@@ -17,13 +17,8 @@ export class Detail {
   beforeCargoFlow: CargoFlow;
   afterCargoFlow: CargoFlow;
   instockStages: string[] = ConstantValues.InstockStages;
-  dataSourceBefore = new kendo.data.HierarchicalDataSource({
-    data: [],
-    filter: { deleted: false }
-  });
-  dataSourceAfter = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
+  beforeCargoItems: InstockCargoItem[];
+  afterCargoItems: InstockCargoItem[];
 
   constructor(private cargoFlowService: CargoFlowService,
               private cargoFlowSeparateService: CargoFlowSeparateService,
@@ -38,14 +33,12 @@ export class Detail {
     this.beforeCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.numberBeforeSeparate);
     this.beforeCargoInfo = await this.cargoInfoService.getCargoInfo(this.beforeCargoFlow.cargoInfoId);
     this.beforeCargoFlow.instockStageName = this.instockStages[this.beforeCargoFlow.stage + 1];
-    let beforeCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.beforeCargoFlow.id);
-    this.dataSourceBefore.data(beforeCargoItems);
+    this.beforeCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.beforeCargoFlow.id);
 
     this.afterCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.secondNumberAfterSeparate);
     this.afterCargoInfo = await this.cargoInfoService.getCargoInfo(this.afterCargoFlow.cargoInfoId);
     this.afterCargoFlow.instockStageName = this.instockStages[this.afterCargoFlow.stage + 1];
-    let afterCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.afterCargoFlow.id);
-    this.dataSourceAfter.data(afterCargoItems);
+    this.afterCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.afterCargoFlow.id);
   }
 
   detailInit(e) {

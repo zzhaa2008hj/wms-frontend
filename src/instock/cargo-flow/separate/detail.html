@@ -1,6 +1,6 @@
 <template>
     <div class="demo-section k-content">
-        <div >
+        <div>
             <div class="form-group">
                 <label class="form-label">批次号</label>
                 <span class="help"></span>
@@ -89,15 +89,15 @@
                 </div>
             </div>
             <h4>货物信息</h4>
-            <ak-grid k-data-source.bind="dataSourceBefore"
+            <ak-grid k-data-source.bind="beforeCargoItems"
                      k-on-data-bound.delegate="onDataBound($event.detail)"
                      k-on-detail-init.delegate="detailInit($event.detail)">
                 <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-                <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
-                <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
                 <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
                 <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
                 <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+                <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
                 <ak-col k-field="remark" k-title="备注"></ak-col>
                 <ak-template for="detailTemplate">
                     <div class="tabstrip">
@@ -166,31 +166,29 @@
                         <input type="text" class="form-control" value.bind="afterCargoFlow.contactNumber" readonly>
                     </div>
                 </div>
-            <h4>货物信息</h4>
-            <ak-grid k-data-source.bind="dataSourceAfter"
-                     k-on-data-bound.delegate="onDataBound($event.detail)"
-                     k-on-detail-init.delegate="detailInit($event.detail)">
-                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-                <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
-                <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
-                <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
-                <ak-col k-field="actualQuantity" k-title="入库数量"></ak-col>
-                <ak-col k-field="actualNumber" k-title="入库件数"></ak-col>
-                <ak-col k-field="unit" k-title="计量单位"></ak-col>
-                <ak-col k-field="remark" k-title="备注"></ak-col>
-                <ak-template for="detailTemplate">
-                    <div class="tabstrip">
-                        <ul>
-                            <li class="k-state-active">车辆信息</li>
-                        </ul>
-                        <div>
-                            <div class="orders"></div>
+                <h4>货物信息</h4>
+                <ak-grid k-data-source.bind="afterCargoItems"
+                         k-on-data-bound.delegate="onDataBound($event.detail)"
+                         k-on-detail-init.delegate="detailInit($event.detail)">
+                    <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                    <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                    <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                    <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                    <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+                    <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
+                    <ak-col k-field="remark" k-title="备注"></ak-col>
+                    <ak-template for="detailTemplate">
+                        <div class="tabstrip">
+                            <ul>
+                                <li class="k-state-active">车辆信息</li>
+                            </ul>
+                            <div>
+                                <div class="orders"></div>
+                            </div>
                         </div>
-                    </div>
-                </ak-template>
-            </ak-grid>
+                    </ak-template>
+                </ak-grid>
+            </div>
         </div>
     </div>
-
 </template>
