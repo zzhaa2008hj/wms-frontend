@@ -22,6 +22,8 @@ export interface CargoFlow {
   instockStageName: string;
   remark: string;
   orgId: string;
+  //入库单号
+  instockOrderId: string;
 
   //入库货物信息
   cargoItems: InstockCargoItem[];
