@@ -30,4 +30,8 @@ export class WarehouseService {
   deleteWarehouse(id: string): Promise<void> {
     return this.http.delete(`/base/warehouse/${id}`).then(handleResult);
   }
+
+  getWarehouseById(id: string): Promise<Warehouse> {
+    return this.http.get(`/base/warehouse/${id}`).then(res => res.content);
+  }
 }

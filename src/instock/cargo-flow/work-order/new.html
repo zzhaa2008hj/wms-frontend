@@ -1,89 +1,147 @@
 <template>
-    <ux-dialog>
-        <ux-dialog-header show-close-button.bind="true">
-            <i class="fa fa-check-square-o"></i>
-            <div>新增${cargoFlow.id}的作业</div>
-        </ux-dialog-header>
-        <ux-dialog-body>
-            <div style="width: 640px">
-                <div class="form-group">
-                    <div class="form-label">客户入库货物</div>
-                    <div class="controls">
-                        <ak-drop-down-list class="form-control"
-                                           k-option-label="请选择入库货物..."
-                                           k-data-text-field="cargoName"
-                                           k-data-value-field="id"
-                                           k-value.two-way="workOrder.businessId"
-                                           k-data-source.bind="cargoItemsSource"
-                                           style="width: 60%">
-                        </ak-drop-down-list>
-                    </div>
+    <h4>作业单</h4>
+    <div class="row column-seperation">
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="form-label">客户入库货物</div>
+                <div class="controls">
+                    <ak-drop-down-list class="form-control"
+                                       k-option-label="请选择入库货物..."
+                                       k-data-text-field="cargoName"
+                                       k-data-value-field="id"
+                                       k-value.two-way="workOrder.businessId"
+                                       k-data-source.bind="cargoItemsSource"
+                                       k-on-change.delegate="changeCargo()"
+                                       style="width: 60%">
+                    </ak-drop-down-list>
                 </div>
             </div>
-            <div style="width: 640px">
-                <div class="form-group">
-                    <div class="form-label">车牌号</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="plateNumber"
-                                     k-widget.two-way="selectedVehicle"
-                                     k-data-source.bind="instockVehicleSource"
-                                     k-on-select.delegate="onSelectVehicle($even.detail)"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                    </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="form-label">车牌号</div>
+                <div class="controls">
+                    <ak-combobox class="form-control"
+                                 k-placeholder="请选择/手动输入"
+                                 k-data-text-field="plateNumber"
+                                 k-data-value-field="plateNumber"
+                                 k-value.two-way="workOrder.plateNumber"
+                                 k-data-source.bind="instockVehicleSource"
+                                 style="width: 60%;">
+                    </ak-combobox>
                 </div>
             </div>
-            <div style="width: 640px">
-                <div class="form-group">
-                    <div class="form-label">司机名称</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="plateNumber"
-                                     k-widget.two-way="selectedVehicle"
-                                     k-data-source.bind="instockVehicleSource"
-                                     k-on-select.delegate="onSelectVehicle($even.detail)"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                    </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="form-label">司机名称</div>
+                <div class="controls">
+                    <ak-combobox class="form-control"
+                                 k-placeholder="请选择/手动输入"
+                                 k-data-text-field="driverName"
+                                 k-data-value-field="driverName"
+                                 k-value.two-way="workOrder.driverName"
+                                 k-data-source.bind="instockVehicleSource"
+                                 style="width: 60%;">
+                    </ak-combobox>
                 </div>
             </div>
-            <div style="width: 640px">
-                <div class="form-group">
-                    <div class="form-label">身份证号</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="plateNumber"
-                                     k-widget.two-way="selectedVehicle"
-                                     k-data-source.bind="instockVehicleSource"
-                                     k-on-select.delegate="onSelectVehicle($even.detail)"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                    </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="form-label">身份证号</div>
+                <div class="controls">
+                    <ak-combobox class="form-control"
+                                 k-placeholder="请选择/手动输入"
+                                 k-data-text-field="driverIdentityNumber"
+                                 k-data-value-field="driverIdentityNumber"
+                                 k-value.two-way="workOrder.driverIdentityNumber"
+                                 k-data-source.bind="instockVehicleSource"
+                                 style="width: 60%;">
+                    </ak-combobox>
                 </div>
             </div>
-            <div style="width: 640px">
-                <div class="form-group">
-                    <div class="form-label">电话</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="plateNumber"
-                                     k-widget.two-way="selectedVehicle"
-                                     k-data-source.bind="instockVehicleSource"
-                                     k-on-select.delegate="onSelectVehicle($even.detail)"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                    </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="form-label">电话</div>
+                <div class="controls">
+                    <ak-combobox class="form-control"
+                                 k-placeholder="请选择/手动输入"
+                                 k-data-text-field="phoneNumber"
+                                 k-data-value-field="phoneNumber"
+                                 k-value.two-way="workOrder.phoneNumber"
+                                 k-data-source.bind="instockVehicleSource"
+                                 style="width: 60%;">
+                    </ak-combobox>
                 </div>
             </div>
-        </ux-dialog-body>
-        <ux-dialog-footer>
-            <button class="btn btn-primary" click.trigger="save()">保存</button>
-            <button class="btn btn-white" click.trigger="cancel()">取消</button>
-        </ux-dialog-footer>
-    </ux-dialog>
+        </div>
+    </div>
+    <div class="row column-seperation">
+        <h4>作业过程</h4>
+        <ak-grid k-data-source.bind="datasource" k-pageable.bind="true" k-toolbar.bind="['create']" k-editable="inline">
+            <ak-col k-title="作业内容">
+                <ak-template>
+                    <ak-drop-down-list class="form-control"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="name"
+                                       k-data-value-field="id"
+                                       k-value.two-way="workId"
+                                       k-data-source.bind="worksSource"
+                                       style="width: 60%">
+                    </ak-drop-down-list>
+                </ak-template>
+            </ak-col>
+            <ak-col k-title="库区名称">
+                <ak-template>
+                    <ak-drop-down-list class="form-control"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="name"
+                                       k-data-value-field="id"
+                                       k-value.two-way="warehouseId"
+                                       k-data-source.bind="warehouseSource"
+                                       style="width: 60%">
+                    </ak-drop-down-list>
+                </ak-template>
+            </ak-col>
+            <ak-col k-field="quantity" k-title="作业数量"></ak-col>
+            <ak-col k-field="number" k-title="作业件数"></ak-col>
+            <ak-col k-title="计量单位">
+                <ak-template>
+                    <ak-drop-down-list k-value.two-way="unit"
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-data-source.bind="units">
+                    </ak-drop-down-list>
+                </ak-template>
+            </ak-col>
+            <ak-col k-title="集装箱类型">
+                <ak-template>
+                    <ak-drop-down-list k-value.two-way="containerType"
+                                       k-data-text-field="text"
+                                       k-data-value-field="value"
+                                       k-data-source.bind="containerTypes">
+                    </ak-drop-down-list>
+                </ak-template>
+            </ak-col>
+            <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+            <ak-col k-title="作业单位名称">
+               <ak-template>
+                    <ak-drop-down-list class="form-control"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="name"
+                                       k-data-value-field="id"
+                                       k-value.two-way="customerId"
+                                       k-data-source.bind="customersSource"
+                                       style="width: 60%">
+                    </ak-drop-down-list>
+                </ak-template>
+            </ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+            <ak-col k-command.bind="['edit', 'destroy']" k-title="&nbsp;" width="250px"></ak-col>
+        </ak-grid>
+    </div>
+    <button class="btn btn-primary" style="float: right" click.trigger="save()">保存</button>
+    <button class="btn btn-white" style="float: right" click.trigger="cancel()">取消</button>
 </template>
