@@ -145,7 +145,6 @@ export class NewCargoFlow {
       this.cargoFlow.orderQuantity = orderQuantity;
       this.cargoFlow.orderNumber = orderNumber;
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
-      console.log(this.cargoFlow);
     }
     try {
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
