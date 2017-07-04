@@ -11,7 +11,7 @@ export class CargoFlowService {
   constructor(private http: RestClient) {
   }
 
-  queryCargoFlows(param: { keywords: string }): Query<CargoFlow> {
+  queryCargoFlows(param: { infoId?: string, keywords: string }): Query<CargoFlow> {
     return this.http.query<CargoFlow>(`/instock/cargo-flow/page`, param).map(flow => fixDate(flow, 'instockDate'));
   }
 
@@ -19,7 +19,7 @@ export class CargoFlowService {
     await this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
   }
 
-  async listBaseCargoInfos(): Promise<CargoInfo> {
+  async listBaseCargoInfos(): Promise<Array<CargoInfo>> {
     let res = await this.http.get(`/base/cargoInfo/list`);
     return res.content;
   }
