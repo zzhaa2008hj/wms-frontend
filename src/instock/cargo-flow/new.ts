@@ -14,7 +14,7 @@ export class NewCargoFlow {
   cargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
-  infoId: string;
+  hasInfoId: boolean = false;
   baseCargoInfo: Array<CargoInfo>;
 
   dataSourceCargoItem = new kendo.data.DataSource({
@@ -61,9 +61,9 @@ export class NewCargoFlow {
   }
 
   async activate() {
-    this.infoId = this.routerParams.infoId;
     this.baseCargoInfo = await this.cargoFlowService.listBaseCargoInfos();
     if (this.routerParams.infoId) {
+      this.hasInfoId = true;
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
       this.setCargoFlowInfo(cargoInfo);
       this.getBaseCargoItems();
