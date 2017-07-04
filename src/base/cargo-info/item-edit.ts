@@ -51,7 +51,6 @@ export class EditCargoItem {
 
     async save() {
         await this.cargoRateDataSource.sync();
-        console.log(this.cargoItem)
         let { valid } = await this.validationController.validate();
         if (!valid) return;
         await this.dialogController.ok(this.cargoItem);
