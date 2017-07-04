@@ -8,9 +8,9 @@
           <label class="form-label">批次号*</label>
           <span class="help"></span>
           <ak-drop-down-list k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-data-text-field="batchNumber" k-data-value-field="id"
-            k-data-source.bind="baseCargoInfo" k-on-select.delegate="onSelectCargoInfo($event.detail)" >
+            k-data-source.bind="baseCargoInfo" k-on-select.delegate="onSelectCargoInfo($event.detail)" if.bind="!hasInfoId">
           </ak-drop-down-list>
-          <div class="controls" if.bind="infoId !=''">
+          <div class="controls" if.bind="hasInfoId">
             <input type="text" class="form-control" value.bind="cargoFlow.batchNumber" readonly>
           </div>
         </div>
@@ -41,6 +41,8 @@
           <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
           <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
           <ak-col k-field="unit" k-title="计量单位"></ak-col>
+          <ak-col k-field="actualQuantity" k-title="入库数量"></ak-col>
+          <ak-col k-field="actualNumber" k-title="入库件数"></ak-col>
           <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
           <ak-col k-field="remark" k-title="备注"></ak-col>
           <ak-col k-title="操作">
