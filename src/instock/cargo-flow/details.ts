@@ -4,7 +4,7 @@ import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from "@app/common/models/constant-values";
 /**
  * Created by Hui on 2017/6/30.
@@ -14,10 +14,7 @@ export class Details {
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
   instockStages: string[] = ConstantValues.InstockStages;
-  cargoItems = [];
-  dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
+  private cargoItems: InstockCargoItem[];
 
   constructor(private cargoFlowService: CargoFlowService,
               private cargoInfoService: CargoInfoService,
@@ -29,8 +26,7 @@ export class Details {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlow.cargoInfoId);
     this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
-    let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
-    this.dataSourceCargoItem.data(cargoItems);
+    this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
   }
 
   detailInit(e) {
