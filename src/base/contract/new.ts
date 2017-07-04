@@ -66,7 +66,7 @@ export class NewContract {
                 model: {
                     id: 'id',
                     fields: {
-                        price: { type: 'number', validation: { required: true, min: 0 }, editable: true, nullable: false },
+                        price: { type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, editable: true, nullable: false },
                         chargeCategory: { editable: false },
                         chargeType: { editable: false },
                         unit: { editable: false },
@@ -235,7 +235,7 @@ export class NewContract {
                             stepNum: { editable: false },
                             stepStart: { editable: false },
                             stepEnd: { editable: false },
-                            stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, maxLength: 17 }, title: '阶梯价' },
+                            stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000}, title: '阶梯价' },
                             stepUnit: { editable: false },
                             remark: { editable: false }
                         }
@@ -288,8 +288,8 @@ const validationRules = ValidationRules
     .ensure((contract: Contract) => contract.contractAmount)
     .displayName('合同金额')
     .required().withMessage(`\${$displayName} 不能为空`)
-    .satisfies(x => x <= 1000000000000000 && x >= 0)
-    .withMessage(`\${$displayName} 不在规定范围内`)
+    .satisfies(x => !x || (x <= 1000000000000000 && x >= 0))
+    .withMessage(`\${$displayName} 为无效值(过大或过小)`)
     //.maxLength(17).withMessage(`\${$displayName} 过长`)
 
     .ensure((contract: Contract) => contract.startTime)

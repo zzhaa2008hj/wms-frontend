@@ -1,6 +1,8 @@
-import { autoinject } from 'aurelia-dependency-injection';
+import { autoinject, Container } from 'aurelia-dependency-injection';
 import { CargoItem, CargoRate } from '@app/base/models/cargo-info';
 import { DialogController } from 'ui';
+import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from '@app/validation/support';
 
 @autoinject
 export class EditCargoItem {
@@ -9,10 +11,17 @@ export class EditCargoItem {
     unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
 
     cargoRateDataSource: kendo.data.DataSource;
+    validationController: ValidationController;
 
     cargoRates: CargoRate[];
 
-    constructor(private dialogController: DialogController) {
+    constructor(private dialogController: DialogController,
+        validationControllerFactory: ValidationControllerFactory, container: Container) {
+
+        this.validationController = validationControllerFactory.create();
+        this.validationController.addRenderer(formValidationRenderer);
+        container.registerInstance(ValidationController, this.validationController);
+
         this.cargoRateDataSource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
@@ -37,10 +46,14 @@ export class EditCargoItem {
     async activate({ cargoItemInfo }) {
         this.cargoItem = cargoItemInfo;
         this.cargoRates = cargoItemInfo.cargoRates;
+        this.validationController.addObject(this.cargoItem, validationRules);
     }
 
     async save() {
         await this.cargoRateDataSource.sync();
+        console.log(this.cargoItem)
+        let { valid } = await this.validationController.validate();
+        if (!valid) return;
         await this.dialogController.ok(this.cargoItem);
 
     }
@@ -54,6 +67,10 @@ export class EditCargoItem {
         item.dirty = true;
     }
 
+    validateProperty(propertyName: string) {
+        this.validationController.validate({ object: this.cargoItem, propertyName });
+    }
+    
     detailInit(e) {
         let a = e.data;
         let detailRow = e.detailRow;
@@ -105,3 +122,39 @@ export class EditCargoItem {
     }
 
 }
+const validationRules = ValidationRules
+    .ensure((cargoItem: CargoItem) => cargoItem.cargoName)
+    .displayName('货物名称')
+    .required().withMessage(`\${$displayName} 不能为空`)
+    .maxLength(50).withMessage(`\${$displayName} 过长`)
+
+    .ensure((cargoItem: CargoItem) => cargoItem.cargoCategoryName)
+    .displayName('货物种类')
+    .required().withMessage(`\${$displayName} 不能为空`)
+
+    .ensure((cargoItem: CargoItem) => cargoItem.orderQuantity)
+    .displayName('指令数量')
+    .required().withMessage(`\${$displayName} 不能为空`)
+    .satisfies(x => !x || (x <= 1000000000000000 && x >= 0))
+    .withMessage(`\${$displayName} 为无效值(过大或过小)`)
+
+    .ensure((cargoItem: CargoItem) => cargoItem.orderNumber)
+    .displayName('指令件数')
+    .required().withMessage(`\${$displayName} 不能为空`)
+    .satisfies(x => !x || (x <= 2147483647 && x >= 0))
+    .withMessage(`\${$displayName} 为无效值(过大或过小)`)
+
+    .ensure((cargoItem: CargoItem) => cargoItem.unit)
+    .displayName('计量单位')
+    .required().withMessage(`\${$displayName} 不能为空`)
+
+    .ensure((cargoItem: CargoItem) => cargoItem.freeDays)
+    .displayName('免堆期')
+    .required().withMessage(`\${$displayName} 不能为空`)
+    .satisfies(x => !x || (x <= 2147483647 && x >= 0))
+    .withMessage(`\${$displayName} 为无效值(过大或过小)`)
+
+    .ensure((cargoItem: CargoItem) => cargoItem.remark)
+    .displayName('备注')
+    .maxLength(500).withMessage(`\${$displayName} 过长`)
+    .rules;
