@@ -191,14 +191,24 @@ export class CargoFlow {
   }
 
   /**
+   * 生成理货报告
+   */
+  async createInstockOrderItem() {
+    let selectedRoows = Array.from(this.grid.select());
+    if (selectedRoows.length == 0) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择流水！" });
+    }
+  }
+
+  /**
    * 作业开始
    */
   async changeStage(params) {
-    let mess1 = "确认开始作业？"
-    let mess2 = "开始作业！"
+    let mess1 = "确认开始作业？";
+    let mess2 = "开始作业！";
     if (params.stage == 6) {
-      mess1 = "确认完成作业？"
-      mess2 = "完成作业！"
+      mess1 = "确认完成作业？";
+      mess2 = "完成作业！";
     }
     try {
       let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
@@ -210,4 +220,5 @@ export class CargoFlow {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
+
 }
