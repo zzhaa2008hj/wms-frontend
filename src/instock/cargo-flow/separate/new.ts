@@ -1,5 +1,5 @@
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
-import { autoinject } from "aurelia-dependency-injection";
+import { autoinject, Container } from "aurelia-dependency-injection";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { CargoInfo } from "@app/base/models/cargo-info";
@@ -8,6 +8,8 @@ import { ConstantValues } from "@app/common/models/constant-values";
 import { Router } from "aurelia-router";
 import { CargoFlowSeparateService } from "@app/instock/services/cargo-flow-seperate";
 import { MessageDialogService } from "ui";
+import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from "@app/validation/support";
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -30,13 +32,18 @@ export class NewSeparate {
   dataSourceSeparateVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
+  validationController: ValidationController;
 
   constructor(private cargoFlowService: CargoFlowService,
               private router: Router,
               private cargoFlowSeparateService: CargoFlowSeparateService,
               private messageDialogService: MessageDialogService,
               private cargoItemService: CargoItemService,
-              private vehicleService: InstockVehicleService) {
+              private vehicleService: InstockVehicleService,
+              validationControllerFactory: ValidationControllerFactory, container: Container) {
+    this.validationController = validationControllerFactory.create();
+    this.validationController.addRenderer(formValidationRenderer);
+    container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate(params) {
@@ -115,6 +122,11 @@ export class NewSeparate {
     }
     this.cargoFlow.orderQuantity = orderQuantity;
     this.cargoFlow.orderNumber = orderNumber;
+
+    this.validationController.addObject(this.cargoFlow, validationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     try {
       await this.cargoFlowSeparateService.saveCargoFlowSeparate(this.cargoFlow);
       await this.messageDialogService.alert({ title: "新增成功" });
@@ -130,3 +142,18 @@ export class NewSeparate {
   }
 
 }
+
+const validationRules = ValidationRules
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
+  .displayName('联系人')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
+  .displayName('联系电话')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .satisfies(x => /^[1][358][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 过长`)
+  .rules;

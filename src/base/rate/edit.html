@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <label class="form-label">费用类别*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="rate.chargeCategory"
+                    <ak-drop-down-list k-value.two-way="rate.chargeCategory & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"
@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <label class="form-label">费用类型*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="rate.chargeType"
+                    <ak-drop-down-list k-value.two-way="rate.chargeType & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label class="form-label">客户类别*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="rate.customerCategory"
+                    <ak-drop-down-list k-value.two-way="rate.customerCategory & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"

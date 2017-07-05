@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <label class="form-label">费用类别*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="rate.chargeCategory"
+                    <ak-drop-down-list k-value.two-way="rate.chargeCategory & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"
@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <label class="form-label">费用类型*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="rate.chargeType"
+                    <ak-drop-down-list k-value.two-way="rate.chargeType & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label class="form-label">客户类别*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="rate.customerCategory"
+                    <ak-drop-down-list k-value.two-way="rate.customerCategory & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"
@@ -34,7 +34,7 @@
                     </ak-drop-down-list>
                 </div>
                 <div class="form-group" if.bind="rate.chargeCategory != 4">
-                    <label class="form-label">货物类别*</label>
+                    <label class="form-label">货物类别</label>
                     <span class="help"></span>
                     <div class="form-label">
                         <input type="text" class="form-label" value.bind="rate.cargoCategoryName" disabled>
@@ -83,7 +83,7 @@
                     <label class="form-label">单价*</label>
                     <span class="help"></span>
                     <div class="controls">
-                        <input type="text" class="form-control" value.bind="rate.price">
+                        <input type="text" class="form-control" value.bind="rate.price & validate">
                     </div>
                 </div>
                 <div class="form-group">
