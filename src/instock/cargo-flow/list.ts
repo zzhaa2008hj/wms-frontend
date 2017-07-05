@@ -18,7 +18,7 @@ import { AppRouter } from "aurelia-router";
 
 export class CargoFlow {
   searchName: string;
-  
+
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -27,6 +27,7 @@ export class CargoFlow {
   instockStages: string[] = ConstantValues.InstockStages;
   private dataSource: kendo.data.DataSource;
   private grid: any;
+
   constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private dialogService: DialogService,
               @inject private verifyRecordService: VerifyRecordService,
@@ -43,9 +44,9 @@ export class CargoFlow {
     if (this.routerParams.infoId) {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService
-          .queryCargoFlows({ 
-            infoId: this.routerParams.infoId, 
-            keywords: this.searchName 
+          .queryCargoFlows({
+            infoId: this.routerParams.infoId,
+            keywords: this.searchName
           }).map(res => {
             res.instockStageName = this.instockStages[res.stage + 1];
             return res;
@@ -188,6 +189,25 @@ export class CargoFlow {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
-    
-  
+
+  /**
+   * 作业开始
+   */
+  async changeStage(params) {
+    let mess1 = "确认开始作业？"
+    let mess2 = "开始作业！"
+    if (params.stage == 6) {
+      mess1 = "确认完成作业？"
+      mess2 = "完成作业！"
+    }
+    try {
+      let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
+      if (!confirmed) return;
+      await this.cargoFlowService.updateFlowStage(params.id, params.stage);
+      await this.messageDialogService.alert({ title: "提示", message: mess2 });
+      this.dataSource.read();
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
 }
