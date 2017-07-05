@@ -44,8 +44,8 @@ export class EditCargoInfo {
         this.cargoInfoId = id;
     }
 
-    async update(batchNumber) {
-        let cargoItemList = this.cargoItems.filter(x => x.batchNumber == batchNumber);
+    async update(id) {
+        let cargoItemList = this.cargoItems.filter(x => x.id == id);
         if (cargoItemList.length == 0) {
             this.messageDialogService.alert({ title: '错误', message: '该货物不存在！' });
             return;
@@ -57,7 +57,7 @@ export class EditCargoInfo {
             lock: true
         }).whenClosed();
         if (result.wasCancelled) return;
-        this.cargoItems = this.cargoItems.filter(x => x.batchNumber != batchNumber);
+        this.cargoItems = this.cargoItems.filter(x => x.id != id);
         this.cargoItems.push(result.output);
         this.datasource.read();
 
