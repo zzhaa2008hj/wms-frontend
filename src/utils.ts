@@ -6,6 +6,9 @@ import { HttpClient, HttpResponseMessage, RequestBuilder } from "aurelia-http-cl
 import { autoinject } from "aurelia-dependency-injection";
 import { EventAggregator } from "aurelia-event-aggregator";
 
+export function copy<T extends Object>(obj: T): T {
+  return Object.assign({}, obj);
+}
 
 export interface QueryOptions {
   skip?: number;
