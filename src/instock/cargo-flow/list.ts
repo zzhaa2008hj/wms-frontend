@@ -18,7 +18,7 @@ import { AppRouter } from "aurelia-router";
 
 export class CargoFlow {
   searchName: string;
-  
+
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -27,6 +27,7 @@ export class CargoFlow {
   instockStages: string[] = ConstantValues.InstockStages;
   private dataSource: kendo.data.DataSource;
   private grid: any;
+
   constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private dialogService: DialogService,
               @inject private verifyRecordService: VerifyRecordService,
@@ -43,9 +44,9 @@ export class CargoFlow {
     if (this.routerParams.infoId) {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService
-          .queryCargoFlows({ 
-            infoId: this.routerParams.infoId, 
-            keywords: this.searchName 
+          .queryCargoFlows({
+            infoId: this.routerParams.infoId,
+            keywords: this.searchName
           }).map(res => {
             res.instockStageName = this.instockStages[res.stage + 1];
             return res;
