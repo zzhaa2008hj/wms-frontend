@@ -1,6 +1,6 @@
 import { Contract } from '../models/contract';
 import { autoinject } from "aurelia-dependency-injection";
-import { dateConverter, fixDate, handleResult, Query, RestClient } from "@app/utils";
+import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { ContractVo } from "../models/contractVo";
 import { WorkInfo } from "../models/work-info";
 import {Rate, RateStep} from "../models/rate";
