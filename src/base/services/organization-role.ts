@@ -60,4 +60,12 @@ export class OrganizationRoleService {
   async assignOrgRoleMenu(roleId: string, menuIds: string[]): Promise<void> {
     await this.http.put(`/base/org-role/menu/${roleId}`, menuIds).then(handleResult);
   }
+
+  /**
+   * 获取单个角色
+   */
+  async getOrgRole(roleId: string): Promise<OrganizationRole> {
+    let res = await this.http.get(`/base/org-role/${roleId}`);
+    return res.content;
+  }
 }
