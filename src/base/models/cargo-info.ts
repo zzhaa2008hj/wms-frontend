@@ -128,12 +128,12 @@ export interface CargoRate {
     /**
      * 内贸、保税、承包内贸、承包保税
      */
-    warehouseType: number;
+    warehouseType: string;
 
     /**
      * 场、库
      */
-    warehouseCategory: number;
+    warehouseCategory: string;
 
     cargoRateSteps: CargoRateStep[];
 }

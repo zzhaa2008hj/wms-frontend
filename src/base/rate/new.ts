@@ -6,6 +6,8 @@ import { RateService } from "@app/base/services/rate";
 import { NewRateStep } from "@app/base/rate/step/new";
 import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -15,19 +17,15 @@ export class NewRate {
   rateStep = new Array;
   //数据字典数据方法完成后从数据字典中获取
   chargeCategory = [{ text: "仓储费", value: 1 },
-    { text: "装卸费", value: 2 },
-    { text: "拆箱费", value: 3 },
-    { text: "过磅费", value: 4 },
-    { text: "其他费用", value: 5 }];
-  warehouseType = [{ text: "通用", value: 1 }, { text: "保税", value: 2 }, { text: "内贸", value: 3 }];
+  { text: "装卸费", value: 2 },
+  { text: "其他费用", value: 5 }];
   customerCategory = [{ text: "仓储客户", value: 1 }, { text: "装卸单位", value: 2 }];
   chargeType = [{ text: "收费业务", value: 1 }, { text: "付费业务", value: 2 }];
-  warehouseCategory = [{ text: "库", value: 1 }, { text: "场", value: 2 }];
-  unit = [{ text: "重量", value: "重量" },
-    { text: "体积", value: "体积" },
-    { text: "件数", value: "件数" },
-    { text: "车次", value: "车次" }];
   pricingMode = [{ text: "单一计费", value: 1 }, { text: "阶梯计费", value: 2 }];
+
+  warehouseType = [] as DictionaryData[];
+  warehouseCategory = [] as DictionaryData[];
+  unit = [] as DictionaryData[];
 
   dataSourceRateStep = new kendo.data.HierarchicalDataSource({
     data: []
@@ -35,9 +33,16 @@ export class NewRate {
 
   constructor(private router: Router,
               private rateService: RateService,
+              private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService) {
 
+  }
+
+  async activate() {
+    this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
   }
 
   async selectWorkInfo() {

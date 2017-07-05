@@ -15,7 +15,6 @@ export interface DictionaryData {
   dictCode: string;
   status: boolean;
   orgId: string;
-  // DictionaryData
   dictDataCode: string;
   dictDataName: string;
   description: string;

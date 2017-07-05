@@ -19,8 +19,8 @@ export interface Rate {
   pricingMode: number;
   unit: string;
   price: number;
-  warehouseType: number;
-  warehouseCategory: number;
+  warehouseType: string;
+  warehouseCategory: string;
   customerCategory: number;
 
   rateStep: RateStep[];
