@@ -33,8 +33,8 @@ export class DetailsCargoInfo {
 
     }
 
-    async view(batchNumber) {
-        let cargoItemList = this.cargoItems.filter(x => x.batchNumber == batchNumber);
+    async view(id) {
+        let cargoItemList = this.cargoItems.filter(x => x.id == id);
         if (cargoItemList.length == 0) {
             this.messageDialogService.alert({ title: '错误', message: '该货物不存在！' });
             return;

@@ -37,6 +37,7 @@
         <a class="btn btn-small btn-info" if.bind="cargoFlowSize != 0" route-href="route: details; params.bind: { id: id }">详情</a>
         <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
         <a class="btn btn-small" href="/#/instock/${id}/cargo-flows">查看入库信息</a>
+        <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
       </ak-template>
     </ak-col>
   </ak-grid>
