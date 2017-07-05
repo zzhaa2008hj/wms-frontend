@@ -46,21 +46,21 @@
                 <label class="form-label">集装箱号</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="storageItem.containerNumber">
+                    <input type="text" class="form-control" value.bind="storageItem.containerNumber & validate">
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">堆存数量</label>
+                <label class="form-label">堆存数量*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="number" class="form-control" value.bind="storageItem.storageQuantity">
+                    <input type="number" class="form-control" value.bind="storageItem.storageQuantity & validate">
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">堆存件数</label>
+                <label class="form-label">堆存件数*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="number" class="form-control" value.bind="storageItem.storageNumber">
+                    <input type="number" class="form-control" value.bind="storageItem.storageNumber & validate">
                 </div>
             </div>
             <div class="form-group">
@@ -80,7 +80,7 @@
                 <label class="form-label">入库时间*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" ak-datetimepicker="k-value.two-way : storageItem.instockDate & validate" 
+                    <input type="text" class="form-control" ak-datetimepicker="k-value.two-way : storageItem.instockDate" 
                     required>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                 <label class="form-label">坐标</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="storageItem.position">
+                    <input type="text" class="form-control" value.bind="storageItem.position & validate">
                 </div>
             </div>
             <div class="form-actions">

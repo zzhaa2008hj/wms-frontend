@@ -1,6 +1,4 @@
-/**
- * Created by shun on 2017/6/20.
- */
+/** * Created by shun on 2017/6/20. */
 <template>
     <ux-dialog>
         <ux-dialog-header show-close-button.bind="true">
@@ -18,7 +16,7 @@
                 <label class="form-label">备注</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <textarea type="text" class="form-control" value.bind="organizationRole.remark"></textarea>
+                    <textarea type="text" class="form-control" value.bind="organizationRole.remark & validate"></textarea>
                 </div>
             </div>
 

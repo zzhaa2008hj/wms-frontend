@@ -64,4 +64,6 @@ export interface Employee {
    */
   orgRoleIds: string[];
 
+  remark: string;
+
 }
