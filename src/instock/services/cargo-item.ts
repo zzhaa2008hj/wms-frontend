@@ -1,7 +1,6 @@
 import { Query, RestClient } from "@app/utils";
 import { autoinject } from "aurelia-dependency-injection";
 import { InstockCargoItem } from "@app/instock/models/cargo-flow";
-import { CargoItem } from "@app/base/models/cargo-info";
 
 /**
  * 查询条件
@@ -25,7 +24,7 @@ export class CargoItemService {
   }
 
   //货物明细表
-  getBaseCargoItemById(cargoItemId: string): Promise<CargoItem> {
+  getBaseCargoItemById(cargoItemId: string): Promise<InstockCargoItem> {
     return this.http.get(`/instock/cargo-item/${cargoItemId}/base`).then(res => res.content);
   }
 }
