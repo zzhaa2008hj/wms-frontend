@@ -76,6 +76,15 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
+                            <label class="form-label">提单号*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" readonly value.bind="cargoInfo.billLadingNumber">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
                             <label class="form-label">指令数量*</label>
                             <span class="help"></span>
                             <div class="controls">
@@ -97,7 +106,7 @@
                             <label class="form-label">备注</label>
                             <span class="help"></span>
                             <div class="controls">
-                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark" >
+                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark"></textarea>
                             </div>
                         </div>
                     </div>

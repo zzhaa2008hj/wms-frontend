@@ -17,6 +17,9 @@ export class EditContract {
     warehouses: WorkInfo[];
     customerInfo: kendo.ui.DropDownList;
     datasource: kendo.data.DataSource;
+    startDatePicker: kendo.ui.DatePicker;
+    endDatePicker: kendo.ui.DatePicker;
+    initTime = false;
 
     /**
      * 客户合同费率
@@ -72,8 +75,6 @@ export class EditContract {
     async activate({ id }) {
         this.contractVo = await this.contractService.getContract(id);
         this.contract = this.contractVo.contract;
-        console.log(this.contract)
-        console.log(this.contract.contractAmount.toString().length)
         this.contract.contractTypeStr = this.contractTypes[this.contract.contractType - 1].name;
         if (this.contract.contractType == 3) {
             //库区信息
@@ -100,6 +101,55 @@ export class EditContract {
             this.router.navigateToRoute("list");
         } catch (err) {
             await this.messageDialogService.alert({ title: "发生错误", message: err.message, icon: 'error' });
+        }
+    }
+    onOpen() {
+        if (!this.initTime) {
+            let startDate = this.contract.startTime;
+            let endDate = this.contract.endTime;
+
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            this.endDatePicker.min(startDate);
+
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            this.startDatePicker.max(endDate);
+            this.initTime = true;
+        }
+    }
+
+    startChange() {
+        let startDate = this.startDatePicker.value();
+        let endDate = this.endDatePicker.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            this.endDatePicker.min(startDate);
+        } else if (endDate) {
+            this.startDatePicker.max(new Date(endDate));
+        } else {
+            endDate = new Date();
+            this.startDatePicker.max(endDate);
+            this.endDatePicker.min(endDate);
+        }
+    }
+
+    endChange() {
+        let endDate = this.endDatePicker.value();
+        let startDate = this.startDatePicker.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            this.startDatePicker.max(endDate);
+        } else if (startDate) {
+            this.endDatePicker.min(new Date(startDate));
+        } else {
+            endDate = new Date();
+            this.startDatePicker.max(endDate);
+            this.endDatePicker.min(endDate);
         }
     }
 

@@ -103,6 +103,15 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label class="form-label">提单号*</label>
+                                    <span class="help"></span>
+                                    <div class="controls">
+                                        <input type="text" class="form-control" readonly value.bind="cargoInfo.billLadingNumber">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label class="form-label">指令件数*</label>
                                     <span class="help"></span>
                                     <div class="controls">
@@ -115,60 +124,60 @@
                                     <label class="form-label">备注</label>
                                     <span class="help"></span>
                                     <div class="controls">
-                                        <textarea type="text" class="form-control" value.bind="cargoInfo.remark" readonly>
+                                        <textarea type="text" class="form-control" value.bind="cargoInfo.remark" readonly></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row column-seperation">
+                            <h4>货物明细</h4>
+                            <div class="col-md-12">
+                                <span class="help"></span>
+                                <div class="controls right">
+                                    <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
+                                        <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                                        <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                        <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
+                                        <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                                        <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                                        <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                                        <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
+                                        <ak-col k-field="remark" k-title="备注"></ak-col>
+                                        <ak-col k-title="操作">
+                                            <ak-template>
+                                                <a class="btn btn-info btn-small " click.delegate="view(batchNumber)">查看</a>
+                                            </ak-template>
+                                        </ak-col>
+                                    </ak-grid>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row column-seperation">
-                    <h4>货物明细</h4>
-                    <div class="col-md-12">
-                        <span class="help"></span>
-                        <div class="controls right">
-                            <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
-                                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-                                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                                <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
-                                <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-                                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
-                                <ak-col k-field="unit" k-title="计量单位"></ak-col>
-                                <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
-                                <ak-col k-field="remark" k-title="备注"></ak-col>
-                                <ak-col k-title="操作">
-                                    <ak-template>
-                                        <a class="btn btn-info btn-small " click.delegate="view(batchNumber)">查看</a>
-                                    </ak-template>
-                                </ak-col>
-                            </ak-grid>
-                        </div>
+                    <!-- 入库指令信息结束-->
+
+                    <!-- 入库信息开始-->
+                    <div>
+                        暂无入库信息
                     </div>
-                </div>
-                </div>
-                 <!-- 入库指令信息结束-->
+                    <!-- 入库信息结束-->
 
-                  <!-- 入库信息开始-->
-                   <div>
-                       暂无入库信息
-                   </div>
-                  <!-- 入库信息结束-->
-
-                  <!-- 出库信息开始-->
-                  <div>
+                    <!-- 出库信息开始-->
+                    <div>
                         暂无出库信息
-                   </div>
-                  <!-- 出库信息结束-->
+                    </div>
+                    <!-- 出库信息结束-->
 
-                  <!-- 货权转移开始-->
-                  <div>
+                    <!-- 货权转移开始-->
+                    <div>
                         暂无货权转移信息
-                   </div>
-                  <!-- 货权转移结束-->
+                    </div>
+                    <!-- 货权转移结束-->
 
-                  <!-- 货位转移开始-->
-                  <div>
-                       暂无货位转移信息
-                   </div>
-                  <!-- 货位转移结束-->
+                    <!-- 货位转移开始-->
+                    <div>
+                        暂无货位转移信息
+                    </div>
+                    <!-- 货位转移结束-->
                 </div>
             </form>
         </div>
