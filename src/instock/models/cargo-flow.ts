@@ -10,7 +10,7 @@ export interface CargoFlow {
   customerName: string;
   batchNumber: string;
   instockFlowNumber: string;
-  instockDate: Date;
+  instockDate: string;
   orderQuantity: number;
   orderNumber: number;
   unit: string;

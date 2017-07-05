@@ -31,11 +31,15 @@ export class Detail {
     let separate = await this.cargoFlowSeparateService.getCargoFlowSeparateById(params.id);
 
     this.beforeCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.numberBeforeSeparate);
+    let beforeDate = new Date(this.beforeCargoFlow.instockDate);
+    this.beforeCargoFlow.instockDate = [beforeDate.getFullYear(), (beforeDate.getMonth() + 1), beforeDate.getDate()].join("-");
     this.beforeCargoInfo = await this.cargoInfoService.getCargoInfo(this.beforeCargoFlow.cargoInfoId);
     this.beforeCargoFlow.instockStageName = this.instockStages[this.beforeCargoFlow.stage + 1];
     this.beforeCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.beforeCargoFlow.id);
 
     this.afterCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.secondNumberAfterSeparate);
+    let afterDate = new Date(this.afterCargoFlow.instockDate);
+    this.afterCargoFlow.instockDate = [afterDate.getFullYear(), (afterDate.getMonth() + 1), afterDate.getDate()].join("-");
     this.afterCargoInfo = await this.cargoInfoService.getCargoInfo(this.afterCargoFlow.cargoInfoId);
     this.afterCargoFlow.instockStageName = this.instockStages[this.afterCargoFlow.stage + 1];
     this.afterCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.afterCargoFlow.id);

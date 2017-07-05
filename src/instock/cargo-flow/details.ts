@@ -24,6 +24,8 @@ export class Details {
 
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
+    let date = new Date(this.cargoFlow.instockDate);
+    this.cargoFlow.instockDate = [date.getFullYear(), (date.getMonth() + 1), date.getDate()].join("-");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlow.cargoInfoId);
     this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
@@ -66,3 +68,4 @@ export class Details {
   }
 
 }
+
