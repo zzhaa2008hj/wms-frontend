@@ -4,6 +4,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
+import { copy } from '@app/utils';
 
 @autoinject
 export class EditCargoInfo {
@@ -51,9 +52,10 @@ export class EditCargoInfo {
             return;
         }
         let cargoItemInfo = cargoItemList[0];
+
         let result = await this.dialogService.open({
             viewModel: EditCargoItem,
-            model: { cargoItemInfo },
+            model: { cargoItemInfo: copy(cargoItemInfo) },
             lock: true
         }).whenClosed();
         if (result.wasCancelled) return;
