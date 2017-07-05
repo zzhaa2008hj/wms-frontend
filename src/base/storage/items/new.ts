@@ -8,6 +8,7 @@ import { Warehouse } from "@app/base/models/warehouse";
 import { ValidationController , ValidationRules } from "aurelia-validation";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
+import { formValidationRenderer } from "@app/validation/support";
 
 /**
  * Created by shun on 2017/6/29.
@@ -31,6 +32,7 @@ export class NewStorageItem {
               @inject private dialogService: DialogService,
               @newInstance() private validationController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService) {
+    validationController.addRenderer(formValidationRenderer);
   }
 
   async activate(params) {
@@ -81,4 +83,20 @@ const validationRules = ValidationRules
   .ensure((item: StorageItemHistory)  => item.instockDate)
   .displayName('入库日期')
   .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((item: StorageItemHistory)  => item.containerNumber)
+  .displayName('集装箱号')
+  .maxLength(50).withMessage(`\${$displayName} 长度不能超过50`)
+
+  .ensure((item: StorageItemHistory)  => item.storageQuantity)
+  .displayName('堆存数量')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((item: StorageItemHistory)  => item.storageNumber)
+  .displayName('堆存件数')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((item: StorageItemHistory)  => item.position)
+  .displayName('坐标')
+  .maxLength(50).withMessage(`\${$displayName} 长度不能超过50`)
   .rules;
