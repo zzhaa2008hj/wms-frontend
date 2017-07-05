@@ -25,11 +25,16 @@ export class AuthMenu {
     let menus = await this.organizationRoleService.getOrgMenu();
     if (menus.length != 0) this.menuItems = menus;
     let assignedMenus = await this.organizationRoleService.getOrgRoleMenu(params.id);
-    if (assignedMenus.length != 0) this.assignedMenuItems = assignedMenus;
+    if (assignedMenus.length != 0) {
+      // 选中效果需要node对象
+      let assigned = new Set(assignedMenus.map(menu => menu.id));
+      this.assignedMenuItems = menus.filter(item => assigned.has(item.id));
+    }
   }
 
   async assignOrgRoleMenu() {
-    let menuIds = this.assignedMenuItems.map(menu => menu.id);
+    // 过滤父并取ids
+    let menuIds = this.assignedMenuItems.filter(menu => menu.parentId != null).map(menu => menu.id);
     try {
       await this.organizationRoleService.assignOrgRoleMenu(this.id, menuIds);
       await this.dialogService.alert({ title: "提示", message: "菜单授权成功"});
