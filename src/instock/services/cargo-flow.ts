@@ -47,15 +47,19 @@ export class CargoFlowService {
   }
 
   /**
-   * 
-   * 
-   * @param {string} id 
-   * @param {string} historyId 
-   * @returns {Promise<ChangeHistory<ContractVo>>} 
+   *
+   *
+   * @param {string} id
+   * @param {string} historyId
+   * @returns {Promise<ChangeHistory<ContractVo>>}
    * @memberof CargoFlowService
    */
   async getChangeHistory(id: string, historyId: string): Promise<ChangeHistory<CargoFlow>> {
     let res = await this.http.get(`/instock/cargo-flow/${id}/changeHistory/${historyId}`);
     return res.content;
+  }
+
+  updateFlowStage(id: string, stage: number): Promise<void> {
+    return this.http.put(`/instock/cargo-flow/${id}/changStage/${stage}`, '').then(handleResult);
   }
 }
