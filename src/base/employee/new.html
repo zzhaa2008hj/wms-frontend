@@ -1,77 +1,85 @@
-/**
-* Created by shun on 2017/6/16.
-*/
 <template>
-    <div id="example">
-        <div class="demo-section k-content">
-            <div id="tickets">
-                <form id="ticketsForm" submit.delegate="doSave()">
-                    <ul id="fieldlist">
-                        <!-- 文本框 -->
-                        <li>
-                            <label for="name" class="required">员工姓名*</label>
-                            <input type="text" id="name" name="name" class="k-textbox" required
-                                   value.bind="employee.name"
-                                   style="width: 80%;"/>
-                        </li>
-                        <li>
-                            <label for="email">邮箱</label>
-                            <input type="email" id="email" name="Email" class="k-textbox"
-                                   data-email-msg="Email format is not valid" style="width: 80%;"
-                                   value.bind="employee.email"/>
-                        </li>
-                        <li>
-                            <label for="mobile" class="required">手机号码*</label>
-                            <input type="tel" id="mobile" name="mobile" class="k-textbox"
-                                   required value.bind="employee.mobile"
-                                   validationMessage="请输入正确的手机号" style="width: 80%;"/>
-                        </li>
-                        <li>
-                            <label class="required">性别*:</label>
-                            <input type="radio" name="sex" value="1" checked.bind="employee.sex"/>男
-                            <input type="radio" name="sex" value="0" checked.bind="employee.sex"/>女
-                        </li>
-
-                        <li>
-                            <label for="idcard">身份证号码</label>
-                            <input type="text" id="idcard" name="idcard" class="k-textbox"
-                                   validationMessage="请输入正确的身份证号" value.bind="employee.idcard"
-                                   style="width: 80%;"/>
-                        </li>
-                        <li>
-                            <label for="officeNumber">办公号码</label>
-                            <input type="text" id="officeNumber" name="officeNumber" class="k-textbox"
-                                   placeholder="输入的格式如：0512-58888888" validationMessage="请输入正确的办公号码"
-                                   style="width: 80%;" value.bind="employee.officeNumber"/>
-                        </li>
-                        <li>
-                            <label for="homeNumber">家庭电话</label>
-                            <input type="text" id="homeNumber" name="homeNumber" class="k-textbox"
-                                   placeholder="输入的格式如：0512-58888888" validationMessage="请输入正确的家庭电话"
-                                   style="width: 80%;" value.bind="employee.homeNumber"/>
-                        </li>
-                        <li>
-                            <label for="position">职位</label>
-                            <input type="text" id="position" name="position" class="k-textbox" style="width: 80%;"
-                                   value.bind="employee.position"/>
-                        </li>
-                        <li>
-                            <label for="address">家庭住址</label>
-                            <input type="text" id="address" name="address" class="k-textbox" style="width: 80%;"
-                                   value.bind="employee.address"/>
-                        </li>
-                        <li>
-                            <label for="remark">备注</label>
-                            <input type="text" id="remark" name="remark" class="k-textbox" style="width: 80%;"
-                                   value.bind="employee.remark"/>
-                        </li>
-                        <li class="confirm">
-                            <button class="btn btn-primary" type="submit">确定</button>
-                            <a class="btn " click.trigger="goBack()">返回</a>
-                        </li>
-                    </ul>
-                </form>
-            </div>
+    <div class="grid simple">
+        <div class="grid-body no-border">
+            <form submit.delegate="doSave()">
+                <div class="form-group">
+                    <label class="form-label">员工姓名*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.name & validate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">邮箱</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.email & validate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">手机号码*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.mobile & validate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">性别*</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="radio" name="sex" value="1" checked.bind="employee.sex"/>男
+                        <input type="radio" name="sex" value="0" checked.bind="employee.sex"/>女
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">身份证号码</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.idcard  & validate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">办公号码</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.officeNumber & validate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">家庭电话</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.home_number & validate" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">职位</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.position & validate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">家庭住址</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <input type="text" class="form-control" value.bind="employee.address & validate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">备注</label>
+                    <span class="help"></span>
+                    <div class="controls">
+                        <textarea type="text" class="form-control" value.bind="employee.remark & validate"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="pull-right">
+                        <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
+                        <a class="btn btn-primary" click.trigger="goBack()">返回</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </template>
