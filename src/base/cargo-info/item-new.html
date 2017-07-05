@@ -87,7 +87,7 @@
                                         <label class="form-label">备注</label>
                                         <span class="help"></span>
                                         <div class="form-controls">
-                                            <textarea type="text" class="form-control" value.bind="cargoItem.remark">
+                                            <textarea type="text" class="form-control" value.bind="cargoItem.remark"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -100,18 +100,17 @@
                                 <div class="col-md-12">
                                     <span class="help"></span>
                                     <div class="controls right">
-                                        <ak-grid k-data-source.bind="cargoRateDataSource" k-widget.bind="customerGrid" k-editable.bind="true" 
-                                                k-on-detail-init.delegate="detailInit($event.detail)">
+                                        <ak-grid k-data-source.bind="cargoRateDataSource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-detail-init.delegate="detailInit($event.detail)">
                                             <ak-col k-field="rateCategory" k-title="费用类别">
                                                 <ak-template>
-                                                     ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
+                                                    ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
                                                 </ak-template>
                                             </ak-col>
                                             <ak-col k-field="chargeType" k-title="费用类型">
                                                 <ak-template>
                                                     ${chargeType == 1 ? '收费' :'付费'}
                                                 </ak-template>
-                                             </ak-col>
+                                            </ak-col>
                                             <ak-col k-title="单价" k-field="price"></ak-col>
                                             <ak-col k-field="unit" k-title="计量单位"></ak-col>
                                             <ak-col k-field="pricingMode" k-title="计价方式">
@@ -126,7 +125,7 @@
                                                 </ak-template>
                                             </ak-col>
                                             <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
-                                             <ak-col k-field="warehouseCategory" k-title="库位类别">
+                                            <ak-col k-field="warehouseCategory" k-title="库位类别">
                                                 <ak-template>
                                                     ${warehouseCategory == 1 ? '露天场内' :'库区'}
                                                 </ak-template>

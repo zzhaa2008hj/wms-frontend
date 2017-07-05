@@ -103,6 +103,15 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label class="form-label">提单号*</label>
+                                    <span class="help"></span>
+                                    <div class="controls">
+                                        <input type="text" class="form-control" readonly value.bind="cargoInfo.billLadingNumber">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label class="form-label">指令件数*</label>
                                     <span class="help"></span>
                                     <div class="controls">
@@ -115,7 +124,9 @@
                                     <label class="form-label">备注</label>
                                     <span class="help"></span>
                                     <div class="controls">
-                                        <textarea type="text" class="form-control" value.bind="cargoInfo.remark" readonly>
+                                        <textarea type="text" class="form-control" value.bind="cargoInfo.remark" readonly></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -142,33 +153,31 @@
                             </ak-grid>
                         </div>
                     </div>
-                </div>
-                </div>
-                 <!-- 入库指令信息结束-->
+                    <!-- 入库指令信息结束-->
 
-                  <!-- 入库信息开始-->
-                   <div>
-                       暂无入库信息
-                   </div>
-                  <!-- 入库信息结束-->
+                    <!-- 入库信息开始-->
+                    <div>
+                        暂无入库信息
+                    </div>
+                    <!-- 入库信息结束-->
 
-                  <!-- 出库信息开始-->
-                  <div>
+                    <!-- 出库信息开始-->
+                    <div>
                         暂无出库信息
-                   </div>
-                  <!-- 出库信息结束-->
+                    </div>
+                    <!-- 出库信息结束-->
 
-                  <!-- 货权转移开始-->
-                  <div>
+                    <!-- 货权转移开始-->
+                    <div>
                         暂无货权转移信息
-                   </div>
-                  <!-- 货权转移结束-->
+                    </div>
+                    <!-- 货权转移结束-->
 
-                  <!-- 货位转移开始-->
-                  <div>
-                       暂无货位转移信息
-                   </div>
-                  <!-- 货位转移结束-->
+                    <!-- 货位转移开始-->
+                    <div>
+                        暂无货位转移信息
+                    </div>
+                    <!-- 货位转移结束-->
                 </div>
             </form>
         </div>
