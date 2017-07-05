@@ -67,6 +67,8 @@ export class NewCargoItem {
 
 
     async activate({ contractId, warehouseType, cargoItemInfo }) {
+        //免堆期的默认值
+        this.cargoItem.freeDays = 0;
         //货物种类
         this.cargoCategoryDataSource = await this.cargoInfoService.getCargoCategories();
         //该合同下所有货物的费率
