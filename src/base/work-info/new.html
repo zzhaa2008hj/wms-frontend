@@ -9,7 +9,8 @@
                 <label class="form-label">作业类别*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <ak-drop-down-list k-value.two-way="workInfo.category" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                    <ak-drop-down-list k-value.two-way="workInfo.category & validate" k-option-label="请选择..."
+                                       k-data-text-field="text" k-data-value-field="value"
                         k-data-source.bind="category">
                     </ak-drop-down-list>
                 </div>
@@ -18,7 +19,7 @@
                 <label class="form-label">作业名称*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="workInfo.name ">
+                    <input type="text" class="form-control" value.bind="workInfo.name & validate">
                 </div>
             </div>
 
@@ -26,7 +27,7 @@
                 <label class="form-label">备注</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="workInfo.remark">
+                    <input type="text" class="form-control" value.bind="workInfo.remark & validate">
                 </div>
             </div>
         </ux-dialog-body>

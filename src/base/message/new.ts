@@ -1,10 +1,12 @@
-import { autoinject } from "aurelia-dependency-injection";
+import { autoinject, Container } from "aurelia-dependency-injection";
 import { MessageService } from "@app/base/services/message";
 import { Router } from "aurelia-router";
 import { EmployeeService } from "@app/base/services/employee";
 import { MessageDialogService } from "ui";
 import { Message, MessageVo, MessageResult } from '@app/base/models/message';
 import { observable } from 'aurelia-framework';
+import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from "@app/validation/support";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -35,11 +37,16 @@ export class NewMessage {
       }
     }
   });
+  validationController: ValidationController;
 
   constructor(private router: Router,
               private messageService: MessageService,
               private employeeService: EmployeeService,
-              private messageDialogService: MessageDialogService) {
+              private messageDialogService: MessageDialogService,
+              validationControllerFactory: ValidationControllerFactory, container: Container) {
+    this.validationController = validationControllerFactory.create();
+    this.validationController.addRenderer(formValidationRenderer);
+    container.registerInstance(ValidationController, this.validationController);
     this.selectedCategory = 1;
   }
 
@@ -49,6 +56,10 @@ export class NewMessage {
 
   async addNewMessage() {
     try {
+      this.validationController.addObject(this.message, validationRules);
+      let { valid } = await this.validationController.validate();
+      if (!valid) return;
+
       this.message.category = this.selectedCategory;
       let messageVo = {} as MessageVo;
       messageVo.message = this.message;
@@ -73,3 +84,9 @@ export class NewMessage {
     this.router.navigateToRoute("list");
   }
 }
+
+const validationRules = ValidationRules
+  .ensure((message: Message) => message.title)
+  .displayName('标题')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .rules;

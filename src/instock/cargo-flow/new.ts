@@ -1,12 +1,15 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
-import { inject } from 'aurelia-dependency-injection';
+import { Container, inject } from 'aurelia-dependency-injection';
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
+import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from "@app/validation/support";
+
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -50,14 +53,19 @@ export class NewCargoFlow {
       }
     }
   });
-  containerNumber = "";
-  //入库新增先要录入客户基础信息,基础信息新增后 录入
+
+  validationController: ValidationController;
+
   constructor(@inject private router: Router,
               @inject private cargoFlowService: CargoFlowService,
               @inject private dialogService: DialogService,
               @inject private cargoInfoService: CargoInfoService,
               @inject private messageDialogService: MessageDialogService,
-              @inject('routerParams') private routerParams: RouterParams) {
+              @inject('routerParams') private routerParams: RouterParams,
+              validationControllerFactory: ValidationControllerFactory, container: Container) {
+    this.validationController = validationControllerFactory.create();
+    this.validationController.addRenderer(formValidationRenderer);
+    container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate() {
@@ -146,6 +154,11 @@ export class NewCargoFlow {
       this.cargoFlow.orderNumber = orderNumber;
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
+
+    this.validationController.addObject(this.cargoFlow, validationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     try {
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "新增成功" });
@@ -159,4 +172,20 @@ export class NewCargoFlow {
   cancel() {
     this.router.navigateToRoute("list");
   }
+
 }
+
+const validationRules = ValidationRules
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
+  .displayName('联系人')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
+  .displayName('联系电话')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .satisfies(x => /^[1][358][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 过长`)
+  .rules;

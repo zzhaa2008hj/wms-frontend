@@ -8,28 +8,28 @@
                 <label class="form-label">种类/品牌名称*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="cargoCategory.categoryName">
+                    <input type="text" class="form-control" value.bind="cargoCategory.categoryName & validate">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">规格*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="cargoCategory.specs">
+                    <input type="text" class="form-control" value.bind="cargoCategory.specs & validate">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">排序</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="cargoCategory.sort">
+                    <input type="text" class="form-control" value.bind="cargoCategory.sort & validate">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">描述</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="cargoCategory.remark">
+                    <input type="text" class="form-control" value.bind="cargoCategory.remark & validate">
                 </div>
             </div>
 
