@@ -6,7 +6,7 @@
 		<div class="col-md-9">
 			<a class="btn btn-sm btn-small btn-success" route-href="route: new">新增</a>
 			<a class="btn btn-sm btn-small btn-default" route-href="route: separateHistory">拆单历史记录</a>
-			<button class="btn btn-small" click.delegate="verifyHistory(id)">生成理货报告</button>
+			<button class="btn btn-small" click.delegate="createInstockOrderItem(id)">生成理货报告</button>
 			<button class="btn btn-small" click.delegate="createInstockOrder()">生成入库单</button>
 		</div>
 		<div class="input-group">
@@ -19,9 +19,9 @@
 		<ak-col k-title="入库日期" k-field="instockDate" k-width.bind="120" k-format="{0:yyyy-MM-dd}"></ak-col>
 		<ak-col k-title="批次号" k-field="batchNumber" k-width.bind="150"></ak-col>
 		<ak-col k-title="入库流水单号" k-field="instockFlowNumber" k-width.bind="160"></ak-col>
-		<ak-col k-title="指令数量" k-field="orderQuantity" k-width.bind="120"></ak-col>
-		<ak-col k-title="指令件数" k-field="orderNumber" k-width.bind="120"></ak-col>
-		<ak-col k-title="计量单位" k-field="unit" k-width.bind="120"></ak-col>
+		<ak-col k-title="指令数量" k-field="orderQuantity" k-width.bind="100"></ak-col>
+		<ak-col k-title="指令件数" k-field="orderNumber" k-width.bind="100"></ak-col>
+		<ak-col k-title="计量单位" k-field="unit" k-width.bind="100"></ak-col>
 		<ak-col k-title="阶段" k-field="instockStageName" k-width.bind="160"></ak-col>
 		<!--<ak-col k-title="业务状态" k-field="status"></ak-col>-->
 		<ak-col k-title="拆单" k-width.bind="100">
@@ -35,11 +35,11 @@
 				<a class="btn btn-sm btn-small btn-primary" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }">修改</a>
 				<button class="btn btn-small" if.bind="stage > 2 && stage < 10" click.delegate="rollBack($this)">撤回</button>
 				<a class="btn btn-sm btn-small btn-primary" route-href="route: details; params.bind: { id: id }">详情</a>
-				<button class="btn btn-small" click.delegate="verifyHistory(id)">流程</button>
+				<button class="btn btn-small" click.delegate="verifyHistory(id)">审核记录</button>
 				<a class="btn btn-sm btn-small" route-href="route: order; params.bind:{id}" if.bind="stage == 3 && clearanceStatus">生成入库指令</a>
 				<a class="btn btn-sm btn-small" route-href="route: order; params.bind:{id}" if.bind="stage > 3">查看入库指令</a>
 				<button class="btn btn-small" if.bind="stage == 4" click.delegate="changeStage({id:id,stage:5})">作业开始</button>
-				<button class="btn btn-small" if.bind="stage == 5" click.delegate="addWorkInfo()">添加作业信息</button>
+				<a class="btn btn-sm btn-small" route-href="route: work-order; params.bind:{id}" if.bind="stage == 5">添加作业信息</a>
 				<button class="btn btn-small" if.bind="stage == 5" click.delegate="changeStage({id:id,stage:6})">作业完成</button>
 				<a class="btn btn-sm btn-small btn-primary" if.bind="stage == 6" route-href="route: verify; params.bind:{id}">库场审核</a>
 				<a class="btn btn-sm btn-small btn-warning" route-href="route: separate; params.bind: { id: id }">拆单</a>

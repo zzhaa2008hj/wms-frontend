@@ -1,0 +1,254 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 修改记录详情
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="col-md-6">
+        <div class="grid simple">
+          <div class="grid-body no-border">
+            <div class="row column-seperation">
+              <h4>基本信息</h4>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-label">批次号*</label>
+                  <div class="controls">
+                    <label>${oldCargoInfo.batchNumber}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">提单号*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label>${oldCargoInfo.billLadingNumber}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">库区性质*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label if.bind="oldCargoInfo.warehouseType == 1">公共</label>
+                    <label if.bind="oldCargoInfo.warehouseType == 2">承包</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">货物形式*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label if.bind="oldCargoInfo.cargoForm == 1">散装</label>
+                    <label if.bind="oldCargoInfo.cargoForm == 2">集装箱</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">货物性质*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label if.bind="oldCargoInfo.cargoType == 1">内贸</label>
+                    <label if.bind="oldCargoInfo.cargoType == 2">保税</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">代理商名称*</label>
+                  <div class="controls">
+                    <label>${oldCargoInfo.agentName}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">客户名称*</label>
+                  <div class="controls">
+                    <label>${oldCargoInfo.customerName}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">指令数量*</label>
+                  <span class="help"></span>
+                  <div class="controls">
+                    <label>${oldCargoInfo.orderQuantity}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">指令件数*</label>
+                  <span class="help"></span>
+                  <div class="controls">
+                    <label>${oldCargoInfo.orderNumber}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-label">备注</label>
+                  <div class="controls">
+                    <label>${oldCargoInfo.remark}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row column-seperation">
+              <h4>货物明细</h4>
+              <div class="col-md-12">
+                <span class="help"></span>
+                <div class="controls right">
+                  <ak-grid k-data-source.bind="oldDataSource" k-widget.bind="customerGrid">
+                    <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                    <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
+                    <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                    <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                    <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                    <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
+                    <ak-col k-field="remark" k-title="备注"></ak-col>
+                    <ak-col k-title="操作">
+                      <ak-template>
+                        <a class="btn btn-info btn-small" click.delegate="view(id, 1)">查看</a>
+                      </ak-template>
+                    </ak-col>
+                  </ak-grid>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="grid simple">
+          <div class="grid-body no-border">
+            <div class="row column-seperation">
+              <h4>基本信息</h4>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-label">批次号*</label>
+                  <div class="controls">
+                    <label>${newCargoInfo.batchNumber}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">提单号*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label>${newCargoInfo.billLadingNumber}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">库区性质*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label if.bind="newCargoInfo.warehouseType == 1">公共</label>
+                    <label if.bind="newCargoInfo.warehouseType == 2">承包</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">货物形式*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label if.bind="newCargoInfo.cargoForm == 1">散装</label>
+                    <label if.bind="newCargoInfo.cargoForm == 2">集装箱</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">货物性质*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <label if.bind="newCargoInfo.cargoType == 1">内贸</label>
+                    <label if.bind="newCargoInfo.cargoType == 2">保税</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">代理商名称*</label>
+                  <div class="controls">
+                    <label>${newCargoInfo.agentName}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">客户名称*</label>
+                  <div class="controls">
+                    <label>${newCargoInfo.customerName}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">指令数量*</label>
+                  <span class="help"></span>
+                  <div class="controls">
+                    <label>${newCargoInfo.orderQuantity}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">指令件数*</label>
+                  <span class="help"></span>
+                  <div class="controls">
+                    <label>${newCargoInfo.orderNumber}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-label">备注</label>
+                  <div class="controls">
+                    <label>${newCargoInfo.remark}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row column-seperation">
+              <h4>货物明细</h4>
+              <div class="col-md-12">
+                <span class="help"></span>
+                <div class="controls right">
+                  <ak-grid k-data-source.bind="newDataSource" k-widget.bind="customerGrid">
+                    <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                    <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
+                    <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                    <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                    <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                    <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
+                    <ak-col k-field="remark" k-title="备注"></ak-col>
+                    <ak-col k-title="操作">
+                      <ak-template>
+                        <a class="btn btn-info btn-small " click.delegate="view(id, 2)">查看</a>
+                      </ak-template>
+                    </ak-col>
+                  </ak-grid>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-white" click.trigger="cancel()">返回</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

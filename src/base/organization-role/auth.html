@@ -1,12 +1,39 @@
 <template>
-    <require from="./tree"></require>
-    <p>所属菜单</p>
-    <div id="example">
-        <menu-tree data.bind="menuItems"
-                   checked-items.bind="assignedMenuItems"></menu-tree>
-    </div>
-    <div>
-        <button class="btn btn-primary" click.delegate="assignOrgRoleMenu()">授权</button>
-        <button class="btn btn-primary" click.delegate="cancel()">取消</button>
+    <div class="grid simple">
+        <div class="grid-title no-border">
+            <h4>角色菜单授权</h4>
+        </div>
+        <div class="grid-body no-border">
+            <div class="form-group">
+                <label class="form-label">角色名称</label>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="orgRole.name" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">授权菜单</label>
+                <div class="controls">
+                    <wa-tree checked-items.bind="assignedMenuItems">
+                        <wa-tree-node repeat.for="item of menuItems"
+                            icon.bind="getIcon(item.menuType, item.parentId)"
+                            label.bind="item.name" type="checkbox"
+                            model.bind="item"
+                            expanded.one-way="true"
+                            id.bind="item.id" parent-id.bind="item.parentId">
+                        </wa-tree-node>
+                    </wa-tree>
+                    <!--<div style="border: 1px solid #ccc; background: #1f1f1f; padding: 5px;">
+                        已选择：
+                        <p repeat.for="item of assignedMenuItems">${item.name}[${item.id}]</span>
+                    </div>-->
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="pull-right">
+                    <button class="btn btn-primary btn-cons" click.delegate="assignOrgRoleMenu()">保存</button>
+                    <button class="btn btn-white btn-cons" click.delegate="cancel()">取消</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>

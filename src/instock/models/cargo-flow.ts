@@ -10,7 +10,8 @@ export interface CargoFlow {
   customerName: string;
   batchNumber: string;
   instockFlowNumber: string;
-  instockDate: string;
+  instockDate: Date;
+  instockDateStr: string;
   orderQuantity: number;
   orderNumber: number;
   unit: string;
@@ -35,6 +36,7 @@ export interface InstockCargoItem {
   id: string;
   instockFlowId: string;
   batchNumber: string;
+  instockDate: Date;
   instockFlowNumber: string;
   cargoItemId: string;
   orderQuantity: number;
@@ -47,6 +49,9 @@ export interface InstockCargoItem {
   orgId: string;
   cargoName: string;
   cargoCategoryName: string;
+  cargoSubCatergoryName: string;
+
+  freeDays: number;
 
   //车辆信息
   vehicles: Vehicle[];

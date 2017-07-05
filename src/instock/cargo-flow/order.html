@@ -4,66 +4,69 @@
     </div>
     <div class="grid simple">
         <div class="grid-body">
-            <table border="1" der>
-                <tr>
-                    <td align="center" colspan="7">${organization.name}入库指令单</td>
-                </tr>
-                <tr>
-                    <td colspan="1">代理名称:</td>
-                    <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.agentName"></td>
-                    <td>客户名称:</td>
-                    <td colspan="2"><input type="text" style="border: none" value.bind="cargoFlow.customerName"></td>
-                </tr>
-                <tr>
-                    <td colspan="1">批次号:</td>
-                    <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.batchNumber"></td>
-                    <td>入库日期:</td>
-                    <td colspan="2"><input type="text" style="border: none" value.bind="cargoFlow.instockDate" ></td>
-                </tr>
-                <tr>
-                    <td align="center">序号</td>
-                    <td align="center">货名</td>
-                    <td align="center">货类</td>
-                    <td align="center">单位</td>
-                    <td align="center">单价</td>
-                    <td align="center">通知件数</td>
-                    <td align="center">通知重量</td>
-                </tr>
-                <template repeat.for="item of cargoItems">
+            <div class="col-md-6 col-md-offset-3">
+
+                <table border="1" der>
                     <tr>
-                        <td align="center">${item.sequence}</td>
-                        <td align="center">${item.cargoName}</td>
-                        <td align="center">${item.cargoCategoryName}</td>
-                        <td align="center">${item.unit}</td>
-                        <td align="center">${item.cargoName}</td>
-                        <td align="center">${item.orderNumber}</td>
-                        <td align="center">${item.orderQuantity}</td>
+                        <td align="center" colspan="7">${organization.name}入库指令单</td>
                     </tr>
-                </template>
-                <tr>
-                    <td align="center">备注</td>
-                    <td colspan="6">
-                        <input type="text" style="border: none" value.bind="cargoFlow.remark">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" align="center">合计:</td>
-                    <td>
-                        <input type="text" style="border: none" value.bind="cargoFlow.orderNumber">
-                    </td>
-                    <td>
-                        <input type="text" style="border: none" value.bind="cargoFlow.orderQuantity">
-                    </td>
-                </tr>
-                <tr>
-                    <td>制单人</td>
-                    <td colspan="2"></td>
-                    <td>制单日期</td>
-                    <td></td>
-                    <td>客户签字</td>
-                    <td colspan="2"></td>
-                </tr>
-            </table>
+                    <tr>
+                        <td colspan="1">代理名称:</td>
+                        <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.agentName"></td>
+                        <td>客户名称:</td>
+                        <td colspan="2"><input type="text" style="border: none" value.bind="cargoFlow.customerName"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">批次号:</td>
+                        <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.batchNumber"></td>
+                        <td>入库日期:</td>
+                        <td colspan="2"><input type="text" style="border: none" value.bind="cargoFlow.instockDate"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">序号</td>
+                        <td align="center">货名</td>
+                        <td align="center">货类</td>
+                        <td align="center">单位</td>
+                        <td align="center">单价</td>
+                        <td align="center">通知件数</td>
+                        <td align="center">通知重量</td>
+                    </tr>
+                    <template repeat.for="item of cargoItems">
+                        <tr>
+                            <td align="center">${item.index}</td>
+                            <td align="center">${item.cargoName}</td>
+                            <td align="center">${item.cargoCategoryName}</td>
+                            <td align="center">${item.unit}</td>
+                            <td align="center">${item.cargoName}</td>
+                            <td align="center">${item.orderNumber}</td>
+                            <td align="center">${item.orderQuantity}</td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td align="center">备注</td>
+                        <td colspan="6">
+                            <input type="text" style="border: none" value.bind="cargoFlow.remark">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" align="right">合计:</td>
+                        <td>
+                            <input type="text" style="border: none" value.bind="cargoFlow.orderNumber">
+                        </td>
+                        <td>
+                            <input type="text" style="border: none" value.bind="cargoFlow.orderQuantity">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>制单人</td>
+                        <td colspan="2"></td>
+                        <td>制单日期</td>
+                        <td></td>
+                        <td>客户签字</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </template>

@@ -6,6 +6,8 @@ import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
 import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from "@app/common/models/constant-values";
+import * as moment from 'moment';
+
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -24,8 +26,7 @@ export class Details {
 
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
-    let date = new Date(this.cargoFlow.instockDate);
-    this.cargoFlow.instockDate = [date.getFullYear(), (date.getMonth() + 1), date.getDate()].join("-");
+    this.cargoFlow.instockDateStr = moment(this.cargoFlow.instockDate).format("YYYY-MM-DD");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlow.cargoInfoId);
     this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
