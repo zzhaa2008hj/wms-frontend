@@ -10,14 +10,14 @@
                 <label class="form-label">库区名称*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="warehouse.name">
+                    <input type="text" class="form-control" value.bind="warehouse.name & validate">
                 </div>
             </div>
             <div if.bind="!pWarehouse">
                 <div class="form-group">
                     <label class="form-label">库区性质*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="warehouse.type"
+                    <ak-drop-down-list k-value.two-way="warehouse.type & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"
@@ -27,7 +27,7 @@
                 <div class="form-group">
                     <label class="form-label">库区类别*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="warehouse.category"
+                    <ak-drop-down-list k-value.two-way="warehouse.category & validate"
                                        k-option-label="请选择..."
                                        k-data-text-field="text"
                                        k-data-value-field="value"
@@ -40,7 +40,7 @@
                 <label class="form-label">备注</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="warehouse.remark">
+                    <input type="text" class="form-control" value.bind="warehouse.remark & validate">
                 </div>
             </div>
         </ux-dialog-body>

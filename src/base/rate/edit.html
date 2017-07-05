@@ -7,21 +7,21 @@
         <div class="form-group">
           <label class="form-label">费用类别*</label>
           <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.chargeCategory" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+          <ak-drop-down-list k-value.two-way="rate.chargeCategory & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
             k-data-source.bind="chargeCategory">
           </ak-drop-down-list>
         </div>
         <div class="form-group">
           <label class="form-label">费用类型*</label>
           <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.chargeType" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+          <ak-drop-down-list k-value.two-way="rate.chargeType & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
             k-data-source.bind="chargeType">
           </ak-drop-down-list>
         </div>
         <div class="form-group">
           <label class="form-label">客户类别*</label>
           <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.customerCategory" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+          <ak-drop-down-list k-value.two-way="rate.customerCategory & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
             k-data-source.bind="customerCategory">
           </ak-drop-down-list>
         </div>
@@ -65,13 +65,6 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">计价方式*</label>
-          <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.pricingMode" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
-            k-data-source.bind="pricingMode">
-          </ak-drop-down-list>
-        </div>
-        <div class="form-group">
           <label class="form-label">单价*</label>
           <span class="help"></span>
           <div class="controls">
@@ -85,11 +78,18 @@
             k-data-source.bind="unit">
           </ak-drop-down-list>
         </div>
+
+        <div class="form-group">
+          <label class="form-label">计价方式</label>
+          <span class="help"></span>
+          <ak-drop-down-list k-value.two-way="rate.pricingMode" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+            k-data-source.bind="pricingMode">
+          </ak-drop-down-list>
+        </div>
         <div if.bind="rate.pricingMode == 2">
           <div class="row">
-            <div class="col-md-9">
-              <a class="btn btn-sm btn-small btn-success" click.trigger="addStep()">阶梯费率设置</a>
-            </div>
+            <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.trigger="addStep()">
+                            阶梯费率设置</a></div>
           </div>
           <ak-grid k-data-source.bind="dataSourceRateStep">
             <ak-col k-field="stepNum" k-title="阶梯号"></ak-col>
@@ -100,10 +100,20 @@
             <ak-col k-field="remark" k-title="备注"></ak-col>
             <ak-col k-title="操作">
               <ak-template>
-                <button class="btn btn-warning btn-small" click.delegate="deleteStep($this)">删除</button>
+                <button class="btn btn-warning btn-small" click.delegate="deleteStep($this)">删除
+                                </button>
               </ak-template>
             </ak-col>
           </ak-grid>
+
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">备注</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="rate.remark">
+          </div>
         </div>
 
         <div class="form-group">

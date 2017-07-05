@@ -1,6 +1,6 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
-import { autoinject } from "aurelia-dependency-injection";
+import { autoinject, Container } from "aurelia-dependency-injection";
 import { NewRateStep } from "./step/new";
 import { Rate } from "@app/base/models/rate";
 import { RateService, RateStepService } from "@app/base/services/rate";
@@ -8,6 +8,8 @@ import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from "@app/validation/support";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -29,14 +31,18 @@ export class NewRate {
   dataSourceRateStep = new kendo.data.HierarchicalDataSource({
     data: []
   });
+  validationController: ValidationController;
 
   constructor(private router: Router,
               private rateService: RateService,
               private rateStepService: RateStepService,
               private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService,
-              private messageDialogService: MessageDialogService) {
-
+              private messageDialogService: MessageDialogService,
+              validationControllerFactory: ValidationControllerFactory, container: Container) {
+    this.validationController = validationControllerFactory.create();
+    this.validationController.addRenderer(formValidationRenderer);
+    container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate(params) {
@@ -75,6 +81,10 @@ export class NewRate {
       Object.assign(this.rate, { rateStep: this.rateStep });
     }
     try {
+      this.validationController.addObject(this.rate, validationRules);
+      let { valid } = await this.validationController.validate();
+      if (!valid) return;
+
       await this.rateService.updateRate(this.rate);
       await this.messageDialogService.alert({ title: "修改成功" });
       this.router.navigateToRoute("list");
@@ -109,3 +119,17 @@ export class NewRate {
     this.router.navigateToRoute("list");
   }
 }
+
+const validationRules = ValidationRules
+  .ensure((rate: Rate) => rate.chargeCategory)
+  .displayName('费用类别')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rate: Rate) => rate.chargeType)
+  .displayName('费用类型')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rate: Rate) => rate.customerCategory)
+  .displayName('客户类别')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .rules;

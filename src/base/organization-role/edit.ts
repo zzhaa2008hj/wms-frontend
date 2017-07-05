@@ -9,14 +9,14 @@ import { formValidationRenderer } from "@app/validation/support";
 
 export class OrganizationRoleEdit {
 
-  organizationRole: OrganizationRole;
+  organizationRole = {} as OrganizationRole;
   constructor(@inject private dialogController: DialogController,
               @newInstance() private validationController: ValidationController) {
     validationController.addRenderer(formValidationRenderer);
   }
 
   async activate(organizationRole: OrganizationRole) {
-    this.organizationRole = organizationRole;
+    Object.assign(this.organizationRole, organizationRole);
     this.validationController.addObject(this.organizationRole, validationRules);
   }
 
@@ -37,4 +37,8 @@ const validationRules = ValidationRules
   .ensure((role: OrganizationRole)  => role.name)
   .displayName('角色名称')
   .required().withMessage(`\${$displayName} 不能为空`)
+  .maxLength(20).withMessage(`\${$displayName} 长度不能超过20`)
+  .ensure((role: OrganizationRole)  => role.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 长度不能超过500`)
   .rules;

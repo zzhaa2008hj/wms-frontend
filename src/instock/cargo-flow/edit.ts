@@ -1,11 +1,14 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
-import { autoinject } from "aurelia-dependency-injection";
+import { autoinject, Container } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
+import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from "@app/validation/support";
+
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -30,13 +33,19 @@ export class EditCargoFlow {
   dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  //入库新增先要录入客户基础信息,基础信息新增后 录入
+
+  validationController: ValidationController;
+
   constructor(private router: Router,
               private cargoFlowService: CargoFlowService,
               private cargoItemService: CargoItemService,
               private vehicleService: InstockVehicleService,
               private dialogService: DialogService,
-              private messageDialogService: MessageDialogService) {
+              private messageDialogService: MessageDialogService,
+              validationControllerFactory: ValidationControllerFactory, container: Container) {
+    this.validationController = validationControllerFactory.create();
+    this.validationController.addRenderer(formValidationRenderer);
+    container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate(params) {
@@ -101,6 +110,11 @@ export class EditCargoFlow {
     }
     this.cargoFlow.orderQuantity = orderQuantity;
     this.cargoFlow.orderNumber = orderNumber;
+
+    this.validationController.addObject(this.cargoFlow, validationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     try {
       await this.cargoFlowService.updateCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "修改成功" });
@@ -115,3 +129,18 @@ export class EditCargoFlow {
     this.router.navigateToRoute("list");
   }
 }
+
+const validationRules = ValidationRules
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
+  .displayName('联系人')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
+  .displayName('联系电话')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .satisfies(x => /^[1][358][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 过长`)
+  .rules;
