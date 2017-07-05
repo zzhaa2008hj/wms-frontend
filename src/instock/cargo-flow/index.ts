@@ -24,7 +24,7 @@ export class CargoFlow {
       { route: '/verify/:id', name: 'verify', moduleId: './verify/index', title: "库场审核" },
       { route: '/:id/work-order', name: 'work-order', moduleId: './work-order/index', title: "新增作业" },
       { route: '/:id/change-historys', name: 'changeHistory', moduleId: './change-history/index', title: "修改记录" },
-      { route: '/work-order/:id', name: 'work-order', moduleId: './work-order/index', title: "添加作业" }
+      { route: '/work-order/:id', name: 'work-order', moduleId: './work-order/index', title: "作业列表" }
     ]);
     this.router = router;
 
