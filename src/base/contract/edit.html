@@ -58,7 +58,9 @@
                                 <label class="form-label">合同开始日期*</label>
                                 <span class="help"></span>
                                 <div class="controls">
-                                    <input ak-datepicker="k-value.two-way : contract.startTime & validate" style="width: 100%" type="text" class="form-control">
+                                    <input ak-datepicker="k-value.two-way : contract.startTime & validate ; k-widget.two-way: startDatePicker" 
+                                        k-on-change.delegate="startChange()" k-on-open.delegate="onOpen()"
+                                        style="width: 100%" type="text" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -67,7 +69,9 @@
                                 <label class="form-label">合同结束日期*</label>
                                 <span class="help"></span>
                                 <div class="controls">
-                                    <input ak-datepicker="k-value.two-way : contract.endTime & validate" style="width: 100%" type="text" class="form-control">
+                                    <input ak-datepicker="k-value.two-way : contract.endTime & validate ; k-widget.two-way: endDatePicker" 
+                                        k-on-change.delegate="endChange()" k-on-open.delegate="onOpen()"
+                                        style="width: 100%" type="text" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -96,7 +100,7 @@
                                 <label class="form-label">备注</label>
                                 <span class="help"></span>
                                 <div class="controls">
-                                    <textarea type="text" class="form-control" value.bind="contract.remark & validate">
+                                    <textarea type="text" class="form-control" value.bind="contract.remark & validate"></textarea>
                                 </div>
                             </div>
                         </div>

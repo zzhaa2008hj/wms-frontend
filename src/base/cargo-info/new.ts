@@ -197,6 +197,11 @@ const validationRules = ValidationRules
     .displayName('客户名称')
     .required().withMessage(`\${$displayName} 不能为空`)
 
+    .ensure((cargoInfo: CargoInfo) => cargoInfo.billLadingNumber)
+    .displayName('提单号')
+    .required().withMessage(`\${$displayName} 不能为空`)
+    .maxLength(30).withMessage(`\${$displayName} 过长`)
+
     .ensure((cargoInfo: CargoInfo) => cargoInfo.remark)
     .displayName('备注')
     .maxLength(500).withMessage(`\${$displayName} 过长`)
