@@ -163,7 +163,6 @@ export class NewContract {
         //1 :
         if (contractType == 2) {
             this.customers = this.handlingCustomers;
-
         } else {
             this.customers = this.wareHouseCustomer;
         }
