@@ -86,7 +86,7 @@ export interface CargoItem {
 
     unit: string;
 
-    freeDays: string;
+    freeDays: number;
 
     cargoRates: CargoRate[];
 
