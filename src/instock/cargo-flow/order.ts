@@ -19,10 +19,8 @@ export class Order {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     this.organization = await this.organizationService.getOrganization(this.cargoFlow.orgId);
-    console.log(this.organization);
-    console.log(this.cargoItems);
-    // for (let i = 0; i < this.cargoItems.length; i++) {
-    //   this.cargoItems[i].sequence = i + 1;
-    // }
+    if (this.cargoFlow.stage == 3) {
+      this.cargoFlowService.updateFlowStage(params.id, 4);
+    }
   }
 }
