@@ -3,7 +3,7 @@ import { DialogService, MessageDialogService } from "ui";
 import { autoinject, Container } from "aurelia-dependency-injection";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
@@ -14,7 +14,7 @@ import { formValidationRenderer } from "@app/validation/support";
  */
 @autoinject
 export class EditCargoFlow {
-  cargoItems = [];
+  cargoItems = [] as InstockCargoItem[];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   baseCargoInfo = {

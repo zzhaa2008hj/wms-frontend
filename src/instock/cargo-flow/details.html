@@ -86,6 +86,7 @@
         <ak-grid k-data-source.bind="cargoItems" k-on-data-bound.delegate="onDataBound($event.detail)" k-on-detail-init.delegate="detailInit($event.detail)">
           <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
           <ak-col k-field="instockFlowNumber" k-title="入库流水单号 "></ak-col>
+          <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
           <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
           <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
           <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
