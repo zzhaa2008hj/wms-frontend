@@ -32,7 +32,7 @@
     <ak-col k-field="orderNumber" k-title="指令件数" k-width.bind="150"></ak-col>
     <ak-col k-field="orderQuantity" k-title="指令重量" k-width.bind="150">指令重量</ak-col>
     <ak-col k-field="remark" k-title="备注" k-width.bind="150"></ak-col>
-    <ak-col k-title="操作" k-locked.bind="true" k-lockable.bind="false" k-width.bind="300">
+    <ak-col k-title="操作" k-locked.bind="true" k-lockable.bind="false" k-width.bind="400">
       <ak-template>
         <a class="btn btn-small" if.bind="cargoFlowSize == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
         <a class="btn btn-small btn-info" if.bind="cargoFlowSize != 0" route-href="route: details; params.bind: { id: id }">详情</a>

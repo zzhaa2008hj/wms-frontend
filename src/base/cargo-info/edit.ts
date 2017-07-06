@@ -82,10 +82,10 @@ export class EditCargoInfo {
     orderNumChange() {
         this.cargoInfo.orderQuantity = 0;
         this.cargoInfo.orderNumber = 0;
-        this.cargoItems.forEach(r => this.cargoInfo.orderQuantity += r.orderQuantity)
-        this.cargoItems.forEach(r => this.cargoInfo.orderNumber += r.orderNumber)
+        this.cargoItems.forEach(r => this.cargoInfo.orderQuantity += r.orderQuantity);
+        this.cargoItems.forEach(r => this.cargoInfo.orderNumber += r.orderNumber);
     }
-
+    
     cancel() {
         this.router.navigateToRoute("list");
     }
