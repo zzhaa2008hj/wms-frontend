@@ -15,7 +15,7 @@ import { formValidationRenderer } from "@app/validation/support";
  */
 @autoinject
 export class NewRate {
-  rate: Rate;
+  rate = {} as Rate;
   rateStep = new Array;
   //数据字典数据方法完成后从数据字典中获取
   chargeCategory = [{ text: "仓储费", value: 1 },
