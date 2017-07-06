@@ -15,6 +15,7 @@ import { inject } from 'aurelia-framework';
 import { RouterParams } from '@app/common/models/router-params';
 import { InstockOrderService } from "@app/instock/services/instock-order";
 import { AppRouter } from "aurelia-router";
+import { OrderItemService } from "@app/instock/services/order-item";
 
 export class CargoFlow {
   searchName: string;
@@ -36,7 +37,8 @@ export class CargoFlow {
               @inject private customhouseService: CustomhouseClearanceService,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private instockOrderService: InstockOrderService,
-              @inject private appRouter: AppRouter) {
+              @inject private appRouter: AppRouter,
+              @inject private orderItemService: OrderItemService) {
 
   }
 
@@ -167,7 +169,7 @@ export class CargoFlow {
   }
 
   /**
-   * 生成入库单
+   *  生成入库单
    */
   async createInstockOrder() {
     let selectedRows = Array.from(this.grid.select());
@@ -197,6 +199,18 @@ export class CargoFlow {
     let selectedRoows = Array.from(this.grid.select());
     if (selectedRoows.length == 0) {
       await this.messageDialogService.alert({ title: "提示", message: "请选择流水！" });
+      return;
+    }
+    let ids = selectedRoows.map(row => this.grid.dataItem(row).id);
+    try {
+      let confirmed = await this.messageDialogService.confirm({ title: "提示", message: "确认生成理货报告？" });
+      if (!confirmed) return;
+      //生成理货报告
+      await this.orderItemService.saveOrderItem(ids);
+      await this.messageDialogService.alert({ title: "提示", message: "生成成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
 
