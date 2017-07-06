@@ -51,10 +51,15 @@
                     </ak-col>
                     <ak-col k-field="instockFlowNumber" k-title="入库流水单号 " k-width.bind="180">
                         <ak-template>
-                            <input type="text" style="border: none;background-color:transparent;"
-                                   value.bind="instockFlowNumber" readonly/>
+                            <input type="text" style="border: none;background-color:transparent;" value.bind="instockFlowNumber" readonly/>
                         </ak-template>
                     </ak-col>
+                    <ak-col k-field="cargoCategoryName" k-title="货物类别">
+                        <ak-template>
+                            <input type="text" style="border: none;background-color:transparent;" value.bind="cargoCategoryName" readonly/>
+                        </ak-template>
+                    </ak-col>
+
                     <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
                     <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
                     <ak-col k-field="unit" k-title="计量单位">

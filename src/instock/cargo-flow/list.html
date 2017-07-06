@@ -32,7 +32,7 @@
 		</ak-col>
 		<ak-col k-title="操作">
 			<ak-template>
-				<a class="btn btn-sm btn-small btn-primary" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }">修改</a>
+				<a class="btn btn-sm btn-small btn-primary"  route-href="route: edit; params.bind: { id: id }">修改</a>
 				<button class="btn btn-small" if.bind="stage > 2 && stage < 10" click.delegate="rollBack($this)">撤回</button>
 				<a class="btn btn-sm btn-small btn-primary" route-href="route: details; params.bind: { id: id }">详情</a>
 				<button class="btn btn-small" click.delegate="verifyHistory(id)">审核记录</button>
