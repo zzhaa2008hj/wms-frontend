@@ -26,6 +26,10 @@ export interface CargoFlow {
   //入库单号
   instockOrderId: string;
 
+  createTime: Date;
+  createTimeStr: string;
+  createAccount: string;
+
   //入库货物信息
   cargoItems: InstockCargoItem[];
 }
