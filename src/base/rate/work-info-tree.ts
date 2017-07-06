@@ -1,4 +1,4 @@
-import { DialogController } from "ui";
+import { DialogController, MessageDialogService } from 'ui';
 import { autoinject } from "aurelia-dependency-injection";
 import { WorkInfo } from "@app/base/models/work-info";
 import { WorkInfoService } from "@app/base/services/work-info";
@@ -10,6 +10,8 @@ import { treeHelper, TreeHelper } from "@app/utils";
 export class WorkInfoTree {
   workInfo: WorkInfo;
   selectedWorkInfo: any;
+  tree: kendo.ui.TreeView;
+  
   dataSourceWorkInfo = new kendo.data.HierarchicalDataSource({
     data: [],
     schema: {
@@ -23,6 +25,7 @@ export class WorkInfoTree {
   private helper: TreeHelper<any>;
 
   constructor(private dialogController: DialogController,
+              private messageDialogService: MessageDialogService,
               private workInfoService: WorkInfoService) {
 
   }
@@ -35,12 +38,17 @@ export class WorkInfoTree {
   }
 
   onSelectedWorkInfoChange() {
-    let node = this.selectedWorkInfo.select()[0];
+    let node = this.tree.select()[0];
     if (!node) return;
-    this.workInfo = this.selectedWorkInfo.dataItem(node);
+    this.selectedWorkInfo = this.tree.dataItem(node);
   }
 
   async save() {
+    if (this.selectedWorkInfo.hasChildren) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择子类作业内容", icon: "warning" });
+      return;
+    }
+    this.workInfo = this.selectedWorkInfo;
     await this.dialogController.ok(this.workInfo);
   }
 

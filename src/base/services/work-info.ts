@@ -32,7 +32,6 @@ export class WorkInfoService {
   }
 
   getWorkInfo(id: string): Promise<WorkInfo> {
-    console.log("--------------------" + id)
     return this.http.get(`/base/workInfo/${id}`).then(res => res.content);
   }
 }
