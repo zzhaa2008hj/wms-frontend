@@ -13,7 +13,6 @@ export class NewDictionaryData {
   }
 
   activate(dictCode: string) {
-    console.log(dictCode)
     this.dictCode = dictCode;
   }
 

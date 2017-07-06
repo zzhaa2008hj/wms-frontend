@@ -49,7 +49,6 @@ export class DictionaryData {
       .whenClosed();
     if (result.wasCancelled) return;
     try {
-      console.log(result.output)
       await this.dictionaryDataService.saveDictionaryData(result.output);
       await this.messageDialogService.alert({ title: "新增成功", message: "新增成功！" });
       this.dataSource.read();
