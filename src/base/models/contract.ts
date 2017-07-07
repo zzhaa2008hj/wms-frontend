@@ -35,6 +35,7 @@ export interface Contract {
   auditorTime: Date;
 
   status: number;
+  statusTitle: string;
 
   remark: string;
 

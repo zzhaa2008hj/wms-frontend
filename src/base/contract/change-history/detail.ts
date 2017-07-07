@@ -23,6 +23,7 @@ export class ChangeHistoryDetail {
   }
 
   async activate(changeHistory: ChangeHistory<ContractVo>) {
+
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
@@ -42,10 +43,12 @@ export class ChangeHistoryDetail {
     this.newContractVo.contract.signDateStr = moment(this.newContractVo.contract.signDate)
       .format("YYYY-MM-DD");
 
-    this.oldContractVo.rateVos = this.convertData(this.oldContractVo.rateVos);
-    this.newContractVo.rateVos = this.convertData(this.newContractVo.rateVos);
+    if (this.oldContractVo.contract.contractType != 3) {
+      this.oldContractVo.rateVos = this.convertData(this.oldContractVo.rateVos);
+      this.newContractVo.rateVos = this.convertData(this.newContractVo.rateVos);
+    }
   }
-  
+
   oldDetailInit(e) {
     let detailRow = e.detailRow;
     detailRow.find('.oldRateSteps').kendoGrid({

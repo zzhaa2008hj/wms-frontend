@@ -6,6 +6,7 @@ import { VerifyRecord } from '@app/common/models/verify-record';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { VerifyRecordService, VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class ContractList {
@@ -18,6 +19,7 @@ export class ContractList {
     buttonCount: 10
   };
   contractTypes: string[] = ["客户仓储", "装卸单位", "库区租赁"];
+  contractStages = ConstantValues.ContractStage;
 
   constructor(private contractService: ContractService,
     private messageDialogService: MessageDialogService,
@@ -27,6 +29,7 @@ export class ContractList {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.contractService.queryContracts({ searchName: this.searchName }).map(res => {
         res.contractTypeStr = this.contractTypes[res.contractType - 1];
+        res.statusTitle = this.contractStages[res.status + 1];
         return res;
       }),
       pageSize: 10
