@@ -3,6 +3,9 @@ import { ContractVo } from '@app/base/models/contractVo';
 import { ChangeHistory } from '@app/common/models/change-history';
 import * as moment from 'moment';
 import { DialogController } from 'ui';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
+import { Rate } from '@app/base/models/rate';
 
 @autoinject
 export class ChangeHistoryDetail {
@@ -10,11 +13,20 @@ export class ChangeHistoryDetail {
   oldContractVo: ContractVo;
   newContractVo: ContractVo;
 
-  constructor(private dialogController: DialogController) {
+  unit = [] as DictionaryData[];
+  warehouseType = [] as DictionaryData[];
+  warehouseCategory = [] as DictionaryData[];
+
+  constructor(private dialogController: DialogController,
+    private dictionaryDataService: DictionaryDataService) {
 
   }
 
-  activate(changeHistory: ChangeHistory<ContractVo>) {
+  async activate(changeHistory: ChangeHistory<ContractVo>) {
+    this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
+
     this.oldContractVo = changeHistory.oldObj;
     this.newContractVo = changeHistory.newObj;
     this.oldContractVo.contract.startTimeStr = moment(this.oldContractVo.contract.startTime)
@@ -29,15 +41,18 @@ export class ChangeHistoryDetail {
       .format("YYYY-MM-DD");
     this.newContractVo.contract.signDateStr = moment(this.newContractVo.contract.signDate)
       .format("YYYY-MM-DD");
-  }
 
+    this.oldContractVo.rateVos = this.convertData(this.oldContractVo.rateVos);
+    this.newContractVo.rateVos = this.convertData(this.newContractVo.rateVos);
+  }
+  
   oldDetailInit(e) {
     let detailRow = e.detailRow;
     detailRow.find('.oldRateSteps').kendoGrid({
       dataSource: {
         transport: {
           read: (options) => {
-              options.success(this.oldContractVo.rateStepVos);
+            options.success(this.oldContractVo.rateStepVos);
           }
         },
         filter: { field: 'rateId', operator: 'eq', value: e.data.id }
@@ -59,7 +74,7 @@ export class ChangeHistoryDetail {
       dataSource: {
         transport: {
           read: (options) => {
-              options.success(this.newContractVo.rateStepVos);
+            options.success(this.newContractVo.rateStepVos);
           }
         },
         filter: { field: 'rateId', operator: 'eq', value: e.data.id }
@@ -77,5 +92,23 @@ export class ChangeHistoryDetail {
 
   async cancel() {
     await this.dialogController.cancel();
+  }
+
+  private convertData(rates: Rate[]): Rate[] {
+    return rates.map(res => {
+      let unit = this.unit.find(d => res.unit == d.dictDataCode);
+      let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      if (unit) {
+        res.unit = unit.dictDataName;
+      }
+      if (warehouseType) {
+        res.warehouseType = warehouseType.dictDataName;
+      }
+      if (warehouseCategory) {
+        res.warehouseCategory = warehouseCategory.dictDataName;
+      }
+      return res;
+    });
   }
 }

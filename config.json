@@ -102,7 +102,7 @@
       "route": "/instock/:infoId?/cargo-flows",
       "href": "/instock/cargo-flows",
       "name": "cargoFlow",
-      "title": "入库作业指令",
+      "title": "入库流水",
       "moduleId": "./instock/cargo-flow/index"
     },
     {
