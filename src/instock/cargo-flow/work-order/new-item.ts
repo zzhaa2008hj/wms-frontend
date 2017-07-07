@@ -1,8 +1,8 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { MessageService } from "@app/base/services/message";
 import { WorkOrderItem } from "@app/instock/models/work";
 import { WorkInfoService } from "@app/base/services/work-info";
 import { DialogController } from "ui";
+import { ContractService } from "@app/base/services/contract";
 
 @autoinject
 export class NewWorkOrderItem {
@@ -15,7 +15,7 @@ export class NewWorkOrderItem {
   customersSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.messageService.listCustomer()
+        this.contractService.getCustomers(2)
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -32,7 +32,7 @@ export class NewWorkOrderItem {
     }
   });
 
-  constructor(private messageService: MessageService,
+  constructor(private contractService: ContractService,
               private workInfoService: WorkInfoService,
               private dialogController: DialogController) {
   }
