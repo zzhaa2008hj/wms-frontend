@@ -6,7 +6,7 @@
         <ux-dialog-body>
             <ak-treeview k-data-source.bind="dataSourceCargoCategory"
                          k-drag-and-drop.bind="true"
-                         k-widget.bind="selectedCargoCategory"
+                         k-widget.bind="tree"
                          k-on-change.trigger="onSelectedCargoCategoryChange($event)">
                 <ak-template>
                     <div>

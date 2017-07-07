@@ -218,11 +218,11 @@ export class CargoFlow {
    * 作业开始
    */
   async changeStage(params) {
-    let mess1 = "确认开始作业？"
-    let mess2 = "开始作业！"
+    let mess1 = "确认开始作业？";
+    let mess2 = "开始作业！";
     if (params.stage == 6) {
-      mess1 = "确认完成作业？"
-      mess2 = "完成作业！"
+      mess1 = "确认完成作业？";
+      mess2 = "完成作业！";
     }
     try {
       let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });

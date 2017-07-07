@@ -30,4 +30,8 @@ export class CargoCategoryService {
   deleteCargoCategory(id: string): Promise<void> {
     return this.http.delete(`/base/cargoCategory/${id}`).then(handleResult);
   }
+
+  getCargoCategory(id: string): Promise<CargoCategory> {
+    return this.http.get(`/base/cargoCategory/${id}`).then(res => res.content);
+  }
 }

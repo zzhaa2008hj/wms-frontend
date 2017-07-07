@@ -52,7 +52,7 @@ export class NewRate {
   }
 
   async selectWorkInfo() {
-    let result = await this.dialogService.open({ viewModel: WorkInfoTree, model: {}, lock: true })
+    let result = await this.dialogService.open({ viewModel: WorkInfoTree, model: this.rate.workId, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     let workInfo = result.output;
@@ -60,7 +60,8 @@ export class NewRate {
     this.rate.workId = workInfo.id;
   }
   async selectCargoCategory() {
-    let result = await this.dialogService.open({ viewModel: CargoCategoryTree, model: {}, lock: true })
+    let result = await this.dialogService
+      .open({ viewModel: CargoCategoryTree, model: this.rate.cargoCategoryId, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     let cargoCategory = result.output;
