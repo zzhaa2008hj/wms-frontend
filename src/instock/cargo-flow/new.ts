@@ -9,6 +9,7 @@ import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { InstockVehicle } from "@app/instock/models/instock-vehicle";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -19,7 +20,7 @@ export class NewCargoFlow {
   selectedCargoInfo: any;
   hasInfoId: boolean = false;
   baseCargoInfo: Array<CargoInfo>;
-
+  A: InstockVehicle
   dataSourceCargoItem = new kendo.data.DataSource({
     transport: {
       read: (options) => {

@@ -11,7 +11,7 @@ export class ViewWorkOrder {
               @inject private dataSourceFactory: DataSourceFactory,
               @inject private workOrderService: WorkOrderService) {
     this.datasource = this.dataSourceFactory.create({
-      query: () => this.workOrderService.queryWorkOders({ businessId: this.id }),
+      query: () => this.workOrderService.queryWorkOrdersByCargo({ businessId: this.id }),
       pageSize: 10
     });
   }

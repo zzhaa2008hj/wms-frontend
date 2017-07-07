@@ -34,7 +34,8 @@
                 <div class="form-group">
                     <div class="form-label">计量单位</div>
                     <div class="controls">
-                        <ak-drop-down-list k-value.two-way="workOrderItem.unit"
+                        <ak-drop-down-list k-option-label="请选择..."
+                                           k-value.two-way="workOrderItem.unit"
                                            k-data-text-field="text"
                                            k-data-value-field="value"
                                            k-data-source.bind="units">
@@ -44,7 +45,8 @@
                 <div class="form-group">
                     <div class="form-label">集装箱类型</div>
                     <div class="controls">
-                        <ak-drop-down-list k-value.two-way="workOrderItem.containerType"
+                        <ak-drop-down-list k-option-label="请选择..."
+                                           k-value.two-way="workOrderItem.containerType"
                                            k-data-text-field="text"
                                            k-data-value-field="value"
                                            k-data-source.bind="containerType">

@@ -13,7 +13,7 @@ export class WorkOrders {
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.workOrderService.queryWorkOders({ businessId: this.cargoFlow.id }),
+      query: () => this.workOrderService.queryWorkOders({ flowId: this.cargoFlow.id }),
       pageSize: 10
     });
   }

@@ -15,6 +15,10 @@ export class WorkInfoService {
     return res.content;
   }
 
+  listWorkInfoesByCargo(cargoItemId: string): Promise<WorkInfo[]> {
+    return this.http.get(`/base/workInfo/cargoItemId/${cargoItemId}`).then(res => res.content);
+  }
+
   saveWorkInfo(workInfo: WorkInfo): Promise<void> {
     return this.http.post(`/base/workInfo`, workInfo).then(handleResult);
   }

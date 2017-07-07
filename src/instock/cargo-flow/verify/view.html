@@ -20,14 +20,11 @@
                 <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
                 <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
                 <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
-                <ak-col k-field="workDate" k-title="作业日期"></ak-col>
+                <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
                 <ak-template for="detailTemplate">
                     <div class="workOrderItems"></div>
                 </ak-template>
             </ak-grid>
         </ux-dialog-body>
-        <ux-dialog-footer>
-            <button class="btn btn-white" click.trigger="cancel()">取消</button>
-        </ux-dialog-footer>
     </ux-dialog>
 </template>
