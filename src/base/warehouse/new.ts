@@ -3,6 +3,8 @@ import { DialogController } from "ui";
 import { Warehouse } from "@app/base/models/warehouse";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { DictionaryDataService } from "@app/base/services/dictionary";
+import { DictionaryData } from "@app/base/models/dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -10,11 +12,12 @@ import { formValidationRenderer } from "@app/validation/support";
 export class NewWarehouse {
   warehouse: Warehouse;
   pWarehouse: Warehouse;
-  type = [{ text: "公共", value: 1 }, { text: "承包", value: 2 }];
-  category = [{ text: "库", value: 1 }, { text: "场", value: 2 }];
+  type = [] as DictionaryData[];
+  category = [] as DictionaryData[];
   validationController: ValidationController;
 
   constructor(private dialogController: DialogController,
+              private dictionaryDataService: DictionaryDataService,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -22,8 +25,10 @@ export class NewWarehouse {
 
   }
 
-  activate(warehouse: Warehouse) {
+  async activate(warehouse: Warehouse) {
     this.pWarehouse = warehouse;
+    this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.category = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
   }
 
 
