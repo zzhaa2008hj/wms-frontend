@@ -59,7 +59,7 @@ export class NewCargoInfo {
         this.validationController.addObject(this.cargoInfo, validationRules);
 
         let res = await this.cargoInfoService.getBatchNumber();
-        this.cargoInfo.batchNumber = res.message;
+        this.cargoInfo.batchNumber = res.content;
         // 仓储代理商
         this.agents = await this.cargoInfoService.getCustomers(1);
         //仓储客户

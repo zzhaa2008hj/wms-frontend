@@ -74,8 +74,7 @@ export class CargoInfoService {
    */
   async getBatchNumber(): Promise<any> {
     let res = await this.http.get(`/base/code/generate?type=0`);
-    return extractResult(res.content);
-    //return this.http.get(`/base/code/generate?type=0`).then(handleResult);
+    return res.content;
   }
 
   /**
