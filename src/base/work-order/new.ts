@@ -82,70 +82,70 @@ export class NewWorkOrder {
     }
   });
 
-  constructor( @inject('cargoFlow') private cargoFlow: CargoFlow,
-    @inject private cargoItemService: CargoItemService,
-    @inject private instockVehicleService: InstockVehicleService,
-    @inject private workInfoService: WorkInfoService,
-    @inject private contractService: ContractService,
-    @inject private warehouseService: WarehouseService,
-    @inject private organizationService: OrganizationService,
-    @inject private workOrderService: WorkOrderService,
-    @inject private messageDialogService: MessageDialogService,
-    @inject private router: Router) {
+  constructor(@inject('cargoFlow') private cargoFlow: CargoFlow,
+              @inject private cargoItemService: CargoItemService,
+              @inject private instockVehicleService: InstockVehicleService,
+              @inject private workInfoService: WorkInfoService,
+              @inject private contractService: ContractService,
+              @inject private warehouseService: WarehouseService,
+              @inject private organizationService: OrganizationService,
+              @inject private workOrderService: WorkOrderService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private router: Router) {
     this.datasource = new kendo.data.DataSource({
-      transport: {
-        read: (options) => {
-          options.success();
+        transport: {
+          read: (options) => {
+            options.success([]);
+          },
+          update: (options) => {
+            options.success();
+          }
+          ,
+          destroy: (options) => {
+            options.success();
+          }
+          ,
+          create: async options => {
+            this.workOrderItems = options.data.models;
+            options.success();
+          }
         },
-        update: (options) => {
-          options.success();
-        }
-        ,
-        destroy: (options) => {
-          options.success();
-        }
-        ,
-        create: async options => {
-          this.workOrderItems = options.data.models;
-          options.success();
-        }
-      },
-      batch: true,
-      pageSize: 8,
-      schema: {
-        model: {
-          id: 'workItemId',
-          fields: {
-            workItemId: {
-              editable: false, nullable: true
-            },
-            workId: {
-              type: 'string'
-            },
-            quantity: {
-              type: 'number'
-            },
-            number: {
-              type: 'number'
-            },
-            containerType: {
-              type: 'string'
-            },
-            containerNumber: {
-              type: 'string'
-            },
-            customerId: {
-              type: 'string'
-            },
-            remark: {
-              type: 'string'
+        batch: true,
+        pageSize: 8,
+        schema: {
+          model: {
+            id: 'workItemId',
+            fields: {
+              workItemId: {
+                editable: false, nullable: true
+              },
+              workId: {
+                type: 'string'
+              },
+              quantity: {
+                type: 'number'
+              },
+              number: {
+                type: 'number'
+              },
+              containerType: {
+                type: 'string'
+              },
+              containerNumber: {
+                type: 'string'
+              },
+              customerId: {
+                type: 'string'
+              },
+              remark: {
+                type: 'string'
+              }
             }
           }
         }
       }
-    }
     )
-      ;
+    ;
   }
 
   activate() {
@@ -184,19 +184,12 @@ export class NewWorkOrder {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
   }
+
   onSelectPlateNumber(e) {
     let vehicle: InstockVehicle = this.selectedVehicle.dataItem(e.item);
-    if (this.workOrder.plateNumber == null || this.workOrder.plateNumber == "") {
-      this.workOrder.plateNumber = vehicle.plateNumber;
-    }
-    if (this.workOrder.driverName == null || this.workOrder.driverName == "") {
-      this.workOrder.driverName = vehicle.driverName;
-    }
-    if (this.workOrder.driverIdentityNumber == null || this.workOrder.driverIdentityNumber == "") {
-      this.workOrder.driverIdentityNumber = vehicle.driverIdentityNumber;
-    }
-    if (this.workOrder.phoneNumber == null || this.workOrder.phoneNumber == "") {
-      this.workOrder.phoneNumber = vehicle.phoneNumber;
-    }
+    this.workOrder.plateNumber = vehicle.plateNumber;
+    this.workOrder.driverName = vehicle.driverName;
+    this.workOrder.driverIdentityNumber = vehicle.driverIdentityNumber;
+    this.workOrder.phoneNumber = vehicle.phoneNumber;
   }
 }
