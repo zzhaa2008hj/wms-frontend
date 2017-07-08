@@ -5,6 +5,7 @@ import { CargoInfo, CargoItem, CargoRate, CargoRateStep } from '@app/base/models
 import { Contract } from '@app/base/models/contract';
 import { Organization } from '@app/base/models/organization';
 import { ChangeHistory } from '@app/common/models/change-history';
+import { CargoItemStorageInfoVo } from '@app/instock/models/cargo-distrain';
 /**
  * 机构查询条件
  */
@@ -121,6 +122,22 @@ export class CargoInfoService {
 
   async getChangeHistory(businessId, historyId): Promise<ChangeHistory<CargoInfo>> {
     let res = await this.http.get(`/base/cargoInfo/${businessId}/changeHistory/${historyId}`);
+    return res.content;
+  }
+
+  /**
+   * 获取货物明细和库存
+   */
+  async getCargoItemStorageInfo(id: string): Promise<CargoItemStorageInfoVo[]> {
+    let res = await this.http.get(`/base/cargoInfo/${id}/cargo-item/storage-info`);
+    return res.content;
+  }
+
+  /**
+   * 根据入库状态获取货物信息
+   */
+  async getCargoInfosByInstockStatus(instockStatus: number): Promise<CargoInfo[]> {
+    let res = await this.http.get(`/base/cargoInfo/instockStatus/${instockStatus}`);
     return res.content;
   }
 }
