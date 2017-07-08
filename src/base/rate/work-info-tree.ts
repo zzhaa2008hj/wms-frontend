@@ -9,7 +9,7 @@ import { observable } from 'aurelia-framework';
  */
 @autoinject
 export class WorkInfoTree {
-  workInfo: WorkInfo;
+  workInfo = {} as WorkInfo;
   selectedWorkInfo: any;
 
   @observable
@@ -67,8 +67,17 @@ export class WorkInfoTree {
       await this.messageDialogService.alert({ title: "提示", message: "请选择子类作业内容", icon: "warning" });
       return;
     }
-    this.workInfo = this.selectedWorkInfo;
-    this.selectedWorkInfo = null;
+    let name = this.selectedWorkInfo.name;
+    let id = this.selectedWorkInfo.id;
+    this.workInfo.id = id;        
+    let data = this.selectedWorkInfo;
+    while (data.parentId) {
+      id = data.parentId;
+      data = this.dataSourceWorkInfo.get(id);
+      name = data.name + "-" + name;
+    }
+    this.workInfo.name = name;
+    this.selectedWorkInfo = null;     
     await this.dialogController.ok(this.workInfo);
   }
 

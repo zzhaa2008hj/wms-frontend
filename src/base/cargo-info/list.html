@@ -11,8 +11,8 @@
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-filterable.bind="true"
     k-column-menu.bind="true" k-pageable.bind="pageable">
     <ak-col k-field="batchNumber" k-title="批次号" k-locked.bind="true" k-lockable.bind="false" k-width.bind="150"></ak-col>
-    <ak-col k-field="agentName" k-title="代理商"  k-width.bind="150"></ak-col>
-    <ak-col k-field="billLadingNumber" k-title="提单号"  k-width.bind="150"></ak-col>
+    <ak-col k-field="agentName" k-title="代理商" k-width.bind="150"></ak-col>
+    <ak-col k-field="billLadingNumber" k-title="提单号" k-width.bind="150"></ak-col>
     <ak-col k-field="customerName" k-title="客户名称" k-locked.bind="true" k-lockable.bind="false" k-width.bind="150"></ak-col>
     <ak-col k-field="warehouseType" k-title="库区性质" k-width.bind="150">
       <ak-template>
@@ -29,15 +29,19 @@
         ${cargoType ==1 ?'内贸': '保税'}
       </ak-template>
     </ak-col>
-    <ak-col k-field="orderNumber" k-title="指令件数" k-width.bind="150"></ak-col>
-    <ak-col k-field="orderQuantity" k-title="指令重量" k-width.bind="150">指令重量</ak-col>
+    <ak-col k-field="orderNumber == null? 0:orderNumber" k-title="指令件数" k-width.bind="150"></ak-col>
+    <ak-col k-field="orderQuantity == null? 0:orderQuantity" k-title="指令重量" k-width.bind="150"></ak-col>
+    <ak-col k-field="instockNumber == null? 0:instockNumber" k-title="入库件数" k-width.bind="150"></ak-col>
+    <ak-col k-field="instockQuantity == null? 0:instockQuantity" k-title="入库重量" k-width.bind="150"></ak-col>
+    <ak-col k-field="outstockNumber == null? 0:outstockNumber" k-title="出库件数" k-width.bind="150"></ak-col>
+    <ak-col k-field="outstockQuantity == null? 0:outstockQuantity" k-title="出库重量" k-width.bind="150"></ak-col>
     <ak-col k-field="remark" k-title="备注" k-width.bind="150"></ak-col>
     <ak-col k-title="操作" k-locked.bind="true" k-lockable.bind="false" k-width.bind="400">
       <ak-template>
         <a class="btn btn-small" if.bind="cargoFlowSize == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
         <a class="btn btn-small btn-info" if.bind="cargoFlowSize != 0" route-href="route: details; params.bind: { id: id }">详情</a>
         <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
-        <a class="btn btn-small" href="/#/instock/${id}/cargo-flows">查看入库信息</a>
+        <a class="btn btn-small" href="/#/instock/${id}/cargo-flows">入库信息</a>
         <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
       </ak-template>
     </ak-col>
