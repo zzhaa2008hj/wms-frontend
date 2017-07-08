@@ -17,19 +17,20 @@
                 </div>
             </div>
         </div>
-         <div class="col-md-5">
+        <div class="col-md-5">
             <div class="form-group">
                 <div class="form-label">作业单号</div>
                 <div class="controls">
-                   <input type="text" class="form-control" style="width: 60%" value.bind="workOrder.workOrderNumber">
+                    <input type="text" class="form-control" style="width: 60%" value.bind="workOrder.workOrderNumber">
                 </div>
             </div>
         </div>
-         <div class="col-md-5">
+        <div class="col-md-5">
             <div class="form-group">
                 <div class="form-label">作业日期</div>
                 <div class="controls">
-                   <input ak-datepicker="k-value.two-way : workOrder.workDate" style="width: 60%" type="text" class="form-control">
+                    <input ak-datepicker="k-value.two-way : workOrder.workDate" style="width: 60%" type="text"
+                           class="form-control">
                 </div>
             </div>
         </div>
@@ -146,7 +147,7 @@
             </ak-col>
             <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
             <ak-col k-title="作业单位名称">
-               <ak-template>
+                <ak-template>
                     <ak-drop-down-list class="form-control"
                                        k-option-label="请选择..."
                                        k-data-text-field="name"

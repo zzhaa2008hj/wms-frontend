@@ -60,13 +60,24 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="form-label">作业单位名称</div>
+                    <div class="form-label">作业单位名称1</div>
                     <ak-drop-down-list class="form-control"
                                        k-option-label="请选择..."
                                        k-data-text-field="name"
                                        k-data-value-field="id"
                                        k-widget.two-way="selectedCustomer"
                                        k-data-source.bind="customersSource"
+                                       style="width: 60%">
+                    </ak-drop-down-list>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">库区名称</div>
+                    <ak-drop-down-list class="form-control"
+                                       k-option-label="请选择..."
+                                       k-data-text-field="name"
+                                       k-data-value-field="id"
+                                       k-widget.two-way="selectedWarehouse"
+                                       k-data-source.bind="warehouseSource"
                                        style="width: 60%">
                     </ak-drop-down-list>
                 </div>
