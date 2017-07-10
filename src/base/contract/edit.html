@@ -135,17 +135,17 @@
                     </ak-template>
                   </ak-col>
                   <ak-col k-title="单价" k-field="price"></ak-col>
-                  <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                  <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
                   <ak-col k-field="pricingMode" k-title="计价方式">
                     <ak-template>
                       ${pricingMode == 1 ? '单一结费' :'阶梯计费'}
                     </ak-template>
                   </ak-col>
                   <ak-col k-field="workName" k-title="作业内容"></ak-col>
-                  <ak-col k-field="warehouseType" k-title="库位性质"></ak-col>
+                  <ak-col k-field="warehouseTypeStr" k-title="库位性质"></ak-col>
                   <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
                   <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
-                  <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
+                  <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
                   <ak-col k-field="remark" k-title="备注"></ak-col>
                   <ak-template for="detailTemplate">
                     <div class="rateSteps" if.bind="pricingMode !=1 "></div>

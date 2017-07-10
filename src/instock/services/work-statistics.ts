@@ -15,18 +15,18 @@ export class WorkStatisticsService {
   }
 
   queryWorkStatisticses(criterira: WorkStatisticsCriteria): Query<WorkStatistics> {
-    return this.http.query(`/instock/warehouseWorkOrderStatistics/page`, criterira);
+    return this.http.query(`/base/warehouseWorkOrderStatistics/page`, criterira);
   }
 
   getWorkStatisticsById(id: string): Promise<WorkStatistics> {
-    return this.http.get(`/instock/warehouseWorkOrderStatistics/${id}`).then(res => res.content);
+    return this.http.get(`/base/warehouseWorkOrderStatistics/${id}`).then(res => res.content);
   }
 
   getStatistics(flowId: string): Promise<WorkStatistics> {
-    return this.http.get(`/instock/warehouseWorkOrderStatistics/get/${flowId}`).then(res => res.content);
+    return this.http.get(`/base/warehouseWorkOrderStatistics/get/${flowId}`).then(res => res.content);
   }
 
   saveStatistics(workStatistics: WorkStatistics): Promise<void> {
-    return this.http.post(`/instock/warehouseWorkOrderStatistics/statistics`, workStatistics).then(handleResult);
+    return this.http.post(`/base/warehouseWorkOrderStatistics/statistics`, workStatistics).then(handleResult);
   }
 }

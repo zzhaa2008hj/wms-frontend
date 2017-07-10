@@ -1,6 +1,8 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { WorkStatisticsService } from "@app/instock/services/work-statistics";
 import { DataSourceFactory } from "@app/utils";
+import { ConstantValues } from '@app/common/models/constant-values';
+
 @autoinject
 export class ListWorkStatistics {
   searchName: string;
@@ -10,6 +12,7 @@ export class ListWorkStatistics {
     pageSizes: true,
     buttonCount: 10
   };
+  categories: string[] = ConstantValues.BusinessTypes;
 
   constructor(private workStatisticsService: WorkStatisticsService,
               private dataSourceFactory: DataSourceFactory) {
@@ -24,7 +27,7 @@ export class ListWorkStatistics {
   }
 
   formatCategory(category: number) {
-    return ['入库', '出库', '移库'][category - 1];
+    return this.categories[category - 1];
   }
 
 }

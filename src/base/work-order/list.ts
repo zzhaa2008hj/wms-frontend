@@ -1,22 +1,27 @@
 import { inject } from "aurelia-dependency-injection";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
 import { DialogService } from "ui";
 import { NewWorkOrderItem } from "@app/base/work-order/new-item";
+import { RouterParams } from '@app/common/models/router-params';
 export class WorkOrders {
   dataSource: kendo.data.DataSource;
   test: kendo.ui.Grid;
+  type: string;
 
-  constructor(@inject('cargoFlow') private cargoFlow: CargoFlow,
+  constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderService: WorkOrderService,
               @inject private workOrderItemService: WorkOderItemService,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
+    this.type = this.routerParams.type;
+  }
+
+  async activate() {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.workOrderService.queryWorkOders({ flowId: this.cargoFlow.id }),
+      query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId }),
       pageSize: 10
-    });
+    });   
   }
 
   detailInit(e) {

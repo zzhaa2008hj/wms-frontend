@@ -72,7 +72,12 @@ export class NewContract {
         model: {
           id: 'id',
           fields: {
-            price: { type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, editable: true, nullable: false },
+            price: { 
+              type: 'number', 
+              validation: { required: true, min: 0, max: 1000000000000000 }, 
+              editable: true, 
+              nullable: false 
+            },
             chargeCategory: { editable: false },
             chargeType: { editable: false },
             unit: { editable: false },
@@ -125,13 +130,16 @@ export class NewContract {
       let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       if (unit) {
-        res.unit = unit.dictDataName;
+        res.unit = unit.dictDataCode;
+        res.unitStr = unit.dictDataName;
       }
       if (warehouseType) {
-        res.warehouseType = warehouseType.dictDataName;
+        res.warehouseType = warehouseType.dictDataCode;
+        res.warehouseTypeStr = warehouseType.dictDataName;
       }
       if (warehouseCategory) {
-        res.warehouseCategory = warehouseCategory.dictDataName;
+        res.warehouseCategory = warehouseCategory.dictDataCode;
+        res.warehouseCategoryStr = warehouseCategory.dictDataName;
       }
       return res;
     });
@@ -208,7 +216,8 @@ export class NewContract {
     if (!valid) return;
     let rateList = this.baseRateAndSteps
       .filter(x => x.customerCategory == this.contract.contractType);
-
+      console.log(rateList)
+    console.log(this.baseRateAndSteps)
     rateList.forEach(r => {
       let id = r.id;
       let rateSteps = this.baseRateStep.filter(res => res.rateId == id);

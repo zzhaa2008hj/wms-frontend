@@ -14,11 +14,14 @@ import { Organization } from "@app/base/models/organization";
 import { WorkOrderService } from "@app/instock/services/work-order";
 import { Router } from "aurelia-router";
 import { InstockVehicle } from "@app/instock/models/instock-vehicle";
+import { RouterParams } from '@app/common/models/router-params';
+import { CargoFlowService } from '@app/instock/services/cargo-flow';
 
 export class NewWorkOrder {
   instockVehicle = {} as InstockVehicle;
   goodsId: string;
   workOrder = {} as WorkOrder;
+  cargoFlow = {} as CargoFlow;
   units = [{ text: "单位1", value: 1 }, { text: "单位2", value: 2 }];
   containerTypes = [{ text: "集装箱类型1", value: 1 }, { text: "集装箱类型2", value: 2 }];
 
@@ -32,7 +35,8 @@ export class NewWorkOrder {
   worksSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.workInfoService.listWorkInfoesByCargo(this.workOrder.businessId)
+        this.workInfoService
+          .listWorkInfoesByCargo(this.workOrder.businessId, this.routerParams.type)
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -50,7 +54,6 @@ export class NewWorkOrder {
   });
 
   datasource;
-
 
   cargoItemsSource = new kendo.data.DataSource({
     transport: {
@@ -82,7 +85,8 @@ export class NewWorkOrder {
     }
   });
 
-  constructor(@inject('cargoFlow') private cargoFlow: CargoFlow,
+  constructor(@inject('routerParams') private routerParams: RouterParams,
+              @inject private cargoFlowService: CargoFlowService,
               @inject private cargoItemService: CargoItemService,
               @inject private instockVehicleService: InstockVehicleService,
               @inject private workInfoService: WorkInfoService,
@@ -148,9 +152,12 @@ export class NewWorkOrder {
     ;
   }
 
-  activate() {
-    this.workOrder.batchNumber = this.cargoFlow.batchNumber;
-    this.workOrder.workOrderCategory = this.cargoFlow.status;
+  async activate() {
+    if (this.routerParams.type == 1) {
+      this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.routerParams.businessId);
+      this.workOrder.workOrderCategory = this.routerParams.type;      
+      this.workOrder.batchNumber = this.cargoFlow.batchNumber;      
+    }
   }
 
   changeCargo() {

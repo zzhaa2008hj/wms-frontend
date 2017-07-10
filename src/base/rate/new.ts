@@ -20,7 +20,7 @@ export class NewRate {
   //数据字典数据方法完成后从数据字典中获取
   chargeCategory = [{ text: "仓储费", value: 1 },
   { text: "装卸费", value: 2 },
-  { text: "其他费用", value: 5 }];
+  { text: "其他费用", value: 3 }];
   customerCategory = [{ text: "仓储客户", value: 1 }, { text: "装卸单位", value: 2 }];
   chargeType = [{ text: "收费业务", value: 1 }, { text: "付费业务", value: 2 }];
   pricingMode = [{ text: "单一计费", value: 1 }, { text: "阶梯计费", value: 2 }];

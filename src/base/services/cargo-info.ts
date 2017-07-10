@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, Query, RestClient, extractResult } from '@app/utils';
+import { handleResult, Query, RestClient } from '@app/utils';
 import { CargoCategory } from '@app/base/models/cargo-category';
 import { CargoInfo, CargoItem, CargoRate, CargoRateStep } from '@app/base/models/cargo-info';
 import { Contract } from '@app/base/models/contract';
@@ -45,9 +45,9 @@ export class CargoInfoService {
    * @param contractId
    * @param wareHouseType
    */
-  async getContractCargoRates(contractId: string, wareHouseType: string): Promise<CargoRate[]> {
+  async getContractCargoRates(contractId: string): Promise<CargoRate[]> {
     let res = await this.http.
-      get(`base/contract/contractRateList?contractId=${contractId}&wareHouseType=${wareHouseType}`);
+      get(`base/contract/contractRateList?contractId=${contractId}`);
     return res.content;
   }
 

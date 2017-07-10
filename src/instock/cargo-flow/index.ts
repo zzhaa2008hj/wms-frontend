@@ -23,7 +23,7 @@ export class CargoFlow {
       { route: '/separate/:id/new', name: 'separate', moduleId: './separate/new', title: "拆单" },
       { route: '/verify/:id', name: 'verify', moduleId: './verify/index', title: "库场审核" },
       { route: '/:id/change-historys', name: 'changeHistory', moduleId: './change-history/index', title: "修改记录" },
-      { route: '/work-order/:id', name: 'work-order', moduleId: '/dist/base/work-order/index', title: "作业列表" }
+      { route: '/work-order/:id/:type', name: 'work-order', moduleId: '/dist/base/work-order/index', title: "作业列表" }
     ]);
     this.router = router;
 
