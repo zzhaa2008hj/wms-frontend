@@ -20,7 +20,7 @@ export class CargoInfoService {
   constructor(private http: RestClient) {
   }
 
-  queryCargoInfo(criteria?: CargoInfoCriteria): Query<CargoInfo[]> {
+  queryCargoInfo(criteria?: CargoInfoCriteria): Query<CargoInfo> {
     return this.http.query(`base/cargoInfo/page`, criteria);
   }
 

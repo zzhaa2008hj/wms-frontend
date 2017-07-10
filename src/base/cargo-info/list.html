@@ -14,11 +14,7 @@
     <ak-col k-field="agentName" k-title="代理商" k-width.bind="150"></ak-col>
     <ak-col k-field="billLadingNumber" k-title="提单号" k-width.bind="150"></ak-col>
     <ak-col k-field="customerName" k-title="客户名称" k-locked.bind="true" k-lockable.bind="false" k-width.bind="150"></ak-col>
-    <ak-col k-field="warehouseType" k-title="库区性质" k-width.bind="150">
-      <ak-template>
-        ${warehouseType ==1 ?'公共': '承包'}
-      </ak-template>
-    </ak-col>
+    <ak-col k-field="warehouseTypeStr" k-title="库区性质" k-width.bind="150"></ak-col>
     <ak-col k-field="cargoForm" k-title="货物形式" k-width.bind="150">
       <ak-template>
         ${cargoForm ==1 ?'散装': '集装箱'}

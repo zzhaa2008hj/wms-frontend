@@ -20,10 +20,10 @@ export class EditCargoInfo {
   warehouseTypes = [] as DictionaryData[];
 
   constructor(private router: Router,
-    private cargoInfoService: CargoInfoService,
-    private messageDialogService: MessageDialogService,
-    private dictionaryDataService: DictionaryDataService,
-    private dialogService: DialogService) {
+              private cargoInfoService: CargoInfoService,
+              private messageDialogService: MessageDialogService,
+              private dictionaryDataService: DictionaryDataService,
+              private dialogService: DialogService) {
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
