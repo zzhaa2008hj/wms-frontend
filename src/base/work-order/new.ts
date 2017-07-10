@@ -32,6 +32,8 @@ export class NewWorkOrder {
   warehouse: Warehouse;
   organization: Organization;
 
+  workOrderItem: WorkOrderItem;
+
   selectedVehicle: any;
 
   worksSource = new kendo.data.DataSource({
