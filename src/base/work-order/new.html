@@ -12,8 +12,10 @@
                                        k-value.two-way="workOrder.businessId"
                                        k-data-source.bind="cargoItemsSource"
                                        k-on-change.delegate="changeCargo()"
+                                       k-on-close.delegate="validateWorkOrder('businessId')"
                                        style="width: 60%">
                     </ak-drop-down-list>
+                    <input class="form-control" type="hidden" value.bind="workOrder.businessId & validate ">
                 </div>
             </div>
         </div>
@@ -21,7 +23,7 @@
             <div class="form-group">
                 <div class="form-label">作业单号</div>
                 <div class="controls">
-                    <input type="text" class="form-control" style="width: 60%" value.bind="workOrder.workOrderNumber">
+                    <input type="text" class="form-control" style="width: 60%" value.bind="workOrder.workOrderNumber & validate">
                 </div>
             </div>
         </div>
@@ -29,7 +31,7 @@
             <div class="form-group">
                 <div class="form-label">作业日期</div>
                 <div class="controls">
-                    <input ak-datepicker="k-value.two-way : workOrder.workDate" style="width: 60%" type="text"
+                    <input ak-datepicker="k-value.two-way : workOrder.workDate & validate" style="width: 60%" type="text"
                            class="form-control">
                 </div>
             </div>
@@ -42,11 +44,15 @@
                                  k-placeholder="请选择/手动输入"
                                  k-data-text-field="plateNumber"
                                  k-data-value-field="plateNumber"
+                                 k-value.two-way="workOrder.plateNumber"
                                  k-widget.two-way="selectedVehicle"
                                  k-data-source.bind="instockVehicleSource"
                                  k-on-select.delegate="onSelectPlateNumber($event.detail)"
+                                 k-on-change.delegate="validateWorkOrder('plateNumber')"
+                                 k-on-close.delegate="validateWorkOrder('plateNumber')"
                                  style="width: 60%;">
                     </ak-combobox>
+                    <input class="form-control" type="hidden" value.bind="workOrder.plateNumber & validate">
                 </div>
             </div>
         </div>
@@ -60,8 +66,11 @@
                                  k-data-value-field="driverName"
                                  k-value.two-way="workOrder.driverName"
                                  k-data-source.bind="instockVehicleSource"
+                                 k-on-change.delegate="validateWorkOrder('driverName')"
+                                 k-on-close.delegate="validateWorkOrder('driverName')"
                                  style="width: 60%;">
                     </ak-combobox>
+                    <input class="form-control" type="hidden" value.bind="workOrder.driverName & validate">
                 </div>
             </div>
         </div>
@@ -75,8 +84,12 @@
                                  k-data-value-field="driverIdentityNumber"
                                  k-value.two-way="workOrder.driverIdentityNumber"
                                  k-data-source.bind="instockVehicleSource"
+                                 k-on-change.delegate="validateWorkOrder('driverIdentityNumber')"
+                                 k-on-close.delegate="validateWorkOrder('driverIdentityNumber')"
+                                 style="width: 60%;">
                                  style="width: 60%;">
                     </ak-combobox>
+                    <input class="form-control" type="hidden" value.bind="workOrder.driverIdentityNumber & validate">
                 </div>
             </div>
         </div>
@@ -90,8 +103,11 @@
                                  k-data-value-field="phoneNumber"
                                  k-value.two-way="workOrder.phoneNumber"
                                  k-data-source.bind="instockVehicleSource"
+                                 k-on-change.delegate="validateWorkOrder('phoneNumber')"
+                                 k-on-close.delegate="validateWorkOrder('phoneNumber')"
                                  style="width: 60%;">
                     </ak-combobox>
+                    <input class="form-control" type="hidden" value.bind="workOrder.phoneNumber & validate">
                 </div>
             </div>
         </div>
