@@ -32,4 +32,8 @@ export class ConstantValues {
   static get ContractTypes() {
     return [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
   }
+
+  static get WorkInfoCategory() {
+    return [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "移库", value: 4 }];
+  }
 }

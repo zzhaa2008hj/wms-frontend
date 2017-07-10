@@ -3,6 +3,7 @@ import { DialogController } from "ui";
 import { WorkInfo } from "@app/base/models/work-info";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { ConstantValues } from '@app/common/models/constant-values';
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -10,7 +11,7 @@ import { formValidationRenderer } from "@app/validation/support";
 export class NewWorkInfo {
   workInfo: WorkInfo;
   pWorkInfo: WorkInfo;
-  category = [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "移库", value: 4 }];
+  category = ConstantValues.WorkInfoCategory;
   validationController: ValidationController;
 
   constructor(private dialogController: DialogController,
