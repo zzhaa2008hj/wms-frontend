@@ -130,15 +130,12 @@ export class NewContract {
       let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       if (unit) {
-        res.unit = unit.dictDataCode;
         res.unitStr = unit.dictDataName;
       }
       if (warehouseType) {
-        res.warehouseType = warehouseType.dictDataCode;
         res.warehouseTypeStr = warehouseType.dictDataName;
       }
       if (warehouseCategory) {
-        res.warehouseCategory = warehouseCategory.dictDataCode;
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
       }
       return res;
@@ -268,7 +265,13 @@ export class NewContract {
               stepNum: { editable: false },
               stepStart: { editable: false },
               stepEnd: { editable: false },
-              stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, title: '阶梯价' },
+              stepPrice: { 
+                editable: true, 
+                notify: true, 
+                type: 'number', 
+                validation: { required: true, min: 0, max: 1000000000000000 }, 
+                title: '阶梯价' 
+              },
               stepUnit: { editable: false },
               remark: { editable: false }
             }

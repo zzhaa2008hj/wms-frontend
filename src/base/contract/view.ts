@@ -63,15 +63,12 @@ export class ViewContract {
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
         if (unit) {
-          res.unit = unit.dictDataCode;
           res.unitStr = unit.dictDataName;
         }
         if (warehouseType) {
-          res.warehouseType = warehouseType.dictDataCode;
           res.warehouseTypeStr = warehouseType.dictDataName;
         }
         if (warehouseCategory) {
-          res.warehouseCategory = warehouseCategory.dictDataCode;
           res.warehouseCategoryStr = warehouseCategory.dictDataName;
         }
         return res;

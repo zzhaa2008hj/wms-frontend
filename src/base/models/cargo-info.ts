@@ -85,6 +85,7 @@ export interface CargoItem {
     orderNumber: number;
 
     unit: string;
+    unitStr: string;
 
     freeDays: number;
 
@@ -98,6 +99,8 @@ export interface CargoItem {
  */
 export interface CargoRate {
     id: string;
+
+    chargeType: number;
 
     batchNumber: string;
 
@@ -120,6 +123,7 @@ export interface CargoRate {
     pricingMode: number;
 
     unit: string;
+    unitStr: string;
 
     price: number;
 
@@ -129,11 +133,12 @@ export interface CargoRate {
      * 内贸、保税、承包内贸、承包保税
      */
     warehouseType: string;
-
+    warehouseTypeStr: string;
     /**
      * 场、库
      */
     warehouseCategory: string;
+    warehouseCategoryStr: string;
 
     cargoRateSteps: CargoRateStep[];
 }

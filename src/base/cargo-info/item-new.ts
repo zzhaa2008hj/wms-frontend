@@ -6,12 +6,16 @@ import { CargoItem, CargoRate, CargoRateStep } from '@app/base/models/cargo-info
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 
 @autoinject
 export class NewCargoItem {
   cargoItem = {} as CargoItem;
 
-  unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
+  unitDatasource = [] as DictionaryData[];
+  warehouseType = [] as DictionaryData[];
+  warehouseCategory = [] as DictionaryData[];
   cargoCategoryDataSource: CargoCategory[];
   cargoCategory = {} as CargoCategory;
 
@@ -24,9 +28,11 @@ export class NewCargoItem {
   cargoRates: CargoRate[];
 
   constructor(private cargoInfoService: CargoInfoService,
-    private dialogController: DialogController,
-    private dialogService: DialogService,
-    validationControllerFactory: ValidationControllerFactory, container: Container) {
+              private dialogController: DialogController,
+              private dialogService: DialogService,
+              private dictionaryDataService: DictionaryDataService,
+              validationControllerFactory: ValidationControllerFactory, 
+              container: Container) {
 
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -66,20 +72,23 @@ export class NewCargoItem {
   }
 
 
-  async activate({ contractId, cargoItemInfo }) {
+  async activate({ contractId, warehouseType, cargoItemInfo }) {
+    this.unitDatasource = await this.dictionaryDataService.getDictionaryDatas("unit");
+    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     //免堆期的默认值
     this.cargoItem.freeDays = 0;
     //货物种类
     this.cargoCategoryDataSource = await this.cargoInfoService.getCargoCategories();
     //该合同下所有货物的费率
-    this.contractCargoRates = await this.cargoInfoService.getContractCargoRates(contractId);
+    this.contractCargoRates = await this.cargoInfoService.getContractCargoRates(contractId, warehouseType);
     //该合同下所有货物的阶梯费率
     this.contractCargoRateSteps = await this.cargoInfoService.getContractCargoRateSteps(contractId);
     //编辑时带过来的信息
     if (cargoItemInfo) {
       //要把费率list中的已修改的数据修改掉
       this.cargoItem = cargoItemInfo;
-      this.cargoRates = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
+      this.convertCargoRates();
       this.cargoItem.cargoRates.forEach(r => {
         let id = r.id;
         this.cargoRates.every((res, index, arr) => {
@@ -109,9 +118,27 @@ export class NewCargoItem {
 
   }
 
-  cargoCategoryChanged() {
-    console.log(this.contractCargoRates);
+  convertCargoRates() {
     this.cargoRates = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
+    this.cargoRates.map(res => {
+      let unit = this.unitDatasource.find(d => res.unit == d.dictDataCode);
+      let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      if (unit) {
+        res.unitStr = unit.dictDataName;
+      }
+      if (warehouseType) {
+        res.warehouseTypeStr = warehouseType.dictDataName;
+      }
+      if (warehouseCategory) {
+        res.warehouseCategoryStr = warehouseCategory.dictDataName;
+      }
+      return res;
+    });
+  }
+
+  cargoCategoryChanged() {
+    this.convertCargoRates();
     this.cargoRateDataSource.read();
   }
 

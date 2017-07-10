@@ -46,9 +46,9 @@ export class CargoInfoService {
    * @param contractId
    * @param wareHouseType
    */
-  async getContractCargoRates(contractId: string): Promise<CargoRate[]> {
+  async getContractCargoRates(contractId: string, warehouseType: string): Promise<CargoRate[]> {
     let res = await this.http.
-      get(`base/contract/contractRateList?contractId=${contractId}`);
+      get(`base/contract/contractRateList?contractId=${contractId}&warehouseType=${warehouseType}`);
     return res.content;
   }
 
