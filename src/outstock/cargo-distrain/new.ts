@@ -1,11 +1,11 @@
 import { Router } from "aurelia-router";
 import { inject } from 'aurelia-dependency-injection';
-import { CargoDistrainService } from "@app/instock/services/cargo-distrain";
+import { CargoDistrainService } from "@app/outstock/services/cargo-distrain";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from '@app/base/models/cargo-info';
-import { CargoItemStorageInfoVo, CargoDistrainVo} from '@app/instock/models/cargo-distrain';
+import { CargoItemStorageInfoVo, CargoDistrainVo} from '@app/outstock/models/cargo-distrain';
 import { DialogService } from "ui";
-import { NewDistrain } from "@app/instock/cargo-distrain/new-distrain";
+import { NewDistrain } from "@app/outstock/cargo-distrain/new-distrain";
 
 export class NewCargoDistrain {
   cargoInfoWidget: any; // 组件

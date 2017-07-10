@@ -1,9 +1,9 @@
 import { inject } from "aurelia-dependency-injection";
-import { CargoDistrainService } from "@app/instock/services/cargo-distrain";
+import { CargoDistrainService } from "@app/outstock/services/cargo-distrain";
 import { DataSourceFactory } from "@app/utils";
 import { DialogService } from "ui";
-import { CargoDistrainVo} from '@app/instock/models/cargo-distrain';
-import { EditDistrain } from '@app/instock/cargo-distrain/edit';
+import { CargoDistrainVo} from '@app/outstock/models/cargo-distrain';
+import { EditDistrain } from '@app/outstock/cargo-distrain/edit';
 
 export class InstockCargoDistrainList {
   batchNumber: string;
