@@ -4,6 +4,7 @@ import { WorkInfo } from "@app/base/models/work-info";
 import { WorkInfoService } from "@app/base/services/work-info";
 import { treeHelper, TreeHelper } from "@app/utils";
 import { observable } from 'aurelia-framework';
+import { ConstantValues } from '@app/common/models/constant-values';
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -15,6 +16,8 @@ export class WorkInfoTree {
   @observable
   tree: kendo.ui.TreeView;
 
+  workInfoCategory = ConstantValues.WorkInfoCategory;
+  
   dataSourceWorkInfo = new kendo.data.HierarchicalDataSource({
     data: [],
     schema: {
@@ -38,6 +41,13 @@ export class WorkInfoTree {
       this.selectedWorkInfo = await this.workInfoService.getWorkInfo(workId);
     }
     let wData = await this.workInfoService.listWorkInfo();
+    wData.map(res => {
+      let category = this.workInfoCategory.find(d => res.category == d.value.toString());
+      if (category) {
+        res.categoryStr = category.text;
+      }
+      return res;
+    });
     this.helper = treeHelper(wData, { childrenKey: 'sub' });
     let wRootItems = this.helper.toTree();
     this.dataSourceWorkInfo.data(wRootItems);
@@ -67,7 +77,7 @@ export class WorkInfoTree {
       await this.messageDialogService.alert({ title: "提示", message: "请选择子类作业内容", icon: "warning" });
       return;
     }
-    let name = this.selectedWorkInfo.name;
+    let name = this.selectedWorkInfo.name + "(" + this.selectedWorkInfo.categoryStr + ")";
     let id = this.selectedWorkInfo.id;
     this.workInfo.id = id;        
     let data = this.selectedWorkInfo;
