@@ -11,6 +11,7 @@ import { formValidationRenderer } from '@app/validation/support';
 import { Contract } from '@app/base/models/contract';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class NewContract {
@@ -22,7 +23,7 @@ export class NewContract {
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
 
-  contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
+  contractTypes = ConstantValues.ContractTypes;
   warehouses: WorkInfo[];
 
   customers: Organization[] = [];

@@ -10,6 +10,7 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { ConstantValues } from '@app/common/models/constant-values';
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -17,13 +18,11 @@ import { formValidationRenderer } from "@app/validation/support";
 export class NewRate {
   rate = {} as Rate;
   rateStep = [];
-  //数据字典数据方法完成后从数据字典中获取
-  chargeCategory = [{ text: "仓储费", value: 1 },
-  { text: "装卸费", value: 2 },
-  { text: "其他费用", value: 3 }];
-  customerCategory = [{ text: "仓储客户", value: 1 }, { text: "装卸单位", value: 2 }];
-  chargeType = [{ text: "收费业务", value: 1 }, { text: "付费业务", value: 2 }];
-  pricingMode = [{ text: "单一计费", value: 1 }, { text: "阶梯计费", value: 2 }];
+  
+  chargeCategory = ConstantValues.ChargeCategory;
+  customerCategory = ConstantValues.CustomerCategory;
+  chargeType = ConstantValues.ChargeType;
+  pricingMode = ConstantValues.PricingMode;
 
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];

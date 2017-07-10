@@ -6,11 +6,12 @@ import { Rate, RateStep } from "@app/base/models/rate";
 import { ContractVo } from '@app/base/models/contractVo';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class ViewContract {
   contractVo: ContractVo;
-  contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
+  contractTypes = ConstantValues.ContractTypes;
   warehouses: WorkInfo[];
   datasource: kendo.data.DataSource;
   /**

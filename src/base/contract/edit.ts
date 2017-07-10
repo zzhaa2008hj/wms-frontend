@@ -10,6 +10,7 @@ import { formValidationRenderer } from "@app/validation/support";
 import { Contract } from '@app/base/models/contract';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 export class EditContract {
 
@@ -20,7 +21,7 @@ export class EditContract {
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
 
-  contractTypes = [{ "name": "客户仓储", "type": 1 }, { "name": "装卸单位", "type": 2 }, { "name": "库区租赁", "type": 3 }];
+  contractTypes = ConstantValues.ContractTypes;
   warehouses: WorkInfo[];
   customerInfo: kendo.ui.DropDownList;
   datasource: kendo.data.DataSource;
