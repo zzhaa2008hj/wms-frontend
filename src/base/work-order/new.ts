@@ -1,4 +1,4 @@
-import { inject } from "aurelia-dependency-injection";
+import { inject, newInstance } from "aurelia-dependency-injection";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
@@ -98,7 +98,7 @@ export class NewWorkOrder {
               @inject private workOrderService: WorkOrderService,
               @inject private messageDialogService: MessageDialogService,
               @inject private router: Router,
-              @newInstance() private validationController: ValidationController ) {
+              @newInstance() private validationController: ValidationController) {
     this.datasource = new kendo.data.DataSource({
         transport: {
           read: (options) => {
@@ -212,13 +212,13 @@ export class NewWorkOrder {
     this.workOrder.phoneNumber = vehicle.phoneNumber;
   }
 
-  validateWorkOrder(propertyName: string){
-    this.validationController.validate({object: this.workOrder,propertyName});
+  validateWorkOrder(propertyName: string) {
+    this.validationController.validate({ object: this.workOrder, propertyName });
   }
 
 
 }
-  const workOrderRules = ValidationRules
+const workOrderRules = ValidationRules
   .ensure((workOrder: WorkOrder) => workOrder.businessId)
   .displayName("入库货物")
   .required().withMessage(`\${$displayName}不能为空`)
