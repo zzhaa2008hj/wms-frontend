@@ -14,6 +14,8 @@ import { Organization } from "@app/base/models/organization";
 import { WorkOrderService } from "@app/instock/services/work-order";
 import { Router } from "aurelia-router";
 import { InstockVehicle } from "@app/instock/models/instock-vehicle";
+import { ValidationController, ValidationRules } from 'aurelia-validation';
+import { formValidationRenderer } from "@app/validation/support";
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoFlowService } from '@app/instock/services/cargo-flow';
 
@@ -95,7 +97,8 @@ export class NewWorkOrder {
               @inject private organizationService: OrganizationService,
               @inject private workOrderService: WorkOrderService,
               @inject private messageDialogService: MessageDialogService,
-              @inject private router: Router) {
+              @inject private router: Router,
+              @newInstance() private validationController: ValidationController ) {
     this.datasource = new kendo.data.DataSource({
         transport: {
           read: (options) => {
@@ -124,13 +127,16 @@ export class NewWorkOrder {
                 editable: false, nullable: true
               },
               workId: {
-                type: 'string'
+                type: 'string',
+                validation: { required: true }
               },
               quantity: {
-                type: 'number'
+                type: 'number',
+                validation: { min: 0, max: 1000000000000000 }
               },
               number: {
-                type: 'number'
+                type: 'number',
+                validation: { min: 0, max: 1000000000000000 }
               },
               containerType: {
                 type: 'string'
@@ -139,25 +145,28 @@ export class NewWorkOrder {
                 type: 'string'
               },
               customerId: {
-                type: 'string'
+                type: 'string',
+                validation: { required: true }
               },
               remark: {
-                type: 'string'
+                type: 'string',
+                validation: { required: true }
               }
             }
           }
         }
       }
-    )
-    ;
+    );
+    this.validationController.addRenderer(formValidationRenderer);
   }
 
   async activate() {
     if (this.routerParams.type == 1) {
       this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.routerParams.businessId);
-      this.workOrder.workOrderCategory = this.routerParams.type;      
-      this.workOrder.batchNumber = this.cargoFlow.batchNumber;      
+      this.workOrder.workOrderCategory = this.routerParams.type;
+      this.workOrder.batchNumber = this.cargoFlow.batchNumber;
     }
+    this.validationController.addObject(this.workOrder, workOrderRules);
   }
 
   changeCargo() {
@@ -170,6 +179,9 @@ export class NewWorkOrder {
   }
 
   async save() {
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     try {
       for (let i = 0; i < this.workOrderItems.length; i++) {
         this.workInfo = await this.workInfoService.getWorkInfo(this.workOrderItems[i].workId);
@@ -199,4 +211,39 @@ export class NewWorkOrder {
     this.workOrder.driverIdentityNumber = vehicle.driverIdentityNumber;
     this.workOrder.phoneNumber = vehicle.phoneNumber;
   }
+
+  validateWorkOrder(propertyName: string){
+    this.validationController.validate({object: this.workOrder,propertyName});
+  }
+
+
 }
+  const workOrderRules = ValidationRules
+  .ensure((workOrder: WorkOrder) => workOrder.businessId)
+  .displayName("入库货物")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.workOrderNumber)
+  .displayName("作业单号")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.workDate)
+  .displayName("作业时间")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.plateNumber)
+  .displayName("车牌号")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.driverName)
+  .displayName("司机名称")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.driverIdentityNumber)
+  .displayName("身份证号")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.phoneNumber)
+  .displayName("电话号码")
+  .required().withMessage(`\${$displayName}不能为空`)
+  .rules;
