@@ -87,7 +87,7 @@ export class NewCargoInfo {
     });
     this.customers = customersWithContract;
 
-    this.cargoInfo.warehouseType = 1;
+    //this.cargoInfo.warehouseType = 1;
     this.cargoInfo.cargoForm = 1;
     this.cargoInfo.cargoType = 1;
 
@@ -98,6 +98,10 @@ export class NewCargoInfo {
   }
 
   async addCargoItem() {
+    if (!this.cargoInfo.warehouseType) {
+      this.messageDialogService.alert({ title: '请选择库区性质', message: '请选择库区性质' });
+      return;
+    }
     if (!this.contractId) {
       this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
       return;
