@@ -7,14 +7,12 @@ import { RouterParams } from '@app/common/models/router-params';
 export class WorkOrders {
   dataSource: kendo.data.DataSource;
   test: kendo.ui.Grid;
-  type: string;
 
   constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderService: WorkOrderService,
               @inject private workOrderItemService: WorkOderItemService,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
-    this.type = this.routerParams.type;
   }
 
   async activate() {
