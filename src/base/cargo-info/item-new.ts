@@ -66,7 +66,7 @@ export class NewCargoItem {
   }
 
 
-  async activate({ contractId, warehouseType, cargoItemInfo }) {
+  async activate({ contractId, cargoItemInfo }) {
     //免堆期的默认值
     this.cargoItem.freeDays = 0;
     //货物种类
@@ -76,7 +76,7 @@ export class NewCargoItem {
     //该合同下所有货物的阶梯费率
     this.contractCargoRateSteps = await this.cargoInfoService.getContractCargoRateSteps(contractId);
     //编辑时带过来的信息
-    if (!!cargoItemInfo) {
+    if (cargoItemInfo) {
       //要把费率list中的已修改的数据修改掉
       this.cargoItem = cargoItemInfo;
       this.cargoRates = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
