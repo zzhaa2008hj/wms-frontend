@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
-import { CargoDistrain, CargoDistrainVo } from "@app/instock/models/cargo-distrain";
+import { CargoDistrain, CargoDistrainVo } from "@app/outstock/models/cargo-distrain";
 
 @autoinject
 export class CargoDistrainService {

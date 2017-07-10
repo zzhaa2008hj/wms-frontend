@@ -1,12 +1,12 @@
 import { inject, newInstance } from 'aurelia-dependency-injection';
 import { DialogController } from "ui";
-import { CargoDistrainVo } from '@app/instock/models/cargo-distrain';
+import { CargoDistrainVo } from '@app/outstock/models/cargo-distrain';
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 
-export class EditDistrain {
+export class NewDistrain {
   cargoDistrain = {} as CargoDistrainVo;
   units: DictionaryData[] = [];
 
@@ -16,8 +16,7 @@ export class EditDistrain {
     this.validationController.addRenderer(formValidationRenderer);
   }
 
-  async activate(distrain: CargoDistrainVo) {
-    this.cargoDistrain = distrain;
+  async activate() {
     this.validationController.addObject(this.cargoDistrain, validationRules);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
   }

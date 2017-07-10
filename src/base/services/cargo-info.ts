@@ -5,7 +5,7 @@ import { CargoInfo, CargoItem, CargoRate, CargoRateStep } from '@app/base/models
 import { Contract } from '@app/base/models/contract';
 import { Organization } from '@app/base/models/organization';
 import { ChangeHistory } from '@app/common/models/change-history';
-import { CargoItemStorageInfoVo } from '@app/instock/models/cargo-distrain';
+import { CargoItemStorageInfoVo } from '@app/outstock/models/cargo-distrain';
 /**
  * 机构查询条件
  */
