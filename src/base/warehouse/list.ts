@@ -4,14 +4,18 @@ import { NewWarehouse } from "./new";
 import { EditWarehouse } from "./edit";
 import { Warehouse } from "@app/base/models/warehouse";
 import { WarehouseService } from "@app/base/services/warehouse";
+import { DictionaryData } from "@app/base/models/dictionary";
+import { DictionaryDataService } from "@app/base/services/dictionary";
 
 @autoinject
 export class WarehouseList {
-
+  typeDictionary = [] as DictionaryData[];
+  categoryDictionary = [] as DictionaryData[];
   selectedItem: Warehouse;
   private dataSource: kendo.data.TreeListDataSource;
 
   constructor(private warehouseService: WarehouseService,
+              private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService) {
     this.dataSource = new kendo.data.TreeListDataSource({
@@ -30,7 +34,10 @@ export class WarehouseList {
       }
     });
   }
-
+  async activate() {
+    this.typeDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.categoryDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
+  }
   async add(item) {
     this.selectedItem = item;
     let result = await this.dialogService.open({ viewModel: NewWarehouse, model: this.selectedItem, lock: true })

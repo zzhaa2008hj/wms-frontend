@@ -42,41 +42,50 @@
                         <input type="text" class="form-control" value.bind="cargoFlow.remark & validate">
                     </div>
                 </div>
-                <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">
-                    <ak-col k-field="cargoName" k-title="货物名称">
-                        <ak-template>
-                            <input type="text" style="border: none;background-color:transparent;" value.bind="cargoName"
-                                   readonly/>
-                        </ak-template>
-                    </ak-col>
-                    <ak-col k-field="instockFlowNumber" k-title="入库流水单号 " k-width.bind="180">
-                        <ak-template>
-                            <input type="text" style="border: none;background-color:transparent;" value.bind="instockFlowNumber" readonly/>
-                        </ak-template>
-                    </ak-col>
-                    <ak-col k-field="cargoCategoryName" k-title="货物类别">
-                        <ak-template>
-                            <input type="text" style="border: none;background-color:transparent;" value.bind="cargoCategoryName" readonly/>
-                        </ak-template>
-                    </ak-col>
+                <div class="form-group">
+                    <ak-drop-down-list k-widget.two-way="dropDownListCargoItem"
+                                       k-option-label="请选择--新增货物"
+                                       k-data-text-field="cargoName"
+                                       k-data-source.bind="dataSourceDeletedCargoItem"
+                                       k-on-select.delegate="onSelect($event.detail)"
+                                       if.bind="deletedCargoItems.length != 0">
+                    </ak-drop-down-list>
+                    <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">
+                        <ak-col k-field="cargoName" k-title="货物名称">
+                            <ak-template>
+                                <input type="text" style="border: none;background-color:transparent;" value.bind="cargoName"
+                                       readonly/>
+                            </ak-template>
+                        </ak-col>
+                        <ak-col k-field="instockFlowNumber" k-title="入库流水单号 " k-width.bind="180">
+                            <ak-template>
+                                <input type="text" style="border: none;background-color:transparent;" value.bind="instockFlowNumber" readonly/>
+                            </ak-template>
+                        </ak-col>
+                        <ak-col k-field="cargoCategoryName" k-title="货物类别">
+                            <ak-template>
+                                <input type="text" style="border: none;background-color:transparent;" value.bind="cargoCategoryName" readonly/>
+                            </ak-template>
+                        </ak-col>
 
-                    <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-                    <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
-                    <ak-col k-field="unit" k-title="计量单位">
-                        <ak-template>
-                            <input type="text" style="border: none;background-color:transparent;" value.bind="unit"
-                                   readonly/>
-                        </ak-template>
-                    </ak-col>
-                    <!--<ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>-->
-                    <ak-col k-field="remark" k-title="备注"></ak-col>
-                    <ak-col k-title="操作">
-                        <ak-template>
-                            <button class="btn btn-success btn-small" click.delegate="addVehicle($this)">添加车辆
-                            </button>
-                        </ak-template>
-                    </ak-col>
-                </ak-grid>
+                        <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                        <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                        <ak-col k-field="unit" k-title="计量单位">
+                            <ak-template>
+                                <input type="text" style="border: none;background-color:transparent;" value.bind="unit"
+                                       readonly/>
+                            </ak-template>
+                        </ak-col>
+                        <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+                        <ak-col k-field="remark" k-title="备注"></ak-col>
+                        <ak-col k-title="操作">
+                            <ak-template>
+                                <button class="btn btn-success btn-small" click.delegate="addVehicle($this)">添加车辆</button>
+                                <button class="btn btn-danger btn-small" click.delegate="deleteCargoItem($this)">删除</button>
+                            </ak-template>
+                        </ak-col>
+                    </ak-grid>
+                </div>
                 <ak-grid k-data-source.bind="dataSourceVehicle" k-editable.bind="true">
                     <ak-col k-title="货物名称">
                         <ak-template>

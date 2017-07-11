@@ -14,16 +14,20 @@
             <div class="form-group">
                 <label class="form-label">库区性质*</label>
                 <span class="help"></span>
-                <div class="controls">
-                    <input type="text" class="form-control" value.bind="warehouse.type" readonly>
-                </div>
+                <ak-drop-down-list k-value.two-way="warehouse.type & validate"
+                                   k-data-text-field="dictDataName"
+                                   k-data-value-field="dictDataCode"
+                                   k-data-source.bind="type" readonly disabled>
+                </ak-drop-down-list>
             </div>
             <div class="form-group">
                 <label class="form-label">库区类别*</label>
                 <span class="help"></span>
-                <div class="controls">
-                    <input type="text" class="form-control" value.bind="warehouse.category" readonly>
-                </div>
+                <ak-drop-down-list k-value.two-way="warehouse.category & validate"
+                                   k-data-text-field="dictDataName"
+                                   k-data-value-field="dictDataCode"
+                                   k-data-source.bind="category" readonly disabled>
+                </ak-drop-down-list>
             </div>
             <div class="form-group">
                 <label class="form-label">备注</label>

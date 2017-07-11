@@ -15,6 +15,7 @@ import { formValidationRenderer } from "@app/validation/support";
 @autoinject
 export class EditCargoFlow {
   cargoItems = [] as InstockCargoItem[];
+  deletedCargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   baseCargoInfo = {
@@ -29,12 +30,16 @@ export class EditCargoFlow {
   dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
+  dataSourceDeletedCargoItem = new kendo.data.HierarchicalDataSource({
+    data: []
+  });
   vehicles = [];
   dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
 
   validationController: ValidationController;
+  private dropDownListCargoItem: any;
 
   constructor(private router: Router,
               private cargoFlowService: CargoFlowService,
@@ -51,6 +56,7 @@ export class EditCargoFlow {
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
+    let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
     if (this.cargoItems) {
       for (let ci of this.cargoItems) {
         let vehicles = await this.vehicleService.listInstockVehicles(ci.id);
@@ -58,10 +64,20 @@ export class EditCargoFlow {
           Object.assign(v, { cargoName: ci.cargoName });
           this.vehicles.push(v);
         });
+        baseCargoItems.forEach(bci => {
+          if (bci.id == ci.cargoItemId) {
+            let index = baseCargoItems.indexOf(bci);
+            baseCargoItems.splice(index, 1);
+            return;
+          }
+        });
       }
+      this.deletedCargoItems = baseCargoItems;
     }
+
     this.dataSourceCargoItem.data(this.cargoItems);
     this.dataSourceVehicle.data(this.vehicles);
+    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
   }
 
   async addVehicle(cargoItem) {
@@ -75,6 +91,35 @@ export class EditCargoFlow {
       this.vehicles.push(result.output);
       this.dataSourceVehicle.data(this.vehicles);
     }
+  }
+
+  deleteCargoItem(e) {
+    this.cargoItems.forEach(ci => {
+      if (e.id == ci.id) {
+        let index = this.cargoItems.indexOf(ci);
+        let dci = this.cargoItems.splice(index, 1);
+        this.deletedCargoItems.push(dci[0]);
+        //同时删除车辆信息
+        this.vehicles.forEach(v => {
+          if (v.instockGoodsId == ci.id) {
+            this.deleteVehicle(v);
+          }
+        });
+      }
+    });
+    this.dataSourceCargoItem.data(this.cargoItems);
+    this.dataSourceVehicle.data(this.vehicles);
+    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
+  }
+
+  onSelect(e) {
+    let dataItem = this.dropDownListCargoItem.dataItem(e.item);
+    console.log(dataItem);
+    this.cargoItems.splice(0, 0, dataItem);
+    let index = this.dataSourceCargoItem.indexOf(e);
+    this.deletedCargoItems.splice(index, 1);
+    this.dataSourceCargoItem.data(this.cargoItems);
+    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
   }
 
   deleteVehicle(e) {

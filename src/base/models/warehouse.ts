@@ -4,9 +4,9 @@
 export interface Warehouse {
   id?: string;
   parentId?: string;
-  category: number;
+  category: string;
   name: string;
-  type: number;
+  type: string;
   remark: string;
   orgId: string;
   status: boolean;
