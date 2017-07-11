@@ -23,6 +23,7 @@ export class NewVehicle {
     this.vehicle.remark = null;
     if (cargoItem.id) {
       this.vehicle.instockGoodsId = cargoItem.id;
+      this.vehicle.id = null;
     }
   }
 
