@@ -46,15 +46,7 @@ const validationRules = ValidationRules
   .ensure((cargoCategory: CargoCategory) => cargoCategory.categoryName)
   .displayName('种类/品牌名称')
   .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((cargoCategory: CargoCategory) => cargoCategory.specs)
-  .displayName('规格')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((cargoCategory: CargoCategory) => cargoCategory.sort)
-  .displayName('排序')
-  .satisfies(x => /^[0-9]*$/.test(x)).withMessage(`\${$displayName} 请输入阿拉伯数字`)
-
+  
   .ensure((cargoCategory: CargoCategory) => cargoCategory.remark)
   .displayName('描述')
   .maxLength(500).withMessage(`\${$displayName} 过长`)

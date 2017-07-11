@@ -15,24 +15,15 @@
     <ak-col k-field="signDate" k-title="签订日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-field="startTime" k-title="合同开始时间" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-field="endTime" k-title="合同结束时间" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
-    <ak-col k-title="业务状态" k-width.bind="150">
-      <ak-template>
-        <i if.bind="status == -1">撤回中</i>
-        <i if.bind="status == 0">审批退回</i>
-        <i if.bind="status == 1">待审核</i>
-        <i if.bind="status == 2">未通过审核</i>
-        <i if.bind="status == 3">审核通过</i>
-        <i if.bind="status == 4">生效中</i>
-      </ak-template>
-    </ak-col>
-    <ak-col k-title="操作" k-width.bind="250" k-locked.bind="true" k-lockable.bind="false">
+    <ak-col k-title="业务状态" k-field="statusTitle" k-width.bind="150"></ak-col>
+    <ak-col k-title="操作" k-locked.bind="true" k-lockable.bind="false" k-width.bind="300">
       <ak-template>
         <a class="btn btn-small" if.bind="status == 2 || status == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
         <a class="btn btn-small" if.bind="status == 3 || status == 4" route-href="route: view; params.bind: { id: id }">查看</a>
         <a class="btn btn-small" if.bind="status == 1" route-href="route: audit; params.bind: { id: id }">审核</a>
         <button class="btn btn-small" if.bind="status == 3" click.delegate="rollBack($this)">撤回</button>
         <a class="btn btn-success btn-small" if.bind="status == 2 || status == 0" click.delegate="delete(id)">删除</a>
-        <button class="btn btn-small" click.delegate="verifyHistory(id)">流程</button>
+        <button class="btn btn-small" click.delegate="verifyHistory(id)">审核记录</button>
         <a class="btn btn-small" route-href="route: changeHistory; params.bind: { id: id }">修改记录</a>
       </ak-template>
     </ak-col>

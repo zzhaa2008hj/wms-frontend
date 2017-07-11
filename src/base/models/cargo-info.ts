@@ -2,157 +2,162 @@
  *  客户货物信息
  */
 export interface CargoInfo {
-    cargoFlowSize: number;
+  cargoFlowSize: number;
 
-    id: string;
+  id: string;
 
-    batchNumber: string;
+  batchNumber: string;
 
-    billLadingNumber: string;
+  billLadingNumber: string;
 
-    contractId: string;
+  contractId: string;
 
-    contractNumber: string;
+  contractNumber: string;
 
-    agentId: string;
+  agentId: string;
 
-    agentName: string;
+  agentName: string;
 
-    customerId: string;
+  customerId: string;
 
-    customerName: string;
+  customerName: string;
 
-    /**
-     * 公共/承包
-     */
-    warehouseType: number;
+  /**
+   * 公共/承包
+   */
+  warehouseType: string;
+  warehouseTypeStr: string;
+  /**˙
+   * 内贸/保税
+   */
+  cargoType: number;
 
-    /**˙
-     * 内贸/保税
-     */
-    cargoType: number;
+  /**
+   * 散货/集装箱
+   */
+  cargoForm: number;
 
-    /**
-     * 散货/集装箱
-     */
-    cargoForm: number;
+  unit: string;
 
-    unit: string;
+  orderQuantity: number;
 
-    orderQuantity: number;
+  orderNumber: number;
 
-    orderNumber: number;
+  instockQuantity: number;
 
-    instockQuantity: number;
+  instockNumber: number;
 
-    instockNumber: number;
+  outstockQuantity: number;
 
-    outstockQuantity: number;
+  outstockNumber: number;
 
-    outstockNumber: number;
+  instockStatus: number;
 
-    instockStatus: number;
+  outstockStatus: number;
 
-    outstockStatus: number;
+  finished: number;
 
-    finished: number;
+  remark: string;
 
-    remark: string;
-    
-    cargoItems: CargoItem[];
+  cargoItems: CargoItem[];
 }
 
 /**
  * 货物明细
  */
 export interface CargoItem {
-    id: string;
+  id: string;
 
-    cargoInfoId: string;
+  cargoInfoId: string;
 
-    batchNumber: string;
+  batchNumber: string;
 
-    cargoName: string;
+  cargoName: string;
 
-    cargoCategoryId: string;
+  cargoCategoryId: string;
 
-    cargoCategoryName: string;
+  cargoCategoryName: string;
 
-    cargoSubCatergoryName: string;
+  cargoSubCatergoryName: string;
 
-    orderQuantity: number;
+  orderQuantity: number;
 
-    orderNumber: number;
+  orderNumber: number;
 
-    unit: string;
+  unit: string;
+  unitStr: string;
 
-    freeDays: number;
+  freeDays: number;
 
-    cargoRates: CargoRate[];
+  cargoRates: CargoRate[];
 
-    remark: string;
+  remark: string;
 }
 
 /**
  * 货物费率
  */
 export interface CargoRate {
-    id: string;
+  id: string;
 
-    batchNumber: string;
+  chargeType: number;
 
-    cargoItemId: string;
+  batchNumber: string;
 
-    rateType: number;
+  cargoItemId: string;
 
-    rateCategory: number;
+  rateType: number;
 
-    workId: string;
+  rateCategory: number;
 
-    workName: string;
+  workId: string;
 
-    cargoCategoryId: string;
+  workName: string;
 
-    cargoCategoryName: string;
+  cargoCategoryId: string;
 
-    cargoSubCategoryName: string;
+  cargoCategoryName: string;
 
-    pricingMode: number;
+  cargoSubCategoryName: string;
 
-    unit: string;
+  pricingMode: number;
 
-    price: number;
+  unit: string;
+  unitStr: string;
 
-    actualPrice: number;
+  price: number;
 
-    /**
-     * 内贸、保税、承包内贸、承包保税
-     */
-    warehouseType: string;
+  actualPrice: number;
 
-    /**
-     * 场、库
-     */
-    warehouseCategory: string;
+  /**
+   * 内贸、保税、承包内贸、承包保税
+   */
+  warehouseType: string;
+  warehouseTypeStr: string;
+  /**
+   * 场、库
+   */
+  warehouseCategory: string;
+  warehouseCategoryStr: string;
 
-    cargoRateSteps: CargoRateStep[];
+  cargoRateSteps: CargoRateStep[];
 }
 
 /**
  * 货物阶梯费率
  */
 export interface CargoRateStep {
-    id: string;
+  id: string;
 
-    cargoRateId: String;
+  cargoRateId: String;
 
-    stepNum: number;
+  stepNum: number;
 
-    stepStart: number;
+  stepStart: number;
 
-    stepEnd: number;
+  stepEnd: number;
 
-    stepPrice: number;
+  stepPrice: number;
 
-    stepUnit: string;
+  stepUnit: string;
 }

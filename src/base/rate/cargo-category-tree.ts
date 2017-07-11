@@ -9,7 +9,7 @@ import { observable } from 'aurelia-framework';
  */
 @autoinject
 export class CargoCategoryTree {
-  cargoCategory: CargoCategory;
+  cargoCategory = {} as CargoCategory;
   selectedCargoCategory: any;
 
   @observable
@@ -67,7 +67,16 @@ export class CargoCategoryTree {
       await this.messageDialogService.alert({ title: "提示", message: "请选择子类货物类别", icon: "warning" });
       return;
     }
-    this.cargoCategory = this.selectedCargoCategory;
+    let categoryName = this.selectedCargoCategory.categoryName;
+    let id = this.selectedCargoCategory.id;
+    this.cargoCategory.id = id;        
+    let data = this.selectedCargoCategory;
+    while (data.parentId) {
+      id = data.parentId;
+      data = this.dataSourceCargoCategory.get(id);
+      categoryName = data.categoryName + "-" + categoryName;
+    }
+    this.cargoCategory.categoryName = categoryName;
     this.selectedCargoCategory = null;
     await this.dialogController.ok(this.cargoCategory);
   }

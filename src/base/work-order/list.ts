@@ -1,21 +1,25 @@
 import { inject } from "aurelia-dependency-injection";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
 import { DialogService } from "ui";
-import { NewWorkOrderItem } from "@app/instock/cargo-flow/work-order/new-item";
+import { NewWorkOrderItem } from "@app/base/work-order/new-item";
+import { RouterParams } from '@app/common/models/router-params';
 export class WorkOrders {
   dataSource: kendo.data.DataSource;
+  test: kendo.ui.Grid;
 
-  constructor(@inject('cargoFlow') private cargoFlow: CargoFlow,
+  constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderService: WorkOrderService,
               @inject private workOrderItemService: WorkOderItemService,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
+  }
+
+  async activate() {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.workOrderService.queryWorkOders({ businessId: this.cargoFlow.id }),
+      query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId }),
       pageSize: 10
-    });
+    });   
   }
 
   detailInit(e) {
@@ -44,29 +48,34 @@ export class WorkOrders {
     });
   }
 
- /* async add() {
-    let data = this.cargoFlow;
-    let res = await this.dialogService.open({ viewModel: NewWorkOrder, model: data, lock: true }).whenClosed();
-    if (res.wasCancelled) return;
-    try {
-      await this.workOrderService.saveWorkOrder(res.output);
-      await this.dialogService.alert({ title: "新增成功", message: "新增成功!" });
-      this.dataSource.read();
-    } catch (err) {
-      await this.dialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
-    }
-  }*/
+  /* async add() {
+   let data = this.cargoFlow;
+   let res = await this.dialogService.open({ viewModel: NewWorkOrder, model: data, lock: true }).whenClosed();
+   if (res.wasCancelled) return;
+   try {
+   await this.workOrderService.saveWorkOrder(res.output);
+   await this.dialogService.alert({ title: "新增成功", message: "新增成功!" });
+   this.dataSource.read();
+   } catch (err) {
+   await this.dialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+   }
+   }*/
 
-  async addItem(id: string) {
+  async addItem(id: string, e) {
     let res = await this.dialogService.open({
       viewModel: NewWorkOrderItem,
-      model: { batchNumber: this.cargoFlow.batchNumber, workOrderId: id },
+      model: { batchNumber: this.cargoFlow.batchNumber, workOrderId: id, businessId: e.businessId },
       lock: true
     }).whenClosed();
     if (res.wasCancelled) return;
     try {
       await this.workOrderItemService.saveWorkOrderItem(res.output);
       await this.dialogService.alert({ title: "新增成功", message: "新增成功!" });
+
+      let child = this.test.element.find(`[data-uid='${e.uid}']`).next().find(".k-grid").eq(0);
+      if (child.data("kendoGrid")) {
+        child.data("kendoGrid").dataSource.read();
+      }
     } catch (err) {
       await this.dialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }

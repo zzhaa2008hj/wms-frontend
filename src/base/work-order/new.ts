@@ -3,7 +3,6 @@ import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { MessageDialogService } from "ui";
-import { InstockVehicle } from "@app/instock/models/instock-vehicle";
 import { WorkOrder, WorkOrderItem } from "@app/instock/models/work";
 import { WorkInfoService } from "@app/base/services/work-info";
 import { WorkInfo } from "@app/base/models/work-info";
@@ -14,11 +13,15 @@ import { OrganizationService } from "@app/base/services/organization";
 import { Organization } from "@app/base/models/organization";
 import { WorkOrderService } from "@app/instock/services/work-order";
 import { Router } from "aurelia-router";
+import { InstockVehicle } from "@app/instock/models/instock-vehicle";
+import { RouterParams } from '@app/common/models/router-params';
+import { CargoFlowService } from '@app/instock/services/cargo-flow';
 
 export class NewWorkOrder {
   instockVehicle = {} as InstockVehicle;
   goodsId: string;
   workOrder = {} as WorkOrder;
+  cargoFlow = {} as CargoFlow;
   units = [{ text: "单位1", value: 1 }, { text: "单位2", value: 2 }];
   containerTypes = [{ text: "集装箱类型1", value: 1 }, { text: "集装箱类型2", value: 2 }];
 
@@ -27,10 +30,13 @@ export class NewWorkOrder {
   warehouse: Warehouse;
   organization: Organization;
 
+  selectedVehicle: any;
+
   worksSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.workInfoService.listWorkInfo()
+        this.workInfoService
+          .listWorkInfoesByCargo(this.workOrder.businessId, this.routerParams.type)
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -48,7 +54,6 @@ export class NewWorkOrder {
   });
 
   datasource;
-
 
   cargoItemsSource = new kendo.data.DataSource({
     transport: {
@@ -80,7 +85,8 @@ export class NewWorkOrder {
     }
   });
 
-  constructor(@inject('cargoFlow') private cargoFlow: CargoFlow,
+  constructor(@inject('routerParams') private routerParams: RouterParams,
+              @inject private cargoFlowService: CargoFlowService,
               @inject private cargoItemService: CargoItemService,
               @inject private instockVehicleService: InstockVehicleService,
               @inject private workInfoService: WorkInfoService,
@@ -93,7 +99,7 @@ export class NewWorkOrder {
     this.datasource = new kendo.data.DataSource({
         transport: {
           read: (options) => {
-            options.success();
+            options.success([]);
           },
           update: (options) => {
             options.success();
@@ -105,18 +111,6 @@ export class NewWorkOrder {
           ,
           create: async options => {
             this.workOrderItems = options.data.models;
-            let len = this.workOrderItems.length;
-
-            this.workInfo = await this.workInfoService.getWorkInfo(this.workOrderItems[len - 1].workId);
-            this.workOrderItems[len - 1].workName = this.workInfo.name;
-
-            this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderItems[len - 1].warehouseId);
-            this.workOrderItems[len - 1].warehouseName = this.warehouse.name;
-
-
-            this.organization = await this.organizationService.getOrganization(this.workOrderItems[len - 1].customerId);
-            this.workOrderItems[len - 1].customerName = this.organization.name;
-
             options.success();
           }
         },
@@ -158,13 +152,17 @@ export class NewWorkOrder {
     ;
   }
 
-  activate() {
-    this.workOrder.batchNumber = this.cargoFlow.batchNumber;
-    this.workOrder.workOrderCategory = this.cargoFlow.status;
+  async activate() {
+    if (this.routerParams.type == 1) {
+      this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.routerParams.businessId);
+      this.workOrder.workOrderCategory = this.routerParams.type;      
+      this.workOrder.batchNumber = this.cargoFlow.batchNumber;      
+    }
   }
 
   changeCargo() {
     this.instockVehicleSource.read();
+    this.worksSource.read();
   }
 
   async cancel() {
@@ -173,6 +171,15 @@ export class NewWorkOrder {
 
   async save() {
     try {
+      for (let i = 0; i < this.workOrderItems.length; i++) {
+        this.workInfo = await this.workInfoService.getWorkInfo(this.workOrderItems[i].workId);
+        this.workOrderItems[i].workName = this.workInfo.name;
+        this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderItems[i].warehouseId);
+        this.workOrderItems[i].warehouseName = this.warehouse.name;
+        this.organization = await this.organizationService.getOrganization(this.workOrderItems[i].customerId);
+        this.workOrderItems[i].customerName = this.organization.name;
+      }
+      this.workOrder.workOrderCategory = this.cargoFlow.status;
       await this.workOrderService.saveWorkOrderAndItems({
         warehouseWorkOrder: this.workOrder,
         list: this.workOrderItems
@@ -183,5 +190,13 @@ export class NewWorkOrder {
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
+  }
+
+  onSelectPlateNumber(e) {
+    let vehicle: InstockVehicle = this.selectedVehicle.dataItem(e.item);
+    this.workOrder.plateNumber = vehicle.plateNumber;
+    this.workOrder.driverName = vehicle.driverName;
+    this.workOrder.driverIdentityNumber = vehicle.driverIdentityNumber;
+    this.workOrder.phoneNumber = vehicle.phoneNumber;
   }
 }

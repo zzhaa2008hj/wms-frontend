@@ -4,6 +4,7 @@ import { WorkStatisticsService } from "@app/instock/services/work-statistics";
 import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class ViewWorkStatistics {
@@ -11,6 +12,7 @@ export class ViewWorkStatistics {
   datasource: kendo.data.DataSource;
   listWorkOrders: WorkOrder[];
   cargoFlow: CargoFlow;
+  categories = ConstantValues.BusinessTypes;
 
   constructor(private workStatisticsService: WorkStatisticsService,
               private workOrderService: WorkOrderService,
@@ -66,6 +68,6 @@ export class ViewWorkStatistics {
   }
 
   formatCategory(category: number) {
-    return ['入库', '出库', '移库'][category - 1];
+    return this.categories[category - 1];
   }
 }

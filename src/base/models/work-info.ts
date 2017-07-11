@@ -5,6 +5,7 @@ export interface WorkInfo {
   id?: string;
   parentId?: string;
   category: string;
+  categoryStr: string;
   name: string;
   remark: string;
   orgId: string;

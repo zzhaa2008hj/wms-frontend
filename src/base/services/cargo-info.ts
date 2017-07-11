@@ -1,10 +1,11 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, Query, RestClient, extractResult } from '@app/utils';
+import { handleResult, Query, RestClient } from '@app/utils';
 import { CargoCategory } from '@app/base/models/cargo-category';
 import { CargoInfo, CargoItem, CargoRate, CargoRateStep } from '@app/base/models/cargo-info';
 import { Contract } from '@app/base/models/contract';
 import { Organization } from '@app/base/models/organization';
 import { ChangeHistory } from '@app/common/models/change-history';
+import { CargoItemStorageInfoVo } from '@app/outstock/models/cargo-distrain';
 /**
  * 机构查询条件
  */
@@ -19,7 +20,7 @@ export class CargoInfoService {
   constructor(private http: RestClient) {
   }
 
-  queryCargoInfo(criteria?: CargoInfoCriteria): Query<CargoInfo[]> {
+  queryCargoInfo(criteria?: CargoInfoCriteria): Query<CargoInfo> {
     return this.http.query(`base/cargoInfo/page`, criteria);
   }
 
@@ -45,9 +46,9 @@ export class CargoInfoService {
    * @param contractId
    * @param wareHouseType
    */
-  async getContractCargoRates(contractId: string, wareHouseType: string): Promise<CargoRate[]> {
+  async getContractCargoRates(contractId: string, warehouseType: string): Promise<CargoRate[]> {
     let res = await this.http.
-      get(`base/contract/contractRateList?contractId=${contractId}&wareHouseType=${wareHouseType}`);
+      get(`base/contract/contractRateList?contractId=${contractId}&warehouseType=${warehouseType}`);
     return res.content;
   }
 
@@ -74,8 +75,7 @@ export class CargoInfoService {
    */
   async getBatchNumber(): Promise<any> {
     let res = await this.http.get(`/base/code/generate?type=0`);
-    return extractResult(res.content);
-    //return this.http.get(`/base/code/generate?type=0`).then(handleResult);
+    return res.content;
   }
 
   /**
@@ -122,6 +122,22 @@ export class CargoInfoService {
 
   async getChangeHistory(businessId, historyId): Promise<ChangeHistory<CargoInfo>> {
     let res = await this.http.get(`/base/cargoInfo/${businessId}/changeHistory/${historyId}`);
+    return res.content;
+  }
+
+  /**
+   * 获取货物明细和库存
+   */
+  async getCargoItemStorageInfo(id: string): Promise<CargoItemStorageInfoVo[]> {
+    let res = await this.http.get(`/base/cargoInfo/${id}/cargo-item/storage-info`);
+    return res.content;
+  }
+
+  /**
+   * 根据入库状态获取货物信息
+   */
+  async getCargoInfosByInstockStatus(instockStatus: number): Promise<CargoInfo[]> {
+    let res = await this.http.get(`/base/cargoInfo/instockStatus/${instockStatus}`);
     return res.content;
   }
 }

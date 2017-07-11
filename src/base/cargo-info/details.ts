@@ -4,6 +4,8 @@ import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
+import { DictionaryData } from '@app/base/models/dictionary';
+import { DictionaryDataService } from '@app/base/services/dictionary';
 
 @autoinject
 export class DetailsCargoInfo {
@@ -11,10 +13,12 @@ export class DetailsCargoInfo {
     cargoItems = [] as CargoItem[];
     cargoInfoId = '';
     datasource: kendo.data.DataSource;
+    warehouseTypes = [] as DictionaryData[];
 
     constructor(private router: Router,
         private cargoInfoService: CargoInfoService,
         private messageDialogService: MessageDialogService,
+        private dictionaryDataService: DictionaryDataService,
         private dialogService: DialogService) {
         this.datasource = new kendo.data.DataSource({
             transport: {
@@ -26,6 +30,7 @@ export class DetailsCargoInfo {
     }
 
     async activate({ id }) {
+        this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");    
         this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
         this.cargoItems = await this.cargoInfoService.getCargoItems(id);
         //todo

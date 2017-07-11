@@ -9,6 +9,7 @@ import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { CodeService } from '@app/common/services/code';
 
 /**
  * Created by Hui on 2017/6/23.
@@ -66,6 +67,7 @@ export class NewCargoFlow {
               @inject private dialogService: DialogService,
               @inject private cargoInfoService: CargoInfoService,
               @inject private messageDialogService: MessageDialogService,
+              @inject private codeService: CodeService,
               @inject('routerParams') private routerParams: RouterParams,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
@@ -78,6 +80,8 @@ export class NewCargoFlow {
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      let res = await this.codeService.generateCode("2", cargoInfo.batchNumber);
+      this.cargoFlow.instockFlowNumber = res.content;
       this.setCargoFlowInfo(cargoInfo);
       this.getBaseCargoItems();
     }
@@ -85,6 +89,8 @@ export class NewCargoFlow {
 
   async onSelectCargoInfo(e) {
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
+    let res = await this.codeService.generateCode("2", dataItem.batchNumber);
+    this.cargoFlow.instockFlowNumber = res.content;
     this.setCargoFlowInfo(dataItem);
     this.getBaseCargoItems();
   }

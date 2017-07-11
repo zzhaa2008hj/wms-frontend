@@ -5,6 +5,7 @@ import { CargoItemService } from "@app/instock/services/cargo-item";
 import { OrganizationService } from "@app/base/services/organization";
 import { Organization } from "@app/base/models/organization";
 import * as moment from 'moment';
+import { MessageDialogService } from 'ui';
 
 @autoinject
 export class Order {
@@ -14,6 +15,7 @@ export class Order {
 
   constructor(private cargoFlowService: CargoFlowService,
               private cargoItemService: CargoItemService,
+              private messageDialogService: MessageDialogService,
               private organizationService: OrganizationService) {
   }
   async activate(params) {
@@ -25,5 +27,9 @@ export class Order {
     if (this.cargoFlow.stage == 3) {
       this.cargoFlowService.updateFlowStage(params.id, 4);
     }
+  }
+
+  async print() {
+    this.messageDialogService.alert({ title: "打印成功", message: "打印成功" });
   }
 }

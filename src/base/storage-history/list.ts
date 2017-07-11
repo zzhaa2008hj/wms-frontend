@@ -10,7 +10,7 @@ export class StorageHistoryList {
   };
   dataSource: kendo.data.DataSource;
   types = [{id: 1, name: '正常业务流程'}, {id: 2, name: '库存调整'}, {id: 3, name: '溢短抹平'}];
-   businessTypes = [{id: 1, name: '入库业务'}, {id: 2, name: '出库业务'}, {id: 3, name: '货权转移'}, 
+  businessTypes = [{id: 1, name: '入库业务'}, {id: 2, name: '出库业务'}, {id: 3, name: '货权转移'}, 
                     {id: 4, name: '货位转移'}, {id: 5, name: '货物质押'}, {id: 6, name: '合同'}, {id: 7, name: '零星作业'}];
 
   startDatePicker: any;

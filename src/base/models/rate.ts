@@ -18,9 +18,12 @@ export interface Rate {
   cargoSubCategoryName: string;
   pricingMode: number;
   unit: string;
+  unitStr: string;
   price: number;
   warehouseType: string;
   warehouseCategory: string;
+  warehouseTypeStr: string;
+  warehouseCategoryStr: string;
   customerCategory: number;
 
   rateStep: RateStep[];
