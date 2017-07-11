@@ -20,6 +20,8 @@ export class AuditContract {
   unit = [] as DictionaryData[];
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;  
+  
   /**
    * 基础费率
    */
@@ -55,6 +57,7 @@ export class AuditContract {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
+
     this.contractId = id;
     this.contractVo = await this.contractService.getContract(id);
     if (this.contractVo.contract.contractType == 3) {
@@ -66,6 +69,7 @@ export class AuditContract {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+        let rateType = this.rateTypes.find(d => res.rateType == d.value);
         if (unit) {
           res.unitStr = unit.dictDataName;
         }
@@ -74,6 +78,9 @@ export class AuditContract {
         }
         if (warehouseCategory) {
           res.warehouseCategoryStr = warehouseCategory.dictDataName;
+        }
+        if (rateType) {
+          res.rateTypeStr = rateType.text;
         }
         return res;
       });

@@ -27,6 +27,8 @@ export class NewRate {
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   unit = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;
+
   dataSourceRateStep = new kendo.data.HierarchicalDataSource({
     data: []
   });

@@ -48,10 +48,6 @@ export class NewWorkInfo {
 }
 
 const validationRules = ValidationRules
-  .ensure((workInfo: WorkInfo) => workInfo.category)
-  .displayName('作业类别')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
   .ensure((workInfo: WorkInfo) => workInfo.name)
   .displayName('作业名称')
   .required().withMessage(`\${$displayName} 不能为空`)

@@ -27,6 +27,7 @@ export class NewRate {
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   unit = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;
 
   dataSourceRateStep = new kendo.data.HierarchicalDataSource({
     data: []
@@ -58,6 +59,7 @@ export class NewRate {
     this.rate.workName = workInfo.name;
     this.rate.workId = workInfo.id;
   }
+  
   async selectCargoCategory() {
     let result = await this.dialogService
       .open({ viewModel: CargoCategoryTree, model: this.rate.cargoCategoryId, lock: true })

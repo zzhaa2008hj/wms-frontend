@@ -22,6 +22,7 @@ export class NewContract {
   unit = [] as DictionaryData[];
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;
 
   contractTypes = ConstantValues.ContractTypes;
   warehouses: WorkInfo[];
@@ -48,11 +49,11 @@ export class NewContract {
   baseRateStep: RateStep[];
 
   constructor(private router: Router,
-              private contractService: ContractService,
-              private messageDialogService: MessageDialogService,
-              private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+    private contractService: ContractService,
+    private messageDialogService: MessageDialogService,
+    private dictionaryDataService: DictionaryDataService,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -73,11 +74,11 @@ export class NewContract {
         model: {
           id: 'id',
           fields: {
-            price: { 
-              type: 'number', 
-              validation: { required: true, min: 0, max: 1000000000000000 }, 
-              editable: true, 
-              nullable: false 
+            price: {
+              type: 'number',
+              validation: { required: true, min: 0, max: 1000000000000000 },
+              editable: true,
+              nullable: false
             },
             chargeCategory: { editable: false },
             chargeType: { editable: false },
@@ -130,6 +131,7 @@ export class NewContract {
       let unit = this.unit.find(d => res.unit == d.dictDataCode);
       let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
@@ -138,6 +140,9 @@ export class NewContract {
       }
       if (warehouseCategory) {
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
+      }
+      if (rateType) {
+        res.rateTypeStr = rateType.text;
       }
       return res;
     });
@@ -214,8 +219,6 @@ export class NewContract {
     if (!valid) return;
     let rateList = this.baseRateAndSteps
       .filter(x => x.customerCategory == this.contract.contractType);
-      console.log(rateList)
-    console.log(this.baseRateAndSteps)
     rateList.forEach(r => {
       let id = r.id;
       let rateSteps = this.baseRateStep.filter(res => res.rateId == id);
@@ -246,6 +249,7 @@ export class NewContract {
 
   detailInit(e) {
     let detailRow = e.detailRow;
+    console.log(e.data.id)
     detailRow.find('.rateSteps').kendoGrid({
       dataSource: {
         transport: {
@@ -266,12 +270,12 @@ export class NewContract {
               stepNum: { editable: false },
               stepStart: { editable: false },
               stepEnd: { editable: false },
-              stepPrice: { 
-                editable: true, 
-                notify: true, 
-                type: 'number', 
-                validation: { required: true, min: 0, max: 1000000000000000 }, 
-                title: '阶梯价' 
+              stepPrice: {
+                editable: true,
+                notify: true,
+                type: 'number',
+                validation: { required: true, min: 0, max: 1000000000000000 },
+                title: '阶梯价'
               },
               stepUnit: { editable: false },
               remark: { editable: false }

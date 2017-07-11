@@ -22,6 +22,7 @@ export class ViewContract {
   unit = [] as DictionaryData[];
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;
 
   /**
    * 基础阶梯费率
@@ -29,8 +30,8 @@ export class ViewContract {
   baseRateStep: RateStep[];
 
   constructor(private router: Router,
-              private dictionaryDataService: DictionaryDataService,
-              private contractService: ContractService) {
+    private dictionaryDataService: DictionaryDataService,
+    private contractService: ContractService) {
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -52,7 +53,7 @@ export class ViewContract {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
-    
+
     this.contractVo = await this.contractService.getContract(id);
     if (this.contractVo.contract.contractType == 3) {
       //库区信息
@@ -63,6 +64,7 @@ export class ViewContract {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+        let rateType = this.rateTypes.find(d => res.rateType == d.value);
         if (unit) {
           res.unitStr = unit.dictDataName;
         }
@@ -71,6 +73,9 @@ export class ViewContract {
         }
         if (warehouseCategory) {
           res.warehouseCategoryStr = warehouseCategory.dictDataName;
+        }
+        if (rateType) {
+          res.rateTypeStr = rateType.text;
         }
         return res;
       });

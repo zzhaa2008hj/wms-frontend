@@ -13,6 +13,8 @@ export interface Rate {
   chargeCategory: number;
   workId: string;
   workName: string;
+  rateType: number;
+  rateTypeStr: string;
   cargoCategoryId: string;
   cargoCategoryName: string;
   cargoSubCategoryName: string;
