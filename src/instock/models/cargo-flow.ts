@@ -65,6 +65,7 @@ export interface Vehicle {
   //唯一性标识
   sign?: string;
 
+  id: string;
   instockGoodsId: string;
   plateNumber: string;
   driverName: string;
