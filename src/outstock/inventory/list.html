@@ -1,0 +1,37 @@
+<template>
+    <div class="page-title">
+        <h3>出库清单</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="input-group">
+                <input class="form-control" type="text" value.bind="batchNumber" placeholder="请输入批次号">
+                <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+            </div>
+        </div>
+        <div class="col-md-1 col-md-offset-8">
+            <button class="btn btn-primary">打印</button>
+            <button class="btn btn-primary">上传</button>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource"
+             k-sortable.bind="true"
+             k-reorderable.bind="true"
+             k-resizable.bind="true"
+             k-filterable.bind="true"
+             k-column-menu.bind="true"
+             k-pageable.bind="pageable">
+        <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+        <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
+        <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+        <ak-col k-field="sumQuantity" k-title="合计重量"></ak-col>
+        <ak-col k-field="sumNumber" k-title="合计件数"></ak-col>
+        <ak-col k-field="unit" k-title="单位"></ak-col>
+        <ak-col k-field="remark" k-title="备注"></ak-col>
+        <ak-col k-title="操作">
+            <ak-template>
+                <a class="btn btn-small" route-href="route: view; params.bind: { id: id }">查看详情</a>
+            </ak-template>
+        </ak-col>
+    </ak-grid>
+</template>
