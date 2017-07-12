@@ -10,11 +10,14 @@ var htmlmin = require('gulp-htmlmin');
 var cleanCSS = require('gulp-clean-css');
 var changed = require('gulp-changed');
 var print = require('gulp-print');
+var watch = require('gulp-watch');
 let browserSync = require('browser-sync');
 var modRewrite = require('connect-modrewrite');
 
 let os = require('os');
 let exec = require('gulp-exec');
+
+const argv = require('yargs').argv;
 
 const chromeNameByPlatform = {
   'linux': 'google-chrome',
@@ -24,9 +27,9 @@ const chromeNameByPlatform = {
 
 const chrome = chromeNameByPlatform[os.platform()];
 
+const watchMode = argv.watch || argv.w;
 
-
-gulp.task('serve', ['watch'], () => {
+gulp.task('serve', ['minify'], () => {
 
   browserSync({
     browser: [chrome],
@@ -47,29 +50,33 @@ gulp.task('reload', function () {
 
 gulp.task('update', ['typings-install', 'git-submodule-update']);
 
-
 gulp.task('minify-html', function() {
-  return gulp.src('src/**/*.html')
-    // .pipe(changed('dist'))
-    .pipe(print())
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest('dist'));
+  let glob = 'src/**/*.html';
+  let f = () => gulp.src(glob)
+                    .pipe(changed('dist'))
+                    .pipe(print())
+                    .pipe(htmlmin({collapseWhitespace: true}))
+                    .pipe(gulp.dest('dist'));
+  if (watchMode) {
+    watch(glob, { ignoreInitial: false }, () => f())
+  }
+  return f();
 });
 
 gulp.task('minify-css', function() {
-  return gulp.src('src/**/*.css')
-    // .pipe(changed('dist'))
-    .pipe(print())
-    .pipe(cleanCSS())
-    .pipe(gulp.dest('dist'));
+  let glob = 'src/**/*.css';
+  let f = () => gulp.src(glob)
+                .pipe(changed('dist'))
+                .pipe(print())
+                .pipe(cleanCSS())
+                .pipe(gulp.dest('dist'));
+  if (watchMode) {
+    watch(glob, { ignoreInitial: false }, () => f())
+  }
+  return f();
 });
 
 gulp.task('minify', ['minify-html', 'minify-css']);
-
-gulp.task('watch', function() {
-  gulp.watch('src/**/*.html', ['minify-html']);
-  gulp.watch('src/**/*.css', ['minify-css']);
-});
 
 gulp.task('typings-install', (cb) => {
   exec('typings install', function (err, stdout, stderr) {
@@ -86,3 +93,7 @@ gulp.task('git-submodule-update', (cb) => {
     cb(err);
   });
 });
+
+function src(glob) {
+  return watchMode ? watch(glob, { ignoreInitial: false }) : gulp.src(glob);
+}
