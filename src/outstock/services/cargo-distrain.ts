@@ -16,7 +16,7 @@ export class CargoDistrainService {
   /**
    * 保存多个对象
    */
-  async saveCargoDistrains(cargoDistrain: CargoDistrain[] | CargoDistrainVo[]) {
+  async saveCargoDistrains(cargoDistrain: CargoDistrain[] | CargoDistrainVo[]): Promise<void> {
     await this.http.post(`/outstock/cargo-distrain`, cargoDistrain).then(handleResult);
   }
 
@@ -31,7 +31,7 @@ export class CargoDistrainService {
    * 获取单个
    * @param id 
    */
-  async getCargoDistrainById(id: string) {
+  async getCargoDistrainById(id: string): Promise<CargoDistrain> {
     let res = await this.http.get(`/outstock/cargo-distrain/${id}`);
     return res.content;
   }
