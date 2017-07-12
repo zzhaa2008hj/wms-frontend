@@ -1,25 +1,25 @@
 <template>
-    <div class="page-title">
-        <h3>拆单历史记录</h3>
+  <div class="page-title">
+    <h3>拆单历史记录</h3>
+  </div>
+  <div class="row">
+    <div class="input-group">
+      <input class="form-control" type="text" value.bind="searchName" placeholder="请输入批次号">
+      <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
-    <div class="row">
-        <div class="input-group">
-            <input class="form-control" type="text" value.bind="searchName" placeholder="请输入批次号">
-            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-        </div>
-    </div>
-    <ak-grid k-data-source.bind="dataSource"
-             k-pageable.bind="pageable"
-             k-sortable.bind="true">
-        <ak-col k-title="批次号" k-field="batchNumber"></ak-col>
-        <ak-col k-title="拆单前流水单号" k-field="numberBeforeSeparate"></ak-col>
-        <ak-col k-title="拆单后流水单号1" k-field="firstNumberAfterSeparate"></ak-col>
-        <ak-col k-title="拆单后流水单号2" k-field="secondNumberAfterSeparate"></ak-col>
-        <ak-col k-title="操作">
-            <ak-template>
-                <a class="btn btn-sm btn-small btn-primary"
-                   route-href="route: separateDetail; params.bind: { id: id }">详情</a>
-            </ak-template>
-        </ak-col>
-    </ak-grid>
+  </div>
+  <ak-grid k-data-source.bind="dataSource"
+           k-pageable.bind="pageable"
+           k-sortable.bind="true">
+    <ak-col k-title="批次号" k-field="batchNumber"></ak-col>
+    <ak-col k-title="拆单前流水单号" k-field="numberBeforeSeparate"></ak-col>
+    <ak-col k-title="拆单后流水单号1" k-field="firstNumberAfterSeparate"></ak-col>
+    <ak-col k-title="拆单后流水单号2" k-field="secondNumberAfterSeparate"></ak-col>
+    <ak-col k-title="操作">
+      <ak-template>
+        <a class="btn btn-sm btn-small btn-primary"
+           route-href="route: separateDetail; params.bind: { id: id }">详情</a>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
 </template>

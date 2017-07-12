@@ -1,0 +1,58 @@
+<template>
+  <div class="row">
+    <div class="col-md-2">
+      <a class="btn btn-sm btn-small btn-success" route-href="route: new">新增出库指令</a>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group">
+        <input class="form-control" type="text" value.bind="cargoInfoCriteria.searchName"
+               placeholder="输入批次号、代理商或客户名称">
+      </div>
+    </div>
+    <div class="col-md-3 ">
+      <div class="input-group">
+        <input class="form-control" type="text"
+               ak-datepicker="k-value.two-way : search.beginDate; k-widget.two-way: startDatePicker"
+               k-on-change.delegate="startChange()" placeholder="请输入开始时间">
+      </div>
+    </div>
+    <div class="col-md-3 ">
+      <div class="input-group">
+        <input class="form-control" type="text"
+               ak-datepicker="k-value.two-way : search.endDate; k-widget.two-way: endDatePicker"
+               k-on-change.delegate="endChange()" placeholder="请输入结束时间">
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="input-group">
+        <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+      </div>
+    </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="batchNumber" k-title="提货单位" k-locked.bind="true" k-lockable.bind="false"
+            k-width.bind="150"></ak-col>
+    <ak-col k-field="batchNumber" k-title="批次号" k-locked.bind="true" k-lockable.bind="false"
+            k-width.bind="150"></ak-col>
+    <ak-col k-field="outstockDate" k-title="提货日期" k-locked.bind="true" k-lockable.bind="false"
+            k-width.bind="150"></ak-col>
+    <ak-col k-field="outstockOrderNumber" k-title="出库单号" k-locked.bind="true" k-lockable.bind="false"
+            k-width.bind="150"></ak-col>
+    <ak-col k-field="numberSum" k-title="指令件数" k-locked.bind="true" k-lockable.bind="false"
+            k-width.bind="150"></ak-col>
+    <ak-col k-field="quantitySum" k-title="指令重量" k-locked.bind="true" k-lockable.bind="false"
+            k-width.bind="150"></ak-col>
+    <ak-col k-field="remark" k-title="备注" k-width.bind="150"></ak-col>
+    <ak-col k-title="操作" k-width.bind="400">
+      <ak-template>
+        <a class="btn btn-small" if.bind="cargoFlowSize == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
+        <a class="btn btn-small btn-info" if.bind="cargoFlowSize != 0"
+           route-href="route: details; params.bind: { id: id }">详情</a>
+        <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)"
+           if.bind="status !=1 ">删除</a>
+        <!--<a class="btn btn-small" href="/#/instock/${id}/cargo-flows">入库信息</a>-->
+        <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
+</template>

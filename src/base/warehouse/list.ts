@@ -18,11 +18,28 @@ export class WarehouseList {
               private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService) {
+  }
+
+  async activate() {
+    this.typeDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.categoryDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.dataSource = new kendo.data.TreeListDataSource({
       transport: {
         read: (options) => {
           this.warehouseService.listWarehouse()
-            .then(options.success, er => options.error('', '', er));
+            .then(res => {
+              res.forEach(r => {
+                let typeDictionary = this.typeDictionary.find(d => r.type == d.dictDataCode);
+                if (typeDictionary) {
+                  r.typeStr = typeDictionary.dictDataName;
+                }
+                let categoryDictionary = this.categoryDictionary.find(d => r.category == d.dictDataCode);
+                if (categoryDictionary) {
+                  r.categoryStr = categoryDictionary.dictDataName;
+                }
+              });
+              options.success(res);
+            }, err => options.error('', '', err));
         }
       },
       schema: {
@@ -34,10 +51,7 @@ export class WarehouseList {
       }
     });
   }
-  async activate() {
-    this.typeDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
-    this.categoryDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
-  }
+
   async add(item) {
     this.selectedItem = item;
     let result = await this.dialogService.open({ viewModel: NewWarehouse, model: this.selectedItem, lock: true })

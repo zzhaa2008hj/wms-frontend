@@ -10,4 +10,8 @@ export interface Warehouse {
   remark: string;
   orgId: string;
   status: boolean;
+
+  //列表页显示
+  typeStr: string;
+  categoryStr: string;
 }
