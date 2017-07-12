@@ -134,6 +134,12 @@
       "name": "storage-history",
       "title": "库存流水",
       "moduleId": "./base/storage-history/index"
+    },
+    {
+      "route": "/outstock/order",
+      "name": "outstockOrder",
+      "title": "出库指令",
+      "moduleId": "./outstock/order/index"
     }
   ]
 }
