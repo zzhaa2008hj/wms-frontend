@@ -1,8 +1,7 @@
+import { ValidationRules } from 'aurelia-validation';
 /**
  * Created by Hui on 2017/6/15.
  */
-
-
 export interface Rate {
   id?: string;
   orgId: string;
@@ -46,3 +45,82 @@ export interface RateStep {
   stepUnit: string; //元/天、元/吨
 
 }
+
+export const rateValidationRules = ValidationRules
+  .ensure((rate: Rate) => rate.chargeCategory)
+  .displayName('费用类别')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .ensure((rate: Rate) => rate.chargeType)
+  .displayName('费用类型')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .ensure((rate: Rate) => rate.customerCategory)
+  .displayName('客户类别')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .ensure((rate: Rate) => rate.cargoCategoryName)
+  .displayName('货物类别')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .ensure((rate: Rate) => rate.pricingMode)
+  .displayName('计价方式')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .ensure((rate: Rate) => rate.unit)
+  .displayName('计量单位')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rate: Rate) => rate.rateType)
+  .displayName('作业类别')
+  .satisfies((x: number, rate: Rate) => {
+    if (x == -1 && rate.chargeCategory != 1) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName} 不能为空`)
+  .ensure((rate: Rate) => rate.workName)
+  .displayName('作业内容')
+  .satisfies((x: string, rate: Rate) => {
+    if (x == '' && rate.chargeCategory != 1) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rate: Rate) => rate.warehouseType)
+  .displayName('库位性质')
+  .satisfies((x: string, rate: Rate) => {
+    if (x == '' && rate.chargeCategory == 1) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName} 不能为空`)
+  .ensure((rate: Rate) => rate.warehouseCategory)
+  .displayName('库位类别')
+  .satisfies((x: string, rate: Rate) => {
+    if (x == '' && rate.chargeCategory == 1) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rate: Rate) => rate.remark)
+  .displayName('备注')
+  .maxLength(500)
+  .withMessage(`\${$displayName} 过长`)
+  .rules;
+
+
+export const rateStepValidationRules = ValidationRules
+  .ensure((rateStep: RateStep) => rateStep.stepNum)
+  .displayName('阶梯号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rateStep: RateStep) => rateStep.stepStart)
+  .displayName('开始值')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rateStep: RateStep) => rateStep.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 过长`)
+  .rules;

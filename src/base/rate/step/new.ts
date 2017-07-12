@@ -1,7 +1,7 @@
 import { DialogController } from "ui";
 import { autoinject, Container } from "aurelia-dependency-injection";
-import { RateStep } from "@app/base/models/rate";
-import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { RateStep, rateStepValidationRules } from "@app/base/models/rate";
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 /**
  * Created by Hui on 2017/6/14.
@@ -22,7 +22,7 @@ export class NewRateStep {
   }
 
   async save() {
-    this.validationController.addObject(this.rateStep, validationRules);
+    this.validationController.addObject(this.rateStep, rateStepValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
@@ -33,17 +33,3 @@ export class NewRateStep {
     await this.dialogController.cancel();
   }
 }
-
-const validationRules = ValidationRules
-  .ensure((rateStep: RateStep) => rateStep.stepNum)
-  .displayName('阶梯号')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((rateStep: RateStep) => rateStep.stepStart)
-  .displayName('开始值')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((rateStep: RateStep) => rateStep.remark)
-  .displayName('备注')
-  .maxLength(500).withMessage(`\${$displayName} 过长`)
-  .rules;

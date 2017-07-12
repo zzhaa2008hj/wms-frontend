@@ -1,14 +1,14 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
 import { autoinject, Container } from "aurelia-dependency-injection";
-import { Rate } from "@app/base/models/rate";
+import { Rate, rateValidationRules } from '@app/base/models/rate';
 import { RateService } from "@app/base/services/rate";
 import { NewRateStep } from "@app/base/rate/step/new";
 import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
-import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { ConstantValues } from '@app/common/models/constant-values';
 /**
@@ -70,12 +70,20 @@ export class NewRate {
     this.rate.cargoCategoryId = cargoCategory.id;
   }
 
+  chargeCategoryChanged() {
+    this.rate.rateType = -1;
+    this.rate.workName = '';
+    this.rate.workId = '';
+    this.rate.warehouseType = '';
+    this.rate.warehouseCategory = '';
+  }
+
   async addNewRate() {
     if (this.rateStep) {
       Object.assign(this.rate, { rateStep: this.rateStep });
     }
     try {
-      this.validationController.addObject(this.rate, validationRules);
+      this.validationController.addObject(this.rate, rateValidationRules);
       let { valid } = await this.validationController.validate();
       if (!valid) return;
 
@@ -113,17 +121,3 @@ export class NewRate {
     this.router.navigateToRoute("list");
   }
 }
-
-const validationRules = ValidationRules
-  .ensure((rate: Rate) => rate.chargeCategory)
-  .displayName('费用类别')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((rate: Rate) => rate.chargeType)
-  .displayName('费用类型')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((rate: Rate) => rate.customerCategory)
-  .displayName('客户类别')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .rules;

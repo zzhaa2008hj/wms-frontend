@@ -249,7 +249,6 @@ export class NewContract {
 
   detailInit(e) {
     let detailRow = e.detailRow;
-    console.log(e.data.id)
     detailRow.find('.rateSteps').kendoGrid({
       dataSource: {
         transport: {
