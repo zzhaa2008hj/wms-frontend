@@ -2,6 +2,7 @@ import { autoinject } from 'aurelia-dependency-injection';
 import { VerifyRecordService, VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { DataSourceFactory } from '@app/utils';
 import { DialogController } from 'ui';
+import { ConstantValues } from '@app/common/models/constant-values';
 import DataSource = kendo.data.DataSource;
 
 @autoinject
@@ -13,7 +14,7 @@ export class VerifyRecordDialogList {
     pageSizes: true,
     buttonCount: 10
   };
-  businessTypes: string[] = ["入库", "出库", "货权转移", "货位转移", "货物质押", "合同"];
+  businessTypes: any[] = ConstantValues.BusinessTypes;
 
   constructor(private service: VerifyRecordService,
               private dialogController: DialogController,
@@ -25,7 +26,7 @@ export class VerifyRecordDialogList {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.service.queryVerifyRecord(criteria)
         .map(res => {
-          res.businessTypeStr = this.businessTypes[res.businessType - 1];
+          res.businessTypeStr = this.businessTypes.find(r => r.type == res.businessType).name;
           return res;
         }),
       pageSize: 10

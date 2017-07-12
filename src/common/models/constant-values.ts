@@ -1,16 +1,93 @@
 export class ConstantValues {
 
   static get BusinessTypes() {
-    return ["入库", "出库", "货权转移", "货位转移", "货物质押", "合同"];
+    return [{
+      type: 1,
+      name: "入库"
+    }, {
+      type: 2,
+      name: "出库"
+    }, {
+      type: 3,
+      name: "货权转移"
+    }, {
+      type: 4,
+      name: "货位转移"
+    }, {
+      type: 5,
+      name: "货物质押"
+    }, {
+      type: 6,
+      name: "合同"
+    }];
   }
 
   static get ContractStage() {
-    return ["撤回中", "已撤回", "待审核", "未通过审核", "审核通过", "生效中"];
+    return [{
+      stage: -1,
+      title: "撤回中"
+    }, {
+      stage: 0,
+      title: "已撤回"
+    }, {
+      stage: 1,
+      title: "待审核"
+    }, {
+      stage: 2,
+      title: "未通过审核"
+    }, {
+      stage: 3,
+      title: "审核通过"
+    }, {
+      stage: 4,
+      title: "生效中"
+    }, {
+      stage: 5,
+      title: "已过期"
+    }];
   }
 
   static get InstockStages() {
-    return ["撤回中", "已撤回", "待商务审核", "商务审核未通过", "商务审核通过", "已生成入库指令单", "入库作业中",
-      "作业完成（待审核）", "库场审核未通过", "库场审核通过", "已生成理货报告", "已生成入库单", "入库完成"];
+    return [{
+      stage: -1,
+      title: "撤回中"
+    }, {
+      stage: 0,
+      title: "已撤回"
+    }, {
+      stage: 1,
+      title: "待商务审核"
+    }, {
+      stage: 2,
+      title: "商务审核未通过"
+    }, {
+      stage: 3,
+      title: "商务审核通过"
+    }, {
+      stage: 4,
+      title: "已生成入库指令单"
+    }, {
+      stage: 5,
+      title: "入库作业中"
+    }, {
+      stage: 6,
+      title: "作业完成（待审核）"
+    }, {
+      stage: 7,
+      title: "库场审核未通过"
+    }, {
+      stage: 8,
+      title: "库场审核通过"
+    }, {
+      stage: 9,
+      title: "已生成理货报告"
+    }, {
+      stage: 10,
+      title: "已生成入库单"
+    }, {
+      stage: 11,
+      title: "入库完成"
+    }];
   }
 
   static get ChargeCategory() {

@@ -16,7 +16,7 @@ export class VerifyRecordList {
     pageSizes: true,
     buttonCount: 10
   };
-  businessTypes: string[] = ConstantValues.BusinessTypes;
+  businessTypes: any[] = ConstantValues.BusinessTypes;
 
   constructor(private service: VerifyRecordService,
               private dialogService: DialogService,
@@ -25,7 +25,7 @@ export class VerifyRecordList {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.service.queryVerifyRecord({batchNumber: this.batchNumber})
         .map(res => {
-          res.businessTypeStr = this.businessTypes[res.businessType - 1];
+          res.businessTypeStr = this.businessTypes.find(r => r.type == res.businessType).name;
           return res;
         }),
       pageSize: 10

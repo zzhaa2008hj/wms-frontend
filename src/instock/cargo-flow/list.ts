@@ -25,7 +25,7 @@ export class CargoFlow {
     pageSizes: true,
     buttonCount: 10
   };
-  instockStages: string[] = ConstantValues.InstockStages;
+  instockStages: any[] = ConstantValues.InstockStages;
   private dataSource: kendo.data.DataSource;
   private grid: any;
 
@@ -50,7 +50,7 @@ export class CargoFlow {
             infoId: this.routerParams.infoId,
             keywords: this.searchName
           }).map(res => {
-            res.instockStageName = this.instockStages[res.stage + 1];
+            res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
             return res;
           }),
         pageSize: 10
@@ -59,7 +59,7 @@ export class CargoFlow {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
           .map(res => {
-            res.instockStageName = this.instockStages[res.stage + 1];
+            res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
             return res;
           }),
         pageSize: 10

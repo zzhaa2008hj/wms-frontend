@@ -10,12 +10,15 @@ import { CargoInfo } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { CodeService } from '@app/common/services/code';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 
 /**
  * Created by Hui on 2017/6/23.
  */
 export class NewCargoFlow {
   cargoItems = [];
+  units = [] as DictionaryData[];
   deletedCargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
@@ -68,6 +71,7 @@ export class NewCargoFlow {
               @inject private cargoInfoService: CargoInfoService,
               @inject private messageDialogService: MessageDialogService,
               @inject private codeService: CodeService,
+              @inject private dictionaryDataService: DictionaryDataService,
               @inject('routerParams') private routerParams: RouterParams,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
@@ -76,6 +80,7 @@ export class NewCargoFlow {
   }
 
   async activate() {
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoFlowService.listBaseCargoInfos();
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
@@ -115,6 +120,10 @@ export class NewCargoFlow {
       Object.assign(ci, { sign: r });
       ci.cargoItemId = ci.id;
       ci.id = null;
+    });
+    this.cargoItems.map(res => {
+      res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+      return res;
     });
     this.dataSourceCargoItem.read();
   }
