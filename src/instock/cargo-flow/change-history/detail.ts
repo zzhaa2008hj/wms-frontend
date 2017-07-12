@@ -57,7 +57,7 @@ export class CargoFlowChangeHistoryDetail {
     detailRow.find('.orders').kendoGrid({
       dataSource: {
         transport: {
-          read: async options => {
+          read: (options) => {
             options.success(e.data.vehicles);
           }
         },
@@ -86,7 +86,7 @@ export class CargoFlowChangeHistoryDetail {
     detailRow.find('.orders').kendoGrid({
       dataSource: {
         transport: {
-          read: async options => {
+          read: (options) => {
             options.success(e.data.vehicles);
           }
         },
