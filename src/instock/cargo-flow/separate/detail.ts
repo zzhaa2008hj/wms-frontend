@@ -17,7 +17,7 @@ export class Detail {
   afterCargoInfo: CargoInfo;
   beforeCargoFlow: CargoFlow;
   afterCargoFlow: CargoFlow;
-  instockStages: string[] = ConstantValues.InstockStages;
+  instockStages: any[] = ConstantValues.InstockStages;
   beforeCargoItems: InstockCargoItem[];
   afterCargoItems: InstockCargoItem[];
 
@@ -33,12 +33,10 @@ export class Detail {
 
     this.beforeCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.numberBeforeSeparate);
     this.beforeCargoFlow.instockDateStr = moment(this.beforeCargoFlow.instockDate).format("YYYY-MM-DD");
-    this.beforeCargoFlow.instockStageName = this.instockStages[this.beforeCargoFlow.stage + 1];
     this.beforeCargoInfo = await this.cargoInfoService.getCargoInfo(this.beforeCargoFlow.cargoInfoId);
     this.beforeCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.beforeCargoFlow.id);
 
     this.afterCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.secondNumberAfterSeparate);
-    this.afterCargoFlow.instockStageName = this.instockStages[this.afterCargoFlow.stage + 1];
     this.afterCargoFlow.instockDateStr = moment(this.afterCargoFlow.instockDate).format("YYYY-MM-DD");
     this.afterCargoInfo = await this.cargoInfoService.getCargoInfo(this.afterCargoFlow.cargoInfoId);
     this.afterCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.afterCargoFlow.id);

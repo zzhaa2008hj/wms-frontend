@@ -18,7 +18,7 @@ export class ContractList {
     pageSizes: true,
     buttonCount: 10
   };
-  contractTypes: string[] = ["客户仓储", "装卸单位", "库区租赁"];
+  contractTypes: any[] = ConstantValues.ContractTypes;
   contractStages = ConstantValues.ContractStage;
 
   constructor(private contractService: ContractService,
@@ -28,8 +28,8 @@ export class ContractList {
     private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.contractService.queryContracts({ searchName: this.searchName }).map(res => {
-        res.contractTypeStr = this.contractTypes[res.contractType - 1];
-        res.statusTitle = this.contractStages[res.status + 1];
+        res.contractTypeStr = this.contractTypes.find(r => r.type == res.contractType).name;
+        res.statusTitle = this.contractStages.find(r => r.stage == res.status).title;
         return res;
       }),
       pageSize: 10

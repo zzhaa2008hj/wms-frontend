@@ -8,7 +8,7 @@
           <label class="form-label">费用类别*</label>
           <span class="help"></span>
           <ak-drop-down-list k-value.two-way="rate.chargeCategory & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
-            k-data-source.bind="chargeCategory">
+            k-data-source.bind="chargeCategory" k-on-change.delegate="chargeCategoryChanged()">
           </ak-drop-down-list>
         </div>
         <div class="form-group">
@@ -25,26 +25,33 @@
             k-data-source.bind="customerCategory">
           </ak-drop-down-list>
         </div>
-        <div class="form-group" if.bind="rate.chargeCategory != 4">
+        <div class="form-group">
           <label class="form-label">货物类别*</label>
           <span class="help"></span>
           <div class="form-label">
-            <input type="text" class="form-label" value.bind="rate.cargoCategoryName" disabled>
+            <input type="text" class="form-label" value.bind="rate.cargoCategoryName & validate" disabled>
             <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择...</a>
           </div>
         </div>
-        <div class="form-group" if.bind="rate.chargeCategory != 0">
+        <div class="form-group">
           <label class="form-label">品牌</label>
           <span class="help"></span>
           <div class="controls">
             <input type="text" class="form-control" value.bind="rate.cargoSubCategoryName">
           </div>
         </div>
-        <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3 || rate.chargeCategory == 5">
-          <div class="form-group" if.bind="rate.chargeCategory != 0">
+        <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3">
+          <div class="form-group">
+            <label class="form-label">作业类别*</label>
+            <span class="help"></span>
+            <ak-drop-down-list k-value.two-way="rate.rateType & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+              k-data-source.bind="rateTypes">
+            </ak-drop-down-list>
+          </div>
+          <div class="form-group">
             <label class="form-label">作业内容*</label>
             <span class="help"></span>
-            <input type="text" class="form-label" value.bind="rate.workName" disabled>
+            <input type="text" class="form-label" value.bind="rate.workName & validate" disabled>
             <button class="btn btn-small" type="button" click.delegate="selectWorkInfo()">请选择...</button>
           </div>
         </div>
@@ -52,14 +59,14 @@
           <div class="form-group">
             <label class="form-label">库位性质*</label>
             <span class="help"></span>
-            <ak-drop-down-list k-value.two-way="rate.warehouseType" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+            <ak-drop-down-list k-value.two-way="rate.warehouseType & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
               k-data-source.bind="warehouseType">
             </ak-drop-down-list>
           </div>
           <div class="form-group">
             <label class="form-label">库位类别*</label>
             <span class="help"></span>
-            <ak-drop-down-list k-value.two-way="rate.warehouseCategory" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+            <ak-drop-down-list k-value.two-way="rate.warehouseCategory & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
               k-data-source.bind="warehouseCategory">
             </ak-drop-down-list>
           </div>
@@ -67,7 +74,7 @@
         <div class="form-group">
           <label class="form-label">计价方式*</label>
           <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.pricingMode" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+          <ak-drop-down-list k-value.two-way="rate.pricingMode & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
             k-data-source.bind="pricingMode">
           </ak-drop-down-list>
         </div>
@@ -81,14 +88,15 @@
         <div class="form-group">
           <label class="form-label">计量单位*</label>
           <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.unit" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+          <ak-drop-down-list k-value.two-way="rate.unit & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
             k-data-source.bind="unit">
           </ak-drop-down-list>
         </div>
         <div if.bind="rate.pricingMode == 2">
           <div class="row">
-            <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.trigger="addStep()">
-                            阶梯费率设置</a></div>
+            <div class="col-md-9">
+              <a class="btn btn-sm btn-small btn-success" click.trigger="addStep()">阶梯费率设置</a>
+            </div>
           </div>
           <ak-grid k-data-source.bind="dataSourceRateStep">
             <ak-col k-field="stepNum" k-title="阶梯号"></ak-col>
@@ -109,7 +117,7 @@
           <label class="form-label">备注</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="rate.remark">
+            <input type="text" class="form-control" value.bind="rate.remark & validate">
           </div>
         </div>
         <div class="form-actions">

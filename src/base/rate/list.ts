@@ -4,6 +4,7 @@ import { RateService } from "@app/base/services/rate";
 import { DataSourceFactory } from "@app/utils";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { ConstantValues } from '@app/common/models/constant-values';
 @autoinject
 export class Rate {
   searchName: string;
@@ -16,6 +17,8 @@ export class Rate {
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   unit = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;
+
   private dataSource: kendo.data.DataSource;
 
   constructor(private rateService: RateService,
@@ -35,6 +38,7 @@ export class Rate {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+        let rateType = this.rateTypes.find(d => res.rateType == d.value);
         if (unit) {
           res.unit = unit.dictDataName;          
         }
@@ -43,6 +47,9 @@ export class Rate {
         }
         if (warehouseCategory) {
           res.warehouseCategory = warehouseCategory.dictDataName;
+        }
+        if (rateType) {
+          res.rateTypeStr = rateType.text;
         }
         return res;
       }),

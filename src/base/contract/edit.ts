@@ -20,6 +20,7 @@ export class EditContract {
   unit = [] as DictionaryData[];
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;
 
   contractTypes = ConstantValues.ContractTypes;
   warehouses: WorkInfo[];
@@ -99,6 +100,7 @@ export class EditContract {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+        let rateType = this.rateTypes.find(d => res.rateType == d.value);
         if (unit) {
           res.unitStr = unit.dictDataName;
         }
@@ -107,6 +109,9 @@ export class EditContract {
         }
         if (warehouseCategory) {
           res.warehouseCategoryStr = warehouseCategory.dictDataName;
+        }
+        if (rateType) {
+          res.rateTypeStr = rateType.text;
         }
         return res;
       });
@@ -124,7 +129,6 @@ export class EditContract {
     if (!valid) return;
     this.contractVo.contract = this.contract;
     try {
-      console.log(this.contractVo)
       await this.contractService.updateContract(this.contractVo);
       await this.messageDialogService.alert({ title: "编辑成功" });
       this.router.navigateToRoute("list");

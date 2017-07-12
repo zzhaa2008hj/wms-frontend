@@ -2,6 +2,8 @@ export interface CustomerRate {
   id?: string;
   contractId: string;
   rateType: number;
+  rateTypeStr: string;
+
   rateCategory: number;
   workId: string;
   workName: string;

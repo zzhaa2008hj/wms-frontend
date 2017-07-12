@@ -18,7 +18,7 @@ export class NewSeparate {
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
   cargoItems = [];
-  instockStages: string[] = ConstantValues.InstockStages;
+  instockStages: any[] = ConstantValues.InstockStages;
   dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
@@ -48,7 +48,7 @@ export class NewSeparate {
 
   async activate(params) {
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
-    this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
+    //this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
     let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     if (cargoItems) {
       for (let ci of cargoItems) {

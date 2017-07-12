@@ -48,6 +48,7 @@ export interface InstockCargoItem {
   actualQuantity: number;
   actualNumber: number;
   unit: string;
+  unitStr: string;
   containerNumber: string;
   remark: string;
   orgId: string;

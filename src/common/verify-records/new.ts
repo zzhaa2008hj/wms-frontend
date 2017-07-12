@@ -13,7 +13,8 @@ export class NewVerifyRecord {
 
   activate(verifyRecord: VerifyRecord) {
     this.verifyRecord = verifyRecord;
-    this.verifyRecord.businessTypeStr = ConstantValues.BusinessTypes[this.verifyRecord.businessType - 1];
+    this.verifyRecord.businessTypeStr = ConstantValues.BusinessTypes
+      .find(res => res.type == this.verifyRecord.businessType).name;
   }
 
   async save() {

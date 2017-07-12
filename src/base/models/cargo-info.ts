@@ -107,6 +107,7 @@ export interface CargoRate {
   cargoItemId: string;
 
   rateType: number;
+  rateTypeStr: string;
 
   rateCategory: number;
 

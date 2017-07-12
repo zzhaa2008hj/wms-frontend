@@ -12,7 +12,7 @@ export class ListWorkStatistics {
     pageSizes: true,
     buttonCount: 10
   };
-  categories: string[] = ConstantValues.BusinessTypes;
+  categories: any[] = ConstantValues.BusinessTypes;
 
   constructor(private workStatisticsService: WorkStatisticsService,
               private dataSourceFactory: DataSourceFactory) {
@@ -27,7 +27,7 @@ export class ListWorkStatistics {
   }
 
   formatCategory(category: number) {
-    return this.categories[category - 1];
+    return this.categories.find(res => res.type == category).name;
   }
 
 }

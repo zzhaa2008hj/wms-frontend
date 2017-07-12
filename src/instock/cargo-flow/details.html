@@ -49,7 +49,7 @@
           <label class="form-label">库区性质</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="cargoInfo.warehouseType==1?'公共':'承包'" readonly>
+            <input type="text" class="form-control" value.bind="cargoInfo.warehouseTypeStr" readonly>
           </div>
         </div>
         <div class="form-group">
@@ -92,7 +92,7 @@
           <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
           <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
           <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
-          <ak-col k-field="unit" k-title="计量单位"></ak-col>
+          <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
           <ak-col k-field="remark" k-title="备注"></ak-col>
           <ak-template for="detailTemplate">
             <div class="tabstrip">

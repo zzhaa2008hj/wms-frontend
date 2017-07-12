@@ -68,6 +68,6 @@ export class ViewWorkStatistics {
   }
 
   formatCategory(category: number) {
-    return this.categories[category - 1];
+    return this.categories.find(res => res.type == category).name;
   }
 }

@@ -8,6 +8,8 @@ import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { DictionaryData } from '@app/base/models/dictionary';
+import { DictionaryDataService } from '@app/base/services/dictionary';
 
 /**
  * Created by Hui on 2017/6/23.
@@ -18,6 +20,7 @@ export class EditCargoFlow {
   deletedCargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
+  units = [] as DictionaryData[];
   baseCargoInfo = {
     transport: {
       read: async options => {
@@ -47,6 +50,7 @@ export class EditCargoFlow {
               private vehicleService: InstockVehicleService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
+              private dictionaryDataService: DictionaryDataService,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -54,11 +58,13 @@ export class EditCargoFlow {
   }
 
   async activate(params) {
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
     if (this.cargoItems) {
       for (let ci of this.cargoItems) {
+        ci.unitStr = this.units.find(r => r.dictDataCode == ci.unit).dictDataName;
         let vehicles = await this.vehicleService.listInstockVehicles(ci.id);
         vehicles.forEach(v => {
           Object.assign(v, { cargoName: ci.cargoName });
@@ -74,7 +80,7 @@ export class EditCargoFlow {
       }
       this.deletedCargoItems = baseCargoItems;
     }
-
+    
     this.dataSourceCargoItem.data(this.cargoItems);
     this.dataSourceVehicle.data(this.vehicles);
     this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);

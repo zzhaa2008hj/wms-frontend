@@ -16,7 +16,8 @@ export class EditVerifyRecord {
     this.verifyRecord = verifyRecord;
     this.verifyRecord.applyTimeStr = moment(this.verifyRecord.applyTime).format("YYYY-MM-DD HH:mm:ss");
     this.verifyRecord.verifyStatus = 1;
-    this.verifyRecord.businessTypeStr = ConstantValues.BusinessTypes[this.verifyRecord.businessType - 1];
+    this.verifyRecord.businessTypeStr = ConstantValues.BusinessTypes
+      .find(res => res.type == this.verifyRecord.businessType).name;
   }
 
   async save() {

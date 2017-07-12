@@ -41,13 +41,6 @@ export class WorkInfoTree {
       this.selectedWorkInfo = await this.workInfoService.getWorkInfo(workId);
     }
     let wData = await this.workInfoService.listWorkInfo();
-    wData.map(res => {
-      let category = this.workInfoCategory.find(d => res.category == d.value.toString());
-      if (category) {
-        res.categoryStr = category.text;
-      }
-      return res;
-    });
     this.helper = treeHelper(wData, { childrenKey: 'sub' });
     let wRootItems = this.helper.toTree();
     this.dataSourceWorkInfo.data(wRootItems);
@@ -77,7 +70,7 @@ export class WorkInfoTree {
       await this.messageDialogService.alert({ title: "提示", message: "请选择子类作业内容", icon: "warning" });
       return;
     }
-    let name = this.selectedWorkInfo.name + "(" + this.selectedWorkInfo.categoryStr + ")";
+    let name = this.selectedWorkInfo.name;
     let id = this.selectedWorkInfo.id;
     this.workInfo.id = id;        
     let data = this.selectedWorkInfo;
