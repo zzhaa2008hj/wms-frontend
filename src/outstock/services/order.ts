@@ -40,6 +40,20 @@ export class OrderService {
   saveOrder(order: Order): Promise<void> {
     return this.http.post(`/base/cargoInfo/list`, order).then(handleResult);
   }
+
+  /**
+   * 商务审核
+   */
+  auditBusiness(id: string, verifyStatus: number): Promise<void> {
+    return this.http.put(`/outstock/order/audit/${id}?verifyStatus=${verifyStatus}`, null).then(handleResult);
+  }
+
+  /**
+   * 费收审核
+   */
+  auditFee(id: string, status: number): Promise<void> {
+    return this.http.put(`/outstock/order/${id}/fee/${status}`, null).then(handleResult);
+  }
 }
 
 @autoinject

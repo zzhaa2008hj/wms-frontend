@@ -52,6 +52,9 @@
            if.bind="status !=1 ">删除</a>
         <!--<a class="btn btn-small" href="/#/instock/${id}/cargo-flows">入库信息</a>-->
         <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
+        <button class="btn btn-small btn-primary" if.bind="stage == 1" click.delegate="verifyBusiness(id)">商务审核</button>
+        <button class="btn btn-small btn-primary" if.bind="stage == 3 || stage == 4" click.delegate="verifyFee(id)">费收审核</button>
+        <button class="btn btn-small btn-primary" if.bind="!clearanceStatus" click.delegate="verifyCustomhouse(id)">单证审核</button>
       </ak-template>
     </ak-col>
   </ak-grid>
