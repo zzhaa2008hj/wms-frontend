@@ -192,6 +192,10 @@ const validationRules = ValidationRules
   .required().withMessage(`\${$displayName} 不能为空`)
   .satisfies(x => /^[1][358][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
 
+  .ensure((order: Order) => order.takeDeliveryNum)
+  .displayName('提货单号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
   .ensure((order: Order) => order.remark)
   .displayName('备注')
   .maxLength(500).withMessage(`\${$displayName} 过长`)

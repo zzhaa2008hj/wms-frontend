@@ -171,6 +171,10 @@ const validationRules = ValidationRules
   .displayName('联系人')
   .required().withMessage(`\${$displayName} 不能为空`)
 
+  .ensure((order: Order) => order.takeDeliveryNum)
+  .displayName('提货单号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
   .ensure((order: Order) => order.contactNumber)
   .displayName('联系电话')
   .required().withMessage(`\${$displayName} 不能为空`)

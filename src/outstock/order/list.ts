@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
 import { OrderCriteria, OrderService } from "@app/outstock/services/order";
+import * as moment from 'moment';
 
 @autoinject
 export class OrderList {
