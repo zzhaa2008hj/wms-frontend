@@ -40,13 +40,6 @@
             <input type="text" class="form-control" value.bind="rate.cargoSubCategoryName">
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">计量单位*</label>
-          <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.unit" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
-                             k-data-source.bind="unit">
-          </ak-drop-down-list>
-        </div>
         <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3">
           <div class="form-group">
             <label class="form-label">作业类别*</label>
@@ -66,15 +59,15 @@
           <div class="form-group">
             <label class="form-label">库位性质*</label>
             <span class="help"></span>
-            <ak-drop-down-list k-value.two-way="rate.warehouseType & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
-              k-data-source.bind="warehouseType">
+            <ak-drop-down-list k-value.two-way="rate.warehouseType & validate" k-option-label="请选择..." k-data-text-field="dictDataName"
+              k-data-value-field="dictDataCode" k-data-source.bind="warehouseType">
             </ak-drop-down-list>
           </div>
           <div class="form-group">
             <label class="form-label">库位类别*</label>
             <span class="help"></span>
-            <ak-drop-down-list k-value.two-way="rate.warehouseCategory & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
-              k-data-source.bind="warehouseCategory">
+            <ak-drop-down-list k-value.two-way="rate.warehouseCategory & validate" k-option-label="请选择..." k-data-text-field="dictDataName"
+              k-data-value-field="dictDataCode" k-data-source.bind="warehouseCategory">
             </ak-drop-down-list>
           </div>
         </div>
@@ -92,7 +85,13 @@
             <input type="text" class="form-control" value.bind="rate.price">
           </div>
         </div>
-
+        <div class="form-group">
+          <label class="form-label">计量单位*</label>
+          <span class="help"></span>
+          <ak-drop-down-list k-value.two-way="rate.unit & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+            k-data-source.bind="unit">
+          </ak-drop-down-list>
+        </div>
         <div if.bind="rate.pricingMode == 2">
           <div class="row">
             <div class="col-md-9">
