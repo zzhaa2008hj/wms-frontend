@@ -15,7 +15,8 @@ export class WorkOrder {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: '新增作业' },
-      { route: '/new-item/:id', name: 'new-item', moduleId: './new-item', title: '新增作业过程' }
+      { route: '/new-item/:id', name: 'new-item', moduleId: './new-item', title: '新增作业过程' },
+      { route: '/new-area/:id', name: 'new-item', moduleId: './new-area', title: '新增作业区域'}
     ]);
     this.router = router;
   }

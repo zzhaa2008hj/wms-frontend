@@ -3,10 +3,12 @@ import { DataSourceFactory } from "@app/utils";
 import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
 import { DialogService } from "ui";
 import { NewWorkOrderItem } from "@app/base/work-order/new-item";
+import { VeiwWorkItem } from "@app/base/work-order/view";
 import { RouterParams } from '@app/common/models/router-params';
 export class WorkOrders {
   dataSource: kendo.data.DataSource;
   test: kendo.ui.Grid;
+  type: number;
 
   constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderService: WorkOrderService,
@@ -16,36 +18,11 @@ export class WorkOrders {
   }
 
   async activate() {
+    this.type = this.routerParams.type;
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId }),
       pageSize: 10
     });   
-  }
-
-  detailInit(e) {
-    let detailRow = e.detailRow;
-    detailRow.find('.workItems').kendoGrid({
-      dataSource: {
-        transport: {
-          read: (options) => {
-            this.workOrderItemService.getWorkOrderItems(e.data.id)
-              .then(options.success)
-              .catch(err => options.error("", "", err));
-          }
-        },
-        filter: { field: 'workOrderId', operator: 'eq', value: e.data.id }
-      },
-      columns: [
-        { field: 'workName', title: '作业过程名称' },
-        { field: 'quantity', title: '数量' },
-        { field: 'number', title: '件数' },
-        { field: 'unit', title: '计量单位' },
-        { field: 'containerType', title: '集装箱类型' },
-        { field: 'containerNumber', title: '集装箱号' },
-        { field: 'customerName', title: '作业单位名称' },
-        { field: 'warehouseName', title: '库区名称' }
-      ]
-    });
   }
 
   /* async add() {
@@ -64,7 +41,7 @@ export class WorkOrders {
   async addItem(id: string, e) {
     let res = await this.dialogService.open({
       viewModel: NewWorkOrderItem,
-      model: { batchNumber: this.cargoFlow.batchNumber, workOrderId: id, businessId: e.businessId },
+      model: { batchNumber: e.batchNumber, workOrderId: id, businessId: e.businessId ,type: this.type},
       lock: true
     }).whenClosed();
     if (res.wasCancelled) return;
@@ -79,5 +56,14 @@ export class WorkOrders {
     } catch (err) {
       await this.dialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
+  }
+
+  view(id: string) {
+    this.dialogService.open({
+      viewModel: VeiwWorkItem,
+      model: {id: id},
+      lock: true
+    });
+     
   }
 }
