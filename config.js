@@ -21,7 +21,7 @@ System.config({
     "aurelia-framework": "npm:aurelia-framework@1.1.2",
     "aurelia-history": "npm:aurelia-history@1.0.0",
     "aurelia-http-client": "npm:aurelia-http-client@1.1.1",
-    "aurelia-kendoui-bridge": "npm:aurelia-kendoui-bridge@1.5.2",
+    "aurelia-kendoui-bridge": "npm:aurelia-kendoui-bridge@1.6.3",
     "aurelia-loader": "npm:aurelia-loader@1.0.0",
     "aurelia-logging": "npm:aurelia-logging@1.3.1",
     "aurelia-logging-console": "npm:aurelia-logging-console@1.0.0",
@@ -122,7 +122,7 @@ System.config({
       "aurelia-pal": "npm:aurelia-pal@1.3.0",
       "aurelia-path": "npm:aurelia-path@1.1.1"
     },
-    "npm:aurelia-kendoui-bridge@1.5.2": {
+    "npm:aurelia-kendoui-bridge@1.6.3": {
       "aurelia-binding": "npm:aurelia-binding@1.2.1",
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.3.1",
       "aurelia-logging": "npm:aurelia-logging@1.3.1",
