@@ -1,17 +1,15 @@
 <template>
   <div class="grid simple">
-    <div class="grid-title no-border">新增出库指令</h4>
+    <div class="grid-title no-border">编辑出库</h4>
     </div>
     <div class="grid-body no-border"><br>
-      <form submit.delegate="addNewOrder()">
+      <form submit.delegate="editOrder()">
         <div class="form-group">
           <label class="form-label">批次号*</label>
           <span class="help"></span>
-          <ak-drop-down-list k-widget.two-way="selectedCargoInfo" k-option-label="请选择..."
-                             k-data-text-field="batchNumber" k-data-value-field="id"
-                             k-data-source.bind="baseCargoInfo"
-                             k-on-select.delegate="onSelectCargoInfo($event.detail)">
-          </ak-drop-down-list>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="order.batchNumber" readonly>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">是否为最后一批*</label>

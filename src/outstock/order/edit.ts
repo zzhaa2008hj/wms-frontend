@@ -3,7 +3,6 @@ import { autoinject, Container } from 'aurelia-dependency-injection';
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
-import { CodeService } from '@app/common/services/code';
 import { Order, OrderItem } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
 import { MessageDialogService } from "ui";
@@ -12,7 +11,7 @@ import { MessageDialogService } from "ui";
  * Created by Hui on 2017/6/23.
  */
 @autoinject
-export class NewOrder {
+export class EditOrder {
   order = {} as Order;
   outstockOrderItems = [];
   outstockCargoItems = new kendo.data.HierarchicalDataSource({
@@ -59,43 +58,29 @@ export class NewOrder {
   validationController: ValidationController;
   private dropDownListCargoItem: any;
 
-  constructor( private router: Router,
-               private orderService: OrderService,
-               private messageDialogService: MessageDialogService,
-               private codeService: CodeService,
+  constructor(private router: Router,
+              private orderService: OrderService,
+              private messageDialogService: MessageDialogService,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
   }
 
-  async activate() {
-    this.baseCargoInfo = await this.orderService.listBaseCargoInfosByInstock();
-  }
-
-  async onSelectCargoInfo(e) {
-    let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
-    let res = await this.codeService.generateCode("3", dataItem.batchNumber);
-    this.order.outstockOrderNumber = res.content;
-    this.setOrderInfo(dataItem);
-    this.getBaseCargoItems();
-  }
-
-  setOrderInfo(dataItem: CargoInfo) {
-    this.order.agentId = dataItem.agentId;
-    this.order.agentName = dataItem.agentName;
-    this.order.customerId = dataItem.customerId;
-    this.order.customerName = dataItem.customerName;
-    this.order.batchNumber = dataItem.batchNumber;
-    this.order.unit = dataItem.unit;
-    this.order.cargoInfoId = dataItem.id;
-    this.order.id = null;
-    this.order.lastBatch = 0;
-  }
-
-  async getBaseCargoItems() {
+  async activate(params) {
+    this.order = await this.orderService.getOrderById(params.id);
     this.baseCargoItems = await this.orderService.listBaseCargoItems(this.order.cargoInfoId);
+    this.outstockOrderItems = this.order.outstockOrderItems;
+    this.outstockOrderItems.forEach(ooi => {
+      let bci = this.baseCargoItems.filter(bci => bci.id == ooi.cargoItemId);
+      let index = this.baseCargoItems.indexOf(bci[0]);
+      this.baseCargoItems.splice(index, 1);
+      this.deletedBaseCargoItems.splice(0, 0, bci[0]);
+    });
+
     this.outstockCargoItems.data(this.baseCargoItems);
+    this.orderItems.read();
+    this.vehicles.data(this.order.outstockVehicles);
   }
 
   onSelect(e) {
@@ -126,13 +111,13 @@ export class NewOrder {
   deleteOrderItem(e) {
     console.log(e);
     this.outstockOrderItems.forEach(ooi => {
-      if (e.uuid == ooi.uuid) {
+      if (e.id == ooi.id) {
         let index = this.outstockOrderItems.indexOf(ooi);
         this.outstockOrderItems.splice(index, 1);
       }
     });
     this.deletedBaseCargoItems.forEach(dbci => {
-      if (e.uuid == dbci.id) {
+      if (e.cargoItemId == dbci.id) {
         let index = this.deletedBaseCargoItems.indexOf(dbci);
         this.deletedBaseCargoItems.splice(index, 1);
         this.baseCargoItems.splice(0, 0, dbci);
@@ -142,7 +127,7 @@ export class NewOrder {
     this.outstockCargoItems.data(this.baseCargoItems);
   }
 
-  async addNewOrder() {
+  async editOrder() {
     let vehicles = [];
     Object.assign(vehicles, this.vehicles.data());
     let orderItems = [];
@@ -167,12 +152,11 @@ export class NewOrder {
     if (!valid) return;
 
     try {
-      await this.orderService.saveOrder(this.order);
-      await this.messageDialogService.alert({ title: "新增成功" });
+      await this.orderService.updateOrder(this.order);
+      await this.messageDialogService.alert({ title: "修改成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await
-        this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
     }
   }
 
