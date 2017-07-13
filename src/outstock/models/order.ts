@@ -30,6 +30,8 @@ export interface Order {
   //出库货物信息
   outstockOrderItems: OrderItem[];
 
+  outstockDateStr: string;
+
 }
 
 export interface OrderItem {
