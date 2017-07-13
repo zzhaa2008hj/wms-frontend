@@ -1,8 +1,15 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { MessageDialogService } from "ui";
+import { MessageDialogService, DialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
 import { OrderCriteria, OrderService } from "@app/outstock/services/order";
 import * as moment from 'moment';
+import { VerifyRecord } from '@app/common/models/verify-record';
+import { VerifyBusinessDialogNew } from '@app/outstock/order/verify-business/new';
+import { VerifyFeeDialogNew } from '@app/outstock/order/verify-fee/new';
+import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhouse/new";
+import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
+import { CustomhouseClearanceService } from "@app/base/services/customhouse";
+import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
 
 @autoinject
 export class OrderList {
@@ -18,7 +25,9 @@ export class OrderList {
 
   constructor(private orderService: OrderService,
               private messageDialogService: MessageDialogService,
-              private dataSourceFactory: DataSourceFactory) {
+              private dataSourceFactory: DataSourceFactory,
+              private dialogService: DialogService,
+              private customhouseService: CustomhouseClearanceService) {
 
   }
 
@@ -83,6 +92,85 @@ export class OrderList {
       endDate = new Date();
       this.startDatePicker.max(endDate);
       this.endDatePicker.min(endDate);
+    }
+  }
+
+  /**
+   * 商务审核
+   */
+  async verifyBusiness(id) {
+    let result = await this.dialogService.open({ viewModel: VerifyBusinessDialogNew, model: {}, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    try {
+      let record = result.output as VerifyRecord;
+      record.businessId = id;
+      await this.orderService.auditBusiness(record.businessId, record.verifyStatus);
+      await this.dialogService.alert({ title: "提示", message: "审核成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  /**
+   * 费收审核
+   */
+  async verifyFee(id) {
+    let result = await this.dialogService.open({ viewModel: VerifyFeeDialogNew, model: {}, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    try {
+      await this.orderService.auditFee(id, result.output);
+      await this.dialogService.alert({ title: "提示", message: "审核成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  /**
+   * 单证审核
+   */
+  async verifyCustomhouse(id) {
+    let customhouseClearance = await this.customhouseService.getCustomhouseClearanceByType(2, id);
+    // 修改
+    if (customhouseClearance) {
+      let result = await this.dialogService.open({
+        viewModel: VerifyCustomhouseDialogEdit,
+        model: customhouseClearance,
+        lock: true
+      }).whenClosed();
+      if (result.wasCancelled) return;
+      try {
+        let customhouse = result.output as CustomhouseClearanceVo;
+        customhouse.flowId = id;
+        customhouse.type = 2;
+        await this.customhouseService.updateCustomhouseClearance(customhouseClearance.id, customhouse);
+        await this.dialogService.alert({ title: "提示", message: "修改审核成功！" });
+        this.dataSource.read();
+        return;
+      } catch (err) {
+        await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+        return;
+      }
+    }
+    // 新增
+    let result = await this.dialogService.open({
+      viewModel: VerifyCustomhouseDialogNew,
+      model: {},
+      lock: true
+    }).whenClosed();
+    if (result.wasCancelled) return;
+    try {
+      let customhouse = result.output as CustomhouseClearanceVo;
+      customhouse.flowId = id;
+      customhouse.type = 2;
+      await this.customhouseService.saveCustomhouseClearance(customhouse);
+      await this.dialogService.alert({ title: "提示", message: "审核成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
 }
