@@ -7,6 +7,7 @@ export class MessageRouter {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
+      { route: '/detail', name: 'detail', moduleId: './detail', title: "详情" }
     ]);
     this.router = router;
 
