@@ -62,7 +62,7 @@ export class NewCargoInfo {
 
 
   async activate() {
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");    
+    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.validationController.addObject(this.cargoInfo, validationRules);
 
     let res = await this.cargoInfoService.getBatchNumber();
@@ -165,6 +165,7 @@ export class NewCargoInfo {
     this.orderNumChange();
 
   }
+
   async save() {
     if (this.cargoItems.length == 0) {
       this.messageDialogService.alert({ title: '货物明细错误', message: '货物明细列表不能为空！' });
@@ -191,9 +192,10 @@ export class NewCargoInfo {
   orderNumChange() {
     this.cargoInfo.orderQuantity = 0;
     this.cargoInfo.orderNumber = 0;
-    this.cargoItems.forEach(r => this.cargoInfo.orderQuantity += r.orderQuantity)
-    this.cargoItems.forEach(r => this.cargoInfo.orderNumber += r.orderNumber)
+    this.cargoItems.forEach(r => this.cargoInfo.orderQuantity += r.orderQuantity);
+    this.cargoItems.forEach(r => this.cargoInfo.orderNumber += r.orderNumber);
   }
+
   cancel() {
     this.router.navigateToRoute("list");
   }
