@@ -50,7 +50,6 @@ export class OrderService {
     return this.http.put(`/outstock/order/${order.id}`, order).then(handleResult);
   }
 
-<<<<<<< HEAD
   /**
    * 商务审核
    */
@@ -65,23 +64,9 @@ export class OrderService {
     return this.http.put(`/outstock/order/${id}/fee/${status}`, null).then(handleResult);
   }
 
-  /**
-   * 商务审核
-   */
-  auditBusiness(id: string, verifyStatus: number): Promise<void> {
-    return this.http.put(`/outstock/order/audit/${id}?verifyStatus=${verifyStatus}`, null).then(handleResult);
-  }
-
-  /**
-   * 费收审核
-   */
-  auditFee(id: string, status: number): Promise<void> {
-    return this.http.put(`/outstock/order/${id}/fee/${status}`, null).then(handleResult);
-=======
   async getChangeHistory(id: string) {
     let res = await this.http.get(`/outstock/order/${id}/changeHistory`);
     return res.content;
->>>>>>> origin/hui
   }
 }
 
