@@ -6,7 +6,7 @@
     <a class="btn btn-primary btn-small" route-href="route:new">新增</a>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true" 
-    k-widget.two-way="test" k-on-detail-init.delegate="detailInit($event.detail)">
+    k-widget.two-way="test" >
     <ak-col k-title="作业类别" k-field="workOrderCategory"></ak-col>
     <ak-col k-title="车牌号" k-field="plateNumber"></ak-col>
     <ak-col k-title="司机名称" k-field="driverName"></ak-col>
@@ -16,11 +16,9 @@
     <ak-col k-title="作业日期" k-field="workDate" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
-        <a class="btn btn-primary btn-small" click.trigger="addItem(id,$this)">新增作业过程</a>
+        <a class="btn btn-primary btn-small" click.trigger="addItem(id,$this)">新增作业区域</a>
+        <button a class="btn btn-small" click.trigger="view(id)">详情</button>
       </ak-template>
     </ak-col>
-    <ak-template for="detailTemplate">
-      <div class="workItems"></div>
-    </ak-template>
   </ak-grid>
 </template>

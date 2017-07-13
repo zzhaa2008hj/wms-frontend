@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { dateConverter, handleResult, Query, RestClient, fixDate } from "@app/utils";
-import { WorkOrder, WorkOrderItem } from "@app/instock/models/work";
+import { WorkOrder, WorkOrderItem, WorkOrderArea } from "@app/instock/models/work";
 /**
  * 查询条件
  */
@@ -12,7 +12,7 @@ export interface WorkOrderCriteria {
 
 export interface WorkOrderAndItems {
   warehouseWorkOrder?: WorkOrder;
-  list?: WorkOrderItem[];
+  list?: WorkOrderArea[];
 }
 
 @autoinject
@@ -49,8 +49,8 @@ export class WorkOderItemService {
   constructor(private http: RestClient) {
   }
 
-  getWorkOrderItems(workOrderId: string): Promise<WorkOrderItem[]> {
-    return this.http.get(`/base/warehouseWorkOrderItem/list/${workOrderId}`).then(res => res.content);
+  getWorkOrderItems(workAreaId: string): Promise<WorkOrderItem[]> {
+    return this.http.get(`/base/warehouseWorkOrderItem/list/${workAreaId}`).then(res => res.content);
   }
 
   saveWorkOrderItem(workOrderItem: WorkOrderItem): Promise<void> {

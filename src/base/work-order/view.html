@@ -1,0 +1,33 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i>
+            <div>作业详情</div>
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="row column-seperation">
+                <ak-grid k-data-source.bind="datasource" 
+                        k-pageable.bind="true" 
+                        k-editable="inline" 
+                        k-on-detail-init.delegate="detailInit($event.detail)"
+                        k-widget.two-way="grid">
+                    <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+                    <ak-col k-field="quantity" k-title="数量"></ak-col>
+                    <ak-col k-field="number" k-title="件数"></ak-col>
+                    <ak-col k-field="unit" k-title="单位">
+                        <ak-template>
+                            ${getDictDataName(unit)}
+                        </ak-template>    
+                    </ak-col>
+                    <ak-col k-field="container_number" k-title="集装箱号"></ak-col>
+                    <ak-col k-field="remark" k-title="备注"></ak-col>
+                    <ak-template for="detailTemplate">
+                        <div class="workItem"></div>
+                    </ak-template>
+                </ak-grid>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>
