@@ -49,6 +49,11 @@ export class OrderService {
   updateOrder(order: Order): Promise<void> {
     return this.http.put(`/outstock/order/${order.id}`, order).then(handleResult);
   }
+
+  async getChangeHistory(id: string) {
+    let res = await this.http.get(`/outstock/order/${id}/changeHistory`);
+    return res.content;
+  }
 }
 
 @autoinject
