@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 import { Order } from "@app/outstock/models/order";
+import { OrderItem } from '@app/instock/models/order-item';
 
 /**
  * 查询条件
@@ -67,16 +68,17 @@ export class OrderService {
 
 @autoinject
 export class OrderItemService {
-  // constructor(private http: RestClient) {
-  // }
-
-
+  constructor(private http: RestClient) {
+  }
+  async getItemsByOrderId(id: string): Promise<OrderItem[]> {
+    let res = await this.http.get(`/outstock/order/${id}/item`);
+    return res.content;
+  }
 }
 
 @autoinject
 export class VehicleService {
   // constructor(private http: RestClient) {
   // }
-
 
 }
