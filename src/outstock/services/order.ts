@@ -68,17 +68,27 @@ export class OrderService {
     let res = await this.http.get(`/outstock/order/${id}/changeHistory`);
     return res.content;
   }
-  createOutstockOrder(ids: string[]): Promise<void> {
-    return this.http.post('/outstock/order', ids).then(handleResult);
+
+  createOutstockOrder(id: string): Promise<void> {
+    return this.http.post(`/outstock/order/createOutstockOrder/${id}`, null).then(handleResult);
   }
+
+  queryOrdersByOrderType(keywords: string): Query<Order> {
+    return this.http.query<Order>(`/outstock/order/page/${2}/orderType`, { keywords })
+      .map(order => fixDate(order, 'outstockDate'));
+  }
+
+  async getOutstockOrderView(id: string) {
+    let res = await this.http.get(`/outstock/order/${id}/orderView`);
+    return res.content;
+  }
+
 }
 
 @autoinject
 export class OrderItemService {
   // constructor(private http: RestClient) {
   // }
-
-
 }
 
 @autoinject

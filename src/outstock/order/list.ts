@@ -10,7 +10,7 @@ import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhou
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
-import { AppRouter } from "aurelia-router";
+import { Router } from "aurelia-router";
 
 @autoinject
 export class OrderList {
@@ -25,7 +25,7 @@ export class OrderList {
   };
 
   constructor(private orderService: OrderService,
-              private appRouter: AppRouter,
+              private router: Router,
               private messageDialogService: MessageDialogService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
@@ -184,13 +184,11 @@ export class OrderList {
    */
   async createOutstockOrder(id) {
     try {
-      let conformed = await this.messageDialogService.confirm({ title: "提示", message: "确认生成出库单？" });
-      if (!conformed) return;
       await this.orderService.createOutstockOrder(id);
       let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库单" });
       if (!skipConformed) return;
       // 跳转 到出库单页面
-      this.appRouter.navigateToRoute('outstock-order');
+      this.router.navigateToRoute('orderItem');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
