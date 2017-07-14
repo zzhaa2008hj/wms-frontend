@@ -113,4 +113,68 @@ export class ConstantValues {
   static get WorkInfoCategory() {
     return [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "移库", value: 4 }];
   }
+
+  static get OutstockStages() {
+    return [{
+      stage: -1,
+      title: "撤回中"
+    }, {
+      stage: 0,
+      title: "已撤回"
+    }, {
+      stage: 1,
+      title: "待商务审核"
+    }, {
+      stage: 2,
+      title: "商务审核未通过"
+    }, {
+      stage: 3,
+      title: "商务审核通过"
+    }, {
+      stage: 4,
+      title: "费收审核未通过"
+    }, {
+      stage: 5,
+      title: "费收审核通过（收费完成）"
+    }, {
+      stage: 6,
+      title: "费收审核通过（先装货后收费）"
+    }, {
+      stage: 7,
+      title: "副总审批通过"
+    }, {
+      stage: 8,
+      title: "已生成出库单"
+    }, {
+      stage: 9,
+      title: "商务审核未通过"
+    }, {
+      stage: 10,
+      title: "商务审核通过"
+    }, {
+      stage: 11,
+      title: "已生成出库指令单"
+    }, {
+      stage: 12,
+      title: "出库作业中"
+    }, {
+      stage: 13,
+      title: "作业完成（待审核）"
+    }, {
+      stage: 14,
+      title: "库场审核未通过"
+    }, {
+      stage: 15,
+      title: "库场审核通过"
+    }, {
+      stage: 16,
+      title: "商务已确认"
+    }, {
+      stage: 17,
+      title: "已生成出库清单"
+    }, {
+      stage: 18,
+      title: "出库完成"
+    }];
+  }
 }

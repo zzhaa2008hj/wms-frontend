@@ -161,8 +161,7 @@ export class DataSourceFactory {
               .catch(err => options.error('', '', err));
         };
     }
-
-    return new kendo.data.DataSource({
+    let options: any = {
       transport: {
         read
       },
@@ -176,7 +175,9 @@ export class DataSourceFactory {
       schema,
       serverPaging,
       pageSize
-    });
+    };
+    if (!options.schema) delete options.schema;
+    return new kendo.data.DataSource(options);
   }
 
 }
