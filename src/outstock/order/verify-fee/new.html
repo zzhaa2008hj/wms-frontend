@@ -1,19 +1,22 @@
 <template>
     <ux-dialog>
         <ux-dialog-header show-close-button.bind="true">
-            <i class="fa fa-check-square-o"></i> 商务审核
+            <i class="fa fa-check-square-o"></i> 费收审核
         </ux-dialog-header>
         <ux-dialog-body>
-            <div class="form-group">
+            <div class="form-group" style="width:500px">
                 <label class="form-label">是否通过*</label>
                 <span class="help"></span>
                 <div class="controls">
                     <div class="row">
-                        <div class="col-md-6">
-                            <input type="radio" name="optionsRadios" model.bind="1" checked.bind="verifyRecord.verifyStatus"> 通过
+                        <div class="col-md-4">
+                            <input type="radio" name="optionsRadios" model.bind="0" checked.bind="status"> 不通过
                         </div>
-                        <div class="col-md-6">
-                            <input type="radio" name="optionsRadios" model.bind="0" checked.bind="verifyRecord.verifyStatus"> 不通过
+                         <div class="col-md-4">
+                            <input type="radio" name="optionsRadios" model.bind="1" checked.bind="status"> 通过（收费完成）
+                        </div>
+                        <div class="col-md-4">
+                            <input type="radio" name="optionsRadios" model.bind="2" checked.bind="status"> 通过 (先装货后收费)
                         </div>
                     </div>
                  </div>

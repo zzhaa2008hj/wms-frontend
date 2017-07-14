@@ -1,4 +1,5 @@
 <template>
+  <require from="./recipients"></require>
   <div class="page-title">
     <h3>站内信管理</h3>
   </div>
@@ -9,7 +10,7 @@
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true" k-on-detail-init.delegate="detailInit($event.detail)">
+  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true">
     <ak-col k-title="类别" k-field="category ==1 ? '内部':'外部'"></ak-col>
     <ak-col k-title="标题" k-field="title"></ak-col>
     <ak-col k-title="内容" k-field="content" k-dth.bind="300"></ak-col>
@@ -21,7 +22,7 @@
       </ak-template>
     </ak-col>
     <ak-template for="detailTemplate">
-      <div class="messageResults"></div>
+      <message-recipients message-id.bind="$this.id"></message-recipients>
     </ak-template>
   </ak-grid>
 </template>

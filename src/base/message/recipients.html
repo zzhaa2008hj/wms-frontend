@@ -1,0 +1,11 @@
+<template>
+  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" >
+    <ak-col k-field="receiverName" k-title="接收人"></ak-col>
+    <ak-col k-field="hasRead" k-title="是否已读">
+      <ak-template>
+        ${hasRead == 1? "已读":"未读"}
+      </ak-template>
+    </ak-col>
+    <ak-col k-field="modifyTime" k-format="{0:yyyy-MM-dd HH:mm:ss}" k-title="阅读时间"></ak-col>
+  </ak-grid>
+</template>
