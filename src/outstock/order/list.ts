@@ -10,6 +10,7 @@ import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhou
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
+import { Router } from "aurelia-router";
 import { VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 
@@ -26,6 +27,7 @@ export class OrderList {
   };
 
   constructor(private orderService: OrderService,
+              private router: Router,
               private messageDialogService: MessageDialogService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
@@ -55,10 +57,12 @@ export class OrderList {
 
   select() {
     if (this.orderCriteria.beginDate) {
-      this.orderCriteria.beginDate = this.orderCriteria.beginDate ? moment(this.orderCriteria.beginDate).format("YYYY-MM-DD") : '';
+      this.orderCriteria.beginDate = this.orderCriteria.beginDate ? moment(this.orderCriteria.beginDate)
+        .format("YYYY-MM-DD") : '';
     }
     if (this.orderCriteria.endDate) {
-      this.orderCriteria.endDate = this.orderCriteria.endDate ? moment(this.orderCriteria.endDate).format("YYYY-MM-DD") : '';
+      this.orderCriteria.endDate = this.orderCriteria.endDate ? moment(this.orderCriteria.endDate)
+        .format("YYYY-MM-DD") : '';
     }
     this.dataSource.read();
   }
@@ -173,6 +177,22 @@ export class OrderList {
       this.dataSource.read();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  /**
+   * 生成出库单
+   * @returns {Promise<void>}
+   */
+  async createOutstockOrder(id) {
+    try {
+      await this.orderService.createOutstockOrder(id);
+      let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库单" });
+      if (!skipConformed) return;
+      // 跳转 到出库单页面
+      this.router.navigateToRoute('orderItem');
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
 

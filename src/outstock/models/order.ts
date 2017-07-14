@@ -73,3 +73,8 @@ export interface Vehicle {
   remark: string;
   orgId: string;
 }
+
+export interface OutstockOrderVo {
+  outstockOrder: Order;
+  outstockOrderItems: OrderItem[];
+}
