@@ -8,6 +8,7 @@ import { ValidationController, ValidationControllerFactory, ValidationRules } fr
 import { formValidationRenderer } from '@app/validation/support';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class NewCargoItem {
@@ -26,6 +27,7 @@ export class NewCargoItem {
   contractCargoRateSteps: CargoRateStep[];
 
   cargoRates: CargoRate[];
+  rateTypes = ConstantValues.WorkInfoCategory;
 
   constructor(private cargoInfoService: CargoInfoService,
               private dialogController: DialogController,
@@ -124,6 +126,7 @@ export class NewCargoItem {
       let unit = this.unitDatasource.find(d => res.unit == d.dictDataCode);
       let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
@@ -132,6 +135,9 @@ export class NewCargoItem {
       }
       if (warehouseCategory) {
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
+      }
+      if (rateType) {
+        res.rateTypeStr = rateType.text;
       }
       return res;
     });

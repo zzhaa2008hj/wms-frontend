@@ -3,6 +3,7 @@ import { CargoItem, CargoRate } from '@app/base/models/cargo-info';
 import { DialogController } from 'ui';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class DetailsCargoItem {
@@ -14,6 +15,7 @@ export class DetailsCargoItem {
   unitDatasource = [] as DictionaryData[];
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
+  rateTypes = ConstantValues.WorkInfoCategory;
 
   constructor(private dialogController: DialogController,
               private dictionaryDataService: DictionaryDataService) {
@@ -41,6 +43,7 @@ export class DetailsCargoItem {
       let unit = this.unitDatasource.find(d => res.unit == d.dictDataCode);
       let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
@@ -49,6 +52,9 @@ export class DetailsCargoItem {
       }
       if (warehouseCategory) {
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
+      }
+      if (rateType) {
+        res.rateTypeStr = rateType.text;
       }
       return res;
     });

@@ -1,3 +1,5 @@
+import { DictionaryData } from '../../base/models/dictionary';
+
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
@@ -16,6 +18,7 @@ import { RouterParams } from '@app/common/models/router-params';
 import { InstockOrderService } from "@app/instock/services/instock-order";
 import { AppRouter } from "aurelia-router";
 import { OrderItemService } from "@app/instock/services/order-item";
+import { DictionaryDataService } from '@app/base/services/dictionary';
 
 export class CargoFlow {
   searchName: string;
@@ -26,6 +29,7 @@ export class CargoFlow {
     buttonCount: 10
   };
   instockStages: any[] = ConstantValues.InstockStages;
+  units = [] as DictionaryData[];
   private dataSource: kendo.data.DataSource;
   private grid: any;
 
@@ -38,11 +42,13 @@ export class CargoFlow {
               @inject('routerParams') private routerParams: RouterParams,
               @inject private instockOrderService: InstockOrderService,
               @inject private appRouter: AppRouter,
+              @inject private dictionaryDataService: DictionaryDataService,
               @inject private orderItemService: OrderItemService) {
 
   }
 
-  activate() {
+  async activate() {
+    this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
     if (this.routerParams.infoId) {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService
@@ -51,6 +57,7 @@ export class CargoFlow {
             keywords: this.searchName
           }).map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
+            res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
             return res;
           }),
         pageSize: 10
@@ -60,6 +67,7 @@ export class CargoFlow {
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
           .map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
+            res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
             return res;
           }),
         pageSize: 10
