@@ -11,6 +11,8 @@ import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
 import { Router } from "aurelia-router";
+import { VerifyRecordCriteria } from '@app/common/services/verify-record';
+import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 
 @autoinject
 export class OrderList {
@@ -192,5 +194,24 @@ export class OrderList {
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
+  }
+
+  /**
+   * 审核记录
+   */
+  async verifyHistory(id) {
+    let criteria: VerifyRecordCriteria = {};
+    criteria.businessId = id;
+    criteria.businessType = 2;
+    let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: criteria, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+  }
+
+  /**
+   * 商务确认
+   */
+  async businessConfirm(id) {
+    console.log(id);
   }
 }

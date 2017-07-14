@@ -13,6 +13,9 @@ export interface CargoInfoCriteria {
   searchName?: string;
   instockBeginDate?: Date;
   instockEndDate?: Date;
+  instockStatus?: number;
+  outstockStatus?: number;
+  finished?: number;
 }
 
 @autoinject
@@ -138,6 +141,11 @@ export class CargoInfoService {
    */
   async getCargoInfosByInstockStatus(instockStatus: number): Promise<CargoInfo[]> {
     let res = await this.http.get(`/base/cargoInfo/instockStatus/${instockStatus}`);
+    return res.content;
+  }
+
+  async listBaseCargoInfos(criteria?: CargoInfoCriteria): Promise<Array<CargoInfo>> {
+    let res = await this.http.createRequest(`/base/cargoInfo/list`).withParams(criteria).asGet().send();
     return res.content;
   }
 }

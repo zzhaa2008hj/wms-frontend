@@ -10,6 +10,7 @@ import { ValidationController, ValidationControllerFactory, ValidationRules } fr
 import { formValidationRenderer } from "@app/validation/support";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { CargoInfoService } from '@app/base/services/cargo-info';
 
 /**
  * Created by Hui on 2017/6/23.
@@ -24,7 +25,7 @@ export class EditCargoFlow {
   baseCargoInfo = {
     transport: {
       read: async options => {
-        await this.cargoFlowService.listBaseCargoInfos()
+        await this.cargoInfoService.listBaseCargoInfos()
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -45,6 +46,7 @@ export class EditCargoFlow {
   private dropDownListCargoItem: any;
 
   constructor(private router: Router,
+              private cargoInfoService: CargoInfoService,
               private cargoFlowService: CargoFlowService,
               private cargoItemService: CargoItemService,
               private vehicleService: InstockVehicleService,
