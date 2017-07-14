@@ -3,6 +3,7 @@ import { MessageDialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
 import { OrderCriteria, OrderService } from "@app/outstock/services/order";
 import * as moment from 'moment';
+import { AppRouter } from "aurelia-router";
 
 @autoinject
 export class OrderList {
@@ -17,6 +18,7 @@ export class OrderList {
   };
 
   constructor(private orderService: OrderService,
+              private appRouter: AppRouter,
               private messageDialogService: MessageDialogService,
               private dataSourceFactory: DataSourceFactory) {
 
@@ -44,10 +46,12 @@ export class OrderList {
 
   select() {
     if (this.orderCriteria.beginDate) {
-      this.orderCriteria.beginDate = this.orderCriteria.beginDate ? moment(this.orderCriteria.beginDate).format("YYYY-MM-DD") : '';
+      this.orderCriteria.beginDate = this.orderCriteria.beginDate ? moment(this.orderCriteria.beginDate)
+        .format("YYYY-MM-DD") : '';
     }
     if (this.orderCriteria.endDate) {
-      this.orderCriteria.endDate = this.orderCriteria.endDate ? moment(this.orderCriteria.endDate).format("YYYY-MM-DD") : '';
+      this.orderCriteria.endDate = this.orderCriteria.endDate ? moment(this.orderCriteria.endDate)
+        .format("YYYY-MM-DD") : '';
     }
     this.dataSource.read();
   }
@@ -83,6 +87,24 @@ export class OrderList {
       endDate = new Date();
       this.startDatePicker.max(endDate);
       this.endDatePicker.min(endDate);
+    }
+  }
+
+  /**
+   * 生成出库单
+   * @returns {Promise<void>}
+   */
+  async createOutstockOrder(id) {
+    try {
+      let conformed = await this.messageDialogService.confirm({ title: "提示", message: "确认生成出库单？" });
+      if (!conformed) return;
+      await this.orderService.createOutstockOrder(id);
+      let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库单" });
+      if (!skipConformed) return;
+      // 跳转 到出库单页面
+      this.appRouter.navigateToRoute('outstock-order');
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
 }

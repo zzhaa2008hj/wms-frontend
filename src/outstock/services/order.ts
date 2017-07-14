@@ -54,6 +54,9 @@ export class OrderService {
     let res = await this.http.get(`/outstock/order/${id}/changeHistory`);
     return res.content;
   }
+  createOutstockOrder(ids: string[]): Promise<void> {
+    return this.http.post('/outstock/order', ids).then(handleResult);
+  }
 }
 
 @autoinject
