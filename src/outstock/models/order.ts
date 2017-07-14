@@ -31,7 +31,7 @@ export interface Order {
   outstockOrderItems: OrderItem[];
 
   outstockDateStr: string;
-
+  stageTitle: string;
 }
 
 export interface OrderItem {
