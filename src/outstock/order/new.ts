@@ -7,6 +7,7 @@ import { CodeService } from '@app/common/services/code';
 import { Order, OrderItem } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
 import { MessageDialogService } from "ui";
+import { CargoInfoService } from '@app/base/services/cargo-info';
 
 /**
  * Created by Hui on 2017/6/23.
@@ -59,18 +60,20 @@ export class NewOrder {
   validationController: ValidationController;
   private dropDownListCargoItem: any;
 
-  constructor( private router: Router,
-               private orderService: OrderService,
-               private messageDialogService: MessageDialogService,
-               private codeService: CodeService,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+  constructor(private router: Router,
+              private orderService: OrderService,
+              private messageDialogService: MessageDialogService,
+              private cargoInfoService: CargoInfoService,
+              private codeService: CodeService,
+              validationControllerFactory: ValidationControllerFactory, 
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate() {
-    this.baseCargoInfo = await this.orderService.listBaseCargoInfosByInstock();
+    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({instockStatus: 1});
   }
 
   async onSelectCargoInfo(e) {

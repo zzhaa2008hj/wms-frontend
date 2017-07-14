@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
-import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
+import { CargoItem } from "@app/base/models/cargo-info";
 import { Order } from "@app/outstock/models/order";
 
 /**
@@ -25,11 +25,6 @@ export class OrderService {
 
   delete(id: string): Promise<void> {
     return this.http.delete(`/outstock/order/${id}`).then(handleResult);
-  }
-
-  async listBaseCargoInfosByInstock(): Promise<Array<CargoInfo>> {
-    let res = await this.http.get(`/base/cargoInfo/list`);
-    return res.content;
   }
 
   async listBaseCargoItems(cargoInfoId: string): Promise<CargoItem[]> {
