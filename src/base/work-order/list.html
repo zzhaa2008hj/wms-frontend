@@ -16,7 +16,9 @@
     <ak-col k-title="作业日期" k-field="workDate" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
-        <a class="btn btn-primary btn-small" click.trigger="addItem(id,$this)">新增作业区域</a>
+        <!--<a class="btn btn-primary btn-small" click.trigger="addItem(id,$this)">新增作业区域</a>-->
+        <a class="btn btn-small" route-href="route: edit; params.bind: {id: id}">编辑</a>
+        <button a class="btn btn-small" click.trigger="remove(id)">删除</button>
         <button a class="btn btn-small" click.trigger="view(id)">详情</button>
       </ak-template>
     </ak-col>

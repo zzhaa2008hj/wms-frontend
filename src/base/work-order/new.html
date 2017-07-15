@@ -1,4 +1,5 @@
 <template>
+    <require from="./items"></require>
     <h4>作业单</h4>
     <div class="row column-seperation">
         <div class="col-md-5">
@@ -116,22 +117,12 @@
     <div class="row column-seperation">
         <ak-grid k-data-source.bind="datasource" 
          k-pageable.bind="true" 
-         k-toolbar.bind="['create']" 
          k-editable="inline"
          k-on-detail-init.delegate="detailInit($event.detail)"
          k-widget.two-way="grid">
-            <!--<ak-col k-title="作业内容">
-                <ak-template>
-                    <ak-drop-down-list class="form-control"
-                                       k-option-label="请选择..."
-                                       k-data-text-field="workName"
-                                       k-data-value-field="workId"
-                                       k-value.two-way="workId"
-                                       k-data-source.bind="worksSource"
-                                       style="width: 60%">
-                    </ak-drop-down-list>
-                </ak-template>
-            </ak-col>-->
+
+         <button click.trigger="add()">新增作业区域</button>
+
             <ak-col k-title="库区名称">
                 <ak-template>
                     <ak-drop-down-list class="form-control"
@@ -144,8 +135,16 @@
                     </ak-drop-down-list>
                 </ak-template>
             </ak-col>
-            <ak-col k-field="quantity" k-title="作业数量"></ak-col>
-            <ak-col k-field="number" k-title="作业件数"></ak-col>
+            <ak-col k-field="quantity" k-title="作业数量">
+                <ak-template>
+                    <input type="number" value.bind="quantity">
+                </ak-template>
+            </ak-col>
+            <ak-col k-field="number" k-title="作业件数">
+                <ak-template>
+                    <input type="number" value.bind="number">
+                </ak-template>
+            </ak-col>
             <ak-col k-title="计量单位">
                 <ak-template>
                     <ak-drop-down-list k-option-label="请选择..."
@@ -166,28 +165,24 @@
                     </ak-drop-down-list>
                 </ak-template>
             </ak-col>  
-            <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
-            <!--<ak-col k-title="作业单位名称">
+            <ak-col k-field="containerNumber" k-title="集装箱号">
                 <ak-template>
-                    <ak-drop-down-list class="form-control"
-                                       k-option-label="请选择..."
-                                       k-data-text-field="name"
-                                       k-data-value-field="id"
-                                       k-value.two-way="customerId"
-                                       k-data-source.bind="customersSource"
-                                       style="width: 60%">
-                    </ak-drop-down-list>
-                </ak-template>
-            </ak-col>-->
-            <ak-col k-field="remark" k-title="备注"></ak-col>
-            <ak-col k-command.bind="['edit', 'destroy','create']" k-title="&nbsp;" width="250px"></ak-col>
-            <ak-col k-title="操作">
-                <ak-template>
-                    <a class="btn btn-primary btn-small" click.trigger="addItem($this)">新增作业过程</a>
+                    <input type="text" value.bind="containerNumber">
                 </ak-template>
             </ak-col>
+            <ak-col k-field="remark" k-title="备注">
+                <ak-template>
+                    <input type="text" value.bind="remark">
+                </ak-template>
+            </ak-col>
+            <ak-col>
+                <ak-template>
+                    <button class="btn btn-small" click.delegate="remove($this)">删除</button>
+                </ak-template>
+            </ak-col>
+            <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
             <ak-template for="detailTemplate">
-                <div class="workItem"></div>
+                <area-items parent-uid.bind="$this.uid"></area-items>
             </ak-template>
         </ak-grid>
     </div>

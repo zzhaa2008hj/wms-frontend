@@ -35,6 +35,14 @@ export class WorkOrderService {
       .then(res => res.content.map(dateConverter("workDate")));
   }
 
+  getWorkOrderById(id: string): Promise<WorkOrder>{
+    return this.http.get(`/base/warehouseWorkOrder/${id}`).then(res =>{
+      let workOrder = res.content;
+      fixDate(workOrder, 'workDate');
+      return workOrder;
+    });
+  }
+
   saveWorkOrder(workOrder: WorkOrder): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrder`, workOrder).then(handleResult);
   }

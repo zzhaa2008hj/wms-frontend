@@ -38,32 +38,39 @@ export class WorkOrders {
    }
    }*/
 
-  async addItem(id: string, e) {
-    let res = await this.dialogService.open({
-      viewModel: NewWorkOrderItem,
-      model: { batchNumber: e.batchNumber, workOrderId: id, businessId: e.businessId ,type: this.type},
-      lock: true
-    }).whenClosed();
-    if (res.wasCancelled) return;
-    try {
-      await this.workOrderItemService.saveWorkOrderItem(res.output);
-      await this.dialogService.alert({ title: "新增成功", message: "新增成功!" });
+  // async addItem(id: string, e) {
+  //   let res = await this.dialogService.open({
+  //     viewModel: NewWorkOrderItem,
+  //     model: { batchNumber: e.batchNumber, workOrderId: id, businessId: e.businessId ,type: this.type},
+  //     lock: true
+  //   }).whenClosed();
+  //   if (res.wasCancelled) return;
+  //   try {
+  //     await this.workOrderItemService.saveWorkOrderItem(res.output);
+  //     await this.dialogService.alert({ title: "新增成功", message: "新增成功!" });
 
-      let child = this.test.element.find(`[data-uid='${e.uid}']`).next().find(".k-grid").eq(0);
-      if (child.data("kendoGrid")) {
-        child.data("kendoGrid").dataSource.read();
-      }
-    } catch (err) {
-      await this.dialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
-    }
-  }
+  //     let child = this.test.element.find(`[data-uid='${e.uid}']`).next().find(".k-grid").eq(0);
+  //     if (child.data("kendoGrid")) {
+  //       child.data("kendoGrid").dataSource.read();
+  //     }
+  //   } catch (err) {
+  //     await this.dialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+  //   }
+  // }
 
   view(id: string) {
     this.dialogService.open({
       viewModel: VeiwWorkItem,
       model: {id: id},
       lock: true
-    });
-     
+    });  
+  }
+
+  remove(id: string) {
+    alert(id);
+  }
+
+  edit(id: string) {
+    alert(id);
   }
 }

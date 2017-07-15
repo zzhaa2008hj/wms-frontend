@@ -22,7 +22,7 @@ export class MessageRecipients {
         pageSize: 10
       });
   }
-
+  
   idChanged() {
     console.log('id changed', this.messageId);
   }
