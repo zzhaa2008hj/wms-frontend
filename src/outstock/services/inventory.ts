@@ -20,4 +20,11 @@ export class OutstockInventoryService {
   getOutstockInventory(id: string): Promise<OutstockInventoryVo> {
     return this.http.get(`/outstock/inventory/${id}`).then(res => res.content);
   }
+
+  /**
+   * 生成出库清单
+   */
+  createOutstockInventory(batchNumber: string): Promise<void> {
+    return this.http.post(`/outstock/inventory/${batchNumber}`, null).then(res => res.content);
+  }
 }
