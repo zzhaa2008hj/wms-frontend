@@ -43,6 +43,8 @@ export class WorkOrder {
   remark: string;
 
   orgId: string;
+
+  workOrderCategoryName : string;
 }
 
 export class WorkOrderItem{
@@ -77,4 +79,28 @@ export class WorkOrderItem{
   remark: string ;
 
   orgId: string ;
+}
+
+export interface WorkOrderArea {
+  id: string;
+
+  remark: string;
+
+  orgId: string;
+  
+  workOrderId: string;
+
+  quantity: number;
+
+  number: number;
+
+  unit: string;
+
+  warehousedId: string;
+
+  warehouseName: string;
+
+  containerType: string;
+
+  containerNumber: string;
 }

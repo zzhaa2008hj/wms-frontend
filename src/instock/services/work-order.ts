@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { dateConverter, handleResult, Query, RestClient, fixDate } from "@app/utils";
-import { WorkOrder, WorkOrderItem } from "@app/instock/models/work";
+import { handleResult, Query, RestClient, fixDate } from "@app/utils";
+import { WorkOrder, WorkOrderItem, WorkOrderArea } from "@app/instock/models/work";
+import { ConstantValues } from "@app/common/models/constant-values";
 /**
  * 查询条件
  */
@@ -30,9 +31,13 @@ export class WorkOrderService {
       .map(c => fixDate(c, "workDate"));
   }
 
-  getWorkOders(businessId: string): Promise<WorkOrder[]> {
+  async getWorkOders(businessId: string): Promise<WorkOrder[]> {
     return this.http.get(`/base/warehouseWorkOrder/list/${businessId}`)
-      .then(res => res.content.map(dateConverter("workDate")));
+      .then(res => res.content.map((work) => {
+        work.workOrderCategoryName = ConstantValues.WorkInfoCategory.find(r => r.value == work.workOrderCategory).text;
+        work.workDate = new Date(work.workDate);
+        return work;
+      }));
   }
 
   saveWorkOrder(workOrder: WorkOrder): Promise<void> {
@@ -55,5 +60,24 @@ export class WorkOderItemService {
 
   saveWorkOrderItem(workOrderItem: WorkOrderItem): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrderItem`, workOrderItem).then(handleResult);
+  }
+  /**
+   * 根据作业区域ID获取作业内容
+   * @param workAreaId 
+   */
+  getWorkOrderItemList(workAreaId: string): Promise<WorkOrderItem[]> {
+    return this.http.get(`/base/warehouseWorkOrderItem/${workAreaId}/list`).then(res => res.content);
+  }
+}
+
+@autoinject
+export class WorkOrderAreaService {
+  constructor(private http: RestClient) {
+  }
+  /**
+   * 根据作业ID获取作业区域
+   */
+  getWorkOrderAreas(workOrderId: string): Promise<WorkOrderArea[]> {
+    return this.http.get(`/base/warehouseWorkOrderArea/${workOrderId}/list`).then(res => res.content);
   }
 }
