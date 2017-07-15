@@ -147,33 +147,36 @@ export class ConstantValues {
       title: "已生成出库单"
     }, {
       stage: 9,
-      title: "商务审核未通过"
+      title: "已上传提货信息"
     }, {
       stage: 10,
-      title: "商务审核通过"
+      title: "商务审核未通过"
     }, {
       stage: 11,
-      title: "已生成出库指令单"
+      title: "商务审核通过"
     }, {
       stage: 12,
-      title: "出库作业中"
+      title: "已生成出库指令单"
     }, {
       stage: 13,
-      title: "作业完成（待审核）"
+      title: "出库作业中"
     }, {
       stage: 14,
-      title: "库场审核未通过"
+      title: "作业完成（待审核）"
     }, {
       stage: 15,
-      title: "库场审核通过"
+      title: "库场审核未通过"
     }, {
       stage: 16,
-      title: "商务已确认"
+      title: "库场审核通过"
     }, {
       stage: 17,
-      title: "已生成出库清单"
+      title: "商务已确认"
     }, {
       stage: 18,
+      title: "已生成出库清单"
+    }, {
+      stage: 19,
       title: "出库完成"
     }];
   }
