@@ -60,17 +60,16 @@ export class EmployeeList {
   selectionChange(event) {
     let grid = event.detail.sender as kendo.ui.Grid;
     this.selection = getSelectedDataItems(grid).map(data => data as Employee);
-    console.log('selection change', this.selection);
   }
 
   @computedFrom('selection')
   get canEdit(): boolean {
-    return this.selection.length > 0;
+    return this.selection.length == 1;
   }
 
   @computedFrom('selection')
   get canAuthorize(): boolean {
-    return this.selection.length > 0;
+    return this.selection.length == 1;
   }
 
   @computedFrom('selection')
