@@ -1,7 +1,4 @@
 <template>
-    <require from="aurelia-kendoui-bridge/treelist/treelist"></require>
-    <require from="aurelia-kendoui-bridge/treelist/tree-col"></require>
-
     <button class="btn btn-success btn-small" click.delegate="add()">新增</button>
     <ak-tree-list k-data-source.bind="dataSource" k-editable.bind="true">
         <ak-tree-col k-field="name" k-expandable.bind="true" k-title="仓库库区" k-width.bind="280"></ak-tree-col>
