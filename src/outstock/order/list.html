@@ -45,11 +45,13 @@
         <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
         <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
         <button class="btn btn-small btn-primary" if.bind="stage == 1" click.delegate="verifyBusiness(id)">商务审核</button>
+        <button class="btn btn-small" if.bind="stage == 8" click.delegate="verifyBusiness(id)">上传提货信息</button>
+        <button class="btn btn-small btn-primary" if.bind="stage == 9" click.delegate="verifyBusiness(id)">商务审核</button>
         <button class="btn btn-small btn-primary" if.bind="stage == 3 || stage == 4" click.delegate="verifyFee(id)">费收审核</button>
         <button class="btn btn-small btn-primary" if.bind="!clearanceStatus" click.delegate="verifyCustomhouse(id)">单证审核</button>
         <button class="btn btn-small" click.delegate="verifyHistory(id)">审核记录</button>
-        <a class="btn btn-small btn-primary" if.bind="stage == 13" route-href="route: verify-work; params.bind:{id}">库场审核</a>
-        <button class="btn btn-small btn-primary" if.bind="stage == 15" click.delegate="businessConfirm(id)">商务确认</button>
+        <a class="btn btn-sm btn-small btn-primary" if.bind="stage == 14" route-href="route: verify-work; params.bind:{id}">库场审核</a>
+        <button class="btn btn-small btn-primary" if.bind="stage == 16" click.delegate="businessConfirm(id)">商务确认</button>
         <button class="btn btn-small"  click.delegate="createOutstockOrder(id)">生成出库单</button>
       </ak-template>
     </ak-col>

@@ -1,47 +1,44 @@
 <template>
-    <div class="row">
-        <div class="col-md-1">
-            <a class="btn btn-success" route-href="route: new">新增</a>
-        </div>
-        <div class="col-md-2">
-            <div class="btn-group">
-                <a class="btn btn-black dropdown-toggle " data-toggle="dropdown" href="#"> 更多操作
-                    <span class="caret"></span> </a>
-                <ul class="dropdown-menu">
-                    <li if.bind="canEdit"><a route-href="route: edit; params.bind: { id: selection[0].id }">
-                        <i class="fa fa-edit"></i> 编辑</a>
-                    </li>
-                    <li if.bind="canAuthorize"><a href="#" click.trigger="authorize()"><i class="fa fa-check-square-o"></i> 授权</a></li>
-                    <li if.bind="canAuthorize"><a href="#" click.trigger="resetPassword()"><i class="fa fa-check-square-o"></i> 重置密码</a></li>
-                    <li if.bind="canEnable"><a href="#" click.trigger="enable()"><i class="fa fa-check"></i> 启用</a></li>
-                    <li if.bind="canDisable"><a href="#" click.trigger="disable()"><i class="fa fa-ban"></i> 禁用</a></li>
-                    <li if.bind="canDelete"><a href="#" click.trigger="delete()"><i class="fa fa-trash"></i> 删除</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-5 col-md-offset-4">
-            <div class="input-group"><input class="form-control" type="text" value.bind="keywords" placeholder="请输入员工姓名/手机号码/邮箱地址">
-                <div class="input-group-addon" click.trigger="find()"><em class="fa fa-search"></em></div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-md-3">
+      <a class="btn btn-small btn-success" route-href="route: new">新增</a>
+      <div class="btn-group">
+        <a class="btn btn-small btn-black dropdown-toggle" data-toggle="dropdown" href="#">更多操作<span class="caret"></span> </a>
+        <ul class="dropdown-menu">
+          <li if.bind="canEdit">
+            <a route-href="route: edit; params.bind: { id: selection[0].id }"><i class="fa fa-edit"></i> 编辑</a>
+          </li>
+          <li if.bind="canAuthorize"><a href="#" click.trigger="authorize()"><i class="fa fa-check-square-o"></i> 授权</a></li>
+          <li if.bind="canAuthorize"><a href="#" click.trigger="resetPassword()"><i class="fa fa-check-square-o"></i> 重置密码</a></li>
+          <li if.bind="canEnable"><a href="#" click.trigger="enable()"><i class="fa fa-check"></i> 启用</a></li>
+          <li if.bind="canDisable"><a href="#" click.trigger="disable()"><i class="fa fa-ban"></i> 禁用</a></li>
+          <li if.bind="canDelete"><a href="#" click.trigger="delete()"><i class="fa fa-trash"></i> 删除</a></li>
+        </ul>
+      </div>
     </div>
-    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-selectable="[row, multiple]" k-reorderable.bind="true"
-        k-groupable.bind="true" k-resizable.bind="true" k-filterable.bind="true" k-column-menu.bind="true" k-pageable.bind="pageable"
-        k-on-change.delegate="selectionChange($event)">
 
-        <ak-col k-field="name" k-title="员工姓名" k-width.bind="120">
-            <ak-template><a route-href="route: view; params.bind: { id }">${name}</a></ak-template>
-        </ak-col>
-        <ak-col k-field="mobile" k-title="手机" k-width.bind="150"></ak-col>
-        <ak-col k-field="email" k-title="邮箱" k-width.bind="150"></ak-col>
-        <ak-col k-field="idcard" k-title="身份证号码" k-width.bind="150"></ak-col>
-        <ak-col k-field="sex" k-title="性别" k-width.bind="100">
-            <ak-template>${sex == 0 ? '女' : '男'}</ak-template>
-        </ak-col>
-        <ak-col k-field="position" k-title="职位" k-width.bind="100"></ak-col>
-        <ak-col k-field="employeeStatus" k-title="状态" k-width.bind="100">
-            <ak-template>${employeeStatus == 0 ? '禁用' : '启用'}</ak-template>
-        </ak-col>
-    </ak-grid>
+    <div class="col-md-3 col-md-offset-6">
+      <div class="input-group"><input class="form-control" type="text" value.bind="keywords" placeholder="请输入员工姓名/手机号码/邮箱地址">
+        <div class="input-group-addon" click.trigger="find()"><em class="fa fa-search"></em></div>
+      </div>
+    </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+    k-pageable.bind="pageable" k-on-change.delegate="selectionChange($event)">
+    <ak-col k-selectable.bind="true" k-width.bind="50"></ak-col>
+    <ak-col k-field="name" k-title="员工姓名" k-width.bind="120">
+      <ak-template><a route-href="route: view; params.bind: { id }">${name}</a></ak-template>
+    </ak-col>
+    <ak-col k-field="mobile" k-title="手机" k-width.bind="150"></ak-col>
+    <ak-col k-field="email" k-title="邮箱" k-width.bind="150"></ak-col>
+    <ak-col k-field="idcard" k-title="身份证号码" k-width.bind="200"></ak-col>
+    <ak-col k-field="sex" k-title="性别" k-width.bind="100">
+      <ak-template>${sex == 0 ? '女' : '男'}</ak-template>
+    </ak-col>
+    <ak-col k-field="position" k-title="职位" k-width.bind="100"></ak-col>        
+    <ak-col k-field="employeeStatus" k-title="状态" k-width.bind="100">
+      <ak-template>${employeeStatus == 0 ? '禁用' : '启用'}</ak-template>
+    </ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>    
+  </ak-grid>
 </template>
