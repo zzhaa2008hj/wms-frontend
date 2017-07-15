@@ -6,8 +6,7 @@
     <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">费率设置</a></div>
 
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-filterable.bind="true"
-    k-column-menu.bind="true" k-pageable.bind="pageable">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
     <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
     <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="费用类型"></ak-col>
     <ak-col k-field="customerCategory == 1 ? '仓储客户': '装卸单位' " k-title="客户类别"></ak-col>
@@ -21,7 +20,7 @@
     <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
     <ak-col k-field="pricingMode== 1 ? '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
-    <ak-col k-title="操作">
+    <ak-col k-title="操作" k-width.bind="200">
       <ak-template>
         <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">编辑</a>
         <button class="btn btn-warning btn-small" click.delegate="delete(id)">删除</button>
