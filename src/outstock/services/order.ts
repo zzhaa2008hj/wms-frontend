@@ -87,8 +87,15 @@ export class OrderService {
 
 @autoinject
 export class OrderItemService {
-  // constructor(private http: RestClient) {
-  // }
+  constructor(private http: RestClient) {
+  }
+  /**
+   * 根据货物ID查明细
+   */
+  async getItemsByOrderId(orderId: string): Promise<CargoItem[]>  {
+    let res = await this.http.get(`/outstock/order/${orderId}/item`);
+    return res.content;
+  }
 }
 
 @autoinject
