@@ -39,7 +39,7 @@ export interface Employee {
   /**
    * 住宅电话
    */
-  home_number: string;
+  homeNumber: string;
   /**
    * 身份证号
    */
@@ -93,7 +93,7 @@ export const validationRules = ValidationRules
   .displayName('办公号码')
   .matches(/^\d{3}-\d{8}|\d{4}-\d{7}$/).withMessage(`\${$displayName} 格式错误`)
 
-  .ensure((e: Employee)  => e.home_number)
+  .ensure((e: Employee)  => e.homeNumber)
   .displayName('家庭电话')
   .matches(/^\d{3}-\d{8}|\d{4}-\d{7}$/).withMessage(`\${$displayName} 格式错误`)
 
