@@ -10,9 +10,10 @@ import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhou
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
-import { Router } from "aurelia-router";
+import { Router, AppRouter } from "aurelia-router";
 import { VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
+import { OutstockInventoryService } from "@app/outstock/services/inventory";
 
 @autoinject
 export class OrderList {
@@ -31,7 +32,9 @@ export class OrderList {
               private messageDialogService: MessageDialogService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
-              private customhouseService: CustomhouseClearanceService) {
+              private customhouseService: CustomhouseClearanceService,
+              private appRouter: AppRouter,
+              private outstockInventoryService: OutstockInventoryService) {
 
   }
 
@@ -212,6 +215,30 @@ export class OrderList {
    * 商务确认
    */
   async businessConfirm(id) {
-    console.log(id);
+    try {
+      await this.orderService.businessConfirm(id);
+      await this.dialogService.alert({ title: "提示", message: "确认成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  /**
+   * 生成出库清单
+   */
+  async createOutstockInventory(batchNumber) {
+    try {
+      await this.outstockInventoryService.createOutstockInventory(batchNumber);
+      let res = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库清单" });
+      if (!res) {
+        this.dataSource.read();
+        return;
+      }
+      // 跳转 到出库清单页面
+      this.appRouter.navigateToRoute('outstock-inventory');
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
   }
 }
