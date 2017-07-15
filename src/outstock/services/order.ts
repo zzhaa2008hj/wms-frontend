@@ -83,6 +83,12 @@ export class OrderService {
     return res.content;
   }
 
+  /**
+   * 商务确认
+   */
+  businessConfirm(id: string): Promise<void> {
+    return this.http.put(`/outstock/order/${id}/business/confirm`, null).then(handleResult);
+  }
 }
 
 @autoinject
