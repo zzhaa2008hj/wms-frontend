@@ -1,4 +1,5 @@
 <template>
+  <require from="./work-item-element"></require>
   <ux-dialog>
     <ux-dialog-header show-close-button.bind="true">
     </ux-dialog-header>
@@ -7,22 +8,15 @@
         <h3>作业详情</h3>
       </div>
       <ak-grid k-data-source.bind="datasource"
-               k-sortable.bind="true"
-               k-reorderable.bind="true"
-               k-resizable.bind="true"
-               k-filterable.bind="true"
-               k-column-menu.bind="true"
-               k-pageable.bind="pageable"
-               k-on-detail-init.delegate="detailInit($event.detail)">
-        <ak-col k-field="workOrderCategory" k-title="作业类别"></ak-col>
-        <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
-        <ak-col k-field="driverName" k-title="司机名称"></ak-col>
-        <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
-        <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
-        <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
-        <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+               k-sortable.bind="true">
+        <ak-col k-field="quantity" k-title="数量"></ak-col>
+        <ak-col k-field="number" k-title="件数"></ak-col>
+        <ak-col k-field="unit" k-title="计量单位"></ak-col>
+        <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+        <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+        <ak-col k-field="containerType" k-title="集装类型"></ak-col>
         <ak-template for="detailTemplate">
-          <div class="workOrderItems"></div>
+          <work-items area-id.bind="$this.id"></work-items>
         </ak-template>
       </ak-grid>
     </ux-dialog-body>
