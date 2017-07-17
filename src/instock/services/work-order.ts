@@ -66,7 +66,7 @@ export class WorkOrderService {
 }
 
 @autoinject
-export class WorkOderItemService {
+export class WorkOrderItemService {
   constructor(private http: RestClient) {
   }
 
@@ -84,6 +84,10 @@ export class WorkOderItemService {
   getWorkOrderItemList(workAreaId: string): Promise<WorkOrderItem[]> {
     return this.http.get(`/base/warehouseWorkOrderItem/${workAreaId}/list`).then(res => res.content);
   }
+
+  removeWorkOrderItem(id: string): Promise<void> {
+    return this.http.put(`/base/warehouseWorkOrderItem/${id}`, '').then(handleResult);
+  }
 }
 
 @autoinject
@@ -94,7 +98,7 @@ export class WorkOrderAreaService {
    * 根据作业ID获取作业区域
    */
   getWorkOrderAreas(workOrderId: string): Promise<WorkOrderArea[]> {
-    return this.http.get(`/base/warehouseWorkOrderArea/${workOrderId}/list`).then(res => res.content);
+    return this.http.get(`/base/workArea/${workOrderId}`).then(res => res.content);
   }
 
   removeWorkOrderItem(id: string): Promise<void> {

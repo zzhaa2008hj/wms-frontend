@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { WorkAreaService } from "@app/base/services/work";
 import { DataSourceFactory } from "@app/utils";
-import { WorkOderItemService } from "@app/instock/services/work-order";
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 
 
 @autoinject
@@ -11,7 +11,7 @@ export class VeiwWorkItem {
 
   constructor(private dataSourceFactory: DataSourceFactory,
               private workAreaService: WorkAreaService,
-              private workOrderItemService: WorkOderItemService) {
+              private workOrderItemService: WorkOrderItemService) {
 
   }
 

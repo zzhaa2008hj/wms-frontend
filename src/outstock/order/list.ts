@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
-import { OrderCriteria, OrderService } from "@app/outstock/services/order";
+import { OrderCriteria, OrderService, WorkOrderService } from '@app/outstock/services/order';
 import * as moment from 'moment';
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { VerifyBusinessDialogNew } from '@app/outstock/order/verify-business/new';

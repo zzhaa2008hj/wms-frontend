@@ -4,7 +4,7 @@ import { ContractService } from "@app/base/services/contract";
 import { WorkInfoService } from "@app/base/services/work-info";
 import { EditWorkOrder } from "./edit";
 import { RouterParams } from '@app/common/models/router-params';
-import { WorkOderItemService } from "@app/instock/services/work-order";
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { MessageDialogService } from "ui";
 
 @customElement('edit-area-items')
@@ -44,7 +44,7 @@ export class EditItems {
               @inject private workInfoService: WorkInfoService,
               @inject private editWorkOrder: EditWorkOrder,
               @inject('routerParams') private routerParams: RouterParams,
-              @inject private workOderItemService: WorkOderItemService,
+              @inject private workOrderItemService: WorkOrderItemService,
               @inject private messageDialogService: MessageDialogService) {
 
   }
@@ -58,7 +58,7 @@ export class EditItems {
     if (confirmed) {
       if (e.id != null && e.id != "") {
         try {
-          await this.workOderItemService.removeWorkOrderItem(e.id);
+          await this.workOrderItemService.removeWorkOrderItem(e.id);
           await this.messageDialogService.alert({ title: "", message: "删除成功" });
           this.dataSource.remove(e);
         } catch (e) {

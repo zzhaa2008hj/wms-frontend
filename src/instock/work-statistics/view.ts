@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { WorkOrder, WorkStatistics } from "@app/instock/models/work";
 import { WorkStatisticsService } from "@app/instock/services/work-statistics";
-import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
+import { WorkOrderItemService, WorkOrderService } from "@app/instock/services/work-order";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from '@app/common/models/constant-values';
@@ -16,7 +16,7 @@ export class ViewWorkStatistics {
 
   constructor(private workStatisticsService: WorkStatisticsService,
               private workOrderService: WorkOrderService,
-              private workOrderItemService: WorkOderItemService,
+              private workOrderItemService: WorkOrderItemService,
               private cargoFlowService: CargoFlowService) {
     this.datasource = new kendo.data.DataSource({
       transport: {

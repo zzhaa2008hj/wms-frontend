@@ -20,7 +20,7 @@ import { CargoFlowService } from '@app/instock/services/cargo-flow';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { WorkOrderItem } from "@app/instock/models/work";
 import { WorkAreaService } from "@app/base/services/work";
-import { WorkOderItemService } from "@app/instock/services/work-order";
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 
 export class EditWorkOrder {
   instockVehicle = {} as InstockVehicle;
@@ -110,7 +110,7 @@ export class EditWorkOrder {
               @newInstance() private validationController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private workAreaService: WorkAreaService,
-              @inject private workOderItemService: WorkOderItemService) {
+              @inject private workOrderItemService: WorkOrderItemService) {
 
     this.validationController.addRenderer(formValidationRenderer);
   }
@@ -190,7 +190,7 @@ export class EditWorkOrder {
         let itemDatasource = new kendo.data.DataSource({
           transport: {
             read: options => {
-              this.workOderItemService.getWorkOrderItems(e.items[i].id)
+              this.workOrderItemService.getWorkOrderItems(e.items[i].id)
                 .then(options.success)
                 .catch(err => options.error("", "", err));
             }
