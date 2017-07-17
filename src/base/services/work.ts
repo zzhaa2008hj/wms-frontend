@@ -1,7 +1,7 @@
-import { RestClient, Query, handleResult } from "../../utils";
 import { inject } from "aurelia-dependency-injection";
 import { WorkArea } from "@app/base/models/work-area";
 import { autoinject } from "aurelia-dependency-injection";
+import { RestClient, Query, handleResult } from '@app/utils';
 
 @autoinject
 export class WorkAreaService {
@@ -19,6 +19,4 @@ export class WorkAreaService {
     removeWorkOrderArea(id: string): Promise<void> {
         return this.http.put(`/base/workArea/${id}`, '').then(handleResult);
     }
-
-
 }
