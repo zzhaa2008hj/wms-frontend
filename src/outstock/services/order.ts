@@ -27,11 +27,6 @@ export class OrderService {
     return this.http.delete(`/outstock/order/${id}`).then(handleResult);
   }
 
-  async listBaseCargoInfosByInstock(): Promise<Array<CargoInfo>> {
-    let res = await this.http.get(`/base/cargoInfo/list`);
-    return res.content;
-  }
-
   async listBaseCargoItems(cargoInfoId: string): Promise<CargoItem[]> {
     let res = await this.http.get(`/instock/cargo-flow/${cargoInfoId}/baseCargoItemList`);
     return res.content;
