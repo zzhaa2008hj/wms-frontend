@@ -56,7 +56,9 @@ export class CargoFlow {
             keywords: this.searchName
           }).map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
-            res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+            if (res.unit) {
+              res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+            }
             return res;
           }),
         pageSize: 10
@@ -66,7 +68,9 @@ export class CargoFlow {
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
           .map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
-            res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+            if (res.unit) {
+              res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+            }
             return res;
           }),
         pageSize: 10
