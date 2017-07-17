@@ -2,7 +2,7 @@
     <ux-dialog>
         <ux-dialog-header show-close-button.bind="true">
             <i class="fa fa-check-square-o"></i>
-            <div>新增${appName}的作业内容</div>
+            <div>新增作业内容</div>
         </ux-dialog-header>
         <ux-dialog-body>
             <div style="width: 640px">
@@ -11,66 +11,74 @@
                     <div class="controls">
                         <ak-drop-down-list class="form-control"
                                            k-option-label="请选择..."
-                                           k-data-text-field="name"
-                                           k-data-value-field="id"
+                                           k-data-text-field="workName"
+                                           k-data-value-field="workId"
                                            k-widget.two-way="selectedWork"
                                            k-data-source.bind="worksSource"
+                                           k-on-change.delegate="workInfoChanged()"
+                                           k-on-close.delegate="validateWorkOrderItem('workId')"
                                            style="width: 60%">
                         </ak-drop-down-list>
+                        <input class="form-control" type="hidden" value.bind="workOrderItem.workId & validate ">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-label">数量</div>
                     <div class="controls">
-                        <input type="text" class="form-control" value.bind="workOrderItem.quantity">
+                        <input type="number" class="form-control" value.bind="workOrderItem.workNumber">
                     </div>
                 </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <div class="form-label">件数</div>
                     <div class="controls">
-                        <input type="text" class="form-control" value.bind="workOrderItem.number">
+                        <input type="number" class="form-control" value.bind="workOrderItem.number">
                     </div>
-                </div>
-                <div class="form-group">
+                </div>-->
+                <!--<div class="form-group">
                     <div class="form-label">计量单位</div>
                     <div class="controls">
                         <ak-drop-down-list k-option-label="请选择..."
                                            k-value.two-way="workOrderItem.unit"
                                            k-data-text-field="text"
                                            k-data-value-field="value"
-                                           k-data-source.bind="units">
+                                           k-data-source.bind="units"
+                                           k-on-close.delegate="validateWorkOrderItem('unit')">
                         </ak-drop-down-list>
+                        <input class="form-control" type="hidden" value.bind="workOrderItem.unit & validate ">
                     </div>
-                </div>
-                <div class="form-group">
+                </div>-->
+                <!--<div class="form-group">
                     <div class="form-label">集装箱类型</div>
                     <div class="controls">
                         <ak-drop-down-list k-option-label="请选择..."
                                            k-value.two-way="workOrderItem.containerType"
                                            k-data-text-field="text"
                                            k-data-value-field="value"
-                                           k-data-source.bind="containerType">
+                                           k-data-source.bind="containerTypes">
                         </ak-drop-down-list>
                     </div>
-                </div>
-                <div class="form-group">
+                </div>-->
+                <!--<div class="form-group">
                     <div class="form-label">集装箱号</div>
                     <div class="controls">
-                        <input type="text" class="form-control" value.bind="workOrderItem.containerNumber">
+                        <input type="text" class="form-control" value.bind="workOrderItem.containerNumber & validate" disabled.bind="!workOrderItem.containerType">
                     </div>
-                </div>
+                </div>-->
                 <div class="form-group">
-                    <div class="form-label">作业单位名称1</div>
+                    <div class="form-label">作业单位名称</div>
                     <ak-drop-down-list class="form-control"
                                        k-option-label="请选择..."
                                        k-data-text-field="name"
                                        k-data-value-field="id"
                                        k-widget.two-way="selectedCustomer"
                                        k-data-source.bind="customersSource"
+                                       k-on-change.delegate="customerChanged()"
+                                       k-on-close.delegate="validateWorkOrderItem('customerId')"
                                        style="width: 60%">
                     </ak-drop-down-list>
+                    <input class="form-control" type="hidden" value.bind="workOrderItem.customerId & validate ">
                 </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <div class="form-label">库区名称</div>
                     <ak-drop-down-list class="form-control"
                                        k-option-label="请选择..."
@@ -78,9 +86,12 @@
                                        k-data-value-field="id"
                                        k-widget.two-way="selectedWarehouse"
                                        k-data-source.bind="warehouseSource"
+                                       k-on-change.delegate="warehouseChanged()"
+                                       k-on-close.delegate="validateWorkOrderItem('warehouseId')"
                                        style="width: 60%">
                     </ak-drop-down-list>
-                </div>
+                    <input class="form-control" type="hidden" value.bind="workOrderItem.warehouseId & validate ">
+                </div>-->
                 <div class="form-group">
                     <div class="form-label">备注</div>
                     <div class="controls">

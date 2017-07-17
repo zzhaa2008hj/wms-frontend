@@ -1,5 +1,5 @@
 import { inject } from "aurelia-dependency-injection";
-import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
+import { WorkOrderItemService, WorkOrderService } from "@app/instock/services/work-order";
 import { DataSourceFactory } from "@app/utils";
 
 export class ViewWorkOrder {
@@ -7,7 +7,7 @@ export class ViewWorkOrder {
   datasource: kendo.data.DataSource;
   id;
 
-  constructor(@inject private workOrderItemService: WorkOderItemService,
+  constructor(@inject private workOrderItemService: WorkOrderItemService,
               @inject private dataSourceFactory: DataSourceFactory,
               @inject private workOrderService: WorkOrderService) {
     this.datasource = this.dataSourceFactory.create({

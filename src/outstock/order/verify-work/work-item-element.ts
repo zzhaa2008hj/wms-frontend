@@ -1,7 +1,7 @@
 import { DataSourceFactory } from "@app/utils";
 import { observable, inject} from "aurelia-framework";
 import { bindable, customElement } from "aurelia-templating";
-import { WorkOderItemService } from '@app/instock/services/work-order';
+import { WorkOrderItemService } from '@app/instock/services/work-order';
 
 @customElement('work-items')
 export class WorkItems {
@@ -11,7 +11,7 @@ export class WorkItems {
   areaId: string;
   dataSource: kendo.data.DataSource;
 
-  constructor(@inject private workOrderItemService: WorkOderItemService,
+  constructor(@inject private workOrderItemService: WorkOrderItemService,
               @inject private dataSourceFactory: DataSourceFactory) {
   }
   /**
