@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
-import { OrderCriteria, OrderService, WorkOrderService } from "@app/outstock/services/order";
+import { OrderCriteria, OrderService } from "@app/outstock/services/order";
 import * as moment from 'moment';
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { VerifyBusinessDialogNew } from '@app/outstock/order/verify-business/new';
@@ -251,7 +251,7 @@ export class OrderList {
       await this.workOrderService.createOutstockWorkOrder(id);
       let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库作业指令单" });
       if (!skipConformed) return;
-      // 跳转 到出库单页面
+      // 跳转 到出库作业指令单页面
       this.appRouter.navigateToRoute('outstock-workOrder');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
