@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
-import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
+import { CargoItem } from "@app/base/models/cargo-info";
 import { Order } from "@app/outstock/models/order";
 
 /**
