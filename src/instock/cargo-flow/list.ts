@@ -8,7 +8,6 @@ import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { ConstantValues } from '@app/common/models/constant-values';
-import { VerifyBusinessDialogNew } from "@app/instock/cargo-flow/verify-business/new";
 import { VerifyCustomhouseDialogNew } from "@app/instock/cargo-flow/verify-customhouse/new";
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
@@ -57,7 +56,7 @@ export class CargoFlow {
             keywords: this.searchName
           }).map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
-            res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+            // res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
             return res;
           }),
         pageSize: 10
@@ -67,7 +66,7 @@ export class CargoFlow {
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
           .map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
-            res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+            // res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
             return res;
           }),
         pageSize: 10
@@ -111,24 +110,6 @@ export class CargoFlow {
     let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: criteria, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
-  }
-
-  /**
-   * 商务审核
-   */
-  async verifyBusiness(id) {
-    let result = await this.dialogService.open({ viewModel: VerifyBusinessDialogNew, model: {}, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
-    try {
-      let record = result.output as VerifyRecord;
-      record.businessId = id;
-      await this.cargoFlowService.audit(record.businessId, record.verifyStatus);
-      await this.dialogService.alert({ title: "提示", message: "审核成功！" });
-      this.dataSource.read();
-    } catch (err) {
-      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
-    }
   }
 
   /**
