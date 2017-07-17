@@ -84,6 +84,13 @@ export class OrderService {
   businessConfirm(id: string): Promise<void> {
     return this.http.put(`/outstock/order/${id}/business/confirm`, null).then(handleResult);
   }
+
+  /**
+   * 副总审批
+   */
+  approve(id: string, verifyStatus: number): Promise<void> {
+    return this.http.put(`/outstock/order/approve/${id}?verifyStatus=${verifyStatus}`, null).then(handleResult);
+  }
 }
 
 @autoinject
