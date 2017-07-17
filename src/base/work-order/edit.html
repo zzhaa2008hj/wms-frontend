@@ -1,5 +1,5 @@
 <template>
-    <require from="./items"></require>
+    <require from="./edit-items"></require>
     <h4>作业单</h4>
     <div class="row column-seperation">
         <div class="col-md-5">
@@ -90,7 +90,6 @@
                                  k-on-change.delegate="validateWorkOrder('driverIdentityNumber')"
                                  k-on-close.delegate="validateWorkOrder('driverIdentityNumber')"
                                  style="width: 60%;">
-                        style="width: 60%;">
                     </ak-combobox>
                     <input class="form-control" type="hidden" value.bind="workOrder.driverIdentityNumber & validate">
                 </div>
@@ -118,7 +117,6 @@
     <h4>作业过程</h4>
     <div class="row column-seperation">
         <ak-grid k-data-source.bind="datasource"
-                 k-pageable.bind="true"
                  k-editable="inline"
                  k-on-detail-init.delegate="detailInit($event.detail)"
                  k-widget.two-way="grid">
@@ -182,9 +180,8 @@
                     <button class="btn btn-small" click.delegate="remove($this)">删除</button>
                 </ak-template>
             </ak-col>
-            <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
             <ak-template for="detailTemplate">
-                <area-items parent-uid.bind="$this.uid"></area-items>
+                <edit-area-items parent-uid.bind="$this.uid" area-id.bind="$this.id"></edit-area-items>
             </ak-template>
         </ak-grid>
     </div>

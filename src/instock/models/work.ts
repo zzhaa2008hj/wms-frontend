@@ -52,11 +52,27 @@ export class WorkOrderItem{
 
   batchNumber: string ;
 
-  workOrderId: string ;
+  workAreaId: string ;
 
   workId: string ;
 
   workName: string ;
+
+  workNumber: number ;
+
+  customerId: string ;
+
+  customerName: string ;
+
+  remark: string ;
+
+  orgId: string ;
+}
+
+export class WorkOrderArea{
+  id: string ;
+
+  workOrderId: string ;
 
   quantity: number ;
 
@@ -72,35 +88,11 @@ export class WorkOrderItem{
 
   containerNumber: string ;
 
-  customerId: string ;
-
-  customerName: string ;
-
   remark: string ;
 
   orgId: string ;
-}
 
-export interface WorkOrderArea {
-  id: string;
+  sign: string;
 
-  remark: string;
-
-  orgId: string;
-  
-  workOrderId: string;
-
-  quantity: number;
-
-  number: number;
-
-  unit: string;
-
-  warehousedId: string;
-
-  warehouseName: string;
-
-  containerType: string;
-
-  containerNumber: string;
+  workOrderItem: WorkOrderItem[];
 }

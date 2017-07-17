@@ -68,4 +68,5 @@ export class DictionaryDataService {
     let result = await this.http.get(`/base/dictionaryData/${dictCode}/list`);
     return result.content;
   }
+  
 }

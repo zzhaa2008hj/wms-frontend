@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient, fixDate } from "@app/utils";
 import { WorkOrder, WorkOrderItem, WorkOrderArea } from "@app/instock/models/work";
-import { ConstantValues } from "@app/common/models/constant-values";
+import { ConstantValues } from '@app/common/models/constant-values';
 /**
  * 查询条件
  */
@@ -13,7 +13,7 @@ export interface WorkOrderCriteria {
 
 export interface WorkOrderAndItems {
   warehouseWorkOrder?: WorkOrder;
-  list?: WorkOrderItem[];
+  list?: WorkOrderArea[];
 }
 
 @autoinject
@@ -26,7 +26,7 @@ export class WorkOrderService {
       .map(c => fixDate(c, "workDate"));
   }
 
-  queryWorkOrdersByCargo(criteria:WorkOrderCriteria):Query<WorkOrder>{
+  queryWorkOrdersByCargo(criteria: WorkOrderCriteria): Query<WorkOrder> {
     return this.http.query<WorkOrder>(`/base/warehouseWorkOrder/page`, criteria)
       .map(c => fixDate(c, "workDate"));
   }
@@ -40,6 +40,14 @@ export class WorkOrderService {
       }));
   }
 
+  getWorkOrderById(id: string): Promise<WorkOrder> {
+    return this.http.get(`/base/warehouseWorkOrder/${id}`).then(res => {
+      let workOrder = res.content;
+      fixDate(workOrder, 'workDate');
+      return workOrder;
+    });
+  }
+
   saveWorkOrder(workOrder: WorkOrder): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrder`, workOrder).then(handleResult);
   }
@@ -48,7 +56,13 @@ export class WorkOrderService {
     return this.http.post(`/base/warehouseWorkOrder/saveWorkAndItems`, workOrderAndItems).then(handleResult);
   }
 
+  updateWorkOrderAndItems(workOrderAndItems: WorkOrderAndItems): Promise<void> {
+    return this.http.put(`/base/warehouseWorkOrder/update`, workOrderAndItems).then(handleResult);
+  }
 
+  removeWorkOrder(id: string): Promise<void> {
+    return this.http.put(`/base/warehouseWorkOrder/${id}`, '').then(handleResult);
+  }
 }
 
 @autoinject
@@ -56,8 +70,8 @@ export class WorkOderItemService {
   constructor(private http: RestClient) {
   }
 
-  getWorkOrderItems(workOrderId: string): Promise<WorkOrderItem[]> {
-    return this.http.get(`/base/warehouseWorkOrderItem/list/${workOrderId}`).then(res => res.content);
+  getWorkOrderItems(workAreaId: string): Promise<WorkOrderItem[]> {
+    return this.http.get(`/base/warehouseWorkOrderItem/list/${workAreaId}`).then(res => res.content);
   }
 
   saveWorkOrderItem(workOrderItem: WorkOrderItem): Promise<void> {
@@ -81,5 +95,9 @@ export class WorkOrderAreaService {
    */
   getWorkOrderAreas(workOrderId: string): Promise<WorkOrderArea[]> {
     return this.http.get(`/base/warehouseWorkOrderArea/${workOrderId}/list`).then(res => res.content);
+  }
+
+  removeWorkOrderItem(id: string): Promise<void> {
+    return this.http.put(`/base/warehouseWorkOrderItem/${id}`, '').then(handleResult);
   }
 }
