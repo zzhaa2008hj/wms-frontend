@@ -35,6 +35,6 @@ export const validationRules = ValidationRules
 
   .ensure((message: Message) => message.content)
   .displayName('内容')
-  .required().withMessage(`\${$displayName}不能为空`)
-  .maxLength(200).withMessage(`\${$displayName}长度不能大于200`)
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .maxLength(200).withMessage(`\${$displayName} 长度不能大于200`)
   .rules;
