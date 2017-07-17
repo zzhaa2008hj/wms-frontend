@@ -1,5 +1,3 @@
-import { DictionaryData } from '../../base/models/dictionary';
-
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { DataSourceFactory } from "@app/utils";
 import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
@@ -19,6 +17,7 @@ import { InstockOrderService } from "@app/instock/services/instock-order";
 import { AppRouter } from "aurelia-router";
 import { OrderItemService } from "@app/instock/services/order-item";
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 
 export class CargoFlow {
   searchName: string;
