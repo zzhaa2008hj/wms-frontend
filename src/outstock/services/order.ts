@@ -73,8 +73,8 @@ export class OrderService {
     return this.http.post(`/outstock/order/createOutstockOrder/${id}`, null).then(handleResult);
   }
 
-  queryOrdersByOrderType(keywords: string): Query<Order> {
-    return this.http.query<Order>(`/outstock/order/page/${1}/orderType`, { keywords })
+  queryOrdersByOrderType(type: number, keywords: string): Query<Order> {
+    return this.http.query<Order>(`/outstock/order/page/${type}/orderType`, { keywords })
       .map(order => fixDate(order, 'outstockDate'));
   }
 
@@ -95,10 +95,11 @@ export class OrderService {
 export class OrderItemService {
   constructor(private http: RestClient) {
   }
+
   /**
    * 根据货物ID查明细
    */
-  async getItemsByOrderId(orderId: string): Promise<CargoItem[]>  {
+  async getItemsByOrderId(orderId: string): Promise<CargoItem[]> {
     let res = await this.http.get(`/outstock/order/${orderId}/item`);
     return res.content;
   }
@@ -110,4 +111,14 @@ export class VehicleService {
   // }
 
 
+}
+
+@autoinject
+export class WorkOrderService {
+  constructor(private http: RestClient) {
+  }
+
+  createOutstockWorkOrder(id: any): Promise<void> {
+    return this.http.put(`/outstock/order/createOutstockWorkOrder/${id}`, null).then(handleResult);
+  }
 }

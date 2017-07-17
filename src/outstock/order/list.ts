@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
-import { OrderCriteria, OrderService } from "@app/outstock/services/order";
+import { OrderCriteria, OrderService, WorkOrderService } from "@app/outstock/services/order";
 import * as moment from 'moment';
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { VerifyBusinessDialogNew } from '@app/outstock/order/verify-business/new';
@@ -10,7 +10,7 @@ import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhou
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
-import { Router, AppRouter } from "aurelia-router";
+import { AppRouter } from "aurelia-router";
 import { VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
@@ -28,11 +28,11 @@ export class OrderList {
   };
 
   constructor(private orderService: OrderService,
-              private router: Router,
               private messageDialogService: MessageDialogService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
               private customhouseService: CustomhouseClearanceService,
+              private workOrderService: WorkOrderService,
               private appRouter: AppRouter,
               private outstockInventoryService: OutstockInventoryService) {
 
@@ -193,7 +193,7 @@ export class OrderList {
       let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库单" });
       if (!skipConformed) return;
       // 跳转 到出库单页面
-      this.router.navigateToRoute('orderItem');
+      this.appRouter.navigateToRoute('outstock-orderItem');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
@@ -241,4 +241,22 @@ export class OrderList {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
+
+  /**
+   * 生成出库作业指令单
+   * @param id
+   */
+  async createOutstockWorkOrder(id) {
+    try {
+      await this.workOrderService.createOutstockWorkOrder(id);
+      let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库作业指令单" });
+      if (!skipConformed) return;
+      // 跳转 到出库单页面
+      this.appRouter.navigateToRoute('outstock-workOrder');
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+
 }
