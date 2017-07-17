@@ -50,6 +50,14 @@ export class WorkOrderService {
   saveWorkOrderAndItems(workOrderAndItems: WorkOrderAndItems): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrder/saveWorkAndItems`, workOrderAndItems).then(handleResult);
   }
+
+  updateWorkOrderAndItems(workOrderAndItems: WorkOrderAndItems): Promise<void> {
+    return this.http.put(`/base/warehouseWorkOrder/update`, workOrderAndItems).then(handleResult);
+  }
+
+  removeWorkOrder(id: string): Promise<void> {
+    return this.http.put(`/base/warehouseWorkOrder/${id}`,'').then(handleResult);
+  }
 }
 
 @autoinject
@@ -63,5 +71,9 @@ export class WorkOderItemService {
 
   saveWorkOrderItem(workOrderItem: WorkOrderItem): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrderItem`, workOrderItem).then(handleResult);
+  }
+
+  removeWorkOrderItem(id: string): Promise<void>{
+    return this.http.put(`/base/warehouseWorkOrderItem/${id}`,'').then(handleResult);
   }
 }

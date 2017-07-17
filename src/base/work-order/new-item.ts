@@ -44,28 +44,29 @@ export class NewWorkOrderItem {
               private dialogController: DialogController,
               private validationControllerFactory: ValidationControllerFactory,
               private container: Container) {
-                this.validationController = this.validationControllerFactory.create();
-                this.validationController.addRenderer(formValidationRenderer);
-                this.container.registerInstance(ValidationController, this.validationController);
+    this.validationController = this.validationControllerFactory.create();
+    this.validationController.addRenderer(formValidationRenderer);
+    this.container.registerInstance(ValidationController, this.validationController);
 
   }
 
   activate(model) {
     this.workOrderItem.batchNumber = model.batchNumber;
-    if(this.workOrderItem.workAreaId !=null&&this.workOrderItem.workAreaId != ""){
+    if (this.workOrderItem.workAreaId != null && this.workOrderItem.workAreaId != "") {
       this.workOrderItem.workAreaId = model.workAreaId;
     }
     this.instockCargoItemId = model.businessId;
     this.type = model.type;
     this.validationController.addObject(this.workOrderItem, validationRules);
-    
+
   }
-  workInfoChanged(){
+
+  workInfoChanged() {
     this.workOrderItem.workId = this.selectedWork.value();
     this.workOrderItem.workName = this.selectedWork.text();
   }
 
-  customerChanged(){
+  customerChanged() {
     this.workOrderItem.customerId = this.selectedCustomer.value();
     this.workOrderItem.customerName = this.selectedCustomer.text();
   }
@@ -76,7 +77,7 @@ export class NewWorkOrderItem {
 
   async save() {
     let { valid } = await this.validationController.validate();
-    if(!valid) return;
+    if (!valid) return;
     this.workOrderItem.id = "" + NewWorkOrderItem.id++;
     await this.dialogController.ok(this.workOrderItem);
   }
@@ -103,4 +104,4 @@ const validationRules = ValidationRules
   //   return true;
   // } )
   // .withMessage(`\${$displayName} 不能为空`)
-  .rules
+  .rules;

@@ -1,47 +1,47 @@
 <template>
-  <ak-grid k-data-source.bind="dataSource"
-           k-pageable.bind="ture" 
-           k-editable="inline">
-    <ak-col  k-title="作业内容">
-      <ak-template>
-      <ak-drop-down-list class="form-control"
-                         k-option-label="请选择..."
-                         k-data-text-field="workName"
-                         k-data-value-field="workId"
-                         k-value.two-way="workId"
-                         k-data-source.bind="worksSource"
-                         style="width: 60%">
-      </ak-drop-down-list>
-      </ak-template>
-    </ak-col>
-    <ak-col k-field="workNumber" k-title="作业数量">
-      <ak-template>
-        <input type="number" value.bind="workNumber">
-      </ak-template>
-    </ak-col>
-    <ak-col k-title="作业单位">
-      <ak-template>
-        <ak-drop-down-list class="form-control"
-                           k-option-label="请选择..."
-                           k-data-text-field="name"
-                           k-data-value-field="id"
-                           k-value.two-way="customerId"
-                           k-data-source.bind="customersSource"
-                           style="width: 60%">
-        </ak-drop-down-list>
-      </ak-template>
-    </ak-col>
-    <ak-col k-field="remark" k-title="备注">
-      <ak-template>
-        <input type="text" value.bind="remark">
-      </ak-template>
-    </ak-col>
-    <ak-col>
-      <ak-template>
-        <button class="btn btn-small" click.delegate="remove($this)">删除</button>
-      </ak-template>
-    </ak-col>
-    <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
-  </ak-grid>
-  <button click.trigger="add()">新增作业过程</button>
+    <ak-grid k-data-source.bind="dataSource"
+             k-pageable.bind="ture"
+             k-editable="inline">
+        <ak-col k-title="作业内容">
+            <ak-template>
+                <ak-drop-down-list class="form-control"
+                                   k-option-label="请选择..."
+                                   k-data-text-field="workName"
+                                   k-data-value-field="workId"
+                                   k-value.two-way="workId"
+                                   k-data-source.bind="worksSource"
+                                   style="width: 60%">
+                </ak-drop-down-list>
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="workNumber" k-title="作业数量">
+            <ak-template>
+                <input type="number" value.bind="workNumber">
+            </ak-template>
+        </ak-col>
+        <ak-col k-title="作业单位">
+            <ak-template>
+                <ak-drop-down-list class="form-control"
+                                   k-option-label="请选择..."
+                                   k-data-text-field="name"
+                                   k-data-value-field="id"
+                                   k-value.two-way="customerId"
+                                   k-data-source.bind="customersSource"
+                                   style="width: 60%">
+                </ak-drop-down-list>
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="remark" k-title="备注">
+            <ak-template>
+                <input type="text" value.bind="remark">
+            </ak-template>
+        </ak-col>
+        <ak-col>
+            <ak-template>
+                <button class="btn btn-small" click.delegate="remove($this)">删除</button>
+            </ak-template>
+        </ak-col>
+        <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
+    </ak-grid>
+    <button click.trigger="add()">新增作业过程</button>
 </template>

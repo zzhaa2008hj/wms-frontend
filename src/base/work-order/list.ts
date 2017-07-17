@@ -1,8 +1,7 @@
 import { inject } from "aurelia-dependency-injection";
 import { DataSourceFactory } from "@app/utils";
-import { WorkOderItemService, WorkOrderService } from "@app/instock/services/work-order";
-import { DialogService } from "ui";
-import { NewWorkOrderItem } from "@app/base/work-order/new-item";
+import { WorkOrderService } from "@app/instock/services/work-order";
+import { DialogService, MessageDialogService } from "ui";
 import { VeiwWorkItem } from "@app/base/work-order/view";
 import { RouterParams } from '@app/common/models/router-params';
 export class WorkOrders {
@@ -12,9 +11,9 @@ export class WorkOrders {
 
   constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderService: WorkOrderService,
-              @inject private workOrderItemService: WorkOderItemService,
               @inject private dialogService: DialogService,
-              @inject private dataSourceFactory: DataSourceFactory) {
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject private messageDialogService: MessageDialogService) {
   }
 
   async activate() {
@@ -22,7 +21,7 @@ export class WorkOrders {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId }),
       pageSize: 10
-    });   
+    });
   }
 
   /* async add() {
@@ -61,16 +60,22 @@ export class WorkOrders {
   view(id: string) {
     this.dialogService.open({
       viewModel: VeiwWorkItem,
-      model: {id: id},
+      model: { id: id },
       lock: true
-    });  
+    });
   }
 
-  remove(id: string) {
-    alert(id);
+  async remove(id: string) {
+    let confirmed = await this.messageDialogService.confirm({ title: "删除", message: "删除后不可恢复" });
+    if (confirmed) {
+      try {
+        await this.workOrderService.removeWorkOrder(id);
+        await this.messageDialogService.confirm({ title: "删除", message: "删除成功" });
+        this.dataSource.read();
+      } catch (e) {
+        await this.messageDialogService.alert({ title: "错误", message: e.message, icon: "error" });
+      }
+    }
   }
 
-  edit(id: string) {
-    alert(id);
-  }
 }

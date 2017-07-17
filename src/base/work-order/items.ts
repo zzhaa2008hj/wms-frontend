@@ -1,10 +1,7 @@
-
-
 import { observable, inject } from "aurelia-framework";
 import { bindable, customElement } from "aurelia-templating";
 import { ContractService } from "@app/base/services/contract";
 import { WorkInfoService } from "@app/base/services/work-info";
-import { WorkOrderArea } from "@app/instock/models/work";
 import { NewWorkOrder } from "./new";
 import { RouterParams } from '@app/common/models/router-params';
 
@@ -46,14 +43,14 @@ export class MessageRecipients {
               @inject private workInfoService: WorkInfoService,
               @inject private newWorkOrder: NewWorkOrder,
               @inject('routerParams') private routerParams: RouterParams) {
-    
+
   }
 
-  add() {   
+  add() {
     this.dataSource.add({});
   }
 
-  remove(e){
+  remove(e) {
     this.dataSource.remove(e);
   }
 
@@ -61,7 +58,7 @@ export class MessageRecipients {
   //   this.dataSource.data(this.workOrderArea.workOrderItem);
   // }
 
-  parentUidChanged(){
+  parentUidChanged() {
     this.dataSource = this.newWorkOrder.getNewDataSourceByUid(this.parentUid);
   }
 

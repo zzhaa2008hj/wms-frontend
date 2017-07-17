@@ -63,7 +63,7 @@ export class NewWorkOrder {
     }
   });
 
-  datasource : kendo.data.DataSource;
+  datasource: kendo.data.DataSource;
 
   cargoItemsSource = new kendo.data.DataSource({
     transport: {
@@ -95,80 +95,80 @@ export class NewWorkOrder {
     }
   });
 
-  constructor( @inject('routerParams') private routerParams: RouterParams,
-    @inject private cargoFlowService: CargoFlowService,
-    @inject private cargoItemService: CargoItemService,
-    @inject private instockVehicleService: InstockVehicleService,
-    @inject private workInfoService: WorkInfoService,
-    @inject private warehouseService: WarehouseService,
-    @inject private organizationService: OrganizationService,
-    @inject private workOrderService: WorkOrderService,
-    @inject private messageDialogService: MessageDialogService,
-    @inject private router: Router,
-    @newInstance() private validationController: ValidationController,
-    @inject private dictionaryDataService: DictionaryDataService) {
-      this.workOrderItem.workNumber = 1 ;
+  constructor(@inject('routerParams') private routerParams: RouterParams,
+              @inject private cargoFlowService: CargoFlowService,
+              @inject private cargoItemService: CargoItemService,
+              @inject private instockVehicleService: InstockVehicleService,
+              @inject private workInfoService: WorkInfoService,
+              @inject private warehouseService: WarehouseService,
+              @inject private organizationService: OrganizationService,
+              @inject private workOrderService: WorkOrderService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private router: Router,
+              @newInstance() private validationController: ValidationController,
+              @inject private dictionaryDataService: DictionaryDataService) {
+    this.workOrderItem.workNumber = 1;
     this.datasource = new kendo.data.DataSource({
-      transport: {
-        read: (options) => {
-          options.success([]);
+        transport: {
+          read: (options) => {
+            options.success([]);
+          },
+          update: (options) => {
+            options.success();
+          }
+          ,
+          destroy: (options) => {
+            options.success();
+          }
+          ,
+          create: async options => {
+            console.log('data', this.datasource.data()[0].workOrderItem);
+            this.datasource.data()[0].workOrderItem = [];
+            this.workOrderAreas = options.data.models;
+            options.success();
+          }
         },
-        update: (options) => {
-          options.success();
-        }
-        ,
-        destroy: (options) => {
-          options.success();
-        }
-        ,
-        create: async options => {
-          console.log('data', this.datasource.data()[0].workOrderItem);
-          this.datasource.data()[0].workOrderItem = [];
-          this.workOrderAreas = options.data.models;
-          options.success();
-        }
-      },
-      batch: true,
-      pageSize: 8,
-      schema: {
-        model: {
-          fields: {
-            workItemId: {
-              editable: false, nullable: true
-            },
-            workId: {
-              type: 'string',
-              validation: { required: true }
-            },
-            quantity: {
-              type: 'number',
-              validation: { min: 0, max: 1000000000000000 }
-            },
-            number: {
-              type: 'number',
-              validation: { min: 0, max: 1000000000000000 }
-            },
-            containerType: {
-              type: 'string'
-            },
-            containerNumber: {
-              type: 'string'
-            },
-            sign:{
-              type: 'string'
-            },
-            customerId: {
-              type: 'string',
-              validation: { required: true }
-            },
-            remark: {
-              type: 'string',
-              validation: { required: true }
+        batch: true,
+        pageSize: 8,
+        schema: {
+          model: {
+            fields: {
+              workItemId: {
+                editable: false, nullable: true
+              },
+              workId: {
+                type: 'string',
+                validation: { required: true }
+              },
+              quantity: {
+                type: 'number',
+                validation: { min: 0, max: 1000000000000000 }
+              },
+              number: {
+                type: 'number',
+                validation: { min: 0, max: 1000000000000000 }
+              },
+              containerType: {
+                type: 'string'
+              },
+              containerNumber: {
+                type: 'string'
+              },
+              sign: {
+                type: 'string'
+              },
+              customerId: {
+                type: 'string',
+                validation: { required: true }
+              },
+              remark: {
+                type: 'string',
+                validation: { required: true }
+              }
             }
           }
         }
       }
-    }
     );
     this.validationController.addRenderer(formValidationRenderer);
   }
@@ -191,61 +191,62 @@ export class NewWorkOrder {
   }
 
   async save() {
-    console.log(this.datasource.data())
 
-    // let len = this.datasource.data().length;
-    // alert(len);
-    // for(let i = 0; i<len; i++){
-    //   let items = this.itemsDataSources.get(this.datasource.data()[i].uid);
-    //   this.datasource.data()[i].WorkOrderItem = items;
+    let len = this.datasource.data().length;
+    alert(len);
+    for (let i = 0; i < len; i++) {
+      let items = this.itemsDataSources.get(this.datasource.data()[i].uid);
+      this.datasource.data()[i].WorkOrderItem = items;
 
-    //   let workOrderArea = {} as WorkOrderArea;
-    //   workOrderArea.warehouseId = this.datasource.data()[i].warehouseId;
-    //   workOrderArea.quantity = this.datasource.data()[i].quantity;
-    //   workOrderArea.number = this.datasource.data()[i].number;
-    //   workOrderArea.unit = this.datasource.data()[i].unit;
-    //   workOrderArea.containerNumber = this.datasource.data()[i].containerNumber;
-    //   workOrderArea.containerType = this.datasource.data()[i].containerType;
+      let workOrderArea = {} as WorkOrderArea;
+      workOrderArea.warehouseId = this.datasource.data()[i].warehouseId;
+      workOrderArea.quantity = this.datasource.data()[i].quantity;
+      workOrderArea.number = this.datasource.data()[i].number;
+      workOrderArea.unit = this.datasource.data()[i].unit;
+      workOrderArea.containerNumber = this.datasource.data()[i].containerNumber;
+      workOrderArea.containerType = this.datasource.data()[i].containerType;
+      workOrderArea.remark = this.datasource.data()[i].remark;
 
-    //   let workOrderItems = [] as WorkOrderItem[];
-    //   for(let j=0; j<items.data().length; j++){
-    //     let workOrderItem = {} as WorkOrderItem;
-    //     workOrderItem.workId = items.data()[j].workId;
-    //     workOrderItem.workNumber = items.data()[j].workNumber;
-    //     workOrderItem.customerId = items.data()[j].customerId;
-    //     workOrderItem.remark = items.data()[j].remark;
-    //     workOrderItems.push(workOrderItem);
-    //   }
-    //   workOrderArea.workOrderItem = workOrderItems;
-      
-    //   this.workOrderAreas.push(workOrderArea);
-    // }
+      let workOrderItems = [] as WorkOrderItem[];
+      for (let j = 0; j < items.data().length; j++) {
+        let workOrderItem = {} as WorkOrderItem;
+        workOrderItem.workId = items.data()[j].workId;
+        workOrderItem.workNumber = items.data()[j].workNumber;
+        workOrderItem.customerId = items.data()[j].customerId;
+        workOrderItem.remark = items.data()[j].remark;
+        workOrderItems.push(workOrderItem);
+      }
+      workOrderArea.workOrderItem = workOrderItems;
 
-    // let { valid } = await this.validationController.validate();
-    // if (!valid) return;
-    // try {
-    //   for (let i = 0; i < this.workOrderAreas.length; i++) {
-    //     this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderAreas[i].warehouseId);
-    //     this.workOrderAreas[i].warehouseName = this.warehouse.name;
-      
-    //     for(let j=0; j< this.workOrderAreas[i].workOrderItem.length; j++){
-    //       this.workInfo = await this.workInfoService.getWorkInfo(this.workOrderAreas[i].workOrderItem[j].workId);
-    //       this.workOrderAreas[i].workOrderItem[j].workName = this.workInfo.name;
-           
-    //       this.organization = await this.organizationService.getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
-    //       this.workOrderAreas[i].workOrderItem[j].customerName = this.organization.name;
-    //     }
-    //   }
-    //   await this.workOrderService.saveWorkOrderAndItems({
-    //     warehouseWorkOrder: this.workOrder,
-    //     list: this.workOrderAreas
-    //   });
-    //   await this.messageDialogService.alert({ title: "新增成功", message: "新增成功" });
-    //   this.router.navigateToRoute("list");
+      this.workOrderAreas.push(workOrderArea);
+    }
 
-    // } catch (err) {
-    //   await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
-    // }
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+    try {
+      for (let i = 0; i < this.workOrderAreas.length; i++) {
+        this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderAreas[i].warehouseId);
+        this.workOrderAreas[i].warehouseName = this.warehouse.name;
+
+        for (let j = 0; j < this.workOrderAreas[i].workOrderItem.length; j++) {
+          this.workInfo = await this.workInfoService.getWorkInfo(this.workOrderAreas[i].workOrderItem[j].workId);
+          this.workOrderAreas[i].workOrderItem[j].workName = this.workInfo.name;
+
+          this.organization = await this.organizationService
+            .getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
+          this.workOrderAreas[i].workOrderItem[j].customerName = this.organization.name;
+        }
+      }
+      await this.workOrderService.saveWorkOrderAndItems({
+        warehouseWorkOrder: this.workOrder,
+        list: this.workOrderAreas
+      });
+      await this.messageDialogService.alert({ title: "新增成功", message: "新增成功" });
+      this.router.navigateToRoute("list");
+
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+    }
   }
 
   onSelectPlateNumber(e) {
@@ -260,50 +261,41 @@ export class NewWorkOrder {
     this.validationController.validate({ object: this.workOrder, propertyName });
   }
 
-  detailInit() { }
-  
-  getSign(){
-    return [0, 1, 2, 3, 4, 5, 6].sort(() => Math.random() - 0.5).toString();
+  detailInit() {
   }
 
-  getWorkItems(sign: string){
-       let data;
-       for( let workOrderArea of this.workOrderAreas) {
-                if(sign == workOrderArea.sign){
-                  if(workOrderArea.workOrderItem == null){
-                  workOrderArea.workOrderItem = [];
-                  }
-                data =  workOrderArea.workOrderItem
-                }
-       }  
-       return data;
-  }
-  add(){
-     let res = this.datasource.add({});
+  add() {
+    let res = this.datasource.add({});
 
     let itemDataSource = new kendo.data.DataSource({
       schema: {
         model: {
           fields: {
             workName: { editable: false },
-            workNumber: { editable: false, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, title: '作业数量' },
+            workNumber: {
+              editable: false,
+              notify: true,
+              type: 'number',
+              validation: { required: true, min: 0, max: 1000000000000000 },
+              title: '作业数量'
+            },
             customerName: { editable: false },
             remark: { editable: false },
           }
         }
       }
     });
-    
+
     this.itemsDataSources.set(res.uid, itemDataSource);
   }
 
 
-  remove(e){
+  remove(e) {
     this.datasource.remove(e);
     this.itemsDataSources.delete(e.uid);
-  }  
+  }
 
-  getNewDataSourceByUid(uid: string){
+  getNewDataSourceByUid(uid: string) {
     return this.itemsDataSources.get(uid);
   }
 

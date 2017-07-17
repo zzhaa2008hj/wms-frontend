@@ -68,11 +68,5 @@ export class DictionaryDataService {
     let result = await this.http.get(`/base/dictionaryData/${dictCode}/list`);
     return result.content;
   }
-
-  /**
-   * 根据dictCode 和 dictDataCode查找数据
-   */
-  getDictionaryDataByCodes(dictCode: string, dataCode: string): Promise<DictionaryData>{
-    return this.http.get(`/base/dictionaryData/${dictCode}/dictCode/${dataCode}/dataCode`).then(res => res.content);
-  }
+  
 }
