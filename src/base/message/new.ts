@@ -3,16 +3,16 @@ import { MessageService } from "@app/base/services/message";
 import { Router } from "aurelia-router";
 import { EmployeeService } from "@app/base/services/employee";
 import { MessageDialogService } from "ui";
-import { Message, MessageVo, MessageResult } from '@app/base/models/message';
+import { Message, MessageVo, MessageResult, validationRules } from '@app/base/models/message';
 import { observable } from 'aurelia-framework';
-import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 /**
  * Created by Hui on 2017/6/14.
  */
 @autoinject
 export class NewMessage {
-  message: Message;
+  message = {} as Message;
   @observable selectedCategory: number;
   selectedReceiver: any = [];
   dataSourceReceiver = new kendo.data.DataSource({
@@ -43,7 +43,8 @@ export class NewMessage {
               private messageService: MessageService,
               private employeeService: EmployeeService,
               private messageDialogService: MessageDialogService,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+              validationControllerFactory: ValidationControllerFactory, 
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -84,9 +85,3 @@ export class NewMessage {
     this.router.navigateToRoute("list");
   }
 }
-
-const validationRules = ValidationRules
-  .ensure((message: Message) => message.title)
-  .displayName('标题')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .rules;

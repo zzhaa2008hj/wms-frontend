@@ -10,7 +10,7 @@
           <span class="help"></span>
           <div class="controls">
             <input type="radio" name="category" model.bind="1" checked.bind="selectedCategory"> 内部
-            <input type="radio" name="category" model.bind="2" checked.bind="selectedCategory"> 外部
+            <!-- <input type="radio" name="category" model.bind="2" checked.bind="selectedCategory"> 外部 -->
           </div>
         </div>
         <div class="form-group">
@@ -34,7 +34,7 @@
           <label class="form-label">内容</label>
           <span class="help"></span>
           <div class="controls">
-            <textarea type="text" class="form-control" value.bind="message.content" style="height:440px"></textarea>
+            <textarea type="text" class="form-control" value.bind="message.content & validate"></textarea>
           </div>
         </div>
 
