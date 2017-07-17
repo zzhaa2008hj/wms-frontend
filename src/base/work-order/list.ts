@@ -6,8 +6,12 @@ import { VeiwWorkItem } from "@app/base/work-order/view";
 import { RouterParams } from '@app/common/models/router-params';
 export class WorkOrders {
   dataSource: kendo.data.DataSource;
-  test: kendo.ui.Grid;
   type: number;
+  pageable = {
+    refresh: true,
+    pageSizes: true,
+    buttonCount: 10
+  };
 
   constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderService: WorkOrderService,
