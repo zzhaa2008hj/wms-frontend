@@ -2,7 +2,7 @@ import { DataSourceFactory } from "@app/utils";
 import { autoinject } from "aurelia-dependency-injection";
 import { OrderService } from "@app/outstock/services/order";
 @autoinject
-export class OrderItemList {
+export class WorkOrderList {
   keywords: string;
   dataSource: kendo.data.DataSource;
 
@@ -15,7 +15,7 @@ export class OrderItemList {
   constructor(private orderService: OrderService,
               private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.orderService.queryOrdersByOrderType(1, this.keywords),
+      query: () => this.orderService.queryOrdersByOrderType(2, this.keywords),
       pageSize: 10
     });
   }

@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
-import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
+import { CargoItem } from "@app/base/models/cargo-info";
 import { Order } from "@app/outstock/models/order";
 
 /**
@@ -25,11 +25,6 @@ export class OrderService {
 
   delete(id: string): Promise<void> {
     return this.http.delete(`/outstock/order/${id}`).then(handleResult);
-  }
-
-  async listBaseCargoInfosByInstock(): Promise<Array<CargoInfo>> {
-    let res = await this.http.get(`/base/cargoInfo/list`);
-    return res.content;
   }
 
   async listBaseCargoItems(cargoInfoId: string): Promise<CargoItem[]> {
@@ -73,8 +68,8 @@ export class OrderService {
     return this.http.post(`/outstock/order/createOutstockOrder/${id}`, null).then(handleResult);
   }
 
-  queryOrdersByOrderType(keywords: string): Query<Order> {
-    return this.http.query<Order>(`/outstock/order/page/${2}/orderType`, { keywords })
+  queryOrdersByOrderType(type: number, keywords: string): Query<Order> {
+    return this.http.query<Order>(`/outstock/order/page/${type}/orderType`, { keywords })
       .map(order => fixDate(order, 'outstockDate'));
   }
 
@@ -95,10 +90,11 @@ export class OrderService {
 export class OrderItemService {
   constructor(private http: RestClient) {
   }
+
   /**
    * 根据货物ID查明细
    */
-  async getItemsByOrderId(orderId: string): Promise<CargoItem[]>  {
+  async getItemsByOrderId(orderId: string): Promise<CargoItem[]> {
     let res = await this.http.get(`/outstock/order/${orderId}/item`);
     return res.content;
   }
@@ -110,4 +106,14 @@ export class VehicleService {
   // }
 
 
+}
+
+@autoinject
+export class WorkOrderService {
+  constructor(private http: RestClient) {
+  }
+
+  createOutstockWorkOrder(id: any): Promise<void> {
+    return this.http.put(`/outstock/order/createOutstockWorkOrder/${id}`, null).then(handleResult);
+  }
 }

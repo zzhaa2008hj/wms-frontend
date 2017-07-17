@@ -47,6 +47,8 @@ export class WorkOrderService {
   saveWorkOrderAndItems(workOrderAndItems: WorkOrderAndItems): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrder/saveWorkAndItems`, workOrderAndItems).then(handleResult);
   }
+
+
 }
 
 @autoinject
