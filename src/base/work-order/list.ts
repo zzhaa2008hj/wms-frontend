@@ -4,6 +4,8 @@ import { WorkOrderService } from "@app/instock/services/work-order";
 import { DialogService, MessageDialogService } from "ui";
 import { VeiwWorkItem } from "@app/base/work-order/view";
 import { RouterParams } from '@app/common/models/router-params';
+import { ConstantValues } from '@app/common/models/constant-values';
+
 export class WorkOrders {
   dataSource: kendo.data.DataSource;
   type: number;
@@ -12,6 +14,7 @@ export class WorkOrders {
     pageSizes: true,
     buttonCount: 10
   };
+  wrokCategories = ConstantValues.WorkInfoCategory;
 
   constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderService: WorkOrderService,
@@ -23,7 +26,10 @@ export class WorkOrders {
   async activate() {
     this.type = this.routerParams.type;
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId }),
+      query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId }).map(res => {
+        res.workOrderCategoryName = this.wrokCategories.find(r => r.value == res.workOrderCategory).text;
+        return res;
+      }),
       pageSize: 10
     });
   }
