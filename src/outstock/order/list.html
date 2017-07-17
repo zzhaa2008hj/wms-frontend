@@ -35,14 +35,13 @@
     <ak-col k-field="quantitySum" k-title="合计重量" k-width.bind="150"></ak-col>
     <ak-col k-field="stage" k-title="当前阶段" k-width.bind="180"></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
-    <ak-col k-title="操作" k-width.bind="300">
+    <ak-col k-title="操作" k-width.bind="400">
       <ak-template>
         <a class="btn btn-small" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }">修改</a>
         <a class="btn btn-small btn-info" route-href="route: detail; params.bind: { id: id }">详情</a>
         <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
         <button class="btn btn-small btn-primary" if.bind="stage == 8" click.delegate="verifyBusiness(id)">上传提货信息</button>
         <a class="btn btn-danger btn-small" click.delegate="delete(id)" if.bind="stage == 2 || stage == 0">删除</a>
-        <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 1 || stage == 9" route-href="route: verify-business; params.bind: {id: id}">商务审核</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 5 || stage == 6" route-href="route: verify-deputy-general; params.bind: {id: id}">副总审批</a>
 
