@@ -48,4 +48,9 @@ const validationRules = ValidationRules
   .ensure((notice: Notice) => notice.title)
   .displayName('标题')
   .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((notice: Notice) => notice.content)
+  .displayName('内容')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .maxLength(200).withMessage(`\${$displayName} 长度不能大于200`)
   .rules;
