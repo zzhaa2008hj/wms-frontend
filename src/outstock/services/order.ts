@@ -91,6 +91,10 @@ export class OrderService {
   approve(id: string, verifyStatus: number): Promise<void> {
     return this.http.put(`/outstock/order/approve/${id}?verifyStatus=${verifyStatus}`, null).then(handleResult);
   }
+
+  updateStage(id: string, stage: number): Promise<void> {
+    return this.http.put(`/outstock/order/${id}/changeStage/${stage}`, '').then(handleResult);
+  }
 }
 
 @autoinject
