@@ -91,11 +91,11 @@ export const validationRules = ValidationRules
 
   .ensure((e: Employee)  => e.officeNumber)
   .displayName('办公号码')
-  .matches(/^\d{3}-\d{8}|\d{4}-\d{7}$/).withMessage(`\${$displayName} 格式错误`)
+  .matches(/^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{1,4}))?$/).withMessage(`\${$displayName} 格式错误`)
 
   .ensure((e: Employee)  => e.homeNumber)
   .displayName('家庭电话')
-  .matches(/^\d{3}-\d{8}|\d{4}-\d{7}$/).withMessage(`\${$displayName} 格式错误`)
+  .matches(/^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{1,4}))?$/).withMessage(`\${$displayName} 格式错误`)
 
   .ensure((e: Employee)  => e.position)
   .displayName('职位')
