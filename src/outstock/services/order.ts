@@ -74,7 +74,7 @@ export class OrderService {
   }
 
   queryOrdersByOrderType(keywords: string): Query<Order> {
-    return this.http.query<Order>(`/outstock/order/page/${2}/orderType`, { keywords })
+    return this.http.query<Order>(`/outstock/order/page/${1}/orderType`, { keywords })
       .map(order => fixDate(order, 'outstockDate'));
   }
 
