@@ -76,6 +76,7 @@ export class NewOrder {
 
   async activate() {
     this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({instockStatus: 1});
+    console.log(this.vehicles);
   }
 
   async onSelectCargoInfo(e) {
@@ -193,7 +194,7 @@ const validationRules = ValidationRules
   .displayName('联系人')
   .required().withMessage(`\${$displayName} 不能为空`)
 
-  .ensure((order: Order) => order.outstockOrderNumber)
+  .ensure((order: Order) => order.batchNumber)
   .required().withMessage(`请选择批次`)
 
   .ensure((order: Order) => order.contactNumber)
