@@ -82,6 +82,7 @@ export class NewMessage {
       this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      this.disabled = false;      
     }
   }
 
