@@ -11,12 +11,14 @@ import { formValidationRenderer } from "@app/validation/support";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { CargoInfoService } from '@app/base/services/cargo-info';
+import { observable } from 'aurelia-framework';
 
 /**
  * Created by Hui on 2017/6/23.
  */
 @autoinject
 export class EditCargoFlow {
+  @observable disabled: boolean = false;
   cargoItems = [] as InstockCargoItem[];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
@@ -157,13 +159,14 @@ export class EditCargoFlow {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
+    this.disabled = true;
     try {
       await this.cargoFlowService.updateCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "修改成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await
-        this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 

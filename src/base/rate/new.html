@@ -51,7 +51,7 @@
           <div class="form-group">
             <label class="form-label">作业内容*</label>
             <span class="help"></span>
-            <input type="text" class="form-label" value.bind="rate.workName & validate" disabled>
+            <input type="text" class="form-label" value.bind="rate.workName & validate" readonly>
             <a class="btn btn-small" type="button" click.delegate="selectWorkInfo()">请选择...</a>
           </div>
         </div>
@@ -82,7 +82,7 @@
           <label class="form-label">单价*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="rate.price">
+            <input type="text" class="form-control" value.bind="rate.price" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
@@ -123,8 +123,8 @@
 
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
-            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i> 保存</button>
+            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
           </div>
         </div>
       </form>

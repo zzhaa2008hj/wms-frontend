@@ -32,21 +32,21 @@
           <label class="form-label">联系人*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="cargoFlow.contactPerson & validate">
+            <input type="text" class="form-control" value.bind="cargoFlow.contactPerson & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">联系方式*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="cargoFlow.contactNumber & validate">
+            <input type="text" class="form-control" value.bind="cargoFlow.contactNumber & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">备注</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="cargoFlow.remark & validate">
+            <input type="text" class="form-control" value.bind="cargoFlow.remark & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
@@ -108,8 +108,8 @@
         </ak-grid>
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i>保存</button>
-            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i>保存</button>
+            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
           </div>
         </div>
       </form>

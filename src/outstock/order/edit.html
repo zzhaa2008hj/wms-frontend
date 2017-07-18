@@ -30,32 +30,31 @@
           <label class="form-label">提货单号*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.takeDeliveryNum & validate">
+            <input type="text" class="form-control"  value.bind="order.takeDeliveryNum & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">联系人*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.contactPerson & validate">
+            <input type="text" class="form-control" value.bind="order.contactPerson & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">联系电话*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.contactNumber & validate">
+            <input type="text" class="form-control" value.bind="order.contactNumber & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">备注</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.remark & validate">
+            <input type="text" class="form-control" value.bind="order.remark & validate" disabled.bind="disabled">
           </div>
         </div>
-        <!--if.bind="outstockCargoItems.length != 0"-->
-        <div class="form-group">
+        <div class="form-group"  if.bind="outstockCargoItems.length != 0">
           <div class="controls">
             <label class="form-label">出库货物*</label>
             <ak-drop-down-list k-widget.two-way="dropDownListCargoItem"
@@ -95,8 +94,8 @@
 
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
-            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i> 保存</button>
+            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
           </div>
         </div>
       </form>

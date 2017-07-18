@@ -6,18 +6,18 @@
       <form submit.delegate="addNewOrder()">
         <div class="form-group">
           <label class="form-label">批次号*</label>
-          <span class="help"></span>
           <ak-drop-down-list k-widget.two-way="selectedCargoInfo" k-option-label="请选择..."
-                             k-data-text-field="batchNumber" k-data-value-field="id"
+                             k-data-text-field="batchNumber" k-data-value-field="batchNumber"
                              k-data-source.bind="baseCargoInfo"
-                             k-on-select.delegate="onSelectCargoInfo($event.detail)">
+                             k-on-select.delegate="onSelectCargoInfo($event.detail)"
+                             k-value.bind="order.batchNumber & validate">
           </ak-drop-down-list>
         </div>
         <div class="form-group">
           <label class="form-label">出库单号*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.outstockOrderNumber" readonly>
+            <input type="text" class="form-control"  value.bind="order.outstockOrderNumber" readonly>
           </div>
         </div>
         <div class="form-group">
@@ -32,41 +32,43 @@
           <label class="form-label">提货单号*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.takeDeliveryNum & validate">
+            <input type="text" class="form-control" value.bind="order.takeDeliveryNum & validate"
+                   disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">联系人*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.contactPerson & validate">
+            <input type="text" class="form-control" value.bind="order.contactPerson & validate"
+                   disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">联系电话*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.contactNumber & validate">
+            <input type="text" class="form-control" value.bind="order.contactNumber & validate"
+                   disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">备注</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.remark & validate">
+            <input type="text" class="form-control" value.bind="order.remark & validate" disabled.bind="disabled">
           </div>
         </div>
-        <!--if.bind="outstockCargoItems.length != 0"-->
-        <div class="form-group">
+        <div class="form-group" >
           <div class="controls">
             <label class="form-label">出库货物*</label>
             <ak-drop-down-list k-widget.two-way="dropDownListCargoItem"
                                k-option-label="请选择--出库货物"
                                k-data-text-field="cargoName"
                                k-data-source.bind="outstockCargoItems"
-                               k-on-select.delegate="onSelect($event.detail)">
+                               k-on-select.delegate="onSelect($event.detail)" >
             </ak-drop-down-list>
-            <ak-grid k-data-source.bind="orderItems" k-editable.bind="true">
+            <ak-grid k-data-source.bind="orderItems" k-editable.bind="true" if.bind="outstockOrderItems.length != 0">
               <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
               <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
               <ak-col k-field="unit" k-title="计量单位"></ak-col>
@@ -82,7 +84,7 @@
               </ak-col>
             </ak-grid>
           </div>
-          <div class="controls">
+          <div class="controls" >
             <label class="form-label">出库车辆*</label>
             <ak-grid k-data-source.bind="vehicles" k-editable.bind="true" k-toolbar.bind="['create']">
               <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
@@ -97,8 +99,10 @@
 
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
-            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i> 保存
+            </button>
+            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消
+            </button>
           </div>
         </div>
       </form>

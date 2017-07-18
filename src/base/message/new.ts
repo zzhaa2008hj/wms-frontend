@@ -58,12 +58,12 @@ export class NewMessage {
   }
 
   async addNewMessage() {
+    this.validationController.addObject(this.message, validationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     this.disabled = true;
     try {
-      this.validationController.addObject(this.message, validationRules);
-      let { valid } = await this.validationController.validate();
-      if (!valid) return;
-
       this.message.category = this.selectedCategory;
       let messageVo = {} as MessageVo;
       messageVo.message = this.message;
