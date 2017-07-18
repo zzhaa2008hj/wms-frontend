@@ -8,8 +8,8 @@ import { formValidationRenderer } from "@app/validation/support";
  */
 @autoinject
 export class NewCargoCategory {
-  cargoCategory: CargoCategory;
-  pCargoCategory: CargoCategory;
+  cargoCategory: CargoCategory = {} as CargoCategory;
+  pCargoCategory: CargoCategory = {} as CargoCategory;
   validationController: ValidationController;
 
   constructor(private dialogController: DialogController,

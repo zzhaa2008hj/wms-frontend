@@ -8,7 +8,7 @@ import { formValidationRenderer } from "@app/validation/support";
  */
 @autoinject
 export class EditWarehouse {
-  warehouse: Warehouse;
+  warehouse: Warehouse = {} as Warehouse;
   validationController: ValidationController;
   constructor(private dialogController: DialogController,
               validationControllerFactory: ValidationControllerFactory, container: Container) {

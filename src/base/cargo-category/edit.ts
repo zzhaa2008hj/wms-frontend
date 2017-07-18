@@ -8,7 +8,7 @@ import { formValidationRenderer } from "@app/validation/support";
  */
 @autoinject
 export class EditCargoCategory {
-  cargoCategory: CargoCategory;
+  cargoCategory: CargoCategory = {} as CargoCategory;
   validationController: ValidationController;
 
   constructor(private dialogController: DialogController,

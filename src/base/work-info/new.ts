@@ -9,8 +9,8 @@ import { ConstantValues } from '@app/common/models/constant-values';
  */
 @autoinject
 export class NewWorkInfo {
-  workInfo: WorkInfo;
-  pWorkInfo: WorkInfo;
+  workInfo: WorkInfo = {} as WorkInfo;
+  pWorkInfo: WorkInfo = {} as WorkInfo;
   category = ConstantValues.WorkInfoCategory;
   validationController: ValidationController;
 
