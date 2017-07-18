@@ -31,15 +31,15 @@ export class VerifyBusinessEdit {
               @inject('cargoFlowId') private cargoFlowId: CargoFlow) {
   }
 
-  async activate(params) {
+  async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
-    this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
+    this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.cargoFlowId.id);
     this.cargoFlow.instockDateStr = moment(this.cargoFlow.instockDate).format("YYYY-MM-DD");
-    this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlowId.id);
+    this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlow.cargoInfoId);    
     this.cargoInfo.warehouseTypeStr = this.warehouseTypes.
-    find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
-    this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
+      find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
+    this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.cargoFlowId.id);
     this.cargoItems.map(res => {
       res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
       return res;
