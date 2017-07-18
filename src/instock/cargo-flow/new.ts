@@ -19,7 +19,6 @@ import { DictionaryData } from '@app/base/models/dictionary';
 export class NewCargoFlow {
   cargoItems = [];
   units = [] as DictionaryData[];
-  deletedCargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   hasInfoId: boolean = false;
@@ -40,9 +39,6 @@ export class NewCargoFlow {
         options.success();
       }
     },
-  });
-  dataSourceDeletedCargoItem = new kendo.data.HierarchicalDataSource({
-    data: []
   });
   vehicle = [];
   dataSourceVehicle = new kendo.data.DataSource({
@@ -145,18 +141,14 @@ export class NewCargoFlow {
     let dataItem = this.dropDownListCargoItem.dataItem(e.item);
     console.log(dataItem);
     this.cargoItems.splice(0, 0, dataItem);
-    let index = this.dataSourceCargoItem.indexOf(e);
-    this.deletedCargoItems.splice(index, 1);
     this.dataSourceCargoItem.data(this.cargoItems);
-    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
   }
 
   deleteCargoItem(e) {
     this.cargoItems.forEach(ci => {
       if (e.sign == ci.sign) {
         let index = this.cargoItems.indexOf(ci);
-        let dci = this.cargoItems.splice(index, 1);
-        this.deletedCargoItems.push(dci[0]);
+        this.cargoItems.splice(index, 1);
         //同时删除车辆信息
         this.vehicle.forEach(v => {
           if (v.sign == ci.sign) {
@@ -167,7 +159,6 @@ export class NewCargoFlow {
     });
     this.dataSourceCargoItem.data(this.cargoItems);
     this.dataSourceVehicle.data(this.vehicle);
-    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
   }
 
   deleteVehicle(e) {

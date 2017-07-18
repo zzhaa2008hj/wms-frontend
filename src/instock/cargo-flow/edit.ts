@@ -18,7 +18,6 @@ import { CargoInfoService } from '@app/base/services/cargo-info';
 @autoinject
 export class EditCargoFlow {
   cargoItems = [] as InstockCargoItem[];
-  deletedCargoItems = [];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   units = [] as DictionaryData[];
@@ -32,9 +31,6 @@ export class EditCargoFlow {
     }
   };
   dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
-  dataSourceDeletedCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
   vehicles = [];
@@ -80,12 +76,10 @@ export class EditCargoFlow {
           }
         });
       }
-      this.deletedCargoItems = baseCargoItems;
     }
     
     this.dataSourceCargoItem.data(this.cargoItems);
     this.dataSourceVehicle.data(this.vehicles);
-    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
   }
 
   async addVehicle(cargoItem) {
@@ -105,8 +99,7 @@ export class EditCargoFlow {
     this.cargoItems.forEach(ci => {
       if (e.id == ci.id) {
         let index = this.cargoItems.indexOf(ci);
-        let dci = this.cargoItems.splice(index, 1);
-        this.deletedCargoItems.push(dci[0]);
+       this.cargoItems.splice(index, 1);
         //同时删除车辆信息
         this.vehicles.forEach(v => {
           if (v.instockGoodsId == ci.id) {
@@ -117,17 +110,13 @@ export class EditCargoFlow {
     });
     this.dataSourceCargoItem.data(this.cargoItems);
     this.dataSourceVehicle.data(this.vehicles);
-    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
   }
 
   onSelect(e) {
     let dataItem = this.dropDownListCargoItem.dataItem(e.item);
     console.log(dataItem);
     this.cargoItems.splice(0, 0, dataItem);
-    let index = this.dataSourceCargoItem.indexOf(e);
-    this.deletedCargoItems.splice(index, 1);
     this.dataSourceCargoItem.data(this.cargoItems);
-    this.dataSourceDeletedCargoItem.data(this.deletedCargoItems);
   }
 
   deleteVehicle(e) {

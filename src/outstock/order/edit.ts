@@ -6,12 +6,14 @@ import { formValidationRenderer } from "@app/validation/support";
 import { Order, OrderItem } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
 import { MessageDialogService } from "ui";
+import { observable } from 'aurelia-framework';
 
 /**
  * Created by Hui on 2017/6/23.
  */
 @autoinject
 export class EditOrder {
+  @observable disabled: boolean = false;
   order = {} as Order;
   outstockOrderItems = [];
   outstockCargoItems = new kendo.data.HierarchicalDataSource({
