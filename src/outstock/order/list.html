@@ -44,7 +44,6 @@
         <a class="btn btn-danger btn-small" click.delegate="delete(id)" if.bind="stage == 2 || stage == 0">删除</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 1 || stage == 9" route-href="route: verify-business; params.bind: {id: id}">商务审核</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 5 || stage == 6" route-href="route: verify-deputy-general; params.bind: {id: id}">副总审批</a>
-
         <button class="btn btn-small btn-primary" if.bind="stage == 3 || stage == 4" click.delegate="verifyFee(id)">费收审核</button>
         <button class="btn btn-small btn-primary" if.bind="!clearanceStatus" click.delegate="verifyCustomhouse(id)">单证审核</button>
         <button class="btn btn-small" click.delegate="verifyHistory(id)">审核记录</button>
