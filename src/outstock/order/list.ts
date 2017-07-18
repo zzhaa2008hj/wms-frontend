@@ -12,6 +12,7 @@ import { AppRouter } from "aurelia-router";
 import { VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
+import { ConstantValues } from "@app/common/models/constant-values";
 
 @autoinject
 export class OrderList {
@@ -24,6 +25,7 @@ export class OrderList {
     pageSizes: true,
     buttonCount: 10
   };
+  outstockStages: any[] = ConstantValues.OutstockStages;
 
   constructor(private orderService: OrderService,
               private messageDialogService: MessageDialogService,
@@ -38,7 +40,11 @@ export class OrderList {
 
   async activate() {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.orderService.queryOrders(this.orderCriteria),
+      query: () => this.orderService.queryOrders(this.orderCriteria)
+        .map(res => {
+          res.outstockStageName = this.outstockStages.find(r => r.stage == res.stage).title;
+          return res;
+        }),
       pageSize: 10
     });
   }
