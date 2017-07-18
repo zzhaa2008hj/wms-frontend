@@ -1,40 +1,27 @@
 <template>
-    <div class="page-title">
-        <h3>数据字典管理</h3>
-    </div>
-    <div class="row">
-        <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.delegate="add()">新增</a></div>
+  <div class="page-title">
+    <h3>数据字典管理</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.delegate="add()">新增</a></div>
 
-        <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="sssss">
-            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-        </div>
+    <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入字典名称">
+      <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
-    <ak-grid k-data-source.bind="dataSource"
-             k-sortable.bind="true"
-             k-reorderable.bind="true"
-             k-resizable.bind="true"
-             k-filterable.bind="true"
-             k-column-menu.bind="true"
-             k-pageable.bind="pageable">
-        <ak-col k-field="dictName" k-title="字典名称"></ak-col>
-        <ak-col k-field="dictCode" k-title="字典编码"></ak-col>
-        <ak-col k-field="remark" k-title="备注"></ak-col>
-        <ak-col k-title="操作">
-            <ak-template>
-                <a class="btn btn-small" if.bind="status==true" click.delegate="edit($this)">编辑</a>
-                <a class="btn btn-small btn-success" if.bind="status==true"
-                   route-href="route: data; params.bind: { id: id }">字典数据
-                </a>
-                <button class="btn btn-warning btn-small" if.bind="status==true" click.delegate="changeState(id)">
-                    禁用
-                </button>
-                <button class="btn btn-primary btn-small" if.bind="status==false" click.delegate="changeState(id)">
-                    启用
-                </button>
-                <button class="btn btn-warning btn-small" if.bind="status==false" click.delegate="delete(id)">
-                    删除
-                </button>
-            </ak-template>
-        </ak-col>
-    </ak-grid>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-filterable.bind="true"
+    k-column-menu.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="dictName" k-title="字典名称"></ak-col>
+    <ak-col k-field="dictCode" k-title="字典编码"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+    <ak-col k-title="操作">
+      <ak-template>
+        <a class="btn btn-small" if.bind="status==true" click.delegate="edit($this)">编辑</a>
+        <a class="btn btn-small btn-success" if.bind="status==true" route-href="route: data; params.bind: { id: id }">字典数据</a>
+        <button class="btn btn-warning btn-small" if.bind="status==true" click.delegate="changeState(id)">禁用</button>
+        <button class="btn btn-primary btn-small" if.bind="status==false" click.delegate="changeState(id)">启用</button>
+        <button class="btn btn-warning btn-small" if.bind="status==false" click.delegate="delete(id)">删除</button>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
 </template>
