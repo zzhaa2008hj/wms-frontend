@@ -18,10 +18,7 @@
           <span class="help"></span>
           <div class="controls">
             <ak-multiselect k-placeholder="请选择..." k-data-text-field="name" k-data-value-field="id" k-height.bind="400" k-data-source.bind="dataSourceReceiver"
-              k-value.two-way="id" k-auto-close.bind="true" if.bind="!disabled" k-enable.bind="true">
-            </ak-multiselect>
-            <ak-multiselect k-placeholder="请选择..." k-data-text-field="name" k-data-value-field="id" k-height.bind="400" k-data-source.bind="dataSourceReceiver"
-              k-value.two-way="id" k-auto-close.bind="true" if.bind="disabled" k-enable.bind="false">
+              k-value.two-way="id" k-auto-close.bind="true" k-enabled.two-way="!disabled">
             </ak-multiselect>
           </div>
         </div>
