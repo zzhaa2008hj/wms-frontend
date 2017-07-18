@@ -5,6 +5,9 @@ import { WorkOrderItemService, WorkOrderService } from "@app/instock/services/wo
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from '@app/common/models/constant-values';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
+import { WorkOrderDetail } from '@app/instock/models/work'
 
 @autoinject
 export class ViewWorkStatistics {
@@ -14,57 +17,55 @@ export class ViewWorkStatistics {
   cargoFlow: CargoFlow;
   categories = ConstantValues.BusinessTypes;
 
+  units = [] as DictionaryData[];
+
   constructor(private workStatisticsService: WorkStatisticsService,
               private workOrderService: WorkOrderService,
               private workOrderItemService: WorkOrderItemService,
-              private cargoFlowService: CargoFlowService) {
-    this.datasource = new kendo.data.DataSource({
-      transport: {
-        read: (options) => {
-          options.success(this.listWorkOrders);
-        }
-      },
-      schema: {
-        model: {
-          id: 'id'
-        }
-      }
-    });
+              private cargoFlowService: CargoFlowService,
+              private dictionaryDataService: DictionaryDataService) {
+    // this.datasource = new kendo.data.DataSource({
+    //   transport: {
+    //     read: (options) => {
+    //       options.success(this.listWorkOrders);
+    //     }
+    //   },
+    //   schema: {
+    //     model: {
+    //       id: 'id'
+    //     }
+    //   }
+    // });
+     
   }
 
+  
+
   async activate({ id }) {
+    this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
     this.workStatistics = await this.workStatisticsService.getWorkStatisticsById(id);
-    console.log(this.workStatistics.businessId);
-    this.listWorkOrders = await this.workOrderService.getWorkOders(this.workStatistics.businessId);
+    if(this.workStatistics.unit){
+      this.workStatistics.unit = this.units.find(r => r.dictDataCode == this.workStatistics.unit).dictDataName;
+    }
     /*通过统计表的业务主键查询 流水信息*/
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.workStatistics.businessId);
 
-  }
-
-  detailInit(e) {
-    let detailRow = e.detailRow;
-
-    detailRow.find('.workOrderItem').kendoGrid({
-      dataSource: {
-        transport: {
-          read: (options) => {
-            this.workOrderItemService.getWorkOrderItems(e.data.id)
-              .then(options.success)
-              .catch(err => options.error("", "", err));
+    this.datasource = new kendo.data.DataSource({
+          transport: {
+            read: options => {
+              this.workOrderItemService.getWorkDetails(this.cargoFlow.id)
+                .then(res =>{
+                  res.map(e =>{
+                    if(e.unit){
+                      e.unit = this.units.find(r => r.dictDataCode == e.unit).dictDataName;
+                    };
+                  })
+                  options.success(res);
+                })
+                .catch(err => options.error("", "", err));
+            }
           }
-        }
-      },
-      columns: [
-        { field: 'workName', title: '作业内容1' },
-        { field: 'containerType', title: '集装箱类型' },
-        { field: 'containerNumber', title: '集装箱号' },
-        { field: 'quantity', title: '数量' },
-        { field: 'number', title: '件数' },
-        { field: 'unit', title: '单位' },
-        { field: 'warehouseName', title: '库区名称' },
-        { field: 'customerName', title: '作业单位名称' },
-      ]
-    });
+      });
   }
 
   formatCategory(category: number) {

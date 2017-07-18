@@ -88,7 +88,7 @@ export class NewWorkOrder {
   warehouseSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.warehouseService.listWarehouse()
+        this.warehouseService.getWarehouses(this.workOrder.businessId, this.routerParams.type)
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
