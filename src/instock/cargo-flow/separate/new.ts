@@ -10,11 +10,13 @@ import { CargoFlowSeparateService } from "@app/instock/services/cargo-flow-seper
 import { MessageDialogService } from "ui";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { observable } from 'aurelia-framework';
 /**
  * Created by Hui on 2017/6/30.
  */
 @autoinject
 export class NewSeparate {
+  @observable disabled: boolean = false;
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
   cargoItems = [];
@@ -127,13 +129,14 @@ export class NewSeparate {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
+    this.disabled = true;
     try {
       await this.cargoFlowSeparateService.saveCargoFlowSeparate(this.cargoFlow);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await
-        this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 

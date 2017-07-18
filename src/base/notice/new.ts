@@ -5,11 +5,13 @@ import { Notice } from "@app/base/models/notice";
 import { NoticeService } from "@app/base/services/notice";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { observable } from 'aurelia-framework';
 /**
  * Created by Hui on 2017/6/14.
  */
 @autoinject
 export class NewNotice {
+  @observable disabled: boolean = false;
   notice: Notice = {} as Notice;
   validationController: ValidationController;
 
@@ -24,18 +26,19 @@ export class NewNotice {
   }
 
   async addNewNotice() {
+    this.validationController.addObject(this.notice, validationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
+    this.disabled = true;
     try {
       this.notice.visible = 1;
-
-      this.validationController.addObject(this.notice, validationRules);
-      let { valid } = await this.validationController.validate();
-      if (!valid) return;
-
       await this.noticeService.saveNotice(this.notice);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 

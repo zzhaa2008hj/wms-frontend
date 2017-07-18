@@ -11,11 +11,13 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { ConstantValues } from '@app/common/models/constant-values';
+import { observable } from 'aurelia-framework';
 /**
  * Created by Hui on 2017/6/14.
  */
 @autoinject
 export class NewRate {
+  @observable disabled: boolean = false;
   rate = {} as Rate;
   rateStep = new Array;
 
@@ -82,16 +84,18 @@ export class NewRate {
     if (this.rateStep) {
       Object.assign(this.rate, { rateStep: this.rateStep });
     }
-    try {
-      this.validationController.addObject(this.rate, rateValidationRules);
-      let { valid } = await this.validationController.validate();
-      if (!valid) return;
+    this.validationController.addObject(this.rate, rateValidationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
 
+    this.disabled = true;
+    try {
       await this.rateService.saveRate(this.rate);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 

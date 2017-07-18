@@ -8,12 +8,14 @@ import { Order, OrderItem } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
 import { MessageDialogService } from "ui";
 import { CargoInfoService } from '@app/base/services/cargo-info';
+import { observable } from 'aurelia-framework';
 
 /**
  * Created by Hui on 2017/6/23.
  */
 @autoinject
 export class NewOrder {
+  @observable disabled: boolean = false;
   order = {} as Order;
   outstockOrderItems = [];
   outstockCargoItems = new kendo.data.HierarchicalDataSource({
@@ -146,6 +148,10 @@ export class NewOrder {
   }
 
   async addNewOrder() {
+    this.validationController.addObject(this.order, validationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     let vehicles = [];
     Object.assign(vehicles, this.vehicles.data());
     let orderItems = [];
@@ -165,17 +171,14 @@ export class NewOrder {
       Object.assign(this.order, { outstockOrderItems: orderItems });
     }
 
-    this.validationController.addObject(this.order, validationRules);
-    let { valid } = await this.validationController.validate();
-    if (!valid) return;
-
+    this.disabled = true;
     try {
       await this.orderService.saveOrder(this.order);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await
-        this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 
@@ -189,6 +192,9 @@ const validationRules = ValidationRules
   .ensure((order: Order) => order.contactPerson)
   .displayName('联系人')
   .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((order: Order) => order.outstockOrderNumber)
+  .required().withMessage(`请选择批次`)
 
   .ensure((order: Order) => order.contactNumber)
   .displayName('联系电话')

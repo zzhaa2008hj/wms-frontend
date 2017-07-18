@@ -111,7 +111,6 @@ export class EditOrder {
   }
 
   deleteOrderItem(e) {
-    console.log(e);
     this.outstockOrderItems.forEach(ooi => {
       if (e.id == ooi.id) {
         let index = this.outstockOrderItems.indexOf(ooi);
@@ -153,12 +152,14 @@ export class EditOrder {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
+    this.disabled = true;
     try {
       await this.orderService.updateOrder(this.order);
       await this.messageDialogService.alert({ title: "修改成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 
