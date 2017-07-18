@@ -69,6 +69,26 @@ export class WorkOrderItem{
   orgId: string ;
 }
 
+export class WorkOrderDetail{
+    workName: string ;
+    customerName: string ;
+    workNumber: number ;
+    warehouseName: string ;
+    quantity: number ;
+    number: number ;
+    unit: string ;
+    containerNumber: string ;
+    plateNumber: string ;
+    driverName: string ;
+    driverIdentityNumber: string ;
+    phoneNumber: string ;
+    workOrderNumber: string ;
+    workDate: Date ;
+    workOrderCategory: number ;
+    cargoName: string ;
+    cargoCategoryName: string ;
+}
+
 export class WorkOrderArea{
   id: string ;
 

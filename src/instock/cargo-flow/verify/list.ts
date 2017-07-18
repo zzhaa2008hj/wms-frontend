@@ -1,29 +1,33 @@
 import { inject } from "aurelia-dependency-injection";
-import { CargoItemService } from "@app/instock/services/cargo-item";
-import { DataSourceFactory } from "@app/utils";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { WorkStatisticsService } from "@app/instock/services/work-statistics";
 import { WorkStatistics } from "@app/instock/models/work";
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { Router } from "aurelia-router";
-import { DialogService } from "ui";
-import { ViewWorkOrder } from "@app/instock/cargo-flow/verify/view";
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 
 
 export class VerifyWarehouse {
   datasource: kendo.data.DataSource;
   workStatistics = {} as WorkStatistics;
 
-  constructor(@inject private cargoItemService: CargoItemService,
-              @inject private dataSourceFactory: DataSourceFactory,
-              @inject private cargoFlowService: CargoFlowService,
+  constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private workStatisticsService: WorkStatisticsService,
-              @inject private dialogService: DialogService,
               @inject private router: Router,
-              @inject("cargoFlow") private cargoFlow: CargoFlow) {
-    this.datasource = this.dataSourceFactory.create({
-      query: () => this.cargoItemService.queryCargoItems({ flowId: this.cargoFlow.id }),
-      pageSize: 10
+              @inject("cargoFlow") private cargoFlow: CargoFlow,
+              @inject private workOrderItemService: WorkOrderItemService) {
+    // this.datasource = this.dataSourceFactory.create({
+    //   query: () => this.cargoItemService.queryCargoItems({ flowId: this.cargoFlow.id }),
+    //   pageSize: 10
+    // });
+    this.datasource = new kendo.data.DataSource({
+      transport: {
+        read: options => {
+          this.workOrderItemService.getWorkDetails(this.cargoFlow.id)
+            .then(options.success)
+            .catch(err => options.error("", "", err));
+        }
+      }
     });
   }
 
@@ -43,7 +47,4 @@ export class VerifyWarehouse {
     this.router.navigateBack();
   }
 
-  async  view(id: string) {
-    await this.dialogService.open({ viewModel: ViewWorkOrder, model: { id: id }, lock: true });
-  }
 }
