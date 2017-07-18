@@ -193,7 +193,6 @@ export class NewWorkOrder {
   async save() {
 
     let len = this.datasource.data().length;
-    alert(len);
     for (let i = 0; i < len; i++) {
       let items = this.itemsDataSources.get(this.datasource.data()[i].uid);
       this.datasource.data()[i].WorkOrderItem = items;

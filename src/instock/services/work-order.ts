@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient, fixDate } from "@app/utils";
-import { WorkOrder, WorkOrderItem, WorkOrderArea } from "@app/instock/models/work";
+import { WorkOrder, WorkOrderItem, WorkOrderArea, WorkOrderDetail } from "@app/instock/models/work";
 import { ConstantValues } from '@app/common/models/constant-values';
 /**
  * 查询条件
@@ -87,6 +87,15 @@ export class WorkOrderItemService {
 
   removeWorkOrderItem(id: string): Promise<void> {
     return this.http.put(`/base/warehouseWorkOrderItem/${id}`, '').then(handleResult);
+  }
+
+  getWorkDetails(flowId: string): Promise<WorkOrderDetail[]>{
+    return this.http.get(`/base/warehouseWorkOrderItem/${flowId}/detail`)
+    .then(res => {
+      let details = res.content;
+      details.map(details => fixDate(details,"workDate"))
+      return details;
+    });
   }
 }
 
