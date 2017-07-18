@@ -14,7 +14,9 @@ import { formValidationRenderer } from "@app/validation/support";
 export class NewMessage {
   message = {} as Message;
   @observable selectedCategory: number;
-  selectedReceiver: any = [];
+  @observable disabled: boolean = false;
+  id = [] as string[];
+
   dataSourceReceiver = new kendo.data.DataSource({
     serverFiltering: true,
     transport: {
@@ -43,7 +45,7 @@ export class NewMessage {
               private messageService: MessageService,
               private employeeService: EmployeeService,
               private messageDialogService: MessageDialogService,
-              validationControllerFactory: ValidationControllerFactory, 
+              validationControllerFactory: ValidationControllerFactory,
               container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -56,6 +58,7 @@ export class NewMessage {
   }
 
   async addNewMessage() {
+    this.disabled = true;
     try {
       this.validationController.addObject(this.message, validationRules);
       let { valid } = await this.validationController.validate();
@@ -65,10 +68,11 @@ export class NewMessage {
       let messageVo = {} as MessageVo;
       messageVo.message = this.message;
       let receivers: MessageResult[] = [];
-      receivers = this.selectedReceiver.value().map(res => {
+      receivers = [...this.id].map(res => {
+        let r = this.dataSourceReceiver.get(res) as any;
         let msgRes = {} as MessageResult;
-        msgRes.receiverId = res.id;
-        msgRes.receiverName = res.name;
+        msgRes.receiverId = r.id;
+        msgRes.receiverName = r.name;
         return msgRes;
       });
       messageVo.receivers = receivers;

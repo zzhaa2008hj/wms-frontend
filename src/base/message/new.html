@@ -9,16 +9,19 @@
           <label class="form-label">类别*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="radio" name="category" model.bind="1" checked.bind="selectedCategory"> 内部
-            <!-- <input type="radio" name="category" model.bind="2" checked.bind="selectedCategory"> 外部 -->
+            <input type="radio" disabled.bind="disabled" name="category" model.bind="1" checked.bind="selectedCategory"> 内部
+            <!-- <input type="radio" disabled.bind="disabled" name="category" model.bind="2" checked.bind="selectedCategory"> 外部 -->
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">发送到*</label>
           <span class="help"></span>
           <div class="controls">
-            <ak-multiselect k-placeholder="请选择..." k-data-text-field="name" k-data-value-field="${this}" k-height.bind="400" k-data-source.bind="dataSourceReceiver"
-              k-value.bind="value" k-widget.two-way="selectedReceiver" k-auto-close.bind="true">
+            <ak-multiselect k-placeholder="请选择..." k-data-text-field="name" k-data-value-field="id" k-height.bind="400" k-data-source.bind="dataSourceReceiver"
+              k-value.two-way="id" k-auto-close.bind="true" if.bind="!disabled" k-enable.bind="true">
+            </ak-multiselect>
+            <ak-multiselect k-placeholder="请选择..." k-data-text-field="name" k-data-value-field="id" k-height.bind="400" k-data-source.bind="dataSourceReceiver"
+              k-value.two-way="id" k-auto-close.bind="true" if.bind="disabled" k-enable.bind="false">
             </ak-multiselect>
           </div>
         </div>
@@ -26,7 +29,7 @@
           <label class="form-label">标题*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="message.title & validate">
+            <input type="text" class="form-control" disabled.bind="disabled" value.bind="message.title & validate">
           </div>
         </div>
 
@@ -34,14 +37,14 @@
           <label class="form-label">内容</label>
           <span class="help"></span>
           <div class="controls">
-            <textarea type="text" class="form-control" value.bind="message.content & validate"></textarea>
+            <textarea type="text" class="form-control" disabled.bind="disabled" value.bind="message.content & validate"></textarea>
           </div>
         </div>
 
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 发送</button>
-            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+            <button class="btn btn-success btn-cons" disabled.bind="disabled" type="submit"><i class="icon-ok"></i> 发送</button>
+            <button class="btn btn-white btn-cons" disabled.bind="disabled" type="button" click.delegate="cancel()">取消</button>
           </div>
         </div>
       </form>
