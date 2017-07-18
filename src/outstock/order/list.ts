@@ -3,8 +3,6 @@ import { MessageDialogService, DialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
 import { OrderCriteria, OrderService, WorkOrderService } from '@app/outstock/services/order';
 import * as moment from 'moment';
-import { VerifyRecord } from '@app/common/models/verify-record';
-import { VerifyBusinessDialogNew } from '@app/outstock/order/verify-business/new';
 import { VerifyFeeDialogNew } from '@app/outstock/order/verify-fee/new';
 import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhouse/new";
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
@@ -110,23 +108,7 @@ export class OrderList {
     }
   }
 
-  /**
-   * 商务审核
-   */
-  async verifyBusiness(id) {
-    let result = await this.dialogService.open({ viewModel: VerifyBusinessDialogNew, model: {}, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
-    try {
-      let record = result.output as VerifyRecord;
-      record.businessId = id;
-      await this.orderService.auditBusiness(record.businessId, record.verifyStatus);
-      await this.dialogService.alert({ title: "提示", message: "审核成功！" });
-      this.dataSource.read();
-    } catch (err) {
-      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
-    }
-  }
+  
 
   /**
    * 费收审核
@@ -264,5 +246,29 @@ export class OrderList {
     }
   }
 
+  /**
+   * 作业开始
+   */
+  async changeStage(params) {
+    let mess1 = "确认开始作业？";
+    let mess2 = "开始作业！";
+    if (params.stage == 14) {
+      mess1 = "确认完成作业？";
+      mess2 = "完成作业！";
+    }
+    try {
+      let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
+      if (!confirmed) return;
+      await this.orderService.updateStage(params.id, params.stage);
+      await this.messageDialogService.alert({ title: "提示", message: mess2 });
+      this.dataSource.read();
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
 
+  async uploadInfo(id) {
+    await this.orderService.updateStage(id, 9);
+    this.dataSource.read();
+  }
 }

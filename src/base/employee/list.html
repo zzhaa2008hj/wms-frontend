@@ -25,7 +25,7 @@
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
     k-pageable.bind="pageable" k-on-change.delegate="selectionChange($event)">
-    <ak-col k-selectable.bind="true" k-width.bind="50"></ak-col>
+    <ak-col k-selectable.bind="true" k-width.bind="30"></ak-col>
     <ak-col k-field="name" k-title="员工姓名" k-width.bind="120">
       <ak-template><a route-href="route: view; params.bind: { id }">${name}</a></ak-template>
     </ak-col>
