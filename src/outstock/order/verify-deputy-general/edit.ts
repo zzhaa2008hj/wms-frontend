@@ -8,6 +8,7 @@ import { CargoInfo } from "@app/base/models/cargo-info";
 import * as moment from 'moment';
 import { DialogService} from "ui";
 import { AppRouter } from "aurelia-router";
+import { ViewRate } from "@app/outstock/order/verify-deputy-general/view";
 
 export class VerifyBusinessDialogEdit {
 
@@ -50,6 +51,11 @@ export class VerifyBusinessDialogEdit {
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
+  }
+
+  async showRate(outstockItemId) {
+    let result = await this.dialogService.open({ viewModel: ViewRate, model: {id: outstockItemId}, lock: true }).whenClosed();
+    if (result.wasCancelled) return;
   }
 
 }
