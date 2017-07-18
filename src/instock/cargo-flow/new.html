@@ -54,7 +54,7 @@
         </div>
         <div class="form-group">
           <ak-drop-down-list k-widget.two-way="dropDownListCargoItem" k-option-label="请选择--新增货物"
-                             k-data-text-field="cargoName" k-data-source.bind="baseCargoInfo"
+                             k-data-text-field="cargoName" k-data-source.bind="dataSourceBaseCargoItem"
                              k-on-select.delegate="onSelect($event.detail)">
           </ak-drop-down-list>
           <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">
@@ -64,7 +64,7 @@
             <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
             <ak-col k-field="unit" k-title="计量单位">
               <ak-template>
-                <input type="text" style="border: none;background-color:transparent;" value.bind="unitStr" readonly/>
+                <input type="text" style="border: none;background-color:transparent;" value.bind="unit" readonly/>
               </ak-template>
             </ak-col>
             <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>

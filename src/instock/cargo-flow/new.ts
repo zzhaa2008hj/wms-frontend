@@ -3,10 +3,10 @@ import { DialogService, MessageDialogService } from "ui";
 import { Container, inject } from 'aurelia-dependency-injection';
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
-import { CargoInfo } from '@app/base/models/cargo-info';
+import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { CodeService } from '@app/common/services/code';
@@ -17,7 +17,8 @@ import { DictionaryData } from '@app/base/models/dictionary';
  * Created by Hui on 2017/6/23.
  */
 export class NewCargoFlow {
-  cargoItems = [];
+  baseCargoItems: CargoItem[];
+  cargoItems = [] as InstockCargoItem[];
   units = [] as DictionaryData[];
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
@@ -39,6 +40,9 @@ export class NewCargoFlow {
         options.success();
       }
     },
+  });
+  dataSourceBaseCargoItem = new kendo.data.HierarchicalDataSource({
+    data: []
   });
   vehicle = [];
   dataSourceVehicle = new kendo.data.DataSource({
@@ -77,14 +81,13 @@ export class NewCargoFlow {
 
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({finished: 0});
+    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ finished: 0 });
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
       let res = await this.codeService.generateCode("2", cargoInfo.batchNumber);
       this.cargoFlow.instockFlowNumber = res.content;
       this.setCargoFlowInfo(cargoInfo);
-      this.getBaseCargoItems();
     }
   }
 
@@ -93,7 +96,8 @@ export class NewCargoFlow {
     let res = await this.codeService.generateCode("2", dataItem.batchNumber);
     this.cargoFlow.instockFlowNumber = res.content;
     this.setCargoFlowInfo(dataItem);
-    this.getBaseCargoItems();
+    let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
+    this.dataSourceBaseCargoItem.data(baseCargoItems);
   }
 
   setCargoFlowInfo(dataItem: CargoInfo) {
@@ -108,21 +112,6 @@ export class NewCargoFlow {
     this.cargoFlow.lastBatch = 0;
   }
 
-  async getBaseCargoItems() {
-    let res = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
-    Object.assign(this.cargoItems, res);
-    this.cargoItems.forEach(ci => {
-      let r = [0, 1, 2, 3].sort(() => Math.random() - 0.5).toString();
-      Object.assign(ci, { sign: r });
-      ci.cargoItemId = ci.id;
-      ci.id = null;
-    });
-    this.cargoItems.map(res => {
-      res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
-      return res;
-    });
-    this.dataSourceCargoItem.read();
-  }
 
   async addVehicle(cargoItem) {
     let result = await this.dialogService.open({
@@ -139,8 +128,17 @@ export class NewCargoFlow {
 
   onSelect(e) {
     let dataItem = this.dropDownListCargoItem.dataItem(e.item);
-    console.log(dataItem);
     this.cargoItems.splice(0, 0, dataItem);
+    this.cargoItems.forEach(ci => {
+      let r = [0, 1, 2, 3].sort(() => Math.random() - 0.5).toString();
+      Object.assign(ci, { sign: r });
+      ci.cargoItemId = ci.id;
+      ci.id = null;
+    });
+    this.cargoItems.map(res => {
+      res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+      return res;
+    });
     this.dataSourceCargoItem.data(this.cargoItems);
   }
 
