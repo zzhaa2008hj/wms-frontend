@@ -27,41 +27,15 @@ export class NewCargoFlow {
   hasInfoId: boolean = false;
   baseCargoInfo: Array<CargoInfo>;
 
-  dataSourceCargoItem = new kendo.data.DataSource({
-    transport: {
-      read: (options) => {
-        options.success(this.cargoItems);
-      },
-      update: (options) => {
-        options.success();
-      },
-      create: (options) => {
-        options.success();
-      },
-      destroy: (options) => {
-        options.success();
-      }
-    },
+  dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
+    data: []
   });
   dataSourceBaseCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
   vehicle = [];
-  dataSourceVehicle = new kendo.data.DataSource({
-    transport: {
-      read: (options) => {
-        options.success(this.vehicle);
-      },
-      update: (options) => {
-        options.success();
-      },
-      create: (options) => {
-        options.success();
-      },
-      destroy: (options) => {
-        options.success();
-      }
-    }
+  dataSourceVehicle = new kendo.data.HierarchicalDataSource({
+    data: []
   });
 
   validationController: ValidationController;
@@ -90,16 +64,25 @@ export class NewCargoFlow {
       let res = await this.codeService.generateCode("2", cargoInfo.batchNumber);
       this.cargoFlow.instockFlowNumber = res.content;
       this.setCargoFlowInfo(cargoInfo);
+      let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
+      this.dataSourceBaseCargoItem.data(baseCargoItems);
     }
   }
 
   async onSelectCargoInfo(e) {
+    //初始化数据
+    this.cargoFlow = {} as CargoFlow;
+    this.cargoItems = [];
+    this.vehicle = [];
+
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
-    let res = await this.codeService.generateCode("2", dataItem.batchNumber);
-    this.cargoFlow.instockFlowNumber = res.content;
-    this.setCargoFlowInfo(dataItem);
-    let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
-    this.dataSourceBaseCargoItem.data(baseCargoItems);
+    if (dataItem.id) {
+      let res = await this.codeService.generateCode("2", dataItem.batchNumber);
+      this.cargoFlow.instockFlowNumber = res.content;
+      this.setCargoFlowInfo(dataItem);
+      this.baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
+      this.dataSourceBaseCargoItem.data(this.baseCargoItems);
+    }
   }
 
   setCargoFlowInfo(dataItem: CargoInfo) {
@@ -130,21 +113,18 @@ export class NewCargoFlow {
 
   onSelect(e) {
     let dataItem = this.dropDownListCargoItem.dataItem(e.item);
+    console.log(dataItem)
+    Object.assign(dataItem, { sign: dataItem.uid });
+    dataItem.cargoItemId = dataItem.id;
+    dataItem.id = null;
+    dataItem.unitStr = this.units.find(r => r.dictDataCode == dataItem.unit).dictDataName;
     this.cargoItems.splice(0, 0, dataItem);
-    this.cargoItems.forEach(ci => {
-      let r = [0, 1, 2, 3].sort(() => Math.random() - 0.5).toString();
-      Object.assign(ci, { sign: r });
-      ci.cargoItemId = ci.id;
-      ci.id = null;
-    });
-    this.cargoItems.map(res => {
-      res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
-      return res;
-    });
     this.dataSourceCargoItem.data(this.cargoItems);
+    this.dataSourceBaseCargoItem.data(this.baseCargoItems);
   }
 
   deleteCargoItem(e) {
+    console.log(e)
     this.cargoItems.forEach(ci => {
       if (e.sign == ci.sign) {
         let index = this.cargoItems.indexOf(ci);

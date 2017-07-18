@@ -1,12 +1,14 @@
 import { Router } from "aurelia-router";
 import { autoinject, Container } from 'aurelia-dependency-injection';
-import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
-import { Order, OrderItem } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
 import { MessageDialogService } from "ui";
 import { observable } from 'aurelia-framework';
+import { Order, OrderItem } from "@app/outstock/models/order";
+import { CargoInfo } from "@app/base/models/cargo-info";
+import { DictionaryData } from "@app/base/models/dictionary";
+import { DictionaryDataService } from "@app/base/services/dictionary";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -14,15 +16,11 @@ import { observable } from 'aurelia-framework';
 @autoinject
 export class EditOrder {
   @observable disabled: boolean = false;
+  units = [] as DictionaryData[];
   order = {} as Order;
-  outstockOrderItems = [];
-  outstockCargoItems = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
+  outstockOrderItems = [] as OrderItem[];
 
   baseCargoInfo: Array<CargoInfo>;
-  baseCargoItems = [] as CargoItem[];
-  deletedBaseCargoItems = [] as CargoItem[];
   selectedCargoInfo: any;
 
   orderItems = new kendo.data.DataSource({
@@ -36,8 +34,7 @@ export class EditOrder {
         fields: {
           cargoName: { editable: false, nullable: true },
           cargoCategoryName: { editable: false, nullable: true },
-          warehouseName: { validation: { required: true } },
-          unit: { validation: { required: true } },
+          unitStr: { editable: false, nullable: true },
           orderQuantity: { type: 'number', validation: { required: true, min: 0 } },
           orderNumber: { type: 'number', validation: { required: true, min: 0 } }
         }
@@ -58,10 +55,10 @@ export class EditOrder {
   });
 
   validationController: ValidationController;
-  private dropDownListCargoItem: any;
 
   constructor(private router: Router,
               private orderService: OrderService,
+              private dictionaryDataService: DictionaryDataService,
               private messageDialogService: MessageDialogService,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
@@ -70,62 +67,16 @@ export class EditOrder {
   }
 
   async activate(params) {
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.order = await this.orderService.getOrderById(params.id);
-    this.baseCargoItems = await this.orderService.listBaseCargoItems(this.order.cargoInfoId);
-    this.outstockOrderItems = this.order.outstockOrderItems;
-    this.outstockOrderItems.forEach(ooi => {
-      let bci = this.baseCargoItems.filter(bci => bci.id == ooi.cargoItemId);
-      let index = this.baseCargoItems.indexOf(bci[0]);
-      this.baseCargoItems.splice(index, 1);
-      this.deletedBaseCargoItems.splice(0, 0, bci[0]);
-    });
-
-    this.outstockCargoItems.data(this.baseCargoItems);
-    this.orderItems.read();
+    if(this.order.outstockOrderItems) {
+      this.outstockOrderItems = this.order.outstockOrderItems;
+      this.outstockOrderItems.forEach(ooi => {
+        ooi.unitStr = this.units.find(r => r.dictDataCode == ooi.unit).dictDataName;
+      });
+      this.orderItems.read();
+    }
     this.vehicles.data(this.order.outstockVehicles);
-  }
-
-  onSelect(e) {
-    let dataItem = this.dropDownListCargoItem.dataItem(e.item);
-    let outstockOrderItem = {} as OrderItem;
-    outstockOrderItem.batchNumber = dataItem.batchNumber;
-    outstockOrderItem.cargoItemId = dataItem.id;
-    outstockOrderItem.cargoName = dataItem.cargoName;
-    outstockOrderItem.cargoCategoryName = dataItem.cargoCategoryName;
-    outstockOrderItem.cargoSubCategoryName = dataItem.cargoSubCatergoryName;
-    outstockOrderItem.unit = dataItem.unit;
-    outstockOrderItem.outstockOrderNumber = this.order.outstockOrderNumber;
-    Object.assign(outstockOrderItem, { uuid: dataItem.id });
-    this.outstockOrderItems.push(outstockOrderItem);
-
-    this.baseCargoItems.forEach(bci => {
-      if (dataItem.id == bci.id) {
-        let index = this.baseCargoItems.indexOf(bci);
-        this.baseCargoItems.splice(index, 1);
-        this.deletedBaseCargoItems.splice(0, 0, bci);
-      }
-    });
-    console.log(this.baseCargoItems);
-    this.orderItems.read();
-    this.outstockCargoItems.data(this.baseCargoItems);
-  }
-
-  deleteOrderItem(e) {
-    this.outstockOrderItems.forEach(ooi => {
-      if (e.id == ooi.id) {
-        let index = this.outstockOrderItems.indexOf(ooi);
-        this.outstockOrderItems.splice(index, 1);
-      }
-    });
-    this.deletedBaseCargoItems.forEach(dbci => {
-      if (e.cargoItemId == dbci.id) {
-        let index = this.deletedBaseCargoItems.indexOf(dbci);
-        this.deletedBaseCargoItems.splice(index, 1);
-        this.baseCargoItems.splice(0, 0, dbci);
-      }
-    });
-    this.orderItems.read();
-    this.outstockCargoItems.data(this.baseCargoItems);
   }
 
   async editOrder() {
