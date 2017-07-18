@@ -9,7 +9,7 @@ import { ConstantValues } from '@app/common/models/constant-values';
  */
 @autoinject
 export class EditWorkInfo {
-  workInfo: WorkInfo;
+  workInfo: WorkInfo = {} as WorkInfo;
   category = ConstantValues.WorkInfoCategory;
   validationController: ValidationController;
 

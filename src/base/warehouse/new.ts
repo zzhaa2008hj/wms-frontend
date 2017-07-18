@@ -10,8 +10,8 @@ import { DictionaryData } from "@app/base/models/dictionary";
  */
 @autoinject
 export class NewWarehouse {
-  warehouse: Warehouse;
-  pWarehouse: Warehouse;
+  warehouse: Warehouse = {} as Warehouse;
+  pWarehouse: Warehouse = {} as Warehouse;
   type = [] as DictionaryData[];
   category = [] as DictionaryData[];
   validationController: ValidationController;
