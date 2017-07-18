@@ -13,30 +13,36 @@
       <div class="col-md-6 col-md-offset-3">
         <table border="1">
           <tr>
-            <td align="center" colspan="7">
+            <td align="center" colspan="8">
               <h4>${organization.name}入库指令单</h4>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" align="right">
+              <h5>入库单号：&nbsp;&nbsp;${cargoFlow.instockFlowNumber}&nbsp;&nbsp;</h5>
             </td>
           </tr>
           <tr>
             <td colspan="1" align="center">代理商名称:</td>
             <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.agentName"></td>
             <td align="center">客户名称:</td>
-            <td colspan="2"><input type="text" style="border: none" value.bind="cargoFlow.customerName"></td>
+            <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.customerName"></td>
           </tr>
           <tr>
             <td colspan="1" align="center">批次号:</td>
             <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.batchNumber"></td>
             <td align="center">入库日期:</td>
-            <td colspan="2"><input type="text" style="border: none" value.bind="cargoFlow.instockDateStr"></td>
+            <td colspan="3"><input type="text" style="border: none" value.bind="cargoFlow.instockDateStr"></td>
           </tr>
           <tr>
             <td align="center">序号</td>
             <td align="center">货名</td>
             <td align="center">货类</td>
             <td align="center">单位</td>
-            <td align="center">单价</td>
+            <td align="center">箱号</td>
             <td align="center">通知件数</td>
             <td align="center">通知重量</td>
+            <td align="center">说明</td>
           </tr>
           <template repeat.for="[key, item] of cargoItems">
             <tr>
@@ -44,14 +50,15 @@
               <td align="center">${item.cargoName}</td>
               <td align="center">${item.cargoCategoryName}</td>
               <td align="center">${item.unitStr}</td>
-              <td align="center">${item.cargoName}</td>
+              <td align="center">${item.containerNumber}</td>
               <td align="center">${item.orderNumber}</td>
               <td align="center">${item.orderQuantity}</td>
+              <td align="center">${item.remark}</td>
             </tr>
           </template>
           <tr>
             <td align="center">备注</td>
-            <td colspan="6">
+            <td colspan="7">
               <input type="text" style="border: none" value.bind="cargoFlow.remark">
             </td>
           </tr>
@@ -60,7 +67,7 @@
             <td>
               <input type="text" style="border: none" value.bind="cargoFlow.orderNumber">
             </td>
-            <td>
+            <td colspan="2">
               <input type="text" style="border: none" value.bind="cargoFlow.orderQuantity">
             </td>
           </tr>
