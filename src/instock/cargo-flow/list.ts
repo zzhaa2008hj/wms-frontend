@@ -178,7 +178,7 @@ export class CargoFlow {
       await this.messageDialogService.alert({ title: "提示", message: "生成成功！" });
       // this.dataSource.read();
       // 跳转 到入库单页面
-      this.appRouter.navigateToRoute('instock-order');
+      this.appRouter.navigateToRoute('instockOrder');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
