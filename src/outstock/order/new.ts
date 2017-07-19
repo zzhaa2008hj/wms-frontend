@@ -9,6 +9,8 @@ import { OrderService } from "@app/outstock/services/order";
 import { MessageDialogService } from "ui";
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { observable } from 'aurelia-framework';
+import { DictionaryData } from "@app/base/models/dictionary";
+import { DictionaryDataService } from "@app/base/services/dictionary";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -16,8 +18,9 @@ import { observable } from 'aurelia-framework';
 @autoinject
 export class NewOrder {
   @observable disabled: boolean = false;
+  units = [] as DictionaryData[];
   order = {} as Order;
-  outstockOrderItems = [];
+  outstockOrderItems = [] as OrderItem[];
   outstockCargoItems = new kendo.data.HierarchicalDataSource({
     data: []
   });
@@ -26,23 +29,10 @@ export class NewOrder {
   baseCargoItems = [] as CargoItem[];
   deletedBaseCargoItems = [] as CargoItem[];
   selectedCargoInfo: any;
-
   orderItems = new kendo.data.DataSource({
     transport: {
       read: (options) => {
         options.success(this.outstockOrderItems);
-      }
-    },
-    schema: {
-      model: {
-        fields: {
-          cargoName: { editable: false, nullable: true },
-          cargoCategoryName: { editable: false, nullable: true },
-          warehouseName: { validation: { required: true } },
-          unit: { validation: { required: true } },
-          orderQuantity: { type: 'number', validation: { required: true, min: 0 } },
-          orderNumber: { type: 'number', validation: { required: true, min: 0 } }
-        }
       }
     }
   });
@@ -67,7 +57,8 @@ export class NewOrder {
               private messageDialogService: MessageDialogService,
               private cargoInfoService: CargoInfoService,
               private codeService: CodeService,
-              validationControllerFactory: ValidationControllerFactory, 
+              private dictionaryDataService: DictionaryDataService,
+              validationControllerFactory: ValidationControllerFactory,
               container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -75,7 +66,8 @@ export class NewOrder {
   }
 
   async activate() {
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({instockStatus: 1});
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
+    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: 1 });
     console.log(this.vehicles);
   }
 
@@ -106,46 +98,28 @@ export class NewOrder {
 
   onSelect(e) {
     let dataItem = this.dropDownListCargoItem.dataItem(e.item);
-    let outstockOrderItem = {} as OrderItem;
-    outstockOrderItem.batchNumber = dataItem.batchNumber;
-    outstockOrderItem.cargoItemId = dataItem.id;
-    outstockOrderItem.cargoName = dataItem.cargoName;
-    outstockOrderItem.cargoCategoryName = dataItem.cargoCategoryName;
-    outstockOrderItem.cargoSubCategoryName = dataItem.cargoSubCatergoryName;
-    outstockOrderItem.unit = dataItem.unit;
-    outstockOrderItem.outstockOrderNumber = this.order.outstockOrderNumber;
-    Object.assign(outstockOrderItem, { uuid: dataItem.id });
-    this.outstockOrderItems.push(outstockOrderItem);
-
-    this.baseCargoItems.forEach(bci => {
-      if (dataItem.id == bci.id) {
-        let index = this.baseCargoItems.indexOf(bci);
-        this.baseCargoItems.splice(index, 1);
-        this.deletedBaseCargoItems.splice(0, 0, bci);
-      }
-    });
-    console.log(this.baseCargoItems);
-    this.orderItems.read();
-    this.outstockCargoItems.data(this.baseCargoItems);
+    if (dataItem.id) {
+      Object.assign(dataItem, { sign: dataItem.uid });
+      dataItem.cargoItemId = dataItem.id;
+      dataItem.id = null;
+      dataItem.orderQuantity = null;
+      dataItem.orderNumber = null;
+      dataItem.outstockOrderNumber = this.order.outstockOrderNumber;
+      dataItem.unitStr = this.units.find(r => r.dictDataCode == dataItem.unit).dictDataName;
+      this.outstockOrderItems.splice(0, 0, dataItem);
+      this.orderItems.read();
+      this.outstockCargoItems.data(this.baseCargoItems);
+    }
   }
 
   deleteOrderItem(e) {
-    console.log(e);
     this.outstockOrderItems.forEach(ooi => {
-      if (e.uuid == ooi.uuid) {
+      if (e.sign == ooi.sign) {
         let index = this.outstockOrderItems.indexOf(ooi);
         this.outstockOrderItems.splice(index, 1);
       }
     });
-    this.deletedBaseCargoItems.forEach(dbci => {
-      if (e.uuid == dbci.id) {
-        let index = this.deletedBaseCargoItems.indexOf(dbci);
-        this.deletedBaseCargoItems.splice(index, 1);
-        this.baseCargoItems.splice(0, 0, dbci);
-      }
-    });
-    this.orderItems.read();
-    this.outstockCargoItems.data(this.baseCargoItems);
+    this.orderItems.data(this.outstockOrderItems);
   }
 
   async addNewOrder() {

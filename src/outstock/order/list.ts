@@ -13,6 +13,7 @@ import { VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
 import { ConstantValues } from "@app/common/models/constant-values";
+import { CargoInfoService } from "@app/base/services/cargo-info";
 
 @autoinject
 export class OrderList {
@@ -28,6 +29,7 @@ export class OrderList {
   outstockStages: any[] = ConstantValues.OutstockStages;
 
   constructor(private orderService: OrderService,
+              private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
@@ -42,6 +44,7 @@ export class OrderList {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.orderService.queryOrders(this.orderCriteria)
         .map(res => {
+          this.cargoInfoService.getCargoInfo(res.cargoInfoId).then(options => res.cargoType = options.cargoType);
           res.outstockStageName = this.outstockStages.find(r => r.stage == res.stage).title;
           return res;
         }),
@@ -108,7 +111,6 @@ export class OrderList {
     }
   }
 
-  
 
   /**
    * 费收审核

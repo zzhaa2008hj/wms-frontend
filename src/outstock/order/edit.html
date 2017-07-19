@@ -56,27 +56,14 @@
         </div>
         <div class="form-group"  if.bind="outstockCargoItems.length != 0">
           <div class="controls">
-            <label class="form-label">出库货物*</label>
-            <ak-drop-down-list k-widget.two-way="dropDownListCargoItem"
-                               k-option-label="请选择--出库货物"
-                               k-data-text-field="cargoName"
-                               k-data-source.bind="outstockCargoItems"
-                               k-on-select.delegate="onSelect($event.detail)">
-            </ak-drop-down-list>
             <ak-grid k-data-source.bind="orderItems" k-editable.bind="true">
               <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
               <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
-              <ak-col k-field="unit" k-title="计量单位"></ak-col>
-              <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
+              <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
               <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
               <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+              <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
               <ak-col k-field="remark" k-title="备注"></ak-col>
-              <ak-col k-title="操作">
-                <ak-template>
-                  <button class="btn btn-danger btn-small" click.delegate="deleteOrderItem($this)">删除
-                  </button>
-                </ak-template>
-              </ak-col>
             </ak-grid>
           </div>
           <div class="controls">

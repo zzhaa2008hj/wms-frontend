@@ -33,9 +33,13 @@ export interface Order {
   outstockDateStr: string;
   stageTitle: string;
   outstockStageName: string;
+
+  cargoType: number;
 }
 
 export interface OrderItem {
+  sign?: string;
+
   id: string;
   batchNumber: string;
   outstockOrderid: string;
@@ -54,6 +58,7 @@ export interface OrderItem {
   outstockNumber: number;
   pricingMode: number;
   unit: string;
+  unitStr: string;
   price: number;
   containerNumber: string;
   remark: string;
