@@ -68,15 +68,23 @@ export class NewOrder {
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: 1 });
-    console.log(this.vehicles);
   }
 
   async onSelectCargoInfo(e) {
+
+    this.order = {} as Order;
+    this.outstockOrderItems = [] as OrderItem[];
+    this.vehicles.data([]);
+    this.orderItems.data([]);
+    this.outstockCargoItems.data([]);    
+
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
-    let res = await this.codeService.generateCode("3", dataItem.batchNumber);
-    this.order.outstockOrderNumber = res.content;
-    this.setOrderInfo(dataItem);
-    this.getBaseCargoItems();
+    if (dataItem.id) {
+      let res = await this.codeService.generateCode("3", dataItem.batchNumber);
+      this.order.outstockOrderNumber = res.content;
+      this.setOrderInfo(dataItem);
+      this.getBaseCargoItems();
+    }
   }
 
   setOrderInfo(dataItem: CargoInfo) {
