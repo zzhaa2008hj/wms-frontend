@@ -11,6 +11,7 @@ import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class AuditContract {
+  disabled: boolean = false;
   contractId: string;
   contractVo: ContractVo;
   contractTypes = ConstantValues.ContractTypes;
@@ -94,12 +95,14 @@ export class AuditContract {
   }
 
   async audit(status) {
+    this.disabled = true;
     try {
       await this.contractService.audit(this.contractId, status);
       await this.messageDialogService.alert({ title: "审核成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "发生错误", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 

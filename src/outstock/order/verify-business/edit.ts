@@ -10,7 +10,7 @@ import { DialogService} from "ui";
 import { AppRouter } from "aurelia-router";
 
 export class VerifyBusinessDialogEdit {
-
+  disabled: boolean = false;
   cargoInfo: CargoInfo;
   orderItems = [] as OrderItem[];
   vehicles = [] as Vehicle[];
@@ -43,12 +43,14 @@ export class VerifyBusinessDialogEdit {
    * 商务审核
    */
   async verifyBusiness(verifyStatus: number) {
+    this.disabled = true;
     try {
       await this.orderService.auditBusiness(this.order.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审核成功！" });
       this.appRouter.navigateToRoute('outstockOrder');
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+      this.disabled = false;
     }
   }
 
