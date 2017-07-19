@@ -8,6 +8,7 @@
                 <span class="help"></span>
                 <div class="controls">
                     <ak-drop-down-list 
+                        k-enabled.two-way="!disabled"
                         k-option-label="请选择"
                         k-data-text-field="name" 
                         k-data-value-field="id"
@@ -21,6 +22,7 @@
                 <span class="help"></span>
                 <div class="controls">
                     <ak-drop-down-list 
+                        k-enabled.two-way="!disabled"
                         k-option-label="请选择"
                         k-data-text-field="name" 
                         k-data-value-field="id"
@@ -34,6 +36,7 @@
                 <span class="help"></span>
                 <div class="controls">
                     <ak-drop-down-list 
+                        k-enabled.two-way="!disabled"
                         k-option-label="请选择"
                         k-data-text-field="name" 
                         k-data-value-field="id"
@@ -46,21 +49,21 @@
                 <label class="form-label">集装箱号</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="storageItem.containerNumber & validate">
+                    <input type="text" class="form-control" disabled.bind="disabled" value.bind="storageItem.containerNumber & validate">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">堆存数量*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="number" class="form-control" value.bind="storageItem.storageQuantity & validate">
+                    <input type="number" class="form-control" disabled.bind="disabled" value.bind="storageItem.storageQuantity & validate">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">堆存件数*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="number" class="form-control" value.bind="storageItem.storageNumber & validate">
+                    <input type="number" class="form-control" disabled.bind="disabled" value.bind="storageItem.storageNumber & validate">
                 </div>
             </div>
             <div class="form-group">
@@ -68,6 +71,7 @@
                 <span class="help"></span>
                 <div class="controls">
                     <ak-drop-down-list 
+                        k-enabled.two-way="!disabled"
                         k-option-label="请选择"
                         k-data-text-field="dictDataName" 
                         k-data-value-field="dictDataCode"
@@ -80,7 +84,7 @@
                 <label class="form-label">入库时间*</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" ak-datetimepicker="k-value.two-way : storageItem.instockDate" 
+                    <input type="text" class="form-control" disabled.bind="disabled" ak-datetimepicker="k-value.two-way : storageItem.instockDate" 
                     required>
                 </div>
             </div>
@@ -88,13 +92,13 @@
                 <label class="form-label">坐标</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="storageItem.position & validate">
+                    <input type="text" class="form-control" disabled.bind="disabled" value.bind="storageItem.position & validate">
                 </div>
             </div>
             <div class="form-actions">
                 <div class="pull-right">
-                    <button class="btn btn-primary" click.trigger="save()">保存</button>
-                    <button class="btn btn-white" click.trigger="cancel()">取消</button>
+                    <button class="btn btn-primary" disabled.bind="disabled" click.trigger="save()">保存</button>
+                    <button class="btn btn-white" disabled.bind="disabled" click.trigger="cancel()">取消</button>
                 </div>
             </div>
         </form>

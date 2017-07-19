@@ -9,7 +9,7 @@ import { Menu} from "@app/base/models/menu";
 import { OrganizationRole } from "@app/base/models/organization-role";
 
 export class AuthMenu {
-
+  disabled: boolean = false;
   id: string;
   menuItems: Menu[] = [];
   assignedMenuItems: Menu[] = [];
@@ -35,12 +35,14 @@ export class AuthMenu {
   async assignOrgRoleMenu() {
     // 过滤父并取ids
     let menuIds = this.assignedMenuItems.filter(menu => menu.parentId != null).map(menu => menu.id);
+    this.disabled = true;
     try {
       await this.organizationRoleService.assignOrgRoleMenu(this.id, menuIds);
       await this.dialogService.alert({ title: "提示", message: "菜单授权成功"});
       this.cancel();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+      this.disabled = false;
     }
   }
 

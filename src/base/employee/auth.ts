@@ -9,6 +9,7 @@ export class EmployeeAuth {
   employee  = {} as Employee ;
   organizationRoles: OrganizationRole[] = [];
   checkedRoleIds: string[] = [];
+  disabled: boolean = false;
 
   constructor(@inject private employeeService: EmployeeService,
               @inject private dialogController: DialogController) {
@@ -28,11 +29,13 @@ export class EmployeeAuth {
   }
 
   async ok() {
+    this.disabled = true;
     try {
       await this.employeeService.updateAuthorization(this.employee.id, this.checkedRoleIds);
       this.dialogController.ok();
     } catch (err) {
       this.dialogController.error(err);
+      this.disabled = false;
     }
   }
 

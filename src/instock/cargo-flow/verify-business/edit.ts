@@ -14,6 +14,7 @@ import { AppRouter } from "aurelia-router";
 
 
 export class VerifyBusinessEdit {
+  disabled: boolean = false;
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
   instockStages: any[] = ConstantValues.InstockStages;
@@ -86,12 +87,14 @@ export class VerifyBusinessEdit {
    * 商务审核
    */
   async verifyBusiness(verifyStatus: number) {
+    this.disabled = true;
     try {
       await this.cargoFlowService.audit(this.cargoFlow.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审核成功！" });
       this.appRouter.navigateToRoute('cargoFlow');
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+      this.disabled = false;
     }
   }
 

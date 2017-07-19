@@ -15,8 +15,9 @@ import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class NewContract {
+  disabled: boolean = false;
   validationController: ValidationController;
-
+  
   contractVo = {} as ContractVo;
   contract = {} as Contract;
   unit = [] as DictionaryData[];
@@ -229,12 +230,14 @@ export class NewContract {
     // this.contractVo.contract.customerName = this.customerInfo.text();
     this.contract.customerName = this.customerInfo.text();
     this.contractVo.contract = this.contract;
+    this.disabled = true;
     try {
       await this.contractService.saveContract(this.contractVo);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 
