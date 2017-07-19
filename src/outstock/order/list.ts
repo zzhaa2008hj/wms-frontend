@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
-import { OrderCriteria, OrderService, WorkOrderService } from '@app/outstock/services/order';
+import { OrderCriteria, OrderService } from '@app/outstock/services/order';
 import * as moment from 'moment';
 import { VerifyFeeDialogNew } from '@app/outstock/order/verify-fee/new';
 import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhouse/new";
@@ -13,7 +13,6 @@ import { VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
 import { ConstantValues } from "@app/common/models/constant-values";
-import { CargoInfoService } from "@app/base/services/cargo-info";
 
 @autoinject
 export class OrderList {
@@ -29,12 +28,10 @@ export class OrderList {
   outstockStages: any[] = ConstantValues.OutstockStages;
 
   constructor(private orderService: OrderService,
-              private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
               private customhouseService: CustomhouseClearanceService,
-              private workOrderService: WorkOrderService,
               private appRouter: AppRouter,
               private outstockInventoryService: OutstockInventoryService) {
 
@@ -44,7 +41,9 @@ export class OrderList {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.orderService.queryOrders(this.orderCriteria)
         .map(res => {
-          this.cargoInfoService.getCargoInfo(res.cargoInfoId).then(options => res.cargoType = options.cargoType);
+          if (res.cargoType == 1) {
+            res.clearanceStatus = true;
+          }
           res.outstockStageName = this.outstockStages.find(r => r.stage == res.stage).title;
           return res;
         }),
@@ -227,22 +226,6 @@ export class OrderList {
       }
       // 跳转 到出库清单页面
       this.appRouter.navigateToRoute('outstock-inventory');
-    } catch (err) {
-      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
-    }
-  }
-
-  /**
-   * 生成出库作业指令单
-   * @param id
-   */
-  async createOutstockWorkOrder(id) {
-    try {
-      await this.workOrderService.createOutstockWorkOrder(id);
-      let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库作业指令单" });
-      if (!skipConformed) return;
-      // 跳转 到出库作业指令单页面
-      this.appRouter.navigateToRoute('outstock-workOrder');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
