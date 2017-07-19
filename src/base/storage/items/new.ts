@@ -9,11 +9,11 @@ import { ValidationController , ValidationRules } from "aurelia-validation";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { formValidationRenderer } from "@app/validation/support";
-
 /**
  * Created by shun on 2017/6/29.
  */
 export class NewStorageItem {
+  disabled: boolean = false;
   storageItem = {} as StorageItemHistory;
   keywords: string;
   warehouses: Warehouse[] = [];
@@ -51,13 +51,14 @@ export class NewStorageItem {
 
     let { valid } = await this.validationController.validate();
     if (!valid) return;
-    
+    this.disabled = true;
     try {
       await this.storageService.saveItem(this.storageInfoId, this.storageItem);
       await this.dialogService.alert({ title: "提示", message: "新增成功"});
       this.cancel();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 

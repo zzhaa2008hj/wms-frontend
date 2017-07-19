@@ -13,7 +13,7 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
 
 export class EditContract {
-
+  disabled: boolean = false;
   contractVo = {} as ContractVo;
   contract = {} as Contract;
 
@@ -128,12 +128,14 @@ export class EditContract {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     this.contractVo.contract = this.contract;
+    this.disabled = true;
     try {
       await this.contractService.updateContract(this.contractVo);
       await this.messageDialogService.alert({ title: "编辑成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "发生错误", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
   onOpen() {

@@ -52,8 +52,8 @@
         </ak-grid>
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> 保存</button>
-            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
+            <button class="btn btn-success btn-cons" disabled.bind="disabled" type="submit"><i class="icon-ok"></i> 保存</button>
+            <button class="btn btn-white btn-cons" disabled.bind="disabled" type="button" click.delegate="cancel()">取消</button>
           </div>
         </div>
       </form>
