@@ -9,6 +9,7 @@ export interface WorkOrderCriteria {
   searchName?: string;
   businessId?: string;
   flowId?: string;
+  type?: number;
 }
 
 export interface WorkOrderAndItems {

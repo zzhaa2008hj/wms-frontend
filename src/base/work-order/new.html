@@ -49,7 +49,7 @@
                                  k-data-value-field="plateNumber"
                                  k-value.two-way="workOrder.plateNumber"
                                  k-widget.two-way="selectedVehicle"
-                                 k-data-source.bind="instockVehicleSource"
+                                 k-data-source.bind="VehicleSource"
                                  k-on-select.delegate="onSelectPlateNumber($event.detail)"
                                  k-on-change.delegate="validateWorkOrder('plateNumber')"
                                  k-on-close.delegate="validateWorkOrder('plateNumber')"
@@ -68,7 +68,7 @@
                                  k-data-text-field="driverName"
                                  k-data-value-field="driverName"
                                  k-value.two-way="workOrder.driverName"
-                                 k-data-source.bind="instockVehicleSource"
+                                 k-data-source.bind="VehicleSource"
                                  k-on-change.delegate="validateWorkOrder('driverName')"
                                  k-on-close.delegate="validateWorkOrder('driverName')"
                                  style="width: 60%;">
@@ -86,7 +86,7 @@
                                  k-data-text-field="driverIdentityNumber"
                                  k-data-value-field="driverIdentityNumber"
                                  k-value.two-way="workOrder.driverIdentityNumber"
-                                 k-data-source.bind="instockVehicleSource"
+                                 k-data-source.bind="VehicleSource"
                                  k-on-change.delegate="validateWorkOrder('driverIdentityNumber')"
                                  k-on-close.delegate="validateWorkOrder('driverIdentityNumber')"
                                  style="width: 60%;">
@@ -105,7 +105,7 @@
                                  k-data-text-field="phoneNumber"
                                  k-data-value-field="phoneNumber"
                                  k-value.two-way="workOrder.phoneNumber"
-                                 k-data-source.bind="instockVehicleSource"
+                                 k-data-source.bind="VehicleSource"
                                  k-on-change.delegate="validateWorkOrder('phoneNumber')"
                                  k-on-close.delegate="validateWorkOrder('phoneNumber')"
                                  style="width: 60%;">
