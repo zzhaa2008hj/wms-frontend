@@ -68,7 +68,7 @@
                                k-data-source.bind="outstockCargoItems"
                                k-on-select.delegate="onSelect($event.detail)" >
             </ak-drop-down-list>
-            <ak-grid k-data-source.bind="orderItems" k-editable.bind="true" if.bind="outstockOrderItems.length != 0">
+            <ak-grid k-data-source.bind="orderItems" k-editable.bind="true">
               <ak-col k-field="cargoName" k-title="货物名称">
                 <ak-template>
                   <input type="text" style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
