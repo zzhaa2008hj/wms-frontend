@@ -12,6 +12,7 @@ export class NewCargoDistrain {
   cargoInfos: CargoInfo[];
   cargoDistrainVos: CargoDistrainVo[] = [];
   cargoItems: CargoItemStorageInfoVo[] = [];
+  disabled: boolean = false;
 
   dataSourceCargoItem = new kendo.data.DataSource({
     transport: {
@@ -81,13 +82,14 @@ export class NewCargoDistrain {
    */
   async addNewCargoDistrain() {
     if ( this.cargoDistrainVos.length == 0) return;
-    
+    this.disabled = true;
     try {
       await this.cargoDistrainService.saveCargoDistrains(this.cargoDistrainVos);
       await this.dialogService.alert({ title: "提示", message: "新增成功"});
       this.cancel();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: 'error' });
+      this.disabled = false;
     }
   }
 

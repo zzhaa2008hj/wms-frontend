@@ -7,7 +7,7 @@
             <div class="form-group">
                 <label class="form-label">角色名称</label>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="orgRole.name" readonly>
+                    <input type="text" class="form-control" disabled.bind="disabled" value.bind="orgRole.name" readonly>
                 </div>
             </div>
             <div class="form-group">
@@ -30,8 +30,8 @@
             </div>
             <div class="form-actions">
                 <div class="pull-right">
-                    <button class="btn btn-primary btn-cons" click.delegate="assignOrgRoleMenu()">保存</button>
-                    <button class="btn btn-white btn-cons" click.delegate="cancel()">取消</button>
+                    <button class="btn btn-primary btn-cons"  disabled.bind="disabled" click.delegate="assignOrgRoleMenu()">保存</button>
+                    <button class="btn btn-white btn-cons"  disabled.bind="disabled" click.delegate="cancel()">取消</button>
                 </div>
             </div>
         </div>

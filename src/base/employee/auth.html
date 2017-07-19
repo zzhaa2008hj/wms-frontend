@@ -12,8 +12,8 @@
       </div>
     </ux-dialog-body>
     <ux-dialog-footer>
-      <button class="btn btn-primary" click.trigger="ok()" if.bind="organizationRoles.length != 0">确定</button>
-      <button class="btn" click.trigger="cancel()">取消</button>
+      <button class="btn btn-primary" disabled.bind="disabled" click.trigger="ok()" if.bind="organizationRoles.length != 0">确定</button>
+      <button class="btn" disabled.bind="disabled" click.trigger="cancel()">取消</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

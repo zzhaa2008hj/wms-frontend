@@ -125,8 +125,8 @@
       
       <div class="form-actions">
         <div class="pull-right">
-          <button class="btn btn-primary" click.delegate="verifyDeputyGeneral(1)">审核通过</button>
-          <button class="btn btn-warning" click.delegate="verifyDeputyGeneral(0)">审核不通过</button>
+          <button class="btn btn-primary" disabled.bind="disabled" click.delegate="verifyDeputyGeneral(1)">审核通过</button>
+          <button class="btn btn-warning" disabled.bind="disabled" click.delegate="verifyDeputyGeneral(0)">审核不通过</button>
         </div>
       </div>
     </div>
