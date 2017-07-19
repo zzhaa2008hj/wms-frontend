@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoItem } from "@app/base/models/cargo-info";
-import { Order } from "@app/outstock/models/order";
+import { Order } from '@app/outstock/models/order';
 
 /**
  * 查询条件
@@ -95,6 +95,11 @@ export class OrderService {
   updateStage(id: string, stage: number): Promise<void> {
     return this.http.put(`/outstock/order/${id}/changeStage/${stage}`, '').then(handleResult);
   }
+
+  async viewWorkOrder(id: string): Promise<Order> {
+    let res = await this.http.get(`/outstock/order/${id}/outstockWorkOrder`);
+    return res.content;
+  }
 }
 
 @autoinject
@@ -117,14 +122,4 @@ export class VehicleService {
   // }
 
 
-}
-
-@autoinject
-export class WorkOrderService {
-  constructor(private http: RestClient) {
-  }
-
-  createOutstockWorkOrder(id: any): Promise<void> {
-    return this.http.put(`/outstock/order/createOutstockWorkOrder/${id}`, null).then(handleResult);
-  }
 }

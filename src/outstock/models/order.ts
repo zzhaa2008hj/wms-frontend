@@ -23,6 +23,7 @@ export interface Order {
   auditTime: Date;
   takeDeliveryNum: string;
   remark: string;
+  orgId: string;
 
   //出库车辆信息
   outstockVehicles: Vehicle[];
@@ -35,6 +36,11 @@ export interface Order {
   outstockStageName: string;
 
   cargoType: number;
+
+  clearanceStatus: boolean;
+
+  createTime: Date;
+  createTimeStr: string;
 }
 
 export interface OrderItem {

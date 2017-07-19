@@ -148,12 +148,6 @@
       "moduleId": "./outstock/order/item/index"
     },
     {
-      "route": "/outstock/order/work",
-      "name": "outstock-workOrder",
-      "title": "出库作业指令单",
-      "moduleId": "./outstock/order//work/index"
-    },
-    {
       "route": "/outstock/inventory",
       "name": "inventory",
       "title": "出库清单",
