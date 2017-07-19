@@ -8,9 +8,10 @@ import { CargoInfo } from "@app/base/models/cargo-info";
 import * as moment from 'moment';
 import { DialogService} from "ui";
 import { AppRouter } from "aurelia-router";
+import { ViewRate } from "@app/outstock/order/verify-deputy-general/view";
 
 export class VerifyBusinessDialogEdit {
-
+  disabled: boolean = false;
   cargoInfo: CargoInfo;
   orderItems = [] as OrderItem[];
   vehicles = [] as Vehicle[];
@@ -43,13 +44,20 @@ export class VerifyBusinessDialogEdit {
    * 副总审批
    */
   async verifyDeputyGeneral(verifyStatus: number) {
+    this.disabled = true;
     try {
       await this.orderService.approve(this.order.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审批成功！" });
       this.appRouter.navigateToRoute('outstockOrder');
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+      this.disabled = false;
     }
+  }
+
+  async showRate(outstockItemId) {
+    let result = await this.dialogService.open({ viewModel: ViewRate, model: {id: outstockItemId}, lock: true }).whenClosed();
+    if (result.wasCancelled) return;
   }
 
 }

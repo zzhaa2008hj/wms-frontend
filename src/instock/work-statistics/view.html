@@ -80,17 +80,28 @@
                 <div class="col-md-12">
                     <div class="controls right">
                         <ak-grid k-data-source.bind="datasource"
-                                 k-widget.bind="customerGrid"
-                                 k-on-detail-init.delegate="detailInit($event.detail)">
-                            <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
-                            <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+                                 k-widget.bind="customerGrid">
+                            <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                            <ak-col k-field="customerName" k-title="作业单位"></ak-col>
+                            <ak-col k-field="workNumber" k-title="作业数量"></ak-col>
+                            <ak-col k-field="warehouseName" k-title="作业区域"></ak-col>
+                            <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                            <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
                             <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
                             <ak-col k-field="driverName" k-title="司机名称"></ak-col>
                             <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
                             <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
-                            <ak-template for="detailTemplate">
-                                <div class="workOrderItem"></div>
-                            </ak-template>
+                            <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
+                            <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+                            <ak-col k-field="workOrderCategory" k-title="作业类别">
+                                <ak-template>
+                                    ${formatCategory(workStatistics.workOrderCategory)}
+                                </ak-template>
+                            </ak-col>
+                            <ak-col k-field="quantity" k-title="入库数量"></ak-col>
+                            <ak-col k-field="number" k-title="入库件数"></ak-col>
+                            <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                            <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
                         </ak-grid>
                     </div>
                 </div>

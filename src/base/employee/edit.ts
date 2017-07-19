@@ -12,6 +12,7 @@ export class EmployeeEdit {
   id: string;
   organizations: Organization[];
   employee: Employee = {} as Employee;
+  disabled: boolean = false;
 
   constructor(@inject private employeeService: EmployeeService,
               @inject private router: Router,
@@ -29,12 +30,14 @@ export class EmployeeEdit {
   async doSave() {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+    this.disabled = true;
     try {
       await this.employeeService.updateEmployee(this.id, this.employee);
       await this.dialogService.alert({ title: "", message: "编辑成功！" });
       this.goBack();
     } catch (err) {
       await this.dialogService.alert({ title: "", message: err.message, icon: "error" });
+      this.disabled = false;
     }
   }
 

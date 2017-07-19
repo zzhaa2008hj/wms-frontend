@@ -14,6 +14,7 @@ export class EmployeeAdd {
 
   organizationRoles: OrganizationRole[];
   employee = {} as Employee;
+  disabled: boolean = false;
 
   constructor(@inject private employeeService: EmployeeService,
               @inject private router: Router,
@@ -36,12 +37,14 @@ export class EmployeeAdd {
   async doSave() {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+    this.disabled = true;
     try {
       await this.employeeService.saveEmployee(this.employee);
       await this.dialogService.alert({ title: "", message: "新增成功！" });
       this.goBack();
     } catch (err) {
       await this.dialogService.alert({ title: "", message: err.message, icon: "error" });
+      this.disabled = false;
     }
   }
 

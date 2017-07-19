@@ -148,4 +148,12 @@ export class CargoInfoService {
     let res = await this.http.createRequest(`/base/cargoInfo/list`).withParams(criteria).asGet().send();
     return res.content;
   }
+  /**
+   * 根据货物明细ID 获取费率和费率
+   * @param cargoItemId 
+   */
+  async getCargoRatesByCargoItemId(cargoItemId: string): Promise<CargoRate[]> {
+    let res = await this.http.get(`/base/cargoInfo/cargoItem/${cargoItemId}/cargoRate`);
+    return res.content;
+  }
 }
