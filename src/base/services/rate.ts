@@ -46,3 +46,13 @@ export class RateStepService {
     return res.content;
   }
 }
+
+@autoinject
+export class CargoRateService {
+  constructor(private http: RestClient) {
+  }
+
+  getCargoRateById(id: string): Promise<Rate> {
+    return this.http.get(`/base/cargoRate/${id}`).then(res => res.content);
+  }
+}

@@ -19,12 +19,16 @@ import { RouterParams } from '@app/common/models/router-params';
 import { CargoFlowService } from '@app/instock/services/cargo-flow';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { WorkOrderItem } from "@app/instock/models/work";
+import { Order } from "@app/outstock/models/order";
+import { OrderService, OrderItemService } from "@app/outstock/services/order";
+import { CargoRateService } from "@app/base/services/rate"
 
 export class NewWorkOrder {
   instockVehicle = {} as InstockVehicle;
   goodsId: string;
   workOrder = {} as WorkOrder;
   cargoFlow = {} as CargoFlow;
+  order = {} as Order;
 
   workOrderAreas = [] as WorkOrderArea[];
   workInfo: WorkInfo;
@@ -65,20 +69,18 @@ export class NewWorkOrder {
 
   datasource: kendo.data.DataSource;
 
-  cargoItemsSource = new kendo.data.DataSource({
-    transport: {
-      read: options => {
-        this.cargoItemService.getCargoItemsByFlowId(this.cargoFlow.id)
-          .then(options.success)
-          .catch(err => options.error("", "", err));
-      }
-    }
-  });
+  cargoItemsSource: kendo.data.DataSource;
 
-  instockVehicleSource = new kendo.data.DataSource({
+  VehicleSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.instockVehicleService.getInstockVehicles(this.workOrder.businessId)
+        let businessId: string;
+        if(this.routerParams.type == 1){
+          businessId = this.workOrder.businessId;
+        }else if(this.routerParams.type == 2){
+          businessId = this.routerParams.businessId;
+        }
+        this.instockVehicleService.getInstockVehicles(businessId, this.routerParams.type)
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -95,6 +97,8 @@ export class NewWorkOrder {
     }
   });
 
+  //warehouseSource: kendo.data.DataSource;
+
   constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private cargoFlowService: CargoFlowService,
               @inject private cargoItemService: CargoItemService,
@@ -106,7 +110,10 @@ export class NewWorkOrder {
               @inject private messageDialogService: MessageDialogService,
               @inject private router: Router,
               @newInstance() private validationController: ValidationController,
-              @inject private dictionaryDataService: DictionaryDataService) {
+              @inject private dictionaryDataService: DictionaryDataService,
+              @inject private orderService: OrderService,
+              @inject private orderItemService: OrderItemService,
+              @inject private cargoRateService: CargoRateService) {
     this.workOrderItem.workNumber = 1;
     this.datasource = new kendo.data.DataSource({
         transport: {
@@ -178,12 +185,35 @@ export class NewWorkOrder {
       this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.routerParams.businessId);
       this.workOrder.workOrderCategory = this.routerParams.type;
       this.workOrder.batchNumber = this.cargoFlow.batchNumber;
+      this.cargoItemsSource = new kendo.data.DataSource({
+        transport: {
+          read: options => {
+            this.cargoItemService.getCargoItemsByFlowId(this.cargoFlow.id)
+              .then(options.success)
+              .catch(err => options.error("", "", err));
+          }
+        }
+      });
+    }
+    if (this.routerParams.type ==2 ) {
+      this.order = await this.orderService.getOrderById(this.routerParams.businessId);
+      this.workOrder.workOrderCategory = this.routerParams.type;
+      this.workOrder.batchNumber = this.order.batchNumber;
+      this.cargoItemsSource = new kendo.data.DataSource({
+        transport: {
+          read: options =>{
+            this.orderItemService.getItemsByOrderId(this.order.id)
+              .then(options.success)
+              .catch(err => options.error("","",err));
+          }
+        }
+      });
     }
     this.validationController.addObject(this.workOrder, workOrderRules);
   }
 
   changeCargo() {
-    this.instockVehicleSource.read();
+    this.VehicleSource.read();
   }
 
   async cancel() {
@@ -228,8 +258,9 @@ export class NewWorkOrder {
         this.workOrderAreas[i].warehouseName = this.warehouse.name;
 
         for (let j = 0; j < this.workOrderAreas[i].workOrderItem.length; j++) {
-          this.workInfo = await this.workInfoService.getWorkInfo(this.workOrderAreas[i].workOrderItem[j].workId);
-          this.workOrderAreas[i].workOrderItem[j].workName = this.workInfo.name;
+          this.workOrderAreas[i].workOrderItem[j].workName = await this.cargoRateService
+                                                              .getCargoRateById(this.workOrderAreas[i].workOrderItem[j].workId)
+                                                              .then(res => res.workName);
 
           this.organization = await this.organizationService
             .getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
