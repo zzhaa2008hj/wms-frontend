@@ -44,9 +44,9 @@
             <td align="center">通知重量</td>
             <td align="center">说明</td>
           </tr>
-          <template repeat.for="[key, item] of cargoItems">
+          <template repeat.for="item of cargoItems">
             <tr>
-              <td align="center">${key+1}</td>
+              <td align="center">${item.index}</td>
               <td align="center">${item.cargoName}</td>
               <td align="center">${item.cargoCategoryName}</td>
               <td align="center">${item.unitStr}</td>
