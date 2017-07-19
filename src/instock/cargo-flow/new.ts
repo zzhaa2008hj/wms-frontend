@@ -74,6 +74,8 @@ export class NewCargoFlow {
     this.cargoFlow = {} as CargoFlow;
     this.cargoItems = [];
     this.vehicle = [];
+    this.dataSourceCargoItem.data([]);
+    this.dataSourceVehicle.data(this.vehicle);
 
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     if (dataItem.id) {
@@ -107,13 +109,12 @@ export class NewCargoFlow {
     if (result.wasCancelled) return;
     if (result.output) {
       this.vehicle.push(result.output);
-      this.dataSourceVehicle.read();
+      this.dataSourceVehicle.data(this.vehicle);
     }
   }
 
   onSelect(e) {
     let dataItem = this.dropDownListCargoItem.dataItem(e.item);
-    console.log(dataItem)
     Object.assign(dataItem, { sign: dataItem.uid });
     dataItem.cargoItemId = dataItem.id;
     dataItem.id = null;
@@ -124,7 +125,6 @@ export class NewCargoFlow {
   }
 
   deleteCargoItem(e) {
-    console.log(e)
     this.cargoItems.forEach(ci => {
       if (e.sign == ci.sign) {
         let index = this.cargoItems.indexOf(ci);
