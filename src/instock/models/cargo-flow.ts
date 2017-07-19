@@ -60,6 +60,9 @@ export interface InstockCargoItem {
 
   //车辆信息
   vehicles: Vehicle[];
+
+  // 下标
+  index: number;
 }
 
 export interface Vehicle {

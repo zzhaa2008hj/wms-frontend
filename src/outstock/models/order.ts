@@ -69,6 +69,9 @@ export interface OrderItem {
   containerNumber: string;
   remark: string;
   orgId: string;
+
+  // 下标
+  index: number;
 }
 
 export interface Vehicle {

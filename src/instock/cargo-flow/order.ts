@@ -30,7 +30,12 @@ export class Order {
     this.cargoFlow.createTimeStr = moment(this.cargoFlow.createTime).format("YYYY-MM-DD HH:mm:ss");
     this.cargoFlow.unit = this.units.find(r => r.dictDataCode == this.cargoFlow.unit).dictDataName;
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
-    this.cargoItems.map(res => res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName);
+    let index = 1;
+    this.cargoItems.map(res => {
+      res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+      res.index = index++;
+      return res;
+    });
     this.organization = await this.organizationService.getOrganization(this.cargoFlow.orgId);
     if (this.cargoFlow.stage == 3) {
       this.cargoFlowService.updateFlowStage(params.id, 4);
