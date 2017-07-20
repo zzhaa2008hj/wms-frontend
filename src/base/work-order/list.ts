@@ -26,7 +26,7 @@ export class WorkOrders {
   async activate() {
     this.type = this.routerParams.type;
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId }).map(res => {
+      query: () => this.workOrderService.queryWorkOders({ businessId: this.routerParams.businessId, type: this.routerParams.type }).map(res => {
         res.workOrderCategoryName = this.wrokCategories.find(r => r.value == res.workOrderCategory).text;
         return res;
       }),
