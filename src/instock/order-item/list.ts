@@ -1,10 +1,10 @@
-import { autoinject } from "aurelia-dependency-injection";
+import { inject } from 'aurelia-dependency-injection';
 import { OrderItemService, TallyItemService } from "@app/instock/services/order-item";
 import { DataSourceFactory } from "@app/utils";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { RouterParams } from '@app/common/models/router-params';
 
-@autoinject
 export class OrderItemList {
   batchNumber: string;
   dataSource: kendo.data.DataSource;
@@ -16,23 +16,38 @@ export class OrderItemList {
     buttonCount: 10
   };
 
-  constructor(private orderItemService: OrderItemService,
-              private tallyItemService: TallyItemService,
-              private dataSourceFactory: DataSourceFactory,
-              private dictionaryDataService: DictionaryDataService,) {
+  constructor(@inject private orderItemService: OrderItemService,
+              @inject private tallyItemService: TallyItemService,
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject('routerParams') private routerParams: RouterParams,
+              @inject private dictionaryDataService: DictionaryDataService) {
   }
 
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
-    this.dataSource = this.dataSourceFactory.create({
-      query: () => this.orderItemService.queryOrderItems({ batchNumber: this.batchNumber }).map(res => {
-        if(res.unit){
-          res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
-        }
-        return res;
-      }),
-      pageSize: 10
-    });
+    if (this.routerParams.infoId) {
+      this.dataSource = this.dataSourceFactory.create({
+        query: () => this.orderItemService
+          .queryOrderItems({ infoId: this.routerParams.infoId, batchNumber: this.batchNumber })
+          .map(res => {
+            if (res.unit) {
+              res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+            }
+            return res;
+          }),
+        pageSize: 10
+      });
+    } else {
+      this.dataSource = this.dataSourceFactory.create({
+        query: () => this.orderItemService.queryOrderItems({ batchNumber: this.batchNumber }).map(res => {
+          if (res.unit) {
+            res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
+          }
+          return res;
+        }),
+        pageSize: 10
+      });
+    }
   }
 
   select() {
@@ -46,11 +61,11 @@ export class OrderItemList {
         transport: {
           read: (options) => {
             this.tallyItemService.listOrderItems(e.data.id)
-              .then(res =>{
+              .then(res => {
                 res.map(
-                  e =>{
-                    if(e.unit){
-                    e.unit = this.units.find(r => r.dictDataCode == e.unit).dictDataName;
+                  e => {
+                    if (e.unit) {
+                      e.unit = this.units.find(r => r.dictDataCode == e.unit).dictDataName;
                     }
                   }
                 );
