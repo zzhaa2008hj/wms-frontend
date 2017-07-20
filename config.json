@@ -106,13 +106,15 @@
       "moduleId": "./instock/cargo-flow/index"
     },
     {
-      "route": "/instock/instock-orders",
+      "route": "/instock/:infoId?/instock-orders",
+      "href": "/instock/instock-orders",
       "name": "instockOrder",
       "title": "入库单",
       "moduleId": "./instock/order/index"
     },
     {
-      "route": "/instock/order-items",
+      "route": "/instock/:infoId?/order-items",
+      "href": "/instock/order-items",
       "name": "orderItem",
       "title": "理货报告",
       "moduleId": "./instock/order-item/index"

@@ -11,8 +11,8 @@ export class InstockOrderService {
   /**
    * 分页查询
    */
-  queryInstockOrders(keywords?: string): Query<InstockOrder> {
-    return this.http.query('instock/order/page', { keywords });
+  queryInstockOrders(param: { infoId?: string, keywords?: string }): Query<InstockOrder> {
+    return this.http.query('instock/order/page', param);
   }
 
   /**

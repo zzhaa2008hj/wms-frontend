@@ -6,6 +6,7 @@ import { InstockHeapInfo, OrderItem } from "@app/instock/models/order-item";
  * 查询条件
  */
 export interface OrderItemCriteria {
+  infoId?: string;
   searchName?: string;
   batchNumber?: string;
 }
