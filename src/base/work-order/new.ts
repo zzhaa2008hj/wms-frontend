@@ -110,6 +110,7 @@ export class NewWorkOrder {
               @inject private messageDialogService: MessageDialogService,
               @inject private router: Router,
               @newInstance() private validationController: ValidationController,
+              @newInstance() private validationAreaController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private orderService: OrderService,
               @inject private orderItemService: OrderItemService,
@@ -178,6 +179,7 @@ export class NewWorkOrder {
       }
     );
     this.validationController.addRenderer(formValidationRenderer);
+    this.validationAreaController.addRenderer(datagridValidationRenderer);
   }
 
   async activate() {
@@ -236,6 +238,8 @@ export class NewWorkOrder {
       workOrderArea.containerType = this.datasource.data()[i].containerType;
       workOrderArea.remark = this.datasource.data()[i].remark;
 
+      this.validationAreaController.addObject(this.datasource.data()[i], workOrderAreaRules);
+      console.log("workOrderArea", this.datasource.data()[i].warehouseId);
       let workOrderItems = [] as WorkOrderItem[];
       for (let j = 0; j < items.data().length; j++) {
         let workOrderItem = {} as WorkOrderItem;
@@ -250,33 +254,42 @@ export class NewWorkOrder {
       this.workOrderAreas.push(workOrderArea);
     }
 
+    alert("222");
+
     let { valid } = await this.validationController.validate();
+    console.log("validationController", this.validationController);
     if (!valid) return;
-    try {
-      for (let i = 0; i < this.workOrderAreas.length; i++) {
-        this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderAreas[i].warehouseId);
-        this.workOrderAreas[i].warehouseName = this.warehouse.name;
 
-        for (let j = 0; j < this.workOrderAreas[i].workOrderItem.length; j++) {
-          this.workOrderAreas[i].workOrderItem[j].workName = await this.cargoRateService
-                                                              .getCargoRateById(this.workOrderAreas[i].workOrderItem[j].workId)
-                                                              .then(res => res.workName);
+    let a = await this.validationAreaController.validate();
+    console.log("validationAreaController", this.validationAreaController);
+    if ( !a.valid ) return;
 
-          this.organization = await this.organizationService
-            .getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
-          this.workOrderAreas[i].workOrderItem[j].customerName = this.organization.name;
-        }
-      }
-      await this.workOrderService.saveWorkOrderAndItems({
-        warehouseWorkOrder: this.workOrder,
-        list: this.workOrderAreas
-      });
-      await this.messageDialogService.alert({ title: "新增成功", message: "新增成功" });
-      this.router.navigateToRoute("list");
+    alert("333");
+    // try {
+    //   for (let i = 0; i < this.workOrderAreas.length; i++) {
+    //     this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderAreas[i].warehouseId);
+    //     this.workOrderAreas[i].warehouseName = this.warehouse.name;
 
-    } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
-    }
+    //     for (let j = 0; j < this.workOrderAreas[i].workOrderItem.length; j++) {
+    //       this.workOrderAreas[i].workOrderItem[j].workName = await this.cargoRateService
+    //                                                           .getCargoRateById(this.workOrderAreas[i].workOrderItem[j].workId)
+    //                                                           .then(res => res.workName);
+
+    //       this.organization = await this.organizationService
+    //         .getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
+    //       this.workOrderAreas[i].workOrderItem[j].customerName = this.organization.name;
+    //     }
+    //   }
+    //   await this.workOrderService.saveWorkOrderAndItems({
+    //     warehouseWorkOrder: this.workOrder,
+    //     list: this.workOrderAreas
+    //   });
+    //   await this.messageDialogService.alert({ title: "新增成功", message: "新增成功" });
+    //   this.router.navigateToRoute("list");
+
+    // } catch (err) {
+    //   await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+    // }
   }
 
   onSelectPlateNumber(e) {
@@ -360,3 +373,47 @@ const workOrderRules = ValidationRules
   .displayName("电话号码")
   .required().withMessage(`\${$displayName}不能为空`)
   .rules;
+
+const workOrderAreaRules = ValidationRules
+  .ensure((workOrderArea: WorkOrderArea) => workOrderArea.warehouseId)
+  .displayName("作业区域")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrderArea: WorkOrderArea) => workOrderArea.quantity)
+  .displayName("作业数量")
+  .required().withMessage(`\${$displayName}不能为空`)
+  .satisfies(x =>  x <= 1000000000000000 && x >= 0)
+  .withMessage(`\${$displayName} 为无效值`)
+  .rules;  
+
+
+import { ValidationRenderer, RenderInstruction } from "aurelia-validation";
+
+export const datagridValidationRenderer: ValidationRenderer = {
+  render(instruction: RenderInstruction) {
+    for (let { elements, result } of instruction.unrender) {
+      if (result.valid) continue;
+      for (let element of elements) {
+        //let formGroup = element.parentElement;
+        // let label = formGroup.querySelector(`#validation-message-${result.id}`);
+        // if (label) formGroup.removeChild(label);
+        // if (formGroup.querySelectorAll('label.error').length == 0) {
+        //   element.classList.remove('error');
+        // }
+        element.classList.remove('error');
+      }
+    }
+    for (let { elements, result } of instruction.render) {
+      if (result.valid) continue;
+      for (let element of elements) {
+        element.classList.add('error');
+        
+        // const label = document.createElement('label');
+        // label.className = 'error';
+        // label.textContent = result.message;
+        // label.id = `validation-message-${result.id}`;
+        // element.parentElement.appendChild(label);
+      }
+    }
+  }
+};
