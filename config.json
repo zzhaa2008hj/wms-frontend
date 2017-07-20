@@ -95,7 +95,7 @@
     {
       "route": "/instock/cargo-infos",
       "name": "cargoInfo",
-      "title": "客户入库指令", 
+      "title": "客户入库指令",
       "moduleId": "./base/cargo-info/index"
     },
     {
@@ -140,6 +140,12 @@
       "name": "outstockOrder",
       "title": "出库指令",
       "moduleId": "./outstock/order/index"
+    },
+    {
+      "route": "/outstock/cargo-distrain",
+      "name": "cargo-distrain",
+      "title": "费收扣量",
+      "moduleId": "./outstock/cargo-distrain/index"
     },
     {
       "route": "/outstock/order/item",
