@@ -21,7 +21,7 @@ export class InstockVehicleService {
     return this.http.get(`instock/vehicle/list/${goodsId}`).then(res => res.content);
   }
 
-getInstockVehicles(goodsId: string): Promise<InstockVehicle[]> {
-    return this.http.get(`instock/vehicle/list/${goodsId}`).then(res => res.content);
+getInstockVehicles(goodsId: string, type: number): Promise<InstockVehicle[]> {
+    return this.http.get(`/base/vehicle/list/${goodsId}?type=${type}`).then(res => res.content);
   }
 }
