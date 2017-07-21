@@ -1,3 +1,4 @@
+import { ValidationRules } from 'aurelia-validation';
 /**
  * 海关放行单
  */
@@ -29,3 +30,9 @@ export interface CustomhouseClearanceVo {
 
   clearanceStatus: boolean; //放行状态
 }
+
+export const validationRules = ValidationRules
+  .ensure((e: CustomhouseClearanceVo)  => e.customhouseNumber)
+  .displayName('流转单号/备案号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .rules;
