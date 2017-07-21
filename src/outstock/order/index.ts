@@ -16,7 +16,8 @@ export class Order {
       { route: '/item', name: 'orderItem', moduleId: './item/index', title: "出库单" },
       { route: '/:id/verify-work', name: 'verify-work', moduleId: './verify-work/index', title: '库场审核' },
       { route: '/:id/verify-business', name: 'verify-business', moduleId: './verify-business/index', title: '商务审核' },
-      { route: '/:id/verify-deputy-general', name: 'verify-deputy-general', moduleId: './verify-deputy-general/index', title: '副总审批' }
+      { route: '/:id/verify-deputy-general', name: 'verify-deputy-general', moduleId: './verify-deputy-general/index', title: '副总审核' },
+      { route: '/work-order/:id/:type', name: 'work-order', moduleId: '/dist/base/work-order/index', title: "作业列表" }
     ]);
     this.router = router;
   }
