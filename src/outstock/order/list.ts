@@ -45,6 +45,7 @@ export class OrderList {
             res.clearanceStatus = true;
           }
           res.outstockStageName = this.outstockStages.find(r => r.stage == res.stage).title;
+          res.outstockLastStageName = this.outstockStages.find(r => r.stage == res.lastStage).title;
           return res;
         }),
       pageSize: 10
