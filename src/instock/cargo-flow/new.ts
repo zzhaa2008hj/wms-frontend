@@ -57,7 +57,7 @@ export class NewCargoFlow {
 
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ finished: 0 });
+    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);

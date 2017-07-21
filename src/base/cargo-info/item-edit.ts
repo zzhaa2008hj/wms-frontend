@@ -87,6 +87,7 @@ export class EditCargoItem {
     await this.cargoRateDataSource.sync();
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+    this.cargoItem.unitStr = this.unitDatasource.find(d => this.cargoItem.unit == d.dictDataCode).dictDataName;
     await this.dialogController.ok(this.cargoItem);
 
   }

@@ -34,6 +34,7 @@ export class DetailsCargoItem {
     this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.cargoItem = cargoItemInfo;
+    this.cargoItem.unitStr = this.unitDatasource.find(d => d.dictDataCode == this.cargoItem.unit).dictDataName;
     this.cargoRates = cargoItemInfo.cargoRates;
     this.convertCargoRates();
   }

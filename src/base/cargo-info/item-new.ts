@@ -175,6 +175,7 @@ export class NewCargoItem {
       r.cargoRateSteps = cargoRateStepList;
     });
     this.cargoItem.cargoRates = cargoRateList;
+    this.cargoItem.unitStr = this.unitDatasource.find(d => this.cargoItem.unit == d.dictDataCode).dictDataName;
 
     let { valid } = await this.validationController.validate();
     if (!valid) return;
