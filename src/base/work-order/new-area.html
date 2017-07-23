@@ -6,8 +6,8 @@
                  k-on-detail-init.delegate="detailInit($event.detail)"
                  k-widget.two-way="grid">
 
-            <button click.trigger="add()" >新增作业区域</button>
-            <!--if.bind="businessId"-->
+            <button click.trigger="add()" if.bind="instockCargoId">新增作业区域</button>
+            
             <ak-col k-title="库区名称">
                 <ak-template>
                     <ak-drop-down-list class="form-control"
@@ -67,7 +67,7 @@
             </ak-col>
             <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
             <ak-template for="detailTemplate">
-                <area-items parent-uid.bind="$this.uid"></area-items>
+                <area-items parent-uid.bind="$this.uid" ></area-items>
             </ak-template>
         </ak-grid>
 </template>
