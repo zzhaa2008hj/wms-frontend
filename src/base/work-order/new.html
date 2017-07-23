@@ -187,7 +187,7 @@
                 <area-items parent-uid.bind="$this.uid"></area-items>
             </ak-template>
         </ak-grid>-->
-        <work-area instock-cargo-id.bind="workOrder.businessId"></work-area>
+        <work-area instock-cargo-id.bind="workOrder.businessId"  view-model.ref= "newWorkArea"></work-area>
     </div>
     <button class="btn btn-primary" style="float: right" click.trigger="save()">保存</button>
     <button class="btn btn-white" style="float: right" click.trigger="cancel()">取消</button>

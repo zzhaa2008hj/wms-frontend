@@ -21,7 +21,11 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { WorkOrderItem } from "@app/instock/models/work";
 import { Order } from "@app/outstock/models/order";
 import { OrderService, OrderItemService } from "@app/outstock/services/order";
-import { CargoRateService } from "@app/base/services/rate"
+import { CargoRateService } from "@app/base/services/rate";
+import { NewWorArea} from "./new-area";
+import { EventAggregator } from "aurelia-event-aggregator";
+import { bindable } from "aurelia-templating";
+import { observable } from "aurelia-framework";
 
 export class NewWorkOrder {
   instockVehicle = {} as InstockVehicle;
@@ -29,6 +33,7 @@ export class NewWorkOrder {
   workOrder = {} as WorkOrder;
   cargoFlow = {} as CargoFlow;
   order = {} as Order;
+  newWorkArea: NewWorArea;
 
   workOrderAreas = [] as WorkOrderArea[];
   workInfo: WorkInfo;
@@ -38,34 +43,16 @@ export class NewWorkOrder {
   workOrderArea = {} as WorkOrderArea;
   workOrderItem = {} as WorkOrderItem;
 
+
+  @observable
+  areaDatasource: kendo.data.DataSource;
+
   selectedVehicle: any;
 
   data = new kendo.data.ObservableArray([]);
   grid: kendo.ui.Grid;
 
   itemsDataSources = new Map<string, kendo.data.DataSource>();
-
-  unitSource = new kendo.data.DataSource({
-    transport: {
-      read: options => {
-        this.dictionaryDataService
-          .getDictionaryDatas("unit")
-          .then(options.success)
-          .catch(err => options.error("", "", err));
-      }
-    }
-  });
-
-  containerTypeSource = new kendo.data.DataSource({
-    transport: {
-      read: options => {
-        this.dictionaryDataService
-          .getDictionaryDatas("containerType")
-          .then(options.success)
-          .catch(err => options.error("", "", err));
-      }
-    }
-  });
 
   datasource: kendo.data.DataSource;
 
@@ -87,18 +74,6 @@ export class NewWorkOrder {
     }
   });
 
-  warehouseSource = new kendo.data.DataSource({
-    transport: {
-      read: options => {
-        this.warehouseService.getWarehouses(this.workOrder.businessId, this.routerParams.type)
-          .then(options.success)
-          .catch(err => options.error("", "", err));
-      }
-    }
-  });
-
-  //warehouseSource: kendo.data.DataSource;
-
   constructor(@inject('routerParams') private routerParams: RouterParams,
               @inject private cargoFlowService: CargoFlowService,
               @inject private cargoItemService: CargoItemService,
@@ -110,11 +85,11 @@ export class NewWorkOrder {
               @inject private messageDialogService: MessageDialogService,
               @inject private router: Router,
               @newInstance() private validationController: ValidationController,
-              @newInstance() private validationAreaController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private orderService: OrderService,
               @inject private orderItemService: OrderItemService,
-              @inject private cargoRateService: CargoRateService) {
+              @inject private cargoRateService: CargoRateService,
+              @inject private eventAggregator: EventAggregator) {
     this.workOrderItem.workNumber = 1;
     this.datasource = new kendo.data.DataSource({
         transport: {
@@ -179,10 +154,10 @@ export class NewWorkOrder {
       }
     );
     this.validationController.addRenderer(formValidationRenderer);
-    this.validationAreaController.addRenderer(datagridValidationRenderer);
   }
 
   async activate() {
+    
     if (this.routerParams.type == 1) {
       this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.routerParams.businessId);
       this.workOrder.workOrderCategory = this.routerParams.type;
@@ -221,25 +196,26 @@ export class NewWorkOrder {
   async cancel() {
     this.router.navigateToRoute("list");
   }
-
   async save() {
-
-    let len = this.datasource.data().length;
+    //console.log('this.datasource.data()',this.areaDatasource);
+   // console.log('datasource',this.itemsDataSources);
+    let len = this.areaDatasource.data().length;
+    alert(len);
     for (let i = 0; i < len; i++) {
-      let items = this.itemsDataSources.get(this.datasource.data()[i].uid);
-      this.datasource.data()[i].WorkOrderItem = items;
+      let items = this.itemsDataSources.get(this.areaDatasource.data()[i].uid);
+      console.log('items',items);
+      this.areaDatasource.data()[i].WorkOrderItem = items;
 
       let workOrderArea = {} as WorkOrderArea;
-      workOrderArea.warehouseId = this.datasource.data()[i].warehouseId;
-      workOrderArea.quantity = this.datasource.data()[i].quantity;
-      workOrderArea.number = this.datasource.data()[i].number;
-      workOrderArea.unit = this.datasource.data()[i].unit;
-      workOrderArea.containerNumber = this.datasource.data()[i].containerNumber;
-      workOrderArea.containerType = this.datasource.data()[i].containerType;
-      workOrderArea.remark = this.datasource.data()[i].remark;
+      workOrderArea.warehouseId = this.areaDatasource.data()[i].warehouseId;
+      workOrderArea.quantity = this.areaDatasource.data()[i].quantity;
+      workOrderArea.number = this.areaDatasource.data()[i].number;
+      workOrderArea.unit = this.areaDatasource.data()[i].unit;
+      workOrderArea.containerNumber = this.areaDatasource.data()[i].containerNumber;
+      workOrderArea.containerType = this.areaDatasource.data()[i].containerType;
+      workOrderArea.remark = this.areaDatasource.data()[i].remark;
 
-      this.validationAreaController.addObject(this.datasource.data()[i], workOrderAreaRules);
-      console.log("workOrderArea", this.datasource.data()[i].warehouseId);
+      
       let workOrderItems = [] as WorkOrderItem[];
       for (let j = 0; j < items.data().length; j++) {
         let workOrderItem = {} as WorkOrderItem;
@@ -257,40 +233,46 @@ export class NewWorkOrder {
     alert("222");
 
     let { valid } = await this.validationController.validate();
-    console.log("validationController", this.validationController);
-    if (!valid) return;
 
-    let a = await this.validationAreaController.validate();
-    console.log("validationAreaController", this.validationAreaController);
-    if ( !a.valid ) return;
+    let res = await this.newWorkArea.verify();
 
+    if(!valid&& !res) return;
     alert("333");
-    // try {
-    //   for (let i = 0; i < this.workOrderAreas.length; i++) {
-    //     this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderAreas[i].warehouseId);
-    //     this.workOrderAreas[i].warehouseName = this.warehouse.name;
+    try {
+      for (let i = 0; i < this.workOrderAreas.length; i++) {
+        this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderAreas[i].warehouseId);
+        this.workOrderAreas[i].warehouseName = this.warehouse.name;
 
-    //     for (let j = 0; j < this.workOrderAreas[i].workOrderItem.length; j++) {
-    //       this.workOrderAreas[i].workOrderItem[j].workName = await this.cargoRateService
-    //                                                           .getCargoRateById(this.workOrderAreas[i].workOrderItem[j].workId)
-    //                                                           .then(res => res.workName);
+        for (let j = 0; j < this.workOrderAreas[i].workOrderItem.length; j++) {
+          this.workOrderAreas[i].workOrderItem[j].workName = await this.cargoRateService
+                                                              .getCargoRateById(this.workOrderAreas[i].workOrderItem[j].workId)
+                                                              .then(res => res.workName);
 
-    //       this.organization = await this.organizationService
-    //         .getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
-    //       this.workOrderAreas[i].workOrderItem[j].customerName = this.organization.name;
-    //     }
-    //   }
-    //   await this.workOrderService.saveWorkOrderAndItems({
-    //     warehouseWorkOrder: this.workOrder,
-    //     list: this.workOrderAreas
-    //   });
-    //   await this.messageDialogService.alert({ title: "新增成功", message: "新增成功" });
-    //   this.router.navigateToRoute("list");
+          this.organization = await this.organizationService
+            .getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
+          this.workOrderAreas[i].workOrderItem[j].customerName = this.organization.name;
+        }
+      }
+      await this.workOrderService.saveWorkOrderAndItems({
+        warehouseWorkOrder: this.workOrder,
+        list: this.workOrderAreas
+      });
+      await this.messageDialogService.alert({ title: "新增成功", message: "新增成功" });
+      this.router.navigateToRoute("list");
 
-    // } catch (err) {
-    //   await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
-    // }
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
+    }
   }
+
+  getAreaDatasource( datasource ){
+    this.areaDatasource = datasource;
+  }
+
+  getItemsDataSources(itemDatasource){
+    this.itemsDataSources = itemDatasource;
+  }
+
 
   onSelectPlateNumber(e) {
     let vehicle: InstockVehicle = this.selectedVehicle.dataItem(e.item);
@@ -303,45 +285,6 @@ export class NewWorkOrder {
   validateWorkOrder(propertyName: string) {
     this.validationController.validate({ object: this.workOrder, propertyName });
   }
-
-  detailInit() {
-  }
-
-  add() {
-    let res = this.datasource.add({});
-
-    let itemDataSource = new kendo.data.DataSource({
-      schema: {
-        model: {
-          fields: {
-            workName: { editable: false },
-            workNumber: {
-              editable: false,
-              notify: true,
-              type: 'number',
-              validation: { required: true, min: 0, max: 1000000000000000 },
-              title: '作业数量'
-            },
-            customerName: { editable: false },
-            remark: { editable: false },
-          }
-        }
-      }
-    });
-
-    this.itemsDataSources.set(res.uid, itemDataSource);
-  }
-
-
-  remove(e) {
-    this.datasource.remove(e);
-    this.itemsDataSources.delete(e.uid);
-  }
-
-  getNewDataSourceByUid(uid: string) {
-    return this.itemsDataSources.get(uid);
-  }
-
 
 }
 const workOrderRules = ValidationRules
@@ -373,47 +316,3 @@ const workOrderRules = ValidationRules
   .displayName("电话号码")
   .required().withMessage(`\${$displayName}不能为空`)
   .rules;
-
-const workOrderAreaRules = ValidationRules
-  .ensure((workOrderArea: WorkOrderArea) => workOrderArea.warehouseId)
-  .displayName("作业区域")
-  .required().withMessage(`\${$displayName}不能为空`)
-
-  .ensure((workOrderArea: WorkOrderArea) => workOrderArea.quantity)
-  .displayName("作业数量")
-  .required().withMessage(`\${$displayName}不能为空`)
-  .satisfies(x =>  x <= 1000000000000000 && x >= 0)
-  .withMessage(`\${$displayName} 为无效值`)
-  .rules;  
-
-
-import { ValidationRenderer, RenderInstruction } from "aurelia-validation";
-
-export const datagridValidationRenderer: ValidationRenderer = {
-  render(instruction: RenderInstruction) {
-    for (let { elements, result } of instruction.unrender) {
-      if (result.valid) continue;
-      for (let element of elements) {
-        //let formGroup = element.parentElement;
-        // let label = formGroup.querySelector(`#validation-message-${result.id}`);
-        // if (label) formGroup.removeChild(label);
-        // if (formGroup.querySelectorAll('label.error').length == 0) {
-        //   element.classList.remove('error');
-        // }
-        element.classList.remove('error');
-      }
-    }
-    for (let { elements, result } of instruction.render) {
-      if (result.valid) continue;
-      for (let element of elements) {
-        element.classList.add('error');
-        
-        // const label = document.createElement('label');
-        // label.className = 'error';
-        // label.textContent = result.message;
-        // label.id = `validation-message-${result.id}`;
-        // element.parentElement.appendChild(label);
-      }
-    }
-  }
-};
