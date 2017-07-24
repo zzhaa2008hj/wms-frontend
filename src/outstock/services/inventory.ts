@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { Query, RestClient } from "@app/utils";
+import { handleResult, Query, RestClient } from "@app/utils";
 import { OutstockInventory, OutstockInventoryVo } from "@app/outstock/models/inventory";
 
 @autoinject
@@ -25,6 +25,6 @@ export class OutstockInventoryService {
    * 生成出库清单
    */
   createOutstockInventory(batchNumber: string): Promise<void> {
-    return this.http.post(`/outstock/inventory/${batchNumber}`, null).then(res => res.content);
+    return this.http.post(`/outstock/inventory/${batchNumber}`, null).then(handleResult);
   }
 }
