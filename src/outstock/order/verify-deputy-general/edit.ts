@@ -32,8 +32,15 @@ export class VerifyBusinessDialogEdit {
     this.order = await this.orderService.getOrderById(this.outstockOrder.id);
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.order.cargoInfoId);
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
-
-    this.orderItems = this.order.outstockOrderItems;
+    let units = await this.dictionaryDataService.getDictionaryDatas('unit');
+    
+    this.orderItems = this.order.outstockOrderItems.map(res => {
+      let dict = units.find(r => r.dictDataCode == res.unit);
+        if (dict) {
+          res.unitStr = dict.dictDataName;
+        }
+      return res;
+    });
     this.vehicles = this.order.outstockVehicles;
     this.order.outstockDateStr = moment(this.order.outstockDate).format("YYYY-MM-DD");
     this.cargoInfo.warehouseTypeStr = this.warehouseTypes

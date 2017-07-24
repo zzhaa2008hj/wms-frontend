@@ -45,6 +45,10 @@ export class OrderList {
             res.clearanceStatus = true;
           }
           res.outstockStageName = this.outstockStages.find(r => r.stage == res.stage).title;
+          let lastStage = this.outstockStages.find(r => r.stage == res.lastStage);
+          if (lastStage) {
+            res.outstockLastStageName = lastStage.title;
+          }
           return res;
         }),
       pageSize: 10
