@@ -1,5 +1,5 @@
 import { inject } from 'aurelia-dependency-injection';
-import { OrderItemService, TallyItemService } from "@app/instock/services/order-item";
+import { OrderItemService } from "@app/instock/services/order-item";
 import { DataSourceFactory } from "@app/utils";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
