@@ -6,6 +6,8 @@ import { CargoInfo } from '@app/base/models/cargo-info';
 import { CargoItemStorageInfoVo, CargoDistrainVo} from '@app/outstock/models/cargo-distrain';
 import { DialogService } from "ui";
 import { NewDistrain } from "@app/outstock/cargo-distrain/new-distrain";
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 
 export class NewCargoDistrain {
   cargoInfoWidget: any; // 组件
@@ -13,6 +15,7 @@ export class NewCargoDistrain {
   cargoDistrainVos: CargoDistrainVo[] = [];
   cargoItems: CargoItemStorageInfoVo[] = [];
   disabled: boolean = false;
+  units: DictionaryData[] = [];
 
   dataSourceCargoItem = new kendo.data.DataSource({
     transport: {
@@ -33,18 +36,28 @@ export class NewCargoDistrain {
   constructor(@inject private router: Router,
               @inject private cargoInfoService: CargoInfoService,
               @inject private dialogService: DialogService,
-              @inject private cargoDistrainService: CargoDistrainService) {
+              @inject private cargoDistrainService: CargoDistrainService,
+              @inject private dictionaryDataService: DictionaryDataService) {
   }
 
   async activate() {
     this.cargoInfos = await this.cargoInfoService.getCargoInfosByInstockStatus(1);
+    this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
   }
 
   async onSelectCargoInfo(e) {
+    
     // 获取选中的对象
     let cargoInfo: CargoInfo = this.cargoInfoWidget.dataItem(e.item);
     // 货物grid
     this.cargoItems = await this.cargoInfoService.getCargoItemStorageInfo(cargoInfo.id);
+    this.cargoItems = this.cargoItems.map(res => {
+       let dict = this.units.find(r => r.dictDataCode == res.cargoItem.unit);
+        if (dict) {
+          res.cargoItem.unitStr = dict.dictDataName;
+        }
+      return res;
+    });
     this.dataSourceCargoItem.read();
   }
 
@@ -58,6 +71,10 @@ export class NewCargoDistrain {
     let result = await this.dialogService.open({ viewModel: NewDistrain, model: {}, lock: true}).whenClosed();
     if (result.wasCancelled) return;
     let cargoDistrainVo: CargoDistrainVo = result.output;
+    let dict = this.units.find(r => r.dictDataCode == cargoDistrainVo.unit);
+    if (dict) {
+      cargoDistrainVo.unitName = dict.dictDataName;
+    }
 
     cargoDistrainVo.cargoName = cargoItemStorageInfoVo.cargoItem.cargoName;
     cargoDistrainVo.cargoCategoryName = cargoItemStorageInfoVo.cargoItem.cargoCategoryName;

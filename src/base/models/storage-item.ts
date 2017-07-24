@@ -26,6 +26,8 @@ export interface StorageItem {
     remark: string;
 
     orgId: string;
+
+    unitName: string;
 }
 
 export interface StorageItemHistory extends StorageItem{

@@ -2,6 +2,7 @@ import { inject } from "aurelia-dependency-injection";
 import { StorageService } from "@app/base/services/storage";
 import { DataSourceFactory } from "@app/utils";
 import * as moment from 'moment';
+import { DictionaryDataService } from '@app/base/services/dictionary';
 
 export class StorageHistoryList {
   search = {
@@ -23,9 +24,20 @@ export class StorageHistoryList {
   };
 
   constructor(@inject private storageService: StorageService,
-              @inject private dataSourceFactory: DataSourceFactory) {
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject private dictionaryDataService: DictionaryDataService) {
+  }
+
+  async activate() {
+    let units = await this.dictionaryDataService.getDictionaryDatas('unit');
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.storageService.queryStorageHistoryPage(this.search),
+      query: () => this.storageService.queryStorageHistoryPage(this.search).map(res => {
+        let dict = units.find(r => r.dictDataCode == res.unit);
+        if (dict) {
+          res.unitName = dict.dictDataName;
+        }
+        return res;
+      }),
       pageSize: 10
     });
   }

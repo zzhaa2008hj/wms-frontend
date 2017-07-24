@@ -26,4 +26,6 @@ export interface StorageInfo {
     remark: string;
 
     orgId: string;
+
+    unitName: string;
 }
