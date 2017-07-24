@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoItem } from "@app/base/models/cargo-info";
 import { Order } from '@app/outstock/models/order';
+import { ValidVo } from "@app/outstock/models/validVo";
 
 /**
  * 查询条件
@@ -98,6 +99,11 @@ export class OrderService {
 
   async viewWorkOrder(id: string): Promise<Order> {
     let res = await this.http.get(`/outstock/order/${id}/outstockWorkOrder`);
+    return res.content;
+  }
+
+  async getValidOutstockNum(cargoInfoId: string): Promise<ValidVo[]> {
+    let res = await this.http.get(`/outstock/order/quantity/${cargoInfoId}`);
     return res.content;
   }
 }

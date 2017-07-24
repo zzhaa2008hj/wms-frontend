@@ -29,12 +29,14 @@ export class Detail {
     this.order = await this.orderService.getOrderById(params.id);
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.order.cargoInfoId);
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
     this.orderItems = this.order.outstockOrderItems;
     this.vehicles = this.order.outstockVehicles;
     this.order.outstockDateStr = moment(this.order.outstockDate).format("YYYY-MM-DD");
     this.cargoInfo.warehouseTypeStr = this.warehouseTypes
       .find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
+    this.orderItems.forEach(oi => oi.unitStr = this.units.find(res => res.dictDataCode == oi.unit).dictDataName);
   }
 
 

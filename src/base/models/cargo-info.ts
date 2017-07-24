@@ -92,6 +92,9 @@ export interface CargoItem {
   cargoRates: CargoRate[];
 
   remark: string;
+
+  canQuantity: number;
+  canNumber: number;
 }
 
 /**

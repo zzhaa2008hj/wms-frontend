@@ -72,6 +72,10 @@ export interface OrderItem {
 
   // 下标
   index: number;
+
+  //可出库数量和件数
+  canQuantity: number;
+  canNumber: number;
 }
 
 export interface Vehicle {
