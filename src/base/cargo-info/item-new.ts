@@ -79,6 +79,8 @@ export class NewCargoItem {
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     //免堆期的默认值
     this.cargoItem.freeDays = 0;
+    this.cargoItem.orderNumber = 0;
+    this.cargoItem.orderQuantity = 0;
     //该合同下所有货物的费率
     this.contractCargoRates = await this.cargoInfoService.getContractCargoRates(contractId, warehouseType);
     //该合同下所有货物的阶梯费率
