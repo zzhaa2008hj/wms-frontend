@@ -4,7 +4,6 @@ import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { MessageDialogService } from "ui";
 import { WorkOrder, WorkOrderArea } from "@app/instock/models/work";
-import { WorkInfoService } from "@app/base/services/work-info";
 import { WorkInfo } from "@app/base/models/work-info";
 import { WarehouseService } from "@app/base/services/warehouse";
 import { Warehouse } from "@app/base/models/warehouse";
@@ -20,10 +19,10 @@ import { CargoFlowService } from '@app/instock/services/cargo-flow';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { WorkOrderItem } from "@app/instock/models/work";
 import { WorkAreaService } from "@app/base/services/work";
-import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { Order } from "@app/outstock/models/order";
 import { OrderService, OrderItemService } from "@app/outstock/services/order";
 import { CargoRateService } from "@app/base/services/rate"
+import { EditWorArea } from "./edit-area"
 
 export class EditWorkOrder {
   instockVehicle = {} as InstockVehicle;
@@ -44,6 +43,8 @@ export class EditWorkOrder {
 
   data = new kendo.data.ObservableArray([]);
   grid: kendo.ui.Grid;
+
+  editWorArea: EditWorArea;
 
   itemsDataSources = new Map<string, kendo.data.DataSource>();
 
@@ -82,13 +83,13 @@ export class EditWorkOrder {
   // });
   cargoItemsSource: kendo.data.DataSource;
 
-   VehicleSource = new kendo.data.DataSource({
+  VehicleSource = new kendo.data.DataSource({
     transport: {
       read: options => {
         let businessId: string;
-        if(this.routerParams.type == 1){
+        if (this.routerParams.type == 1) {
           businessId = this.workOrder.businessId;
-        }else if(this.routerParams.type == 2){
+        } else if (this.routerParams.type == 2) {
           businessId = this.routerParams.businessId;
         }
         this.instockVehicleService.getInstockVehicles(businessId, this.routerParams.type)
@@ -112,7 +113,6 @@ export class EditWorkOrder {
               @inject private cargoFlowService: CargoFlowService,
               @inject private cargoItemService: CargoItemService,
               @inject private instockVehicleService: InstockVehicleService,
-              @inject private workInfoService: WorkInfoService,
               @inject private warehouseService: WarehouseService,
               @inject private organizationService: OrganizationService,
               @inject private workOrderService: WorkOrderService,
@@ -121,7 +121,6 @@ export class EditWorkOrder {
               @newInstance() private validationController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private workAreaService: WorkAreaService,
-              @inject private workOrderItemService: WorkOrderItemService,
               @inject private orderItemService: OrderItemService,
               @inject private orderService: OrderService,
               @inject private cargoRateService: CargoRateService) {
@@ -130,7 +129,7 @@ export class EditWorkOrder {
   }
 
   async activate(params) {
-     if (this.routerParams.type == 1) {
+    if (this.routerParams.type == 1) {
       this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.routerParams.businessId);
       // this.workOrder.workOrderCategory = this.routerParams.type;
       // this.workOrder.batchNumber = this.cargoFlow.batchNumber;
@@ -144,16 +143,16 @@ export class EditWorkOrder {
         }
       });
     }
-    if (this.routerParams.type ==2 ) {
+    if (this.routerParams.type == 2) {
       this.order = await this.orderService.getOrderById(this.routerParams.businessId);
       // this.workOrder.workOrderCategory = this.routerParams.type;
       // this.workOrder.batchNumber = this.order.batchNumber;
       this.cargoItemsSource = new kendo.data.DataSource({
         transport: {
-          read: options =>{
+          read: options => {
             this.orderItemService.getItemsByOrderId(this.order.id)
               .then(options.success)
-              .catch(err => options.error("","",err));
+              .catch(err => options.error("", "", err));
           }
         }
       });
@@ -166,133 +165,6 @@ export class EditWorkOrder {
     this.workOrder = await this.workOrderService.getWorkOrderById(params.id);
     this.validationController.addObject(this.workOrder, workOrderRules);
 
-    this.datasource = new kendo.data.DataSource({
-      transport: {
-        read: options => {
-          this.workAreaService.getByWorkOrderId(this.workOrder.id)
-            .then(options.success)
-            .catch(err => options.error("", "", err));
-        },
-        update: (options) => {
-          options.success();
-        }
-        ,
-        destroy: (options) => {
-          options.success();
-        }
-        ,
-        create: async options => {
-          this.datasource.data()[0].workOrderItem = [];
-          this.workOrderAreas = options.data.models;
-          options.success();
-        }
-      },
-      schema: {
-        model: {
-          fields: {
-            workItemId: {
-              editable: false, nullable: true
-            },
-            workId: {
-              type: 'string',
-              validation: { required: true }
-            },
-            quantity: {
-              type: 'number',
-              validation: { min: 0, max: 1000000000000000 }
-            },
-            number: {
-              type: 'number',
-              validation: { min: 0, max: 1000000000000000 }
-            },
-            containerType: {
-              type: 'string'
-            },
-            containerNumber: {
-              type: 'string'
-            },
-            sign: {
-              type: 'string'
-            },
-            customerId: {
-              type: 'string',
-              validation: { required: true }
-            },
-            remark: {
-              type: 'string',
-              validation: { required: true }
-            }
-          }
-        }
-      }
-    });
-
-    this.datasource.bind("change", (e) => {
-      for (let i = 0; i < e.items.length; i++) {
-        let itemDatasource = new kendo.data.DataSource({
-          transport: {
-            read: options => {
-              this.workOrderItemService.getWorkOrderItems(e.items[i].id)
-                .then(options.success)
-                .catch(err => options.error("", "", err));
-            }
-          },
-          schema: {
-            model: {
-              fields: {
-                workName: { editable: false },
-                workNumber: {
-                  editable: false,
-                  notify: true,
-                  type: 'number',
-                  validation: { required: true, min: 0, max: 1000000000000000 },
-                  title: '作业数量'
-                },
-                customerName: { editable: false },
-                remark: { editable: false },
-              }
-            }
-          }
-        });
-
-        this.itemsDataSources.set(e.items[i].uid, itemDatasource);
-      }
-
-      if (e.action == "remove") {
-        console.log("1111");
-        this.datasource.remove(e.items);
-        this.itemsDataSources.delete(e.items.uid);
-      }
-
-      if (e.action == "add") {
-        let itemDataSource = new kendo.data.DataSource({
-          schema: {
-            model: {
-              fields: {
-                workName: { editable: false },
-                workNumber: {
-                  editable: false,
-                  notify: true,
-                  type: 'number',
-                  validation: { required: true, min: 0, max: 1000000000000000 },
-                  title: '作业数量'
-                },
-                customerName: { editable: false },
-                remark: { editable: false },
-              }
-            }
-          }
-        });
-
-        this.itemsDataSources.set(e.items.uid, itemDataSource);
-
-      }
-
-      console.log('datasource type', this.datasource.data(), e.items, e.action);
-
-    });
-
-
   }
 
   changeCargo() {
@@ -304,6 +176,14 @@ export class EditWorkOrder {
   }
 
   async save() {
+    let { valid } = await this.validationController.validate();
+
+    let res = await this.editWorArea.verify();
+
+    if (!valid || !res) {
+      await this.messageDialogService.alert({ title: "提示", message: "数据不符合规范请检查数据" })
+      return;
+    }
 
     let len = this.datasource.data().length;
     for (let i = 0; i < len; i++) {
@@ -335,8 +215,6 @@ export class EditWorkOrder {
       this.workOrderAreas.push(workOrderArea);
     }
 
-    let { valid } = await this.validationController.validate();
-    if (!valid) return;
     try {
       for (let i = 0; i < this.workOrderAreas.length; i++) {
         this.warehouse = await this.warehouseService.getWarehouseById(this.workOrderAreas[i].warehouseId);
@@ -345,8 +223,8 @@ export class EditWorkOrder {
         for (let j = 0; j < this.workOrderAreas[i].workOrderItem.length; j++) {
           //this.workInfo = await this.workInfoService.getWorkInfo(this.workOrderAreas[i].workOrderItem[j].workId);
           this.workOrderAreas[i].workOrderItem[j].workName = await this.cargoRateService
-                                                              .getCargoRateById(this.workOrderAreas[i].workOrderItem[j].workId)
-                                                              .then(res => res.workName);
+            .getCargoRateById(this.workOrderAreas[i].workOrderItem[j].workId)
+            .then(res => res.workName);
 
           this.organization = await this.organizationService
             .getOrganization(this.workOrderAreas[i].workOrderItem[j].customerId);
@@ -412,6 +290,19 @@ export class EditWorkOrder {
   // setItemDataSource(uid: string, datasource: kendo.data.DataSource) {
   //   this.itemsDataSources.set(uid, datasource);
   // }
+
+  // getAreaDatasource(){
+  //   return this.datasource;
+  // }
+  getAreaDatasource(datasource) {
+    this.datasource = datasource;
+    console.log('this.datasource', this.datasource);
+    console.log('this.datasource.data()', this.datasource.data());
+  }
+
+  getItemsDataSources(itemDatasource) {
+    this.itemsDataSources = itemDatasource;
+  }
 
 
 }

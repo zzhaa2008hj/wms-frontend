@@ -1,11 +1,15 @@
-import { observable, inject } from "aurelia-framework";
+import { observable, inject, newInstance } from "aurelia-framework";
 import { bindable, customElement } from "aurelia-templating";
 import { ContractService } from "@app/base/services/contract";
 import { WorkInfoService } from "@app/base/services/work-info";
-import { EditWorkOrder } from "./edit";
+import { EditWorArea } from "./edit-area";
 import { RouterParams } from '@app/common/models/router-params';
 import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { MessageDialogService } from "ui";
+import { EventAggregator } from "aurelia-event-aggregator";
+import { formValidationRenderer } from "@app/validation/support";
+import { ValidationController, ValidationRules } from 'aurelia-validation';
+import { WorkOrderItem } from "@app/instock/models/work";
 
 @customElement('edit-area-items')
 export class EditItems {
@@ -32,7 +36,7 @@ export class EditItems {
   worksSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.workInfoService.listWorkInfoesByCargo(this.editWorkOrder.workOrder.businessId, this.routerParams.type)
+        this.workInfoService.listWorkInfoesByCargo(this.editWorArea.businessId, this.routerParams.type)
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -42,15 +46,39 @@ export class EditItems {
 
   constructor(@inject private contractService: ContractService,
               @inject private workInfoService: WorkInfoService,
-              @inject private editWorkOrder: EditWorkOrder,
+              @inject private editWorArea: EditWorArea,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderItemService: WorkOrderItemService,
-              @inject private messageDialogService: MessageDialogService) {
+              @inject private messageDialogService: MessageDialogService,
+              @inject private eventAggregator: EventAggregator,
+              @newInstance() private validationController: ValidationController) {
+    this.validationController.addRenderer(formValidationRenderer);
 
   }
 
-  add() {
-    this.dataSource.add({});
+  bind() {
+    //this.newWorkArea.onItemAdd(this);
+    this.dataSource = this.editWorArea.getNewDataSourceByUid(this.parentUid);
+    this.eventAggregator.publish("item:bind", this);
+  }
+
+  unbind() {
+    //this.newWorkArea.onItemRemove(this);
+    this.eventAggregator.publish("item:unbind", this);
+    //  this.resBind.dispose();
+  }
+
+  async add() {
+    let len = this.dataSource.data().length;
+    for (let i = 0; i < len; i++) {
+      this.validationController.addObject(this.dataSource.data()[i], workOrderItemRules);
+    }
+
+    let { valid } = await this.validationController.validate();
+    if (!valid) {
+      await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" });
+    }
+    if (valid) this.dataSource.add({});
   }
 
   async remove(e) {
@@ -74,7 +102,35 @@ export class EditItems {
 
 
   parentUidChanged() {
-    this.dataSource = this.editWorkOrder.getNewDataSourceByUid(this.parentUid);
+    this.dataSource = this.editWorArea.getNewDataSourceByUid(this.parentUid);
+  }
+
+  async verify() {
+
+    let len = this.dataSource.data().length;
+    for (let i = 0; i < len; i++) {
+      this.validationController.addObject(this.dataSource.data()[i], workOrderItemRules);
+    }
+
+    let { valid } = await this.validationController.validate();
+    return valid;
+  }
+
+  async aa() {
+    await this.verify();
   }
 
 }
+
+const workOrderItemRules = ValidationRules
+// .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workName)
+// .displayName("作业内容")
+// .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workNumber)
+  .displayName("作业数量")
+  .required().withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => x <= 1000000000000000 && x >= 0)
+  .withMessage(`\${$displayName} 为无效值`)
+
+  .rules;

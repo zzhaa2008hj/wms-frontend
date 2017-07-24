@@ -1,12 +1,11 @@
 <template>
-    <require from="./items"></require>
+    <require from="./edit-items"></require>
     <ak-grid k-data-source.bind="datasource"
-             k-pageable.bind="true"
              k-editable="inline"
              k-on-detail-init.delegate="detailInit($event.detail)"
              k-widget.two-way="grid">
 
-        <button click.trigger="add()" if.bind="instockCargoId">新增作业区域</button>
+        <button click.trigger="add()" if.bind="businessId">新增作业区域</button>
 
         <ak-col k-title="库区名称">
             <ak-template>
@@ -65,9 +64,8 @@
                 <button class="btn btn-small" click.delegate="remove($this)">删除</button>
             </ak-template>
         </ak-col>
-        <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
         <ak-template for="detailTemplate">
-            <area-items parent-uid.bind="$this.uid"></area-items>
+            <edit-area-items parent-uid.bind="$this.uid" area-id.bind="$this.id"></edit-area-items>
         </ak-template>
     </ak-grid>
 </template>
