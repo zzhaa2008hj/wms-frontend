@@ -76,7 +76,7 @@ export class NewOrder {
     this.outstockOrderItems = [] as OrderItem[];
     this.vehicles.data([]);
     this.orderItems.data([]);
-    this.outstockCargoItems.data([]);    
+    this.outstockCargoItems.data([]);
 
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     if (dataItem.id) {
@@ -88,6 +88,7 @@ export class NewOrder {
   }
 
   setOrderInfo(dataItem: CargoInfo) {
+    console.log(dataItem)
     this.order.agentId = dataItem.agentId;
     this.order.agentName = dataItem.agentName;
     this.order.customerId = dataItem.customerId;
@@ -97,10 +98,18 @@ export class NewOrder {
     this.order.cargoInfoId = dataItem.id;
     this.order.id = null;
     this.order.lastBatch = 0;
+    this.order.paymentUnit = dataItem.customerName;
   }
 
   async getBaseCargoItems() {
     this.baseCargoItems = await this.orderService.listBaseCargoItems(this.order.cargoInfoId);
+    //可出库数量和件数
+    let canDeliveries = await this.orderService.getValidOutstockNum(this.order.cargoInfoId);
+    this.baseCargoItems.forEach(bci => {
+      let canDelivery = canDeliveries.find(cd => cd.cargoItemId == bci.id);
+      bci.canQuantity = canDelivery.quantity;
+      bci.canNumber = canDelivery.number;
+    });
     this.outstockCargoItems.data(this.baseCargoItems);
   }
 
@@ -153,7 +162,12 @@ export class NewOrder {
       this.order.numberSum = numberSum;
       Object.assign(this.order, { outstockOrderItems: orderItems });
     }
-
+    if (this.order.outstockOrderItems.length == 0) {
+      return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库货物信息", icon: 'error' });
+    }
+    if (this.order.outstockVehicles.length == 0) {
+      return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库车辆信息", icon: 'error' });
+    }
     this.disabled = true;
     try {
       await this.orderService.saveOrder(this.order);
@@ -178,6 +192,10 @@ const validationRules = ValidationRules
 
   .ensure((order: Order) => order.batchNumber)
   .required().withMessage(`请选择批次`)
+
+  .ensure((order: Order) => order.paymentUnit)
+  .displayName('付款单位')
+  .required().withMessage(`\${$displayName} 不能为空`)
 
   .ensure((order: Order) => order.contactNumber)
   .displayName('联系电话')

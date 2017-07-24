@@ -69,10 +69,14 @@ export class EditOrder {
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.order = await this.orderService.getOrderById(params.id);
-    if(this.order.outstockOrderItems) {
+    let canDeliveries = await this.orderService.getValidOutstockNum(this.order.cargoInfoId);
+    if (this.order.outstockOrderItems) {
       this.outstockOrderItems = this.order.outstockOrderItems;
       this.outstockOrderItems.forEach(ooi => {
         ooi.unitStr = this.units.find(r => r.dictDataCode == ooi.unit).dictDataName;
+        let canDelivery = canDeliveries.find(cd => cd.cargoItemId == ooi.cargoItemId);
+        ooi.canQuantity = canDelivery.quantity + ooi.orderQuantity;
+        ooi.canNumber = canDelivery.number + ooi.orderNumber;
       });
       this.orderItems.read();
     }
@@ -80,6 +84,10 @@ export class EditOrder {
   }
 
   async editOrder() {
+    this.validationController.addObject(this.order, validationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     let vehicles = [];
     Object.assign(vehicles, this.vehicles.data());
     let orderItems = [];
@@ -98,11 +106,12 @@ export class EditOrder {
       this.order.numberSum = numberSum;
       Object.assign(this.order, { outstockOrderItems: orderItems });
     }
-
-    this.validationController.addObject(this.order, validationRules);
-    let { valid } = await this.validationController.validate();
-    if (!valid) return;
-
+    if (this.order.outstockOrderItems.length == 0) {
+      return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库货物信息", icon: 'error' });
+    }
+    if (this.order.outstockVehicles.length == 0) {
+      return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库车辆信息", icon: 'error' });
+    }
     this.disabled = true;
     try {
       await this.orderService.updateOrder(this.order);
@@ -123,6 +132,10 @@ export class EditOrder {
 const validationRules = ValidationRules
   .ensure((order: Order) => order.contactPerson)
   .displayName('联系人')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((order: Order) => order.paymentUnit)
+  .displayName('付款单位')
   .required().withMessage(`\${$displayName} 不能为空`)
 
   .ensure((order: Order) => order.takeDeliveryNum)
