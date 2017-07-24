@@ -184,12 +184,19 @@ export class OrderList {
     try {
       await this.orderService.createOutstockOrder(id);
       let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库单" });
-      if (!skipConformed) return;
+      if (!skipConformed) {
+        this.dataSource.read();
+        return;
+      }
       // 跳转 到出库单页面
-      this.appRouter.navigateToRoute('outstock-orderItem');
+      this.goStockOut();
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
+  }
+
+  goStockOut() {
+    this.appRouter.navigateToRoute('outstock-orderItem');
   }
 
   /**

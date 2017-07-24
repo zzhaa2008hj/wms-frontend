@@ -16,6 +16,7 @@ export interface Order {
   quantitySum: number;
   numberSum: number;
   unit: string;
+  unitStr: string;
   lastStage: number;
   stage: number;
   auditorId: string;
@@ -74,6 +75,10 @@ export interface OrderItem {
 
   // 下标
   index: number;
+
+  //可出库数量和件数
+  canQuantity: number;
+  canNumber: number;
 }
 
 export interface Vehicle {
@@ -91,7 +96,3 @@ export interface Vehicle {
   orgId: string;
 }
 
-export interface OutstockOrderVo {
-  outstockOrder: Order;
-  outstockOrderItems: OrderItem[];
-}

@@ -34,6 +34,12 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="form-label">付款单位*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="order.paymentUnit & validate" disabled.bind="disabled">
+          </div>
+        </div> <div class="form-group">
           <label class="form-label">联系人*</label>
           <span class="help"></span>
           <div class="controls">
@@ -60,6 +66,8 @@
               <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
               <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
               <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+              <ak-col k-field="canQuantity" k-title="可出库数量"></ak-col>
+              <ak-col k-field="canNumber" k-title="可出库件数"></ak-col>
               <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
               <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
               <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
