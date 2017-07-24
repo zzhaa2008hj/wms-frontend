@@ -55,7 +55,10 @@ export class CargoFlow {
             keywords: this.searchName
           }).map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
-            res.instockLastStageName = this.instockStages.find(r => r.stage == res.lastStage).title;
+            let lastStage = this.instockStages.find(r => r.stage == res.lastStage);
+            if (lastStage) {
+              res.instockLastStageName = lastStage.title;
+            }
             if (res.unit) {
               res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
             }
@@ -68,7 +71,10 @@ export class CargoFlow {
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
           .map(res => {
             res.instockStageName = this.instockStages.find(r => r.stage == res.stage).title;
-            res.instockLastStageName = this.instockStages.find(r => r.stage == res.lastStage).title;
+            let lastStage = this.instockStages.find(r => r.stage == res.lastStage);
+            if (lastStage) {
+              res.instockLastStageName = lastStage.title;
+            }
             if (res.unit) {
               res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
             }

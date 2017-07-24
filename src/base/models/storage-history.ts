@@ -24,4 +24,6 @@ export interface StorageHistory {
     remark: string;
 
     orgId: string;
+
+    unitName: string;
 }
