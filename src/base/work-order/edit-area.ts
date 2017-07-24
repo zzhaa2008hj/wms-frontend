@@ -7,17 +7,25 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { WorkOrderArea } from "@app/instock/models/work";
 import { NewWorkItem } from "./items";
+import { EditItems } from "./edit-items";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
-import { NewWorkOrder } from "./new";
+import { NewWorkOrder } from  "./new";
 import { MessageDialogService } from "ui";
+import { EditWorkOrder } from "./edit";
+import { WorkAreaService } from "@app/base/services/work";
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { formValidationRenderer } from "@app/validation/support";
 
-@customElement('work-area')
-export class NewWorArea {
+@customElement('work-area-edit')
+export class EditWorArea {
 
   @bindable
   @observable
-  instockCargoId: string;
+  workOrderId: string;
+
+  @bindable
+  @observable
+  businessId: string;
 
   newWorkItem: NewWorkItem;
 
@@ -25,14 +33,14 @@ export class NewWorArea {
 
   itemsDataSources = new Map<string, kendo.data.DataSource>();
 
-  items = new Set<NewWorkItem>();
+  items = new Set<EditItems>();
 
   resBinds = new Set<Subscription>();
 
   warehouseSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.warehouseService.getWarehouses(this.instockCargoId, this.routerParams.type)
+        this.warehouseService.getWarehouses(this.businessId, this.routerParams.type)
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -67,69 +75,141 @@ export class NewWorArea {
               @newInstance() private validationAreaController: ValidationController,
               @inject private eventAggregator: EventAggregator,
               @inject private newWorkOrder: NewWorkOrder,
-              @inject private messageDialogService: MessageDialogService) {
+              @inject private messageDialogService: MessageDialogService,
+              @inject private editWorkOrder: EditWorkOrder,
+              @inject private workAreaService: WorkAreaService,
+              @inject private workOrderItemService: WorkOrderItemService) {
     this.datasource = new kendo.data.DataSource({
-        transport: {
-          read: (options) => {
-            options.success([]);
-          },
-          update: (options) => {
-            options.success();
-          }
-          ,
-          destroy: (options) => {
-            options.success();
-          }
-          ,
-          create: async options => {
-            options.success();
-          }
+      transport: {
+        read: options => {
+          this.workAreaService.getByWorkOrderId(this.workOrderId)
+            .then(options.success)
+            .catch(err => options.error("", "", err));
         },
-        batch: true,
-        pageSize: 8,
-        schema: {
-          model: {
-            fields: {
-              workItemId: {
-                editable: false, nullable: true
-              },
-              workId: {
-                type: 'string',
-                validation: { required: true }
-              },
-              quantity: {
-                type: 'number',
-                validation: { min: 0, max: 1000000000000000 }
-              },
-              number: {
-                type: 'number',
-                validation: { min: 0, max: 1000000000000000 }
-              },
-              containerType: {
-                type: 'string'
-              },
-              containerNumber: {
-                type: 'string'
-              },
-              sign: {
-                type: 'string'
-              },
-              customerId: {
-                type: 'string',
-                validation: { required: true }
-              },
-              remark: {
-                type: 'string',
-                validation: { required: true }
-              }
+        update: (options) => {
+          options.success();
+        }
+        ,
+        destroy: (options) => {
+          options.success();
+        }
+        ,
+        create: async options => {
+          options.success();
+        }
+      },
+      schema: {
+        model: {
+          fields: {
+            workItemId: {
+              editable: false, nullable: true
+            },
+            workId: {
+              type: 'string',
+              validation: { required: true }
+            },
+            quantity: {
+              type: 'number',
+              validation: { min: 0, max: 1000000000000000 }
+            },
+            number: {
+              type: 'number',
+              validation: { min: 0, max: 1000000000000000 }
+            },
+            containerType: {
+              type: 'string'
+            },
+            containerNumber: {
+              type: 'string'
+            },
+            sign: {
+              type: 'string'
+            },
+            customerId: {
+              type: 'string',
+              validation: { required: true }
+            },
+            remark: {
+              type: 'string',
+              validation: { required: true }
             }
           }
         }
       }
-    );
+    });
+
+
+    this.datasource.bind("change", (e) => {
+      for (let i = 0; i < e.items.length; i++) {
+        let itemDatasource = new kendo.data.DataSource({
+          transport: {
+            read: options => {
+              console.log('workOrderItemService', this.workOrderItemService.getWorkOrderItems(e.items[i].id))
+              this.workOrderItemService.getWorkOrderItems(e.items[i].id)
+                .then(options.success)
+                .catch(err => options.error("", "", err));
+            }
+          },
+          schema: {
+            model: {
+              fields: {
+                workName: { editable: false },
+                workNumber: {
+                  editable: false,
+                  notify: true,
+                  type: 'number',
+                  validation: { required: true, min: 0, max: 1000000000000000 },
+                  title: '作业数量'
+                },
+                customerName: { editable: false },
+                remark: { editable: false },
+              }
+            }
+          }
+        });
+
+        this.itemsDataSources.set(e.items[i].uid, itemDatasource);
+      }
+
+      if (e.action == "remove") {
+        console.log("1111");
+        this.datasource.remove(e.items);
+        this.itemsDataSources.delete(e.items.uid);
+      }
+
+      if (e.action == "add") {
+        let itemDataSource = new kendo.data.DataSource({
+          schema: {
+            model: {
+              fields: {
+                workName: { editable: false },
+                workNumber: {
+                  editable: false,
+                  notify: true,
+                  type: 'number',
+                  validation: { required: true, min: 0, max: 1000000000000000 },
+                  title: '作业数量'
+                },
+                customerName: { editable: false },
+                remark: { editable: false },
+              }
+            }
+          }
+        });
+
+        this.itemsDataSources.set(e.items.uid, itemDataSource);
+
+      }
+
+      console.log('datasource type', this.datasource.data(), e.items, e.action);
+
+    });
+
     this.validationAreaController.addRenderer(formValidationRenderer);
 
-    this.newWorkOrder.getAreaDatasource(this.datasource);
+    this.editWorkOrder.getAreaDatasource(this.datasource);
+
+    this.editWorkOrder.getItemsDataSources(this.itemsDataSources);
 
   }
 
@@ -141,7 +221,7 @@ export class NewWorArea {
   async add() {
     let resVerify = await Promise.all([...this.items].map(item => item.verify())).then(arr => arr.every(e => e));
     if (!resVerify) {
-      await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" });
+      await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" })
       return;
     }
     let res = this.datasource.add({});
@@ -195,11 +275,11 @@ export class NewWorArea {
     return valid && res;
   }
 
-  onItemAdd(item: NewWorkItem) {
+  onItemAdd(item: EditItems) {
     this.items.add(item);
   }
 
-  onItemRemove(item: NewWorkItem) {
+  onItemRemove(item: EditItems) {
     this.items.delete(item);
   }
 
@@ -216,6 +296,10 @@ export class NewWorArea {
 
   unbind() {
     [...this.resBinds].forEach(e => e.dispose());
+  }
+
+  workOrderIdChanged() {
+    alert(this.workOrderId);
   }
 
 }
@@ -236,4 +320,4 @@ const workOrderAreaRules = ValidationRules
   .required().withMessage(`\${$displayName}不能为空`)
   .satisfies(x => x <= 1000000000000000 && x >= 0)
   .withMessage(`\${$displayName} 为无效值`)
-  .rules;
+  .rules;  

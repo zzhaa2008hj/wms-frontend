@@ -7,7 +7,8 @@ import { RouterParams } from '@app/common/models/router-params';
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { WorkOrderItem } from "@app/instock/models/work";
 import { formValidationRenderer } from "@app/validation/support";
-import { EventAggregator, Subscription } from "aurelia-event-aggregator";
+import { EventAggregator } from "aurelia-event-aggregator";
+import { MessageDialogService } from "ui";
 
 @customElement('area-items')
 export class NewWorkItem {
@@ -49,31 +50,35 @@ export class NewWorkItem {
               @inject private newWorkArea: NewWorArea,
               @inject('routerParams') private routerParams: RouterParams,
               @newInstance() private validationController: ValidationController,
-              @inject private eventAggregator: EventAggregator) {
-              this.validationController.addRenderer(formValidationRenderer);  
-              console.log('this',this);
+              @inject private eventAggregator: EventAggregator,
+              @inject private messageDialogService: MessageDialogService) {
+    this.validationController.addRenderer(formValidationRenderer);
 
   }
-   bind(){
-     //this.newWorkArea.onItemAdd(this);
-     this.dataSource = this.newWorkArea.getNewDataSourceByUid(this.parentUid);
-     this.eventAggregator.publish("item:bind", this);
-   }
 
-   unbind(){
-     //this.newWorkArea.onItemRemove(this);
-     this.eventAggregator.publish("item:unbind", this);
+  bind() {
+    //this.newWorkArea.onItemAdd(this);
+    this.dataSource = this.newWorkArea.getNewDataSourceByUid(this.parentUid);
+    this.eventAggregator.publish("item:bind", this);
+  }
+
+  unbind() {
+    //this.newWorkArea.onItemRemove(this);
+    this.eventAggregator.publish("item:unbind", this);
     //  this.resBind.dispose();
-   }
+  }
 
   async add() {
     let len = this.dataSource.data().length;
     for (let i = 0; i < len; i++) {
-        this.validationController.addObject(this.dataSource.data()[i], workOrderItemRules);
+      this.validationController.addObject(this.dataSource.data()[i], workOrderItemRules);
     }
 
     let { valid } = await this.validationController.validate();
-    if(valid) this.dataSource.add({});
+    if (!valid) {
+      await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" });
+    }
+    if (valid) this.dataSource.add({});
   }
 
   remove(e) {
@@ -85,16 +90,16 @@ export class NewWorkItem {
   // }
 
   parentUidChanged() {
-    console.log("this.parentUid"+this.parentUid);
+    console.log("this.parentUid" + this.parentUid);
     this.dataSource = this.newWorkArea.getNewDataSourceByUid(this.parentUid);
   }
 
-  
-  async verify(){
-     
+
+  async verify() {
+
     let len = this.dataSource.data().length;
     for (let i = 0; i < len; i++) {
-        this.validationController.addObject(this.dataSource.data()[i], workOrderItemRules);
+      this.validationController.addObject(this.dataSource.data()[i], workOrderItemRules);
     }
 
     let { valid } = await this.validationController.validate();
@@ -102,20 +107,20 @@ export class NewWorkItem {
     return valid;
   }
 
-  aa(){
-    alert("aa");
+  async aa() {
+    await this.verify();
   }
 }
 
 const workOrderItemRules = ValidationRules
-  // .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workName)
-  // .displayName("作业内容")
-  // .required().withMessage(`\${$displayName}不能为空`)
+// .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workName)
+// .displayName("作业内容")
+// .required().withMessage(`\${$displayName}不能为空`)
 
   .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workNumber)
   .displayName("作业数量")
   .required().withMessage(`\${$displayName}不能为空`)
-  .satisfies(x =>  x <= 1000000000000000 && x >= 0)
+  .satisfies(x => x <= 1000000000000000 && x >= 0)
   .withMessage(`\${$displayName} 为无效值`)
 
   .rules;
