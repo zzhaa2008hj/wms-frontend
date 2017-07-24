@@ -9,7 +9,7 @@
             <span class="help"></span>
             <div class="controls">
               <input type="text" class="form-control"
-                     value.bind="orderVo.outstockOrder.outstockOrderNumber" readonly>
+                     value.bind="order.outstockOrderNumber" readonly>
             </div>
           </div>
           <div class="col-md-3">
@@ -18,7 +18,7 @@
               <span class="help"></span>
               <div class="controls">
                 <input type="text" class="form-control"
-                       value.bind="orderVo.outstockOrder.agentName" readonly>
+                       value.bind="order.agentName" readonly>
               </div>
             </div>
           </div>
@@ -28,7 +28,7 @@
               <span class="help"></span>
               <div class="controls">
                 <input type="text" class="form-control"
-                       value.bind="orderVo.outstockOrder.batchNumber" readonly>
+                       value.bind="order.batchNumber" readonly>
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@
               <span class="help"></span>
               <div class="controls">
                 <input type="text" class="form-control"
-                       value.bind="orderVo.outstockOrder.quantitySum" readonly>
+                       value.bind="order.quantitySum" readonly>
               </div>
             </div>
           </div>
@@ -48,7 +48,7 @@
               <span class="help"></span>
               <div class="controls">
                 <input type="text" class="form-control"
-                       value.bind="orderVo.outstockOrder.numberSum" readonly>
+                       value.bind="order.numberSum" readonly>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@
               <span class="help"></span>
               <div class="controls">
                 <input type="text" class="form-control"
-                       value.bind="orderVo.outstockOrder.unit" readonly>
+                       value.bind="order.unitStr" readonly>
               </div>
             </div>
           </div>
@@ -68,7 +68,7 @@
               <span class="help"></span>
               <div class="controls">
                                 <textarea type="text" class="form-control"
-                                          value.bind="orderVo.outstockOrder.remark" readonly>
+                                          value.bind="order.remark" readonly>
                                 </textarea>
               </div>
             </div>
@@ -84,9 +84,9 @@
                 <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
                 <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
                 <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
-                <ak-col k-field="orderQuantity" k-title="数量"></ak-col>
-                <ak-col k-field="orderNumber" k-title="件数"></ak-col>
-                <ak-col k-field="unit" k-title="单位"></ak-col>
+                <ak-col k-field="outstockQuantity" k-title="数量"></ak-col>
+                <ak-col k-field="outstockNumber" k-title="件数"></ak-col>
+                <ak-col k-field="unitStr" k-title="单位"></ak-col>
                 <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
               </ak-grid>
             </div>

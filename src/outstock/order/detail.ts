@@ -27,6 +27,10 @@ export class Detail {
 
   async activate(params) {
     this.order = await this.orderService.getOrderById(params.id);
+    if (this.order.stage > 7) {
+      //已生成出库单后,显示出库信息
+      this.order = await  this.orderService.getOrderByIdAndType(params.id, 1);
+    }
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.order.cargoInfoId);
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");

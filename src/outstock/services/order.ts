@@ -37,6 +37,11 @@ export class OrderService {
     return this.http.post(`/outstock/order`, order).then(handleResult);
   }
 
+  async getOrderByIdAndType(id: string, type: number): Promise<Order> {
+    let res = await this.http.createRequest(`/outstock/order/${id}`).withParams({ type }).asGet().send();
+    return res.content;
+  }
+
   async getOrderById(id: string): Promise<Order> {
     let res = await this.http.get(`/outstock/order/${id}`);
     return res.content;

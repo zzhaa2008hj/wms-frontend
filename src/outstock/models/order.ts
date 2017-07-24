@@ -16,6 +16,7 @@ export interface Order {
   quantitySum: number;
   numberSum: number;
   unit: string;
+  unitStr: string;
   lastStage: number;
   stage: number;
   auditorId: string;
@@ -93,7 +94,3 @@ export interface Vehicle {
   orgId: string;
 }
 
-export interface OutstockOrderVo {
-  outstockOrder: Order;
-  outstockOrderItems: OrderItem[];
-}
