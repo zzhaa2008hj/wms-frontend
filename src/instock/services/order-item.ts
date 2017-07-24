@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { dateConverter, Query, handleResult, RestClient } from "@app/utils";
-import { InstockHeapInfo, OrderItem } from "@app/instock/models/order-item";
+import { InstockHeapInfo, OrderItem, TallyItem } from '@app/instock/models/order-item';
 
 /**
  * 查询条件
@@ -25,6 +25,10 @@ export class OrderItemService {
     return this.http.post(`/instock/instockOrderItem`, ids).then(handleResult);
   }
 
+  async getOrderItem(id: string): Promise<OrderItem> {
+    let res = await this.http.get(`/instock/instockOrderItem/${id}`);
+    return res.content;
+  }
 }
 
 @autoinject()
@@ -46,7 +50,7 @@ export class TallyItemService {
   constructor(private http: RestClient) {
   }
 
-  listOrderItems(instockOrderItemId: string): Promise<any> {
+  listTallyItems(instockOrderItemId: string): Promise<Array<TallyItem>> {
     return this.http.get(`instock/instockTallyItem/list/${instockOrderItemId}`)
       .then(res => res.content.map(dateConverter("instockDate")));
   }

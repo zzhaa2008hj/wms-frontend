@@ -1,0 +1,89 @@
+<template>
+  <div class="row">
+    <div class="col-md-11"></div>
+    <div class="input-group col-md-1">
+      <button class="btn btn-small btn-primary" click.delegate="print()">打印</button>
+    </div>
+  </div>
+  <div class="grid simple">
+    <div class="grid-body">
+      <div class="page-title text-center">
+        <h3>${organization.name}</h3>
+      </div>
+      <div class="page-title text-center">
+        <h4><b>${orderItem.cargoName}入库理货报告</b></h4>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group col-md-offset-2 col-md-4">
+          <label class="form-label">代理商名称：</label>
+          <label class="form-label">${orderItem.agentName}</label>
+        </div>
+        <div class="form-group col-md-offset-2 col-md-4">
+          <label class="form-label">客户名称：</label>
+          <label class="form-label">${orderItem.customerName}</label>
+        </div>
+        <div class="form-group col-md-offset-2 col-md-4">
+          <label class="form-label">货名：</label>
+          <label class="form-label">${orderItem.cargoName}</label>
+        </div>
+        <div class="form-group col-md-offset-2 col-md-4">
+          <label class="form-label">批次号：</label>
+          <label class="form-label">${orderItem.batchNumber}</label>
+        </div>
+        <div class="col-md-10 col-md-offset-1">
+          <table border="1" style="width:100%;">
+            <thead>
+              <tr>
+                <td align="center">序号</td>
+                <td align="center">入库时间</td>
+                <td align="center">品牌</td>
+                <td align="center">理货件数</td>
+                <td align="center">理货重量</td>
+                <td align="center">散/破包</td>
+              </tr>
+            </thead>
+            <tbody>
+              <template repeat.for="info of tallyItems">
+                <tr>
+                  <td align="center">
+                    ${info.index}
+                  </td>
+                  <td align="center">
+                    ${info.instockDate}
+                  </td>
+                  <td align="center">
+                    ${info.cargoSubCategoryName}
+                  </td>
+                  <td align="center">
+                    ${info.tallyNumber}
+                  </td>
+                  <td align="center">
+                    ${info.tallyQuantity}
+                  </td>
+                  <td align="center">
+                    ${info.remark}
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group col-md-10 col-md-offset-2">
+          <label class="form-label">说明：</label>
+          <label class="form-label">理货报告仅作为仓库收到存货人上述货物证明，不作仓单使用，不作货权证明</label>
+        </div>
+        <div class="form-group col-md-offset-2 col-md-4">
+          <label class="form-label">理货人：</label>
+          <label class="form-label">${orderItem.createAccount}</label>
+        </div>
+        <div class="form-group col-md-offset-2 col-md-4">
+          <label class="form-label">仓库盖章：</label>
+        </div>
+        <div class="form-group col-md-offset-8 col-md-4">
+          <label class="form-label">制单日期：</label>
+          <label class="form-label">${orderItem.createTimeStr}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

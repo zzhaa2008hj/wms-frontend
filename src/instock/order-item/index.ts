@@ -14,7 +14,8 @@ export class OrderItemRouter {
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.map([
-      { route: "", name: "list", moduleId: "./list" }
+      { route: "", name: "list", moduleId: "./list" },
+      { route: "/:id/detail", name: "detail", moduleId: "./detail", title: "详情" }
     ]);
     this.router = router;
   }
