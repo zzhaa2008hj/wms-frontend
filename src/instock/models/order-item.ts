@@ -1,40 +1,59 @@
 export interface OrderItem {
   id: string;
 
-  instockOrderId: string ;
+  instockOrderId: string;
 
-  cargoItemId: string ;
+  cargoItemId: string;
 
-  agentId: string ;
+  agentId: string;
 
-  agentName: string ;
+  agentName: string;
 
-  customerId: string ;
+  customerId: string;
 
-  customerName: string ;
+  customerName: string;
 
-  batchNumber: string ;
+  batchNumber: string;
 
-  cargoName: string ;
+  cargoName: string;
 
-  cargoCategoryId: string ;
+  cargoCategoryId: string;
 
-  cargoCategoryName: string ;
+  cargoCategoryName: string;
 
-  cargoSubCategoryName: string ;
+  cargoSubCategoryName: string;
 
-  cargoType: number ;
+  cargoType: number;
 
-  instockQuantity: number ;
+  instockQuantity: number;
 
-  instockNumber: number ;
+  instockNumber: number;
 
-  unit: string ;
+  unit: string;
 
-  remark: string ;
+  remark: string;
 
-  orgId: string ;
+  orgId: string;
+
+  createTime: Date;
+  createTimeStr: string;
+
+  createAccount: string;
 }
+
+export interface TallyItem {
+  id: string;
+  instockOrderItemId: string;
+  instockDate: string;
+  cargoCategoryName: string;
+  cargoSubCategoryName: string;
+  tallyQuantity:  number;
+  tallyNumber: number;
+  unit: string;
+  remark: string;
+  index: number;
+}
+
 export interface InstockHeapInfo {
   instockDate: Date;
 

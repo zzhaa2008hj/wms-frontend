@@ -17,7 +17,6 @@ export class NewCargoItem {
   unitDatasource = [] as DictionaryData[];
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
-  cargoCategoryDataSource: CargoCategory[];
   cargoCategory = {} as CargoCategory;
 
   cargoRateDataSource: kendo.data.DataSource;
@@ -80,8 +79,6 @@ export class NewCargoItem {
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     //免堆期的默认值
     this.cargoItem.freeDays = 0;
-    //货物种类
-    this.cargoCategoryDataSource = await this.cargoInfoService.getCargoCategories();
     //该合同下所有货物的费率
     this.contractCargoRates = await this.cargoInfoService.getContractCargoRates(contractId, warehouseType);
     //该合同下所有货物的阶梯费率
@@ -155,7 +152,7 @@ export class NewCargoItem {
 
   async selectCargoCategory() {
     let result = await this.dialogService
-      .open({ viewModel: CargoCategoryTree, model: this.cargoCategoryDataSource, lock: true })
+      .open({ viewModel: CargoCategoryTree, model: this.cargoItem.cargoCategoryId, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     if (!this.cargoItem.cargoCategoryId || this.cargoItem.cargoCategoryId != result.output.id) {
