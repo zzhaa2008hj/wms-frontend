@@ -88,7 +88,6 @@ export class NewOrder {
   }
 
   setOrderInfo(dataItem: CargoInfo) {
-    console.log(dataItem)
     this.order.agentId = dataItem.agentId;
     this.order.agentName = dataItem.agentName;
     this.order.customerId = dataItem.customerId;
