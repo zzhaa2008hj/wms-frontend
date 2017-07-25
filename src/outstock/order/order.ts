@@ -33,6 +33,12 @@ export class OrderWork {
     this.cargoItems.map(res => {
       res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
       res.index = index++;
+      if (!res.outstockNumber) {
+        res.outstockNumber = 0;
+      }
+      if (!res.outstockQuantity) {
+        res.outstockQuantity = 0;
+      }
       return res;
     });
     if (this.outstockOrder.stage == 11) {
