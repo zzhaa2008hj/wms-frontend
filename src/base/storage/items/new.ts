@@ -1,34 +1,29 @@
 import { DialogService } from "ui";
 import { Router } from "aurelia-router";
 import { inject, newInstance } from "aurelia-dependency-injection";
-import { StorageItemHistory } from "@app/base/models/storage-item";
+import { StorageItemHistory } from "@app/base/models/storage";
 import { StorageService } from "@app/base/services/storage";
-import { WarehouseService } from "@app/base/services/warehouse";
-import { Warehouse } from "@app/base/models/warehouse";
 import { ValidationController , ValidationRules } from "aurelia-validation";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { formValidationRenderer } from "@app/validation/support";
+import { WarehouseTree } from "@app/base/storage/items/warehouse-tree";
 /**
  * Created by shun on 2017/6/29.
  */
 export class NewStorageItem {
   disabled: boolean = false;
   storageItem = {} as StorageItemHistory;
-  keywords: string;
-  warehouses: Warehouse[] = [];
-  warehouse: any;
   storageInfoId: string;
   // 1：正常业务流程；2：库存调整；3：溢短抹平
   types = [{id: 2, name: '库存调整'}, {id: 3, name: '溢短抹平'}];
   businessTypes = [{id: 1, name: '入库业务'}, {id: 2, name: '出库业务'}, {id: 3, name: '货权转移'}, 
-                    {id: 4, name: '货位转移'}, {id: 5, name: '货物质押'}, {id: 6, name: '合同'}, {id: 7, name: '零星作业'}];
+                    {id: 4, name: '货位转移'}, {id: 7, name: '零星作业'}];
 
   units: DictionaryData[] = [];
-
+  title: string;
   constructor(@inject private router: Router,
               @inject private storageService: StorageService,
-              @inject private warehouseService: WarehouseService,
               @inject private dialogService: DialogService,
               @newInstance() private validationController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService) {
@@ -39,16 +34,14 @@ export class NewStorageItem {
     this.validationController.addObject(this.storageItem, validationRules);
     // 库存表ID
     this.storageInfoId = params.id;
-    // 仓库
-    this.warehouses = await this.warehouseService.listWarehouse();
     // 单位
     this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
+
+    let info = await this.storageService.getStorageInfoById(this.storageInfoId);
+    this.title = info.customerName;
   }
 
   async save() {
-    this.storageItem.warehouseId = this.warehouse.value();
-    this.storageItem.warehouseName = this.warehouse.text();
-
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     this.disabled = true;
@@ -66,6 +59,13 @@ export class NewStorageItem {
     this.router.navigateToRoute("list");
   }
 
+  async selected() {
+    let result = await this.dialogService.open({ viewModel: WarehouseTree, model: {}, lock: true }).whenClosed();
+    if (result.wasCancelled) return;
+    this.storageItem.warehouseId = result.output.id;
+    this.storageItem.warehouseName = result.output.name;
+  }
+
 }
 
 const validationRules = ValidationRules
@@ -75,7 +75,7 @@ const validationRules = ValidationRules
    .ensure((item: StorageItemHistory)  => item.businessType)
   .displayName('业务类型')
   .required().withMessage(`\${$displayName} 不能为空`)
- .ensure((item: StorageItemHistory)  => item.warehouseId)
+ .ensure((item: StorageItemHistory)  => item.warehouseName)
   .displayName('库区')
   .required().withMessage(`\${$displayName} 不能为空`)
  .ensure((item: StorageItemHistory)  => item.unit)

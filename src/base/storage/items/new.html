@@ -1,6 +1,6 @@
 <template>
     <div class="grid simple">
-         <div class="grid-title no-border">新增</h4></div>
+         <div class="grid-title no-border"><h4>${title}--新增</h4></div>
     <div class="grid-body no-border">
             <form submit.delegate="save()">
             <div class="form-group">
@@ -34,16 +34,12 @@
             <div class="form-group">
                 <label class="form-label">库区名称*</label>
                 <span class="help"></span>
-                <div class="controls">
-                    <ak-drop-down-list 
-                        k-enabled.two-way="!disabled"
-                        k-option-label="请选择"
-                        k-data-text-field="name" 
-                        k-data-value-field="id"
-                        k-widget.two-way="warehouse"
-                        k-data-source.bind="warehouses">
-                    </ak-drop-down-list>
-                </div>
+                <div class="input-group" style="width: 200px">
+                    <input type="text" class="form-control" value.bind="storageItem.warehouseName & validate" readonly>
+                    <div class="input-group-btn">
+                      <a class="btn" click.delegate="selected()">选择</a>
+                    </div>
+                  </div>
             </div>
             <div class="form-group">
                 <label class="form-label">集装箱号</label>
@@ -86,13 +82,6 @@
                 <div class="controls">
                     <input type="text" class="form-control" disabled.bind="disabled" ak-datetimepicker="k-value.two-way : storageItem.instockDate; k-format.bind:'yyyy-MM-dd HH:mm:ss'" 
                     required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">坐标</label>
-                <span class="help"></span>
-                <div class="controls">
-                    <input type="text" class="form-control" disabled.bind="disabled" value.bind="storageItem.position & validate">
                 </div>
             </div>
             <div class="form-actions">

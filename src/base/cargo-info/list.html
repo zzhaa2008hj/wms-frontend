@@ -1,14 +1,20 @@
 <template>
   <div class="row">
-    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增入库指令</a></div>
+    <div class="col-md-1"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增入库指令</a></div>
     <!--<input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockBeginDate" type="text" class="form-control">
         <input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockendDate" type="text" class="form-control">-->
-    <div class="input-group">
-      <input class="form-control" type="text" value.bind="cargoInfoCriteria.searchName" placeholder="输入批次号、代理商或客户名称">
+    <div class="col-md-1">
+        <button class="btn btn-small btn-primary" click.delegate="createOutstockInventory()">生成出库清单</button>
+    </div>
+    <div class="col-md-4 col-md-offset-6">
+      <div class="input-group">
+        <input class="form-control" type="text" value.bind="cargoInfoCriteria.searchName" placeholder="输入批次号、代理商或客户名称">
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
+    </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable"
+  k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
     <ak-col k-title="批次号" k-width.bind="120">
       <ak-template>
         <a route-href="route: details; params.bind: { id: id }">${batchNumber}</a>        

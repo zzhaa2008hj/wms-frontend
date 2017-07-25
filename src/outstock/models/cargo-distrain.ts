@@ -1,4 +1,4 @@
-import { StorageInfo } from "@app/base/models/storage-info";
+import { StorageInfo } from "@app/base/models/storage";
 import { CargoItem } from "@app/base/models/cargo-info";
 /**
  * 费收扣量
