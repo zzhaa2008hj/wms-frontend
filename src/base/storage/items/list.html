@@ -1,6 +1,6 @@
 <template>
     <div class="page-title">
-        <h3>入库单明细</h3>
+        <h3>${title}的库存明细</h3>
     </div>
     <div class="row">
         <div class="col-md-1">
@@ -10,9 +10,13 @@
         </div>
         <div class="col-md-offset-8 col-md-3">
             <div class="input-group">
-                <input class="form-control" type="text" value.bind="keywords" placeholder="请输入客户名称/代理名称/批次号">
+                <input type="text" class="form-control" value.bind="selectedWarehouseName" readonly placeholder="库区选择">
+                <div class="input-group-btn">
+                    <a class="btn" click.delegate="selected()">选择</a>
+                </div>
                 <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
             </div>
+                
         </div>
     </div>
     <ak-grid k-data-source.bind="dataSource"
@@ -22,6 +26,8 @@
              k-filterable.bind="true"
              k-column-menu.bind="true"
              k-pageable.bind="pageable">
+        <ak-col k-field="storageInfo.customerName" k-title="客户名称"></ak-col>
+        <ak-col k-field="storageInfo.agentName" k-title="代理商名称"></ak-col>
         <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
         <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
         <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
