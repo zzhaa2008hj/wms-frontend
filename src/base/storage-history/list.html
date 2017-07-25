@@ -40,8 +40,7 @@
       </div>
     </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-filterable.bind="true"
-    k-column-menu.bind="true" k-pageable.bind="pageable">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
     <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
     <ak-col k-field="typeName" k-title="类型"></ak-col>
     <ak-col k-field="businessName" k-title="业务名称"></ak-col>
@@ -53,8 +52,7 @@
     <ak-col k-field="quantity" k-title="数量"></ak-col>
     <ak-col k-field="number" k-title="件数"></ak-col>
     <ak-col k-field="unitName" k-title="单位"></ak-col>
-    <ak-col k-field="date" k-title="日期" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <ak-col k-field="date" k-title="日期" k-width.bind="150" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
     <ak-col k-field="warehouseName" k-title="库区"></ak-col>
-
   </ak-grid>
 </template>
