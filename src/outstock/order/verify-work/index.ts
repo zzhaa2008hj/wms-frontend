@@ -1,7 +1,7 @@
 import { Router, RouterConfiguration } from "aurelia-router";
 import { autoinject, Container } from "aurelia-dependency-injection";
-import {Order} from "@app/outstock/models/order";
-import { OrderService} from "@app/outstock/services/order";
+import { Order } from "@app/outstock/models/order";
+import { OrderService } from "@app/outstock/services/order";
 @autoinject
 export class VerifyFlow {
   router: Router;
@@ -14,8 +14,7 @@ export class VerifyFlow {
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.map([
-      { route: '', name: 'list', moduleId: './list' },
-      { route: '/:id/view', name: 'view', moduleId: './view', title: '详情' }
+      { route: '', name: 'list', moduleId: './list' }
     ]);
     this.router = router;
   }

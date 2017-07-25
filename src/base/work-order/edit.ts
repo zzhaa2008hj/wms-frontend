@@ -150,7 +150,7 @@ export class EditWorkOrder {
       this.cargoItemsSource = new kendo.data.DataSource({
         transport: {
           read: options => {
-            this.orderItemService.getItemsByOrderId(this.order.id)
+            this.orderItemService.getItemsByOrderIdAndType(this.order.id, 0)
               .then(options.success)
               .catch(err => options.error("", "", err));
           }
