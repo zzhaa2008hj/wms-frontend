@@ -21,6 +21,8 @@ export interface CargoDistrain {
     orgId: string;
 
     remark: string;
+
+    unitName: string;
 }
 
 export interface CargoDistrainVo extends CargoDistrain {

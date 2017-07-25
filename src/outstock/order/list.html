@@ -36,6 +36,7 @@
     <ak-col k-field="outstockDate" k-title="提货日期" k-format="{0:yyyy-MM-dd}" k-width.bind="100"></ak-col>
     <ak-col k-field="numberSum" k-title="合计件数" k-width.bind="80"></ak-col>
     <ak-col k-field="quantitySum" k-title="合计重量" k-width.bind="80"></ak-col>
+    <ak-col k-field="outstockLastStageName" k-title="上阶段" k-width.bind="180"></ak-col>
     <ak-col k-field="outstockStageName" k-title="当前阶段" k-width.bind="180"></ak-col>
     <ak-col k-field="contactPerson" k-title="提货人" k-width.bind="120"></ak-col>
     <ak-col k-field="contactNumber" k-title="联系号码" k-width.bind="120"></ak-col>
@@ -61,6 +62,7 @@
         <button class="btn btn-small btn-primary" if.bind="stage == 8"  click.delegate="goStockOut()">查看出库单</button>
         <button class="btn btn-small btn-primary" if.bind="stage == 16" click.delegate="businessConfirm(id)">商务确认</button>
         <button class="btn btn-small btn-primary" if.bind="stage == 17" click.delegate="createOutstockInventory(batchNumber)">生成出库清单</button>
+        <button class="btn btn-small" if.bind="stage >= 3 && stage < 18" click.delegate="rollBack($this)">撤回</button>
       </ak-template>
     </ak-col>
   </ak-grid>

@@ -9,10 +9,12 @@ import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
 import { AppRouter } from "aurelia-router";
-import { VerifyRecordCriteria } from '@app/common/services/verify-record';
+import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
 import { ConstantValues } from "@app/common/models/constant-values";
+import { VerifyRecord } from '@app/common/models/verify-record';
+import { NewVerifyRecord } from '@app/common/verify-records/new';
 
 @autoinject
 export class OrderList {
@@ -33,7 +35,8 @@ export class OrderList {
               private dialogService: DialogService,
               private customhouseService: CustomhouseClearanceService,
               private appRouter: AppRouter,
-              private outstockInventoryService: OutstockInventoryService) {
+              private outstockInventoryService: OutstockInventoryService,
+              private verifyRecordService: VerifyRecordService) {
 
   }
 
@@ -45,6 +48,10 @@ export class OrderList {
             res.clearanceStatus = true;
           }
           res.outstockStageName = this.outstockStages.find(r => r.stage == res.stage).title;
+          let lastStage = this.outstockStages.find(r => r.stage == res.lastStage);
+          if (lastStage) {
+            res.outstockLastStageName = lastStage.title;
+          }
           return res;
         }),
       pageSize: 10
@@ -262,5 +269,32 @@ export class OrderList {
   async uploadInfo(id) {
     await this.orderService.updateStage(id, 9);
     this.dataSource.read();
+  }
+  /**
+   * 撤回
+   */
+  async rollBack(item) {
+    let verifyRecord: VerifyRecord = {} as VerifyRecord;
+    verifyRecord.businessId = item.id;
+    verifyRecord.businessName = item.outstockOrderNumber;
+    verifyRecord.businessType = 2;
+    verifyRecord.stageBeforeVerify = item.stage;
+    verifyRecord.batchNumber = item.batchNumber;
+    let result = await this.dialogService
+      .open({ viewModel: NewVerifyRecord, model: verifyRecord, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let res = result.output;
+    try {
+      let conformed = await this.messageDialogService.confirm({ title: "撤回成功", message: "确认提交撤回的审批请求？" });
+      if (!conformed) {
+        return;
+      }
+      await this.verifyRecordService.addVerifyRecord(res);
+      await this.messageDialogService.alert({ title: "撤回成功", message: "撤回成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "撤回失败", message: err.message, icon: "error" });
+    }
   }
 }

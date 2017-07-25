@@ -42,6 +42,8 @@ export interface Order {
 
   createTime: Date;
   createTimeStr: string;
+
+  outstockLastStageName: string;
 }
 
 export interface OrderItem {

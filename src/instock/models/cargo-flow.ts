@@ -32,6 +32,9 @@ export interface CargoFlow {
 
   //入库货物信息
   cargoItems: InstockCargoItem[];
+  // 上一阶段
+  lastStage: number;
+  instockLastStageName: string;
 }
 export interface InstockCargoItem {
   //唯一性标识
