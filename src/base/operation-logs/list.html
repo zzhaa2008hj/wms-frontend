@@ -1,16 +1,19 @@
 <template>
-    <div class="page-title">
-        <h3>系统操作日志</h3>
+  <div class="page-title">
+    <h3>系统操作日志</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-9"></div>
+    <div class="col-md-3">
+      <div class="input-group"><input class="form-control" type="text" value.bind="realName" placeholder="请输入操作人名称">
+        <div class="input-group-addon" click.delegate="search()"><em class="fa fa-search"></em></div>
+      </div>
     </div>
-    <div class="row">
-        <div class="input-group"><input class="form-control" type="text" value.bind="realName" placeholder="请输入操作人名称">
-            <div class="input-group-addon" click.delegate="search()"><em class="fa fa-search"></em></div>
-        </div>
-    </div>
-    <ak-grid k-data-source.bind="dataSource" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
-        <ak-col k-field="loginName" k-title="账号" k-width.bind="200"></ak-col>
-        <ak-col k-field="realName" k-title="操作人" k-width.bind="200"></ak-col>
-        <ak-col k-field="operationContent" k-title="操作内容"></ak-col>
-        <ak-col k-field="operationTime" k-title="操作时间" k-width.bind="200" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
-    </ak-grid>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="loginName" k-title="账号" k-width.bind="200"></ak-col>
+    <ak-col k-field="realName" k-title="操作人" k-width.bind="200"></ak-col>
+    <ak-col k-field="operationContent" k-title="操作内容"></ak-col>
+    <ak-col k-field="operationTime" k-title="操作时间" k-width.bind="200" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+  </ak-grid>
 </template>
