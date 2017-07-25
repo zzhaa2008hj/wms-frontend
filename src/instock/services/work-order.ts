@@ -98,6 +98,15 @@ export class WorkOrderItemService {
       return details;
     });
   }
+
+  getOutstockWorkDetails(outstockOrderId: string): Promise<WorkOrderDetail[]>{
+    return this.http.get(`/base/warehouseWorkOrderItem/${outstockOrderId}/outstockDetail`)
+    .then(res => {
+      let details = res.content;
+      details.map(details => fixDate(details,"workDate"))
+      return details;
+    });
+  }
 }
 
 @autoinject
