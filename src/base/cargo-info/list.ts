@@ -4,6 +4,8 @@ import { DataSourceFactory } from "@app/utils";
 import { CargoInfoService, CargoInfoCriteria } from "@app/base/services/cargo-info";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { OutstockInventoryService } from "@app/outstock/services/inventory";
+import { AppRouter } from "aurelia-router";
 
 @autoinject
 export class CargoInfoList {
@@ -16,11 +18,14 @@ export class CargoInfoList {
     buttonCount: 10
   };
   warehouseTypes = [] as DictionaryData[];
+  batchNumber: string;
 
   constructor(private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
-              private dataSourceFactory: DataSourceFactory) {
+              private dataSourceFactory: DataSourceFactory,
+              private appRouter: AppRouter,
+              private outstockInventoryService: OutstockInventoryService) {
 
   }
 
@@ -53,5 +58,35 @@ export class CargoInfoList {
 
   select() {
     this.dataSource.read();
+  }
+  /**
+   * 单选数据
+   */
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    let dataItem = grid.dataItem(selectedRow);
+    this.batchNumber = dataItem.batchNumber;
+  }
+  /**
+   * 生成出库清单
+   */
+  async createOutstockInventory() {
+    if (!this.batchNumber) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
+      return;
+    }
+    try {
+      await this.outstockInventoryService.createOutstockInventory(this.batchNumber);
+      let res = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库清单" });
+      if (!res) {
+        this.dataSource.read();
+        return;
+      }
+      // 跳转 到出库清单页面
+      this.appRouter.navigateToRoute('outstock-inventory');
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
   }
 }

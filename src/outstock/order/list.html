@@ -68,8 +68,7 @@
         <button class="btn btn-small btn-primary" if.bind="stage == 7" click.delegate="createOutstockOrder(id)">生成出库单</button>
         <button class="btn btn-small btn-primary" if.bind="stage == 8" click.delegate="goStockOut()">查看出库单</button>
         <button class="btn btn-small btn-primary" if.bind="stage == 16" click.delegate="businessConfirm(id)">商务确认</button>
-        <button class="btn btn-small btn-primary" if.bind="stage == 17" click.delegate="createOutstockInventory(batchNumber)">生成出库清单</button>
-        <button class="btn btn-small" if.bind="stage >= 3 && stage < 18" click.delegate="rollBack($this)">撤回</button>
+        <button class="btn btn-small" if.bind="stage >= 3 && stage < 8" click.delegate="rollBack($this)">撤回</button>
       </ak-template>
     </ak-col>
   </ak-grid>

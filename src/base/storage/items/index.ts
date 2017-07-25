@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
-import {StorageInfo} from "@app/base/models/storage-info";
+import {StorageInfo} from "@app/base/models/storage";
 import { inject, Container } from "aurelia-dependency-injection";
 
 export class StorageItems {
