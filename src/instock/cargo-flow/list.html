@@ -40,6 +40,12 @@
         <label if.bind="lastBatch == 0">否</label>
       </ak-template>
     </ak-col>
+    <ak-col k-title="备注" k-width.bind="160">
+      <ak-template>
+        <label if.bind="remark.length >= 9" title="${remark}">${remark.substring(0,9)}...</label>
+        <label if.bind="remark.length < 9">${remark}</label>
+      </ak-template>
+    </ak-col>
     <ak-col k-title="操作" k-width.bind="500">
       <ak-template>
         <a class="btn btn-sm btn-small btn-primary" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }">修改</a>

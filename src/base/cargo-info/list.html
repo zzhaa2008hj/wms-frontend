@@ -34,7 +34,12 @@
     <ak-col k-field="instockQuantity == null? 0:instockQuantity" k-title="入库重量" k-width.bind="80"></ak-col>
     <ak-col k-field="outstockNumber == null? 0:outstockNumber" k-title="出库件数" k-width.bind="80"></ak-col>
     <ak-col k-field="outstockQuantity == null? 0:outstockQuantity" k-title="出库重量" k-width.bind="80"></ak-col>
-    <ak-col k-field="remark" k-title="备注" k-width.bind="150"></ak-col>
+    <ak-col k-title="备注" k-width.bind="160">
+      <ak-template>
+        <label if.bind="remark.length >= 9" title="${remark}">${remark.substring(0,9)}...</label>
+        <label if.bind="remark.length < 9">${remark}</label>
+      </ak-template>
+    </ak-col>
     <ak-col k-title="操作" k-width.bind="300">
       <ak-template>
         <a class="btn btn-small" if.bind="cargoFlowSize == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
