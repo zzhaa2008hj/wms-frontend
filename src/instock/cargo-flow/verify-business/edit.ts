@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DialogService} from "ui";
-import { AppRouter } from "aurelia-router";
+import { Router } from "aurelia-router";
 
 
 export class VerifyBusinessEdit {
@@ -28,7 +28,7 @@ export class VerifyBusinessEdit {
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private vehicleService: InstockVehicleService,
               @inject private dialogService: DialogService,
-              @inject private appRouter: AppRouter,
+              @inject private router: Router,
               @inject('cargoFlowId') private cargoFlowId: CargoFlow) {
   }
 
@@ -91,7 +91,7 @@ export class VerifyBusinessEdit {
     try {
       await this.cargoFlowService.audit(this.cargoFlow.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审核成功！" });
-      this.appRouter.navigateBack();
+      this.router.navigateToRoute('list');
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
       this.disabled = false;

@@ -13,7 +13,7 @@ import { VerifyCustomhouseDialogEdit } from "@app/instock/cargo-flow/verify-cust
 import { inject } from 'aurelia-framework';
 import { RouterParams } from '@app/common/models/router-params';
 import { InstockOrderService } from "@app/instock/services/instock-order";
-import { AppRouter } from "aurelia-router";
+import { Router } from "aurelia-router";
 import { OrderItemService } from "@app/instock/services/order-item";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
@@ -39,7 +39,7 @@ export class CargoFlow {
               @inject private customhouseService: CustomhouseClearanceService,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private instockOrderService: InstockOrderService,
-              @inject private appRouter: AppRouter,
+              @inject private router: Router,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private orderItemService: OrderItemService) {
 
@@ -186,7 +186,7 @@ export class CargoFlow {
       await this.messageDialogService.alert({ title: "提示", message: "生成成功！" });
       // this.dataSource.read();
       // 跳转 到入库单页面
-      this.appRouter.navigateToRoute('instockOrder');
+      this.router.navigateToRoute('instockOrder');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }

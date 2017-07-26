@@ -7,7 +7,7 @@ import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
 import * as moment from 'moment';
 import { DialogService} from "ui";
-import { AppRouter } from "aurelia-router";
+import { Router } from "aurelia-router";
 
 export class VerifyBusinessDialogEdit {
   disabled: boolean = false;
@@ -23,7 +23,7 @@ export class VerifyBusinessDialogEdit {
               @inject private cargoInfoService: CargoInfoService,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private dialogService: DialogService,
-              @inject private appRouter: AppRouter,
+              @inject private router: Router,
               @inject('outstockOrderId') private outstockOrder: Order) {
   }
 
@@ -54,7 +54,7 @@ export class VerifyBusinessDialogEdit {
     try {
       await this.orderService.auditBusiness(this.order.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审核成功！" });
-      this.appRouter.navigateBack();
+      this.router.navigateToRoute('list');
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
       this.disabled = false;
