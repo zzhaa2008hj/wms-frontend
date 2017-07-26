@@ -81,6 +81,11 @@ export class OrderList {
     this.dataSource.read();
   }
 
+  reset() {
+    this.orderCriteria = {} as OrderCriteria;
+    this.dataSource.read();
+  }
+
   startChange() {
     let startDate = this.startDatePicker.value();
     let endDate = this.endDatePicker.value();
