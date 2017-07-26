@@ -39,7 +39,7 @@ export class VerifyWarehouse {
     this.workStatistics.businessId = this.cargoFlow.id;
   }
 
-  async  check(params) {
+  async check(params) {
     if (params == 1) {
       await this.workStatisticsService.saveStatistics(this.workStatistics);
     }

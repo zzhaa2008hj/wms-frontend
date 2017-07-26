@@ -91,7 +91,7 @@ export class VerifyBusinessEdit {
     try {
       await this.cargoFlowService.audit(this.cargoFlow.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审核成功！" });
-      this.appRouter.navigateToRoute('cargoFlow');
+      this.appRouter.navigateBack();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
       this.disabled = false;

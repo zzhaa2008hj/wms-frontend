@@ -55,7 +55,7 @@ export class VerifyBusinessDialogEdit {
     try {
       await this.orderService.approve(this.order.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审批成功！" });
-      this.appRouter.navigateToRoute('outstockOrder');
+      this.appRouter.navigateBack();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
       this.disabled = false;
@@ -63,7 +63,8 @@ export class VerifyBusinessDialogEdit {
   }
 
   async showRate(outstockItemId) {
-    let result = await this.dialogService.open({ viewModel: ViewRate, model: {id: outstockItemId}, lock: true }).whenClosed();
+    let result = await this.dialogService
+      .open({ viewModel: ViewRate, model: {id: outstockItemId}, lock: true }).whenClosed();
     if (result.wasCancelled) return;
   }
 

@@ -54,7 +54,7 @@ export class VerifyBusinessDialogEdit {
     try {
       await this.orderService.auditBusiness(this.order.id, verifyStatus);
       await this.dialogService.alert({ title: "提示", message: "审核成功！" });
-      this.appRouter.navigateToRoute('outstockOrder');
+      this.appRouter.navigateBack();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
       this.disabled = false;
