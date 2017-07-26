@@ -1,13 +1,16 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { MessageDialogService } from "ui";
+import { MessageDialogService, DialogService } from 'ui';
 import { RateService } from "@app/base/services/rate";
 import { DataSourceFactory } from "@app/utils";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
+import { CargoCategoryTree } from '@app/base/rate/cargo-category-tree';
+import { Rate } from '@app/base/models/rate';
 @autoinject
-export class Rate {
+export class List {
   searchName: string;
+  rate = {} as Rate;
 
   pageable = {
     refresh: true,
@@ -18,12 +21,16 @@ export class Rate {
   warehouseCategory = [] as DictionaryData[];
   unit = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
+  customerCategories = ConstantValues.CustomerCategory;
+  chargeCategories = ConstantValues.ChargeCategory;
+  chargeTypes = ConstantValues.ChargeType;
 
   private dataSource: kendo.data.DataSource;
 
   constructor(private rateService: RateService,
               private dataSourceFactory: DataSourceFactory,
               private dictionaryDataService: DictionaryDataService,
+              private dialogService: DialogService,
               private messageDialogService: MessageDialogService) {  
     
   }
@@ -34,7 +41,7 @@ export class Rate {
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");       
 
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.rateService.queryRates({ name: this.searchName }).map(res => {
+      query: () => this.rateService.queryRates(this.rate).map(res => {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
@@ -55,6 +62,16 @@ export class Rate {
       }),
       pageSize: 10
     });   
+  }
+
+  async selectCargoCategory() {
+    let result = await this.dialogService
+      .open({ viewModel: CargoCategoryTree, model: this.rate.cargoCategoryId, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let cargoCategory = result.output;
+    this.rate.cargoCategoryName = cargoCategory.categoryName;
+    this.rate.cargoCategoryId = cargoCategory.id;
   }
 
   select() {
