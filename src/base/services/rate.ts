@@ -9,8 +9,8 @@ export class RateService {
   constructor(private http: RestClient) {
   }
 
-  queryRates(param?: { name: string }): Query<Rate> {
-    return this.http.query(`/base/rate/page`, param);
+  queryRates(params?): Query<Rate> {
+    return this.http.query(`/base/rate/page`, params);
   }
 
   saveRate(rate: Rate): Promise<void> {
