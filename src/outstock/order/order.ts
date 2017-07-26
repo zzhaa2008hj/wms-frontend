@@ -24,7 +24,6 @@ export class OrderWork {
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.outstockOrder = await this.outstockOrderService.viewWorkOrder(params.id);
-    this.outstockOrder.outstockDateStr = moment().format();
     this.outstockOrder.outstockDateStr = moment(this.outstockOrder.outstockDate).format("YYYY-MM-DD");
     this.outstockOrder.createTimeStr = moment(this.outstockOrder.createTime).format("YYYY-MM-DD HH:mm:ss");
     this.organization = await this.organizationService.getOrganization(this.outstockOrder.orgId);
