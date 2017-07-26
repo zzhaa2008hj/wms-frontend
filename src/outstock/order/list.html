@@ -1,30 +1,23 @@
 <template>
-  <div class="row">
+  <require from="aurelia-kendoui-bridge/datepicker/datepicker"></require>
+  <div class="row m-b-5">
     <div class="col-md-2">
       <a class="btn btn-sm btn-small btn-success" route-href="route: new">新增出库指令</a>
     </div>
     <div class="col-md-10">
-      <div class="col-md-4">
-        <div class="input-group">
-          <input class="form-control" type="text" value.bind="cargoInfoCriteria.searchName" placeholder="输入批次号、代理商或客户名称">
-        </div>
+      <div class="input-group left">
+        <input type="text" style="width: 220px;" value.bind="cargoInfoCriteria.searchName" placeholder="输入批次号、代理商或客户名称">
       </div>
-      <div class="col-md-3">
-        <div class="input-group">
-          <input class="form-control" type="text" ak-datepicker="k-value.two-way : orderCriteria.beginDate; k-widget.two-way: startDatePicker"
-            k-on-change.delegate="startChange()" placeholder="请输入开始时间">
-        </div>
+      <div class="input-group left m-l-15">
+        <input class="form-control" ak-datepicker="k-value.two-way: orderCriteria.beginDate; k-widget.two-way: startDatePicker"
+          k-on-change.delegate="startChange()" placeholder="请输入开始时间">
       </div>
-      <div class="col-md-3">
-        <div class="input-group">
-          <input class="form-control" type="text" ak-datepicker="k-value.two-way : orderCriteria.endDate; k-widget.two-way: endDatePicker"
-            k-on-change.delegate="endChange()" placeholder="请输入结束时间">
-        </div>
+      <div class="input-group left m-l-15">
+        <input class="form-control" ak-datepicker="k-value.two-way: orderCriteria.endDate; k-widget.two-way: endDatePicker" k-on-change.delegate="endChange()"
+          placeholder="请输入结束时间" />
       </div>
-      <div class="col-md-1">
-        <div class="input-group">
-          <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-        </div>
+      <div class="input-group left m-l-5">
+        <div class="input-group-addon search" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></div>
       </div>
     </div>
   </div>

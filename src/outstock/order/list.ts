@@ -17,7 +17,7 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 
 @autoinject
 export class OrderList {
-  orderCriteria: OrderCriteria;
+  orderCriteria: OrderCriteria = {};
   startDatePicker: any;
   endDatePicker: any;
   dataSource: kendo.data.DataSource;

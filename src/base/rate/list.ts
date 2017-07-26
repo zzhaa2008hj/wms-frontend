@@ -7,6 +7,7 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
 import { CargoCategoryTree } from '@app/base/rate/cargo-category-tree';
 import { Rate } from '@app/base/models/rate';
+
 @autoinject
 export class List {
   searchName: string;
@@ -75,6 +76,11 @@ export class List {
   }
 
   select() {
+    this.dataSource.read();
+  }
+
+  reset() {
+    this.rate = {} as Rate;
     this.dataSource.read();
   }
 
