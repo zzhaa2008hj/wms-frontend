@@ -8,7 +8,7 @@ import { VerifyCustomhouseDialogNew } from "@app/outstock/order/verify-customhou
 import { CustomhouseClearanceVo } from "@app/base/models/customhouse";
 import { CustomhouseClearanceService } from "@app/base/services/customhouse";
 import { VerifyCustomhouseDialogEdit } from "@app/outstock/order/verify-customhouse/edit";
-import { AppRouter } from "aurelia-router";
+import { Router } from "aurelia-router";
 import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { ConstantValues } from "@app/common/models/constant-values";
@@ -33,7 +33,7 @@ export class OrderList {
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
               private customhouseService: CustomhouseClearanceService,
-              private appRouter: AppRouter,
+              private router: Router,
               private verifyRecordService: VerifyRecordService) {
 
   }
@@ -197,7 +197,7 @@ export class OrderList {
   }
 
   goStockOut() {
-    this.appRouter.navigateToRoute('outstock-orderItem');
+    this.router.navigateToRoute('outstock-orderItem');
   }
 
   /**
