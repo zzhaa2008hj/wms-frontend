@@ -26,6 +26,10 @@ export class WorkStatisticsService {
     return this.http.get(`/base/warehouseWorkOrderStatistics/get/${flowId}`).then(res => res.content);
   }
 
+  getOutstockStatistics(outstockOrderId: string): Promise<WorkStatistics>{
+    return this.http.get(`/base/warehouseWorkOrderStatistics/outstockStatistics/${outstockOrderId}`).then(res => res.content);
+  }
+
   saveStatistics(workStatistics: WorkStatistics): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrderStatistics/statistics`, workStatistics).then(handleResult);
   }

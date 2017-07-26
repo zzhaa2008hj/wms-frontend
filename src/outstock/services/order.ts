@@ -125,6 +125,11 @@ export class OrderItemService {
     let res = await this.http.get(`/outstock/order/${orderId}/item`);
     return res.content;
   }
+
+  async getItemsByOrderIdAndType(orderId: string, type?: number): Promise<CargoItem[]> {
+    let res = await this.http.get(`/outstock/order/${orderId}/items?type=${type}`);
+    return res.content;
+  }
 }
 
 @autoinject
