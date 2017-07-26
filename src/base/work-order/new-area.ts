@@ -19,6 +19,10 @@ export class NewWorArea {
   @observable
   instockCargoId: string;
 
+  @bindable
+  @observable
+  disabled: boolean;
+
   newWorkItem: NewWorkItem;
 
   datasource: kendo.data.DataSource;

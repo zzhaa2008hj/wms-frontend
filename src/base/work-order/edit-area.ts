@@ -9,7 +9,7 @@ import { WorkOrderArea } from "@app/instock/models/work";
 import { NewWorkItem } from "./items";
 import { EditItems } from "./edit-items";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
-import { NewWorkOrder } from  "./new";
+import { NewWorkOrder } from "./new";
 import { MessageDialogService } from "ui";
 import { EditWorkOrder } from "./edit";
 import { WorkAreaService } from "@app/base/services/work";
@@ -26,6 +26,10 @@ export class EditWorArea {
   @bindable
   @observable
   businessId: string;
+
+  @bindable
+  @observable
+  disabled: boolean;
 
   newWorkItem: NewWorkItem;
 
@@ -144,7 +148,6 @@ export class EditWorArea {
         let itemDatasource = new kendo.data.DataSource({
           transport: {
             read: options => {
-              console.log('workOrderItemService', this.workOrderItemService.getWorkOrderItems(e.items[i].id))
               this.workOrderItemService.getWorkOrderItems(e.items[i].id)
                 .then(options.success)
                 .catch(err => options.error("", "", err));
@@ -221,7 +224,7 @@ export class EditWorArea {
   async add() {
     let resVerify = await Promise.all([...this.items].map(item => item.verify())).then(arr => arr.every(e => e));
     if (!resVerify) {
-      await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" })
+      await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" });
       return;
     }
     let res = this.datasource.add({});
