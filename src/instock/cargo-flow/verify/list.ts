@@ -15,7 +15,7 @@ export class VerifyWarehouse {
   workStatistics = {} as WorkStatistics;
 
   status: any[] = ConstantValues.WorkInfoCategory;
-    units = [] as DictionaryData[];
+  units = [] as DictionaryData[];
 
   constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private workStatisticsService: WorkStatisticsService,
@@ -31,10 +31,10 @@ export class VerifyWarehouse {
       transport: {
         read: options => {
           this.workOrderItemService.getWorkDetails(this.cargoFlow.id)
-            .then(res =>{
-              res.map(e =>{
-                if(e.unit){
-                  e.unit = this.units.find(r =>r.dictDataCode == e.unit).dictDataName;
+            .then(res => {
+              res.map(e => {
+                if (e.unit) {
+                  e.unit = this.units.find(r => r.dictDataCode == e.unit).dictDataName;
                 }
               });
               options.success(res);
