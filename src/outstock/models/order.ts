@@ -12,6 +12,7 @@ export interface Order {
   contactPerson: string;
   contactNumber: string;
   status: number;
+  statusStr: string;
   paymentUnit: string;
   quantitySum: number;
   numberSum: number;
