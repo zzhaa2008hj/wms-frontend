@@ -126,7 +126,6 @@ export class EditWorkOrder {
               @inject private router: Router,
               @newInstance() private validationController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService,
-              @inject private workAreaService: WorkAreaService,
               @inject private orderItemService: OrderItemService,
               @inject private orderService: OrderService,
               @inject private cargoRateService: CargoRateService) {
