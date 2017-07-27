@@ -3,6 +3,8 @@ export class WorkStatistics {
 
   workOrderCategory: number;
 
+  workOrderCategoryStr: string;
+
   businessId: string;
 
   batchNumber: string;
