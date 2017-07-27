@@ -111,6 +111,11 @@ export class OrderService {
     let res = await this.http.get(`/outstock/order/quantity/${cargoInfoId}`);
     return res.content;
   }
+
+  async getItemsAndWorkOrders(orderId: string): Promise<Order> {
+    let res = await this.http.get(`/outstock/order/${orderId}/work-order`);
+    return res.content;
+  }
 }
 
 @autoinject

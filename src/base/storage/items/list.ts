@@ -28,19 +28,17 @@ export class StorageItemList {
   async activate() {
     let units = await this.dictionaryDataService.getDictionaryDatas('unit');
     this.storageInfoId = this.storageInfo.id;
-    let info = await this.storageService.getStorageInfoById(this.storageInfoId);
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.storageService.queryStorageItemPage(this.storageInfo.id, this.selectedWarehouse).map(res => {
         let dict = units.find(r => r.dictDataCode == res.unit);
         if (dict) {
           res.unitName = dict.dictDataName;
         }
-        res.storageInfo = info;
+        this.title = res.customerName + '--' + res.cargoName;
         return res;
       }),
       pageSize: 10
     });
-    this.title = info.customerName;
   }
 
   select() {
