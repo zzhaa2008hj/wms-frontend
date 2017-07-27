@@ -17,7 +17,7 @@
         </ak-col>
         <ak-col k-field="workNumber" k-title="作业数量">
             <ak-template>
-                <input type="number" value.bind="workNumber & validate" blur.trigger="aa()" disabled.bind="disabled">
+                <input type="number" value.bind="workNumber & toInt & validate" blur.trigger="aa()" disabled.bind="disabled">
             </ak-template>
         </ak-col>
         <ak-col k-title="作业单位">

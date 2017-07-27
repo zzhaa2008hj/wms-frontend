@@ -7,6 +7,7 @@ import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from '@app/common/models/constant-values';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import * as moment from 'moment';
 
 @autoinject
 export class ViewWorkStatistics {
@@ -35,7 +36,7 @@ export class ViewWorkStatistics {
     }
     /*通过统计表的业务主键查询 流水信息*/
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.workStatistics.businessId);
-
+    this.cargoFlow.instockDateStr = moment(this.cargoFlow.instockDate).format("YYYY-MM-DD");
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: options => {
