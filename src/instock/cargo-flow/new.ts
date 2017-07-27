@@ -13,6 +13,7 @@ import { CodeService } from '@app/common/services/code';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { observable } from 'aurelia-framework';
+import { vehicleValidationRules } from "@app/outstock/models/order";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -156,9 +157,14 @@ export class NewCargoFlow {
     Object.assign(vehicles, this.dataSourceVehicle.data());
     let cargoItems = [];
     Object.assign(cargoItems, this.dataSourceCargoItem.data());
-    if (vehicles || cargoItems) {
-      let orderQuantity = 0;
-      let orderNumber = 0;
+    let orderQuantity = 0;
+    let orderNumber = 0;
+    if (vehicles) {
+      for (let v of vehicles) {
+        this.validationController.addObject(v, vehicleValidationRules);
+        let { valid } = await this.validationController.validate();
+        if (!valid) return;
+      }
       cargoItems.forEach(ci => {
         orderQuantity += ci.orderQuantity;
         orderNumber += ci.orderNumber;
@@ -170,10 +176,13 @@ export class NewCargoFlow {
         });
         Object.assign(ci, { vehicles: vs });
       });
+    }
+    if (cargoItems) {
       this.cargoFlow.orderQuantity = orderQuantity;
       this.cargoFlow.orderNumber = orderNumber;
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
+
 
     this.validationController.addObject(this.cargoFlow, validationRules);
     let { valid } = await this.validationController.validate();
@@ -204,7 +213,7 @@ const validationRules = ValidationRules
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
   .displayName('联系电话')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => /^[1][358][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
+  .satisfies(x => /^[1][34578][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
 
   .ensure((cargoFlow: CargoFlow) => cargoFlow.remark)
   .displayName('备注')

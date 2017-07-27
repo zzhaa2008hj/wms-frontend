@@ -44,7 +44,7 @@
     </ak-col>
     <ak-col k-title="操作" k-width.bind="500">
       <ak-template>
-        <a class="btn btn-small" if.bind="stage == 0 || stage == 2" route-href="route: edit; params.bind: { id: id }">修改</a>
+        <a class="btn btn-small"  route-href="route: edit; params.bind: { id: id }">修改</a>
         <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
         <button class="btn btn-small btn-primary" if.bind="stage == 8" click.delegate="uploadInfo(id)">上传提货信息</button>
         <a class="btn btn-danger btn-small" click.delegate="delete(id)" if.bind="stage == 2 || stage == 0">删除</a>

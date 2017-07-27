@@ -73,8 +73,16 @@
                 <input type="text" style="border: none;background-color:transparent;" value.bind="unitStr" readonly/>
               </ak-template>
             </ak-col>
-            <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-            <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+            <ak-col  k-title="指令数量">
+              <ak-template>
+                <input type="number"  value.bind="orderQuantity & toInt" />
+              </ak-template>
+            </ak-col>
+            <ak-col  k-title="指令件数">
+              <ak-template>
+                <input type="number"  value.bind="orderNumber & toInt" />
+              </ak-template>
+            </ak-col>
             <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
             <ak-col k-field="remark" k-title="备注"></ak-col>
             <ak-col k-title="操作">
@@ -94,10 +102,26 @@
               <input style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
             </ak-template>
           </ak-col>
-          <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
-          <ak-col k-field="driverName" k-title="司机名称"></ak-col>
-          <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
-          <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
+          <ak-col k-title="车牌号">
+            <ak-template>
+              <input type="text"  value.bind="plateNumber  & validate" />
+            </ak-template>
+          </ak-col>
+          <ak-col  k-title="司机名称">
+            <ak-template>
+              <input type="text"  value.bind="driverName  & validate" />
+            </ak-template>
+          </ak-col>
+          <ak-col  k-title="身份证号">
+            <ak-template>
+              <input type="text"  value.bind="driverIdentityNumber  & validate" />
+            </ak-template>
+          </ak-col>
+          <ak-col  k-title="电话">
+            <ak-template>
+              <input type="text"  value.bind="phoneNumber  & validate" />
+            </ak-template>
+          </ak-col>
           <ak-col k-field="remark" k-title="备注"></ak-col>
           <ak-col k-title="操作">
             <ak-template>

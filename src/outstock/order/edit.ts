@@ -1,14 +1,15 @@
 import { Router } from "aurelia-router";
 import { autoinject, Container } from 'aurelia-dependency-injection';
-import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { OrderService } from "@app/outstock/services/order";
 import { MessageDialogService } from "ui";
 import { observable } from 'aurelia-framework';
-import { Order, OrderItem } from "@app/outstock/models/order";
+import { Order, OrderItem, orderValidationRules, vehicleValidationRules } from "@app/outstock/models/order";
 import { CargoInfo } from "@app/base/models/cargo-info";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
+import { copy } from "@app/utils";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -23,23 +24,8 @@ export class EditOrder {
   baseCargoInfo: Array<CargoInfo>;
   selectedCargoInfo: any;
 
-  orderItems = new kendo.data.DataSource({
-    transport: {
-      read: (options) => {
-        options.success(this.outstockOrderItems);
-      }
-    },
-    schema: {
-      model: {
-        fields: {
-          cargoName: { editable: false, nullable: true },
-          cargoCategoryName: { editable: false, nullable: true },
-          unitStr: { editable: false, nullable: true },
-          orderQuantity: { type: 'number', validation: { required: true, min: 0 } },
-          orderNumber: { type: 'number', validation: { required: true, min: 0 } }
-        }
-      }
-    }
+  orderItems = new kendo.data.HierarchicalDataSource({
+    data: []
   });
   vehicles = new kendo.data.DataSource({
     schema: {
@@ -78,24 +64,46 @@ export class EditOrder {
         ooi.canQuantity = canDelivery.quantity + ooi.orderQuantity;
         ooi.canNumber = canDelivery.number + ooi.orderNumber;
       });
-      this.orderItems.read();
+      this.orderItems.data(this.outstockOrderItems);
     }
     this.vehicles.data(this.order.outstockVehicles);
   }
 
   async editOrder() {
-    this.validationController.addObject(this.order, validationRules);
+    this.validationController.addObject(this.order, orderValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
-    let vehicles = [];
-    Object.assign(vehicles, this.vehicles.data());
     let orderItems = [];
     Object.assign(orderItems, this.orderItems.data());
-    if (vehicles) {
-      Object.assign(this.order, { outstockVehicles: vehicles });
-    }
     if (orderItems) {
+      let oois = [] as OrderItem[];
+      this.outstockOrderItems.forEach(ooi => {
+        oois.push(copy(ooi));
+      });
+      for (let oi of orderItems) {
+        let ci: OrderItem = oois.find(ooi => ooi.id == oi.id);
+        if (ci.canQuantity) {
+          ci.canQuantity -= oi.orderQuantity;
+          if (ci.canQuantity < 0) {
+            return this.messageDialogService.alert({
+              title: "新增失败",
+              message: `货物:${ci.cargoName}    累计出库数量超出可出库数量,请检查后重新提交`,
+              icon: 'error'
+            });
+          }
+        } else {
+          ci.canNumber -= oi.orderNumber;
+          if (ci.canNumber < 0) {
+            return this.messageDialogService.alert({
+              title: "新增失败",
+              message: `货物:${ci.cargoName}    累计出库件数超出可出库件数,请检查后重新提交`,
+              icon: 'error'
+            });
+          }
+        }
+      }
+
       let quantitySum = 0;
       let numberSum = 0;
       orderItems.forEach(ci => {
@@ -106,12 +114,21 @@ export class EditOrder {
       this.order.numberSum = numberSum;
       Object.assign(this.order, { outstockOrderItems: orderItems });
     }
-    if (this.order.outstockOrderItems.length == 0) {
-      return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库货物信息", icon: 'error' });
-    }
+
     if (this.order.outstockVehicles.length == 0) {
       return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库车辆信息", icon: 'error' });
     }
+    let vehicles = [];
+    Object.assign(vehicles, this.vehicles.data());
+    if (vehicles) {
+      for (let v of vehicles) {
+        this.validationController.addObject(v, vehicleValidationRules);
+        let { valid } = await this.validationController.validate();
+        if (!valid) return;
+      }
+      Object.assign(this.order, { outstockVehicles: vehicles });
+    }
+
     this.disabled = true;
     try {
       await this.orderService.updateOrder(this.order);
@@ -128,26 +145,3 @@ export class EditOrder {
   }
 
 }
-
-const validationRules = ValidationRules
-  .ensure((order: Order) => order.contactPerson)
-  .displayName('联系人')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((order: Order) => order.paymentUnit)
-  .displayName('付款单位')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((order: Order) => order.takeDeliveryNum)
-  .displayName('提货单号')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((order: Order) => order.contactNumber)
-  .displayName('联系电话')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => /^[1][358][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
-
-  .ensure((order: Order) => order.remark)
-  .displayName('备注')
-  .maxLength(500).withMessage(`\${$displayName} 过长`)
-  .rules;
