@@ -251,15 +251,21 @@ export class EditWorArea {
   }
 
   async remove(e) {
-    let confirmed = await this.messageDialogService.confirm({ title: "提示", message: "删除后不可恢复，确认删除该信息" });
+    let confirmed = await this.messageDialogService.confirm({ title: "删除", message: "删除后无法修复" });
     if (confirmed) {
-      try {
-        await this.workAreaService.removeWorkOrderArea(e.id);
-        await this.messageDialogService.alert({ title: "提示", message: "删除成功" });
+      if (e.id != null && e.id != "") {
+        try {
+          await this.workAreaService.removeWorkOrderArea(e.id);
+          await this.messageDialogService.alert({ title: "", message: "删除成功" });
+          this.datasource.remove(e);
+          this.itemsDataSources.delete(e.uid);
+        } catch (e) {
+          await this.messageDialogService.alert({ title: "错误", message: e.message, icon: 'error' });
+        }
+      } else {
+        await this.messageDialogService.alert({ title: "", message: "删除成功" });
         this.datasource.remove(e);
         this.itemsDataSources.delete(e.uid);
-      } catch (e) {
-        await this.messageDialogService.alert({ title: "错误", message: e.message });
       }
     }
   }
