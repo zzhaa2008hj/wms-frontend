@@ -250,9 +250,18 @@ export class EditWorArea {
     this.newWorkOrder.getItemsDataSources(this.itemsDataSources);
   }
 
-  remove(e) {
-    this.datasource.remove(e);
-    this.itemsDataSources.delete(e.uid);
+  async remove(e) {
+    let confirmed = await this.messageDialogService.confirm({ title: "提示", message: "删除后不可恢复，确认删除该信息" });
+    if (confirmed) {
+      try {
+        await this.workAreaService.removeWorkOrderArea(e.id);
+        await this.messageDialogService.alert({ title: "提示", message: "删除成功" });
+        this.datasource.remove(e);
+        this.itemsDataSources.delete(e.uid);
+      } catch (e) {
+        await this.messageDialogService.alert({ title: "错误", message: e.message });
+      }
+    }
   }
 
   getNewDataSourceByUid(uid: string) {
