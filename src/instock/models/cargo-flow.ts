@@ -15,10 +15,12 @@ export interface CargoFlow {
   orderQuantity: number;
   orderNumber: number;
   unit: string;
+  unitStr: string;
   lastBatch: number;
   contactPerson: string;
   contactNumber: string;
   status: number;
+  statusStr: string;
   stage: number;
   instockStageName: string;
   remark: string;

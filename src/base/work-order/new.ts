@@ -97,7 +97,6 @@ export class NewWorkOrder {
           }
           ,
           create: async options => {
-            console.log('data', this.datasource.data()[0].workOrderItem);
             this.datasource.data()[0].workOrderItem = [];
             this.workOrderAreas = options.data.models;
             options.success();
@@ -190,10 +189,6 @@ export class NewWorkOrder {
   }
 
   async save() {
-    //console.log('this.datasource.data()',this.areaDatasource);
-    // console.log('datasource',this.itemsDataSources);
-
-
     let { valid } = await this.validationController.validate();
 
     let res = await this.newWorkArea.verify();
@@ -206,7 +201,6 @@ export class NewWorkOrder {
     let len = this.areaDatasource.data().length;
     for (let i = 0; i < len; i++) {
       let items = this.itemsDataSources.get(this.areaDatasource.data()[i].uid);
-      console.log('items', items);
       this.areaDatasource.data()[i].WorkOrderItem = items;
 
       let workOrderArea = {} as WorkOrderArea;

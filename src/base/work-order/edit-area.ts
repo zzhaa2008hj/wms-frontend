@@ -144,7 +144,6 @@ export class EditWorArea {
         let itemDatasource = new kendo.data.DataSource({
           transport: {
             read: options => {
-              console.log('workOrderItemService', this.workOrderItemService.getWorkOrderItems(e.items[i].id))
               this.workOrderItemService.getWorkOrderItems(e.items[i].id)
                 .then(options.success)
                 .catch(err => options.error("", "", err));
@@ -172,7 +171,6 @@ export class EditWorArea {
       }
 
       if (e.action == "remove") {
-        console.log("1111");
         this.datasource.remove(e.items);
         this.itemsDataSources.delete(e.items.uid);
       }
@@ -200,8 +198,6 @@ export class EditWorArea {
         this.itemsDataSources.set(e.items.uid, itemDataSource);
 
       }
-
-      console.log('datasource type', this.datasource.data(), e.items, e.action);
 
     });
 
