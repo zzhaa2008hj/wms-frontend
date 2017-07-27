@@ -153,3 +153,4 @@ export const vehicleValidationRules = ValidationRules
   .required().withMessage(`\${$displayName} 不能为空`)
   .satisfies(x => /^[1][34578][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
   .rules;
+
