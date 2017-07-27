@@ -2,6 +2,8 @@ import { autoinject } from "aurelia-dependency-injection";
 import { WorkAreaService } from "@app/base/services/work";
 import { DataSourceFactory } from "@app/utils";
 import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 
 
 @autoinject
@@ -9,15 +11,25 @@ export class VeiwWorkItem {
 
   datasource: kendo.data.DataSource;
 
+  unit = [] as DictionaryData[];
+
   constructor(private dataSourceFactory: DataSourceFactory,
               private workAreaService: WorkAreaService,
-              private workOrderItemService: WorkOrderItemService) {
+              private workOrderItemService: WorkOrderItemService,
+              private dictionaryDataService: DictionaryDataService) {
 
   }
 
-  activate(model) {
+  async activate(model) {
+    this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.datasource = this.dataSourceFactory.create({
-      query: () => this.workAreaService.queryWorkAreaPage(model.id),
+      query: () => this.workAreaService.queryWorkAreaPage(model.id)
+        .map(res => {
+          if (res.unit) {
+            res.unit = this.unit.find(r => r.dictDataCode == res.unit).dictDataName;
+          }
+          return res;
+        }),
       pageSize: 10
     });
   }
