@@ -16,18 +16,19 @@
                                    k-data-value-field="id"
                                    k-value.two-way="warehouseId"
                                    k-data-source.bind="warehouseSource"
+                                   k-enabled.two-way="!disabled"
                                    style="width: 60%">
                 </ak-drop-down-list>
             </ak-template>
         </ak-col>
         <ak-col k-field="quantity" k-title="作业数量">
             <ak-template>
-                <input type="number" value.bind="quantity & validate">
+                <input type="number" value.bind="quantity & validate" disabled.bind="disabled">
             </ak-template>
         </ak-col>
         <ak-col k-field="number" k-title="作业件数">
             <ak-template>
-                <input type="number" value.bind="number & validate">
+                <input type="number" value.bind="number & validate" disabled.bind="disabled">
             </ak-template>
         </ak-col>
         <ak-col k-title="计量单位">
@@ -36,7 +37,8 @@
                                    k-value.two-way="unit"
                                    k-data-text-field="dictDataName"
                                    k-data-value-field="dictDataCode"
-                                   k-data-source.bind="unitSource">
+                                   k-data-source.bind="unitSource"
+                                   k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
             </ak-template>
         </ak-col>
@@ -46,28 +48,29 @@
                                    k-value.two-way="containerType"
                                    k-data-text-field="dictDataName"
                                    k-data-value-field="dictDataCode"
-                                   k-data-source.bind="containerTypeSource">
+                                   k-data-source.bind="containerTypeSource"
+                                   k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
             </ak-template>
         </ak-col>
         <ak-col k-field="containerNumber" k-title="集装箱号">
             <ak-template>
-                <input type="text" value.bind="containerNumber">
+                <input type="text" value.bind="containerNumber" disabled.bind="disabled">
             </ak-template>
         </ak-col>
         <ak-col k-field="remark" k-title="备注">
             <ak-template>
-                <input type="text" value.bind="remark">
+                <input type="text" value.bind="remark" disabled.bind="disabled">
             </ak-template>
         </ak-col>
         <ak-col>
             <ak-template>
-                <button class="btn btn-small" click.delegate="remove($this)">删除</button>
+                <button class="btn btn-small" click.delegate="remove($this)" disabled.bind="disabled">删除</button>
             </ak-template>
         </ak-col>
         <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
         <ak-template for="detailTemplate">
-            <area-items parent-uid.bind="$this.uid"></area-items>
+            <area-items parent-uid.bind="$this.uid" disabled.bind="disabled"></area-items>
         </ak-template>
     </ak-grid>
 </template>

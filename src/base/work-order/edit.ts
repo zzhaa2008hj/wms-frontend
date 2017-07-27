@@ -21,8 +21,8 @@ import { WorkOrderItem } from "@app/instock/models/work";
 import { WorkAreaService } from "@app/base/services/work";
 import { Order } from "@app/outstock/models/order";
 import { OrderService, OrderItemService } from "@app/outstock/services/order";
-import { CargoRateService } from "@app/base/services/rate"
-import { EditWorArea } from "./edit-area"
+import { CargoRateService } from "@app/base/services/rate";
+import { EditWorArea } from "./edit-area";
 
 export class EditWorkOrder {
   instockVehicle = {} as InstockVehicle;
@@ -45,6 +45,8 @@ export class EditWorkOrder {
   grid: kendo.ui.Grid;
 
   editWorArea: EditWorArea;
+
+  disabled: boolean = false;
 
   itemsDataSources = new Map<string, kendo.data.DataSource>();
 
@@ -83,18 +85,22 @@ export class EditWorkOrder {
   // });
   cargoItemsSource: kendo.data.DataSource;
 
-  VehicleSource = new kendo.data.DataSource({
+  vehicleSource = new kendo.data.DataSource({
     transport: {
       read: options => {
         let businessId: string;
-        if (this.routerParams.type == 1) {
-          businessId = this.workOrder.businessId;
-        } else if (this.routerParams.type == 2) {
-          businessId = this.routerParams.businessId;
+        if (!this.workOrder.businessId) {
+          options.success([]);
+        } else {
+          if (this.routerParams.type == 1) {
+            businessId = this.workOrder.businessId;
+          } else if (this.routerParams.type == 2) {
+            businessId = this.routerParams.businessId;
+          }
+          this.instockVehicleService.getInstockVehicles(businessId, this.routerParams.type)
+            .then(options.success)
+            .catch(err => options.error("", "", err));
         }
-        this.instockVehicleService.getInstockVehicles(businessId, this.routerParams.type)
-          .then(options.success)
-          .catch(err => options.error("", "", err));
       }
     }
   });
@@ -168,7 +174,7 @@ export class EditWorkOrder {
   }
 
   changeCargo() {
-    this.VehicleSource.read();
+    this.vehicleSource.read();
   }
 
   async cancel() {
@@ -181,9 +187,11 @@ export class EditWorkOrder {
     let res = await this.editWorArea.verify();
 
     if (!valid || !res) {
-      await this.messageDialogService.alert({ title: "提示", message: "数据不符合规范请检查数据" })
+      await this.messageDialogService.alert({ title: "提示", message: "数据不符合规范请检查数据" });
       return;
     }
+
+    this.disabled = true;
 
     let len = this.datasource.data().length;
     for (let i = 0; i < len; i++) {
@@ -240,15 +248,21 @@ export class EditWorkOrder {
 
     } catch (err) {
       await this.messageDialogService.alert({ title: "编辑失败", message: err.message, icon: "error" });
+      this.workOrderAreas = [] as WorkOrderArea[];
+      this.disabled = false;
     }
   }
 
   onSelectPlateNumber(e) {
     let vehicle: InstockVehicle = this.selectedVehicle.dataItem(e.item);
+    if (vehicle == null) return;
     this.workOrder.plateNumber = vehicle.plateNumber;
     this.workOrder.driverName = vehicle.driverName;
+    this.validateWorkOrder("driverName");
     this.workOrder.driverIdentityNumber = vehicle.driverIdentityNumber;
+    this.validateWorkOrder("driverIdentityNumber");
     this.workOrder.phoneNumber = vehicle.phoneNumber;
+    this.validateWorkOrder("phoneNumber");
   }
 
   validateWorkOrder(propertyName: string) {
@@ -319,17 +333,70 @@ const workOrderRules = ValidationRules
 
   .ensure((workOrder: WorkOrder) => workOrder.plateNumber)
   .displayName("车牌号")
-  .required().withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (!x) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (x) {
+      return /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/.test(x);
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不符合规范`)
+
 
   .ensure((workOrder: WorkOrder) => workOrder.driverName)
   .displayName("司机名称")
-  .required().withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (!x) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (x) {
+      return /[\u4E00-\u9FA5]{2,4}/.test(x);
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不符合规范`)
 
   .ensure((workOrder: WorkOrder) => workOrder.driverIdentityNumber)
   .displayName("身份证号")
-  .required().withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (!x) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (x) {
+      return /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/.test(x);
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不符合规范`)
 
   .ensure((workOrder: WorkOrder) => workOrder.phoneNumber)
   .displayName("电话号码")
-  .required().withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (!x) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不能为空`)
+  .satisfies(x => {
+    if (x) {
+      return /(^1[3|4|5|7|8][0-9]{9}$)|(([0-9]{3,4}-)?[0-9]{7,8})/.test(x);
+    }
+    return true;
+  })
+  .withMessage(`\${$displayName}不符合规范`)
   .rules;
