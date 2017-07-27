@@ -1,5 +1,4 @@
 <template>
-  <require from="aurelia-kendoui-bridge/datepicker/datepicker"></require>
   <div class="row m-b-5">
     <div class="col-md-2">
       <a class="btn btn-sm btn-small btn-success" route-href="route: new">新增出库指令</a>
@@ -14,7 +13,7 @@
       </div>
       <div class="input-group left m-l-15">
         <input class="form-control" ak-datepicker="k-value.two-way: orderCriteria.endDate; k-widget.two-way: endDatePicker" k-on-change.delegate="endChange()"
-          placeholder="请输入结束时间" />
+          placeholder="请输入结束时间"/>
       </div>
       <div class="input-group left m-l-5">
         <div class="input-group-addon search" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></div>
