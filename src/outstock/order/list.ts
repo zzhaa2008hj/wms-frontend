@@ -195,15 +195,12 @@ export class OrderList {
         return;
       }
       // 跳转 到出库单页面
-      this.goStockOut();
+      this.router.navigateToRoute('outstock-orderItem');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
 
-  goStockOut() {
-    this.router.navigateToRoute('outstock-orderItem');
-  }
 
   /**
    * 审核记录
