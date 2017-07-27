@@ -18,7 +18,6 @@ import { RouterParams } from '@app/common/models/router-params';
 import { CargoFlowService } from '@app/instock/services/cargo-flow';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { WorkOrderItem } from "@app/instock/models/work";
-import { WorkAreaService } from "@app/base/services/work";
 import { Order } from "@app/outstock/models/order";
 import { OrderService, OrderItemService } from "@app/outstock/services/order";
 import { CargoRateService } from "@app/base/services/rate";
