@@ -296,8 +296,6 @@ export class EditWorkOrder {
   // }
   getAreaDatasource(datasource) {
     this.datasource = datasource;
-    console.log('this.datasource', this.datasource);
-    console.log('this.datasource.data()', this.datasource.data());
   }
 
   getItemsDataSources(itemDatasource) {

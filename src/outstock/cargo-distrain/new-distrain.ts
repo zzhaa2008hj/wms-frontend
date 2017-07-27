@@ -19,6 +19,8 @@ export class NewDistrain {
   async activate() {
     this.validationController.addObject(this.cargoDistrain, validationRules);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
+    this.cargoDistrain.quantity = 0;
+    this.cargoDistrain.number = 0;
   }
 
   async save() {

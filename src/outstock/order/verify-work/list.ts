@@ -31,13 +31,8 @@ export class VerifyWarehouse {
     this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
     this.workStatistics = await this.workStatisticsService.getOutstockStatistics(this.outstockOrder.id);
     this.outstockOrder.outstockDateStr = moment(this.outstockOrder.outstockDate).format("YYYY-MM-DD");
-    this.outstockOrder.unitStr = this.units.find(r => r.dictDataCode == this.outstockOrder.unit).dictDataName;
-    //this.outstockOrder.stageTitle = this.outstockStages.find(r => r.stage == this.outstockOrder.stage).title;
     this.outstockOrder.statusStr = this.status.find(r => r.value == this.outstockOrder.status).text;
 
-    // this.datasource = this.dataSourceFactory.create({
-    //   readAll: () => this.orderItemService.getItemsByOrderId(this.outstockOrder.id)
-    // });
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: options => {
@@ -65,7 +60,6 @@ export class VerifyWarehouse {
     // 生成作业统计 修改审核状态
     try {
       if (status == 1) {
-        console.log(this.workStatistics);
         await this.workStatisticsService.saveStatistics(this.workStatistics);
       }
       await this.orderService.auditBusiness(this.outstockOrder.id, status);
