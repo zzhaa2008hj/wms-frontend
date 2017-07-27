@@ -213,19 +213,6 @@ export class OrderList {
   }
 
   /**
-   * 商务确认
-   */
-  async businessConfirm(id) {
-    try {
-      await this.orderService.businessConfirm(id);
-      await this.dialogService.alert({ title: "提示", message: "确认成功！" });
-      this.dataSource.read();
-    } catch (err) {
-      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
-    }
-  }
-
-  /**
    * 作业开始
    */
   async changeStage(params) {

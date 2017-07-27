@@ -79,6 +79,11 @@ export interface OrderItem {
   //可出库数量和件数
   canQuantity: number;
   canNumber: number;
+
+  // 作业数量
+  workOrderQuantity: number;
+  // 作业件数
+  workOrderNumber: number;
 }
 
 export interface Vehicle {
@@ -95,4 +100,5 @@ export interface Vehicle {
   remark: string;
   orgId: string;
 }
+
 

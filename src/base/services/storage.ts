@@ -1,7 +1,7 @@
 /**
  * Created by shun on 2017/6/26.
  */
-import {StorageInfoItem, StorageItemHistory, StorageInfo} from "@app/base/models/storage";
+import {StorageInfoItem, StorageItemHistory, StorageInfo, StorageInfoVo} from "@app/base/models/storage";
 import {StorageHistory} from "@app/base/models/storage-history";
 import {Query, handleResult, RestClient, fixDate} from "@app/utils";
 import {autoinject} from "aurelia-dependency-injection";
@@ -14,7 +14,7 @@ export class StorageService {
   /**
    * 查询库存信息
    */
-  queryStoragePage(keywords?: string): Query<StorageInfo> {
+  queryStoragePage(keywords?: string): Query<StorageInfoVo> {
     return this.http.query('/base/storage/page', {keywords});
   }
 
