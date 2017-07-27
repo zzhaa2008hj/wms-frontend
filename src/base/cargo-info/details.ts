@@ -1,3 +1,5 @@
+import { InstockOrderService } from '@app/instock/services/instock-order';
+import { InstockOrderVo } from '@app/instock/models/instock-order';
 import { DetailsCargoItem } from '@app/base/cargo-info/item-details';
 import { Router } from "aurelia-router";
 import { autoinject } from "aurelia-dependency-injection";
@@ -16,10 +18,15 @@ export class DetailsCargoInfo {
   warehouseTypes = [] as DictionaryData[];
   unit = [] as DictionaryData[];
 
+  instockOrderVo: InstockOrderVo;
+  instockDatasource: kendo.data.DataSource;
+  units = [] as DictionaryData[];
+
   constructor(private router: Router,
     private cargoInfoService: CargoInfoService,
     private messageDialogService: MessageDialogService,
     private dictionaryDataService: DictionaryDataService,
+    private instockOrderService: InstockOrderService,
     private dialogService: DialogService) {
     this.datasource = new kendo.data.DataSource({
       transport: {
@@ -31,6 +38,7 @@ export class DetailsCargoInfo {
   }
 
   async activate({ id }) {
+    //入库指令信息
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
@@ -38,7 +46,27 @@ export class DetailsCargoInfo {
     this.cargoItems.map(res => res.unitStr = this.unit.find(d => d.dictDataCode == res.unit).dictDataName);
     //todo
     //获取出入库信息、货权转移、货位转移
-
+    this.instockOrderVo = await this.instockOrderService.getInstockOrder(id);
+    this.instockOrderVo.orderItems.map(res => {
+      let unit = this.units.find(d => res.unit == d.dictDataCode);
+      console.log(unit)
+      if (unit) {
+        // 只是查看
+        res.unit = unit.dictDataName;
+      }
+    });
+    this.instockDatasource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.instockOrderVo.orderItems);
+        }
+      },
+      schema: {
+        model: {
+          id: 'id'
+        }
+      }
+    });
   }
 
   async view(id) {
