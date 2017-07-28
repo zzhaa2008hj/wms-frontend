@@ -75,7 +75,7 @@ export class CargoInfoList {
       return;
     }
     try {
-      // await this.outstockInventoryService.createOutstockInventory(this.batchNumber);
+      await this.outstockInventoryService.createOutstockInventory(this.batchNumber);
       let res = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库清单" });
       if (!res) {
         this.dataSource.read();

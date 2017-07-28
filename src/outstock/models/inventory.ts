@@ -24,8 +24,7 @@ export interface OutstockInventory {
     // 计量单位
     unit: string;
 
-    outstockDateStr: string;
-    createAccount: string;
+    employeeName: string;
 }
 /**
  * 出库清单明细
@@ -64,8 +63,8 @@ export interface OutstockInventoryItem {
     actualOutNumber: number;
     // 计量单位
     unit: string;
-
-    employeeName: string;
+    unitName: string;
+    outstockDateStr: string;
 }
 
 export interface OutstockInventoryVo extends OutstockInventory{
