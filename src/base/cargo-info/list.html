@@ -21,8 +21,8 @@
       </ak-template>
     </ak-col>
     <ak-col k-field="agentName" k-title="代理商" k-width.bind="100"></ak-col>
-    <ak-col k-field="billLadingNumber" k-title="提单号" k-width.bind="120"></ak-col>
     <ak-col k-field="customerName" k-title="客户名称" k-width.bind="100"></ak-col>
+    <ak-col k-field="billLadingNumber" k-title="提单号" k-width.bind="120"></ak-col>
     <ak-col k-field="warehouseTypeStr" k-title="库区性质" k-width.bind="80"></ak-col>
     <ak-col k-field="cargoForm" k-title="货物形式" k-width.bind="80">
       <ak-template>
@@ -40,6 +40,16 @@
     <ak-col k-field="instockQuantity == null? 0:instockQuantity" k-title="入库数量" k-width.bind="80"></ak-col>
     <ak-col k-field="outstockNumber == null? 0:outstockNumber" k-title="出库件数" k-width.bind="80"></ak-col>
     <ak-col k-field="outstockQuantity == null? 0:outstockQuantity" k-title="出库数量" k-width.bind="80"></ak-col>
+    <ak-col k-field="instockStatus" k-title="入库状态" k-width.bind="80">
+      <ak-template>
+        ${instockStatus ==1 ?'完成': '未完成'}
+      </ak-template>
+    </ak-col>
+    <ak-col k-field="outstockStatus" k-title="出库状态" k-width.bind="80">
+      <ak-template>
+        ${outstockStatus ==1 ?'完成': '未完成'}
+      </ak-template>
+    </ak-col>
     <ak-col k-title="备注" k-width.bind="160">
       <ak-template>
         <label if.bind="remark.length >= 9" title="${remark}">${remark.substring(0,9)}...</label>

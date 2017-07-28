@@ -15,6 +15,8 @@ import { ConstantValues } from "@app/common/models/constant-values";
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { RouterParams } from '@app/common/models/router-params';
+import { CargoInfoService } from '@app/base/services/cargo-info';
+import { CargoInfo } from '@app/base/models/cargo-info';
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -34,6 +36,7 @@ export class OrderList {
               @inject private dataSourceFactory: DataSourceFactory,
               @inject private dialogService: DialogService,
               @inject private customhouseService: CustomhouseClearanceService,
+              @inject private cargoInfoService: CargoInfoService,
               @inject private router: Router,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private verifyRecordService: VerifyRecordService) {
@@ -201,6 +204,19 @@ export class OrderList {
       this.goStockOut();
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  async add() {
+    if (this.routerParams.infoId) {
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.outstockStatus == 1) {
+         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部出完，无法新增出库", icon: 'error' });
+         return;
+      }
+      this.router.navigateToRoute("new");
+    } else {
+      this.router.navigateToRoute("new");
     }
   }
 

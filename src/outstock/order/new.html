@@ -7,8 +7,8 @@
         <div class="form-group">
           <label class="form-label">批次号*</label>
           <ak-drop-down-list k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-data-text-field="batchNumber" k-data-value-field="batchNumber"
-            k-filter="contains" k-data-source.bind="baseCargoInfo" k-on-select.delegate="onSelectCargoInfo($event.detail)"
-            k-value.bind="order.batchNumber & validate">
+            k-filter="contains" k-data-source.bind="baseCargoInfo" k-on-change.delegate="onSelectCargoInfo($event.detail)"
+            k-value.bind="order.batchNumber & validate" k-enabled.two-way="!hasInfoId">
           </ak-drop-down-list>
         </div>
         <div class="form-group">
