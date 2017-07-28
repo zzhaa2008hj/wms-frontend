@@ -30,19 +30,15 @@ export class OutstockInventoryView {
     this.outstockInventoryVo = await this.outstockInventoryService.getOutstockInventory(id);
     this.organization = await this.organizationService.getOrganization(this.outstockInventoryVo.orgId);
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.outstockInventoryVo.cargoInfoId);
-    this.outstockInventoryVo.outstockDateStr = moment(this.outstockInventoryVo.outstockInventoryItems[0].outstockDate)
-    .format("YYYY-MM-DD");
-    let driverArr: string[] = [];
+    
     this.outstockInventoryVo.outstockInventoryItems.map(item => {
       let unit = this.units.find(d => item.unit == d.dictDataCode);
       if (unit) {
         // 只是查看
-        item.unit = unit.dictDataName;
+        item.unitName = unit.dictDataName;
       }
-      item.outstockDate = new Date(item.outstockDate);
-      driverArr.push(item.driver);
+      item.outstockDateStr = moment(item.outstockDate).format("YYYY-MM-DD");
     });
-    this.drivers = driverArr.join(',');
   }
 
   cancel() {
