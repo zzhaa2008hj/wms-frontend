@@ -8,6 +8,8 @@ import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { CargoFlowSeparateService } from "@app/instock/services/cargo-flow-seperate";
 import * as moment from 'moment';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -20,26 +22,31 @@ export class Detail {
   instockStages: any[] = ConstantValues.InstockStages;
   beforeCargoItems: InstockCargoItem[];
   afterCargoItems: InstockCargoItem[];
+  units = [] as DictionaryData[];
 
   constructor(private cargoFlowService: CargoFlowService,
               private cargoFlowSeparateService: CargoFlowSeparateService,
               private cargoInfoService: CargoInfoService,
               private cargoItemService: CargoItemService,
+              private dictionaryDataService: DictionaryDataService,
               private vehicleService: InstockVehicleService) {
   }
 
   async activate(params) {
     let separate = await this.cargoFlowSeparateService.getCargoFlowSeparateById(params.id);
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
     this.beforeCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.numberBeforeSeparate);
     this.beforeCargoFlow.instockDateStr = moment(this.beforeCargoFlow.instockDate).format("YYYY-MM-DD");
     this.beforeCargoInfo = await this.cargoInfoService.getCargoInfo(this.beforeCargoFlow.cargoInfoId);
     this.beforeCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.beforeCargoFlow.id);
+    this.beforeCargoItems.map(res => res.unit = this.units.find(d => d.dictDataCode == res.unit).dictDataName);
 
     this.afterCargoFlow = await this.cargoFlowService.getCargoFlowByFlowNumber(separate.secondNumberAfterSeparate);
     this.afterCargoFlow.instockDateStr = moment(this.afterCargoFlow.instockDate).format("YYYY-MM-DD");
     this.afterCargoInfo = await this.cargoInfoService.getCargoInfo(this.afterCargoFlow.cargoInfoId);
     this.afterCargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.afterCargoFlow.id);
+    this.afterCargoItems.map(res => res.unit = this.units.find(d => d.dictDataCode == res.unit).dictDataName);
   }
 
   detailInit(e) {

@@ -11,6 +11,8 @@ import { MessageDialogService } from "ui";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { observable } from 'aurelia-framework';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -20,6 +22,7 @@ export class NewSeparate {
   cargoInfo: CargoInfo;
   cargoFlow: CargoFlow;
   cargoItems = [];
+  units = [] as DictionaryData[];
   instockStages: any[] = ConstantValues.InstockStages;
   dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
@@ -42,18 +45,24 @@ export class NewSeparate {
               private messageDialogService: MessageDialogService,
               private cargoItemService: CargoItemService,
               private vehicleService: InstockVehicleService,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+              private dictionaryDataService: DictionaryDataService,
+              validationControllerFactory: ValidationControllerFactory, 
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate(params) {
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
     //this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
     let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     if (cargoItems) {
       for (let ci of cargoItems) {
+        if (ci.unit) {
+          ci.unit = this.units.find(d => d.dictDataCode == ci.unit).dictDataName;
+        }
         let cargoItem = await this.cargoItemService.getBaseCargoItemById(ci.cargoItemId);
         Object.assign(ci, { cargoSubCatergoryName: cargoItem.cargoSubCatergoryName, freeDays: cargoItem.freeDays });
         let vehicles = await this.vehicleService.listInstockVehicles(ci.id);
