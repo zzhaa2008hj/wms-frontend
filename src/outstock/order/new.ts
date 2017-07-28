@@ -1,5 +1,5 @@
 import { Router } from "aurelia-router";
-import { autoinject, Container } from 'aurelia-dependency-injection';
+import { Container, inject } from 'aurelia-dependency-injection';
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
@@ -12,11 +12,11 @@ import { observable } from 'aurelia-framework';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { copy } from "@app/utils";
+import { RouterParams } from '@app/common/models/router-params';
 
 /**
  * Created by Hui on 2017/6/23.
  */
-@autoinject
 export class NewOrder {
   @observable disabled: boolean = false;
   units = [] as DictionaryData[];
@@ -25,6 +25,8 @@ export class NewOrder {
   outstockCargoItems = new kendo.data.HierarchicalDataSource({
     data: []
   });
+  @observable
+  hasInfoId: boolean = false;
 
   baseCargoInfo: Array<CargoInfo>;
   baseCargoItems = [] as CargoItem[];
@@ -42,14 +44,15 @@ export class NewOrder {
   validationController: ValidationController;
   private dropDownListCargoItem: any;
 
-  constructor(private router: Router,
-              private orderService: OrderService,
-              private messageDialogService: MessageDialogService,
-              private cargoInfoService: CargoInfoService,
-              private codeService: CodeService,
-              private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+  constructor(@inject private router: Router,
+              @inject private orderService: OrderService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private cargoInfoService: CargoInfoService,
+              @inject private codeService: CodeService,
+              @inject('routerParams') private routerParams: RouterParams,
+              @inject private dictionaryDataService: DictionaryDataService,
+              @inject validationControllerFactory: ValidationControllerFactory,
+              @inject container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -57,7 +60,18 @@ export class NewOrder {
 
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: 1 });
+    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: 1, outstockStatus: 0 });
+    if (this.routerParams.infoId) {
+      this.hasInfoId = true;
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      this.order.cargoInfoId = this.routerParams.infoId;
+      this.order.batchNumber = cargoInfo.batchNumber;
+
+      let res = await this.codeService.generateCode("3", this.order.batchNumber);
+      this.order.outstockOrderNumber = res.content;
+      this.setOrderInfo(cargoInfo);
+      this.getBaseCargoItems();
+    }
   }
 
   async onSelectCargoInfo(e) {

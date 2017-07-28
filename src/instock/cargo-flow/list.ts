@@ -17,6 +17,8 @@ import { Router } from "aurelia-router";
 import { OrderItemService } from "@app/instock/services/order-item";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { CargoInfoService } from '@app/base/services/cargo-info';
+import { CargoInfo } from '@app/base/models/cargo-info';
 
 export class CargoFlow {
   searchName: string;
@@ -32,6 +34,7 @@ export class CargoFlow {
 
   constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private dialogService: DialogService,
+              @inject private cargoInfoService: CargoInfoService,
               @inject private verifyRecordService: VerifyRecordService,
               @inject private messageDialogService: MessageDialogService,
               @inject private dataSourceFactory: DataSourceFactory,
@@ -110,6 +113,19 @@ export class CargoFlow {
       this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "撤回失败", message: err.message, icon: "error" });
+    }
+  }
+
+  async add() {
+    if (this.routerParams.infoId) {
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.instockStatus == 1) {
+         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
+         return;
+      }
+      this.router.navigateToRoute("new");
+    } else {
+      this.router.navigateToRoute("new");
     }
   }
 
@@ -211,9 +227,9 @@ export class CargoFlow {
       if (!conformed) return;
       await this.instockOrderService.createInstockOrder(ids);
       await this.messageDialogService.alert({ title: "提示", message: "生成成功！" });
-      // this.dataSource.read();
+      this.dataSource.read();
       // 跳转 到入库单页面
-      this.router.navigateToRoute('instockOrder');
+      //this.router.navigateToRoute('instockOrder');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }

@@ -15,7 +15,11 @@ export class WarehouseService {
     return res.content;
   }
 
-  getWarehouses(id: string, type: number):Promise<Warehouse[]> {
+  listWarehouseByStorageInfo(storageInfoId: string): Promise<Warehouse[]> {
+    return this.http.get(`/base/warehouse/list/storage/${storageInfoId}`).then(res => res.content);
+  }
+
+  getWarehouses(id: string, type: number): Promise<Warehouse[]> {
     return this.http.get(`/base/warehouse/${id}/list?type=${type}`).then(res => res.content);
   }
 

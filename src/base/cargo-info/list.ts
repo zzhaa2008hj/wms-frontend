@@ -5,7 +5,6 @@ import { CargoInfoService, CargoInfoCriteria } from "@app/base/services/cargo-in
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
-import { Router } from "aurelia-router";
 
 @autoinject
 export class CargoInfoList {
@@ -24,7 +23,6 @@ export class CargoInfoList {
               private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
               private dataSourceFactory: DataSourceFactory,
-              private router: Router,
               private outstockInventoryService: OutstockInventoryService) {
 
   }
@@ -83,8 +81,9 @@ export class CargoInfoList {
         this.dataSource.read();
         return;
       }
+      let inventory = await this.outstockInventoryService.getOutstockInventoryByBatchNumber(this.batchNumber);
       // 跳转 到出库清单页面
-      this.router.navigateToRoute('outstock-inventory');
+      window.location.href = '#/outstock/inventory/' + inventory.id + '/view';
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }

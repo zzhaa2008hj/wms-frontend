@@ -1,35 +1,30 @@
 <template>
-    <div class="page-title">
-        <h3>库存管理</h3>
+  <div class="page-title">
+    <h3>库存管理</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-offset-9 col-md-3">
+      <div class="input-group">
+        <input class="form-control" type="text" value.bind="keywords" placeholder="请输入客户名称/代理名称/批次号">
+        <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-md-offset-9 col-md-3">
-            <div class="input-group">
-                <input class="form-control" type="text" value.bind="keywords" placeholder="请输入客户名称/代理名称/批次号">
-                <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-            </div>
-        </div>
-    </div>
-    <ak-grid k-data-source.bind="dataSource"
-             k-sortable.bind="true"
-             k-reorderable.bind="true"
-             k-resizable.bind="true"
-             k-filterable.bind="true"
-             k-column-menu.bind="true"
-             k-pageable.bind="pageable">
-        <ak-col k-field="customerName" k-title="客户名称"></ak-col>
-        <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
-        <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
-        <ak-col k-field="cargoName" k-title="货名"></ak-col>
-        <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-        <ak-col k-field="cargoSubCatergoryName" k-title="品牌"></ak-col>
-        <ak-col k-field="inventoryQuantity" k-title="库存数量"></ak-col>
-        <ak-col k-field="inventoryNumber" k-title="库存件数"></ak-col>
-        <ak-col k-field="unitName" k-title="单位"></ak-col>
-        <ak-col k-field="remark" k-title="备注"></ak-col>
-        <ak-col k-title="操作">
-            <ak-template>
-                <a class="btn btn-small" route-href="route: items; params.bind: { id: id }">查看明细</a>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+    <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
+    <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+    <ak-col k-field="cargoName" k-title="货名"></ak-col>
+    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+    <ak-col k-field="cargoSubCatergoryName" k-title="品牌"></ak-col>
+    <ak-col k-field="inventoryQuantity" k-title="库存数量"></ak-col>
+    <ak-col k-field="inventoryNumber" k-title="库存件数"></ak-col>
+    <ak-col k-field="unitName" k-title="单位"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+    <ak-col k-title="操作" k-width.bind="180">
+      <ak-template>
+        <a class="btn btn-small" route-href="route: items; params.bind: { id: id }">查看明细</a>
+        <button class="btn btn-small" click.delegate="balance(id)">溢短抹平</bu>
             </ak-template>
         </ak-col>
     </ak-grid>

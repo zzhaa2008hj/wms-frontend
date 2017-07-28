@@ -6,11 +6,9 @@
       <form submit.delegate="addNewOrder()">
         <div class="form-group">
           <label class="form-label">批次号*</label>
-          <ak-drop-down-list k-widget.two-way="selectedCargoInfo" k-option-label="请选择..."
-                             k-data-text-field="batchNumber" k-data-value-field="batchNumber"
-                             k-data-source.bind="baseCargoInfo"
-                             k-on-select.delegate="onSelectCargoInfo($event.detail)"
-                             k-value.bind="order.batchNumber & validate">
+          <ak-drop-down-list k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-data-text-field="batchNumber" k-data-value-field="batchNumber"
+            k-filter="contains" k-data-source.bind="baseCargoInfo" k-on-change.delegate="onSelectCargoInfo($event.detail)"
+            k-value.bind="order.batchNumber & validate" k-enabled.two-way="!hasInfoId">
           </ak-drop-down-list>
         </div>
         <div class="form-group">
@@ -32,8 +30,7 @@
           <label class="form-label">提货单号*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.takeDeliveryNum & validate"
-                   disabled.bind="disabled">
+            <input type="text" class="form-control" value.bind="order.takeDeliveryNum & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
@@ -47,16 +44,14 @@
           <label class="form-label">联系人*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.contactPerson & validate"
-                   disabled.bind="disabled">
+            <input type="text" class="form-control" value.bind="order.contactPerson & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">联系电话*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.contactNumber & validate"
-                   disabled.bind="disabled">
+            <input type="text" class="form-control" value.bind="order.contactNumber & validate" disabled.bind="disabled">
           </div>
         </div>
         <div class="form-group">
@@ -69,23 +64,18 @@
         <div class="form-group">
           <div class="controls">
             <label class="form-label">出库货物*</label>
-            <ak-drop-down-list k-widget.bind="dropDownListCargoItem"
-                               k-option-label="请选择--出库货物"
-                               k-data-text-field="cargoName"
-                               k-data-source.bind="outstockCargoItems"
-                               k-on-select.delegate="onSelect($event.detail)">
+            <ak-drop-down-list k-widget.bind="dropDownListCargoItem" k-option-label="请选择--出库货物" k-data-text-field="cargoName" k-data-source.bind="outstockCargoItems"
+              k-on-select.delegate="onSelect($event.detail)">
             </ak-drop-down-list>
             <ak-grid k-data-source.bind="orderItems" k-editable.bind="true">
               <ak-col k-field="cargoName" k-title="货物名称">
                 <ak-template>
-                  <input type="text" style="border: none;background-color:transparent;" value.bind="cargoName"
-                         readonly/>
+                  <input type="text" style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
                 </ak-template>
               </ak-col>
               <ak-col k-field="cargoCategoryName" k-title="货物类别">
                 <ak-template>
-                  <input type="text" style="border: none;background-color:transparent;" value.bind="cargoCategoryName"
-                         readonly/>
+                  <input type="text" style="border: none;background-color:transparent;" value.bind="cargoCategoryName" readonly/>
                 </ak-template>
               </ak-col>
               <ak-col k-field="unitStr" k-title="计量单位">
@@ -103,14 +93,14 @@
                   <input type="text" style="border: none;background-color:transparent;" value.bind="canNumber" readonly/>
                 </ak-template>
               </ak-col>
-              <ak-col  k-title="指令数量">
+              <ak-col k-title="指令数量">
                 <ak-template>
-                  <input type="number"  value.bind="orderQuantity & toFloat" step="0.01"/>
+                  <input type="number" value.bind="orderQuantity & toFloat" step="0.01" />
                 </ak-template>
               </ak-col>
-              <ak-col  k-title="指令件数">
+              <ak-col k-title="指令件数">
                 <ak-template>
-                  <input type="number"  value.bind="orderNumber & toInt" />
+                  <input type="number" value.bind="orderNumber & toInt" />
                 </ak-template>
               </ak-col>
               <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
@@ -128,22 +118,22 @@
             <ak-grid k-data-source.bind="vehicles" k-editable.bind="true" k-toolbar.bind="['create']">
               <ak-col k-title="车牌号">
                 <ak-template>
-                  <input type="text"  value.bind="plateNumber  & validate" />
+                  <input type="text" value.bind="plateNumber  & validate" />
                 </ak-template>
               </ak-col>
-              <ak-col  k-title="司机名称">
+              <ak-col k-title="司机名称">
                 <ak-template>
-                  <input type="text"  value.bind="driverName  & validate" />
+                  <input type="text" value.bind="driverName  & validate" />
                 </ak-template>
               </ak-col>
-              <ak-col  k-title="身份证号">
+              <ak-col k-title="身份证号">
                 <ak-template>
-                  <input type="text"  value.bind="driverIdentityNumber  & validate" />
+                  <input type="text" value.bind="driverIdentityNumber  & validate" />
                 </ak-template>
               </ak-col>
-              <ak-col  k-title="电话">
+              <ak-col k-title="电话">
                 <ak-template>
-                  <input type="text"  value.bind="phoneNumber  & validate" />
+                  <input type="text" value.bind="phoneNumber  & validate" />
                 </ak-template>
               </ak-col>
               <ak-col k-field="remark" k-title="备注"></ak-col>
