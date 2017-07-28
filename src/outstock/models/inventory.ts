@@ -65,6 +65,7 @@ export interface OutstockInventoryItem {
     // 计量单位
     unit: string;
 
+    employeeName: string;
 }
 
 export interface OutstockInventoryVo extends OutstockInventory{
