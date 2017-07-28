@@ -10,7 +10,7 @@
           <span class="help"></span>
           <div class="controls">
             <ak-drop-down-list k-enabled.two-way="!disabled" k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="storageItem.type"
-              k-data-source.bind="types">
+              k-data-source.bind="types" k-enabled.bind="false">
             </ak-drop-down-list>
           </div>
         </div>
@@ -19,7 +19,7 @@
           <span class="help"></span>
           <div class="controls">
             <ak-drop-down-list k-enabled.two-way="!disabled" k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="storageItem.businessType"
-              k-data-source.bind="businessTypes">
+              k-data-source.bind="businessTypes" k-on-change.delegate="typeChanged()">
             </ak-drop-down-list>
           </div>
         </div>
@@ -29,7 +29,7 @@
           <div class="input-group" style="width: 200px">
             <input type="text" class="form-control" value.bind="storageItem.warehouseName & validate" readonly>
             <div class="input-group-btn">
-              <a class="btn" click.delegate="selected()">选择</a>
+              <a class="btn btn-small m-l-5" click.delegate="selected()">选择</a>
             </div>
           </div>
         </div>
@@ -41,17 +41,17 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">堆存数量*</label>
+          <label class="form-label">数量*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="number" class="form-control" disabled.bind="disabled" value.bind="storageItem.storageQuantity & validate">
+            <input type="number" class="form-control" disabled.bind="disabled" min="0.00" step="0.01" value.bind="storageItem.storageQuantity & toFloat & validate">
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">堆存件数*</label>
+          <label class="form-label">件数*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="number" class="form-control" disabled.bind="disabled" value.bind="storageItem.storageNumber & validate">
+            <input type="number" class="form-control" disabled.bind="disabled" min="0" value.bind="storageItem.storageNumber & toInt & validate">
           </div>
         </div>
         <div class="form-group">
@@ -59,18 +59,18 @@
           <span class="help"></span>
           <div class="controls">
             <ak-drop-down-list k-enabled.two-way="!disabled" k-option-label="请选择" k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
-              k-value.two-way="storageItem.unit" k-data-source.bind="units">
+              k-value.two-way="storageItem.unit" k-data-source.bind="units" k-enabled.bind="false">
             </ak-drop-down-list>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">入库时间*</label>
+        <!-- <div class="form-group">
+          <label class="form-label">时间*</label>
           <span class="help"></span>
           <div class="controls">
             <input type="text" class="form-control" disabled.bind="disabled" ak-datetimepicker="k-value.two-way : storageItem.instockDate; k-format.bind:'yyyy-MM-dd HH:mm:ss'"
               required>
           </div>
-        </div>
+        </div> -->
         <div class="form-actions">
           <div class="pull-right">
             <button class="btn btn-primary" disabled.bind="disabled" click.trigger="save()">保存</button>

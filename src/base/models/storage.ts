@@ -61,6 +61,7 @@ export interface StorageItem {
 
   unitName: string;
 
+  createTime: Date;
 }
 
 export interface StorageItemHistory extends StorageItem {

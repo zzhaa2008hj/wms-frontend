@@ -1,3 +1,4 @@
+import { MessageDialogService } from 'ui';
 import { inject } from "aurelia-dependency-injection";
 import { StorageService } from "@app/base/services/storage";
 import { DataSourceFactory } from "@app/utils";
@@ -15,6 +16,7 @@ export class StorageList {
 
   constructor(@inject private storageService: StorageService,
               @inject private dataSourceFactory: DataSourceFactory,
+              @inject private messageDialogService: MessageDialogService,
               @inject private dictionaryDataService: DictionaryDataService) {
   }
   async activate() {
@@ -33,5 +35,13 @@ export class StorageList {
 
   select() {
     this.dataSource.read();
+  }
+
+  async balance(id) {
+    let confirmed = await this.messageDialogService.confirm({ title: "确认抹平", message: '抹平后库存将清零，确定抹平吗？' });
+    if (confirmed) {
+      await this.storageService.storageBalance(id);
+      this.dataSource.read();
+    }
   }
 }
