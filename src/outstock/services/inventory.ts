@@ -27,4 +27,11 @@ export class OutstockInventoryService {
   createOutstockInventory(batchNumber: string): Promise<void> {
     return this.http.post(`/outstock/inventory/${batchNumber}`, null).then(handleResult);
   }
+
+  /**
+   * 获取单个出库单
+   */
+  getOutstockInventoryByBatchNumber(batchNumber: string): Promise<OutstockInventory> {
+    return this.http.get(`/outstock/inventory/number/${batchNumber}`).then(res => res.content);
+  }
 }
