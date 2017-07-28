@@ -1,3 +1,5 @@
+import { OutstockInventory } from '@app/outstock/models/inventory';
+import { InstockOrder } from '@app/instock/models/instock-order';
 import { DetailsCargoItem } from '@app/base/cargo-info/item-details';
 import { Router } from "aurelia-router";
 import { autoinject } from "aurelia-dependency-injection";
@@ -12,33 +14,74 @@ export class DetailsCargoInfo {
   cargoInfo = {} as CargoInfo;
   cargoItems = [] as CargoItem[];
   cargoInfoId = '';
-  datasource: kendo.data.DataSource;
+  dataSource: kendo.data.DataSource;
   warehouseTypes = [] as DictionaryData[];
-  unit = [] as DictionaryData[];
+
+  units = [] as DictionaryData[];
+
+  instockOrders: InstockOrder[];
+  instockDatasource: kendo.data.DataSource;
+
+  outstockInventories: OutstockInventory[];
+  outstockDatasource: kendo.data.DataSource;
 
   constructor(private router: Router,
     private cargoInfoService: CargoInfoService,
     private messageDialogService: MessageDialogService,
     private dictionaryDataService: DictionaryDataService,
     private dialogService: DialogService) {
-    this.datasource = new kendo.data.DataSource({
+    this.dataSource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
           options.success(this.cargoItems);
         }
       }
     });
+
+    this.instockDatasource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.instockOrders);
+        }
+      }
+    });
+
+    this.outstockDatasource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.outstockInventories);
+        }
+      }
+    });
   }
 
   async activate({ id }) {
-    this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+    //入库指令信息
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
+    console.log(this.units)
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
-    this.cargoItems.map(res => res.unitStr = this.unit.find(d => d.dictDataCode == res.unit).dictDataName);
+    this.cargoItems.map(res => res.unitStr = this.units.find(d => d.dictDataCode == res.unit).dictDataName);
     //todo
-    //获取出入库信息、货权转移、货位转移
-
+    //入库信息
+    this.instockOrders = await this.cargoInfoService.getInstockOrder(id);
+    this.instockOrders.map(res => {
+      let unit = this.units.find(d => d.dictDataCode == res.unit);
+      if (unit) {
+        res.unit = unit.dictDataName;
+      }
+    });
+    //出库信息
+    this.outstockInventories = await this.cargoInfoService.getOutstockInventories(id);
+    this.outstockInventories.map(res => {
+      let unit = this.units.find(d => d.dictDataCode == res.unit);
+      if (unit) {
+        res.unit = unit.dictDataName;
+      }
+    });
+    //todo
+    //货权转移、货位转移
   }
 
   async view(id) {
