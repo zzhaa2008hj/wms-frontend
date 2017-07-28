@@ -200,8 +200,10 @@ export class NewContract {
     //1 :
     if (contractType == 2) {
       this.customers = this.handlingCustomers;
+      this.contract.customerId = '';
     } else {
       this.customers = this.wareHouseCustomer;
+      this.contract.customerId = '';
     }
 
     if (contractType == 3) {
