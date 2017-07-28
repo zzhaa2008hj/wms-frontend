@@ -29,4 +29,5 @@ export class InstockOrderService {
   createInstockOrder(ids: string[]): Promise<void> {
     return this.http.post('/instock/order', ids).then(handleResult);
   }
+
 }
