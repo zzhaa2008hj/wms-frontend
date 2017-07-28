@@ -7,9 +7,9 @@ import { RouterParams } from '@app/common/models/router-params';
 import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { MessageDialogService } from "ui";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { formValidationRenderer } from "@app/validation/support";
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { WorkOrderItem } from "@app/instock/models/work";
+import { datagridValidationRenderer } from "./new-area";
 
 @customElement('edit-area-items')
 export class EditItems {
@@ -56,7 +56,7 @@ export class EditItems {
               @inject private messageDialogService: MessageDialogService,
               @inject private eventAggregator: EventAggregator,
               @newInstance() private validationController: ValidationController) {
-    this.validationController.addRenderer(formValidationRenderer);
+    this.validationController.addRenderer(datagridValidationRenderer);
 
   }
 
@@ -124,12 +124,20 @@ export class EditItems {
     await this.verify();
   }
 
+  validateWorkOrderItem(obj, propertyName: string) {
+    this.validationController.validate({ object: obj, propertyName });
+  }
+
 }
 
 const workOrderItemRules = ValidationRules
-// .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workName)
-// .displayName("作业内容")
-// .required().withMessage(`\${$displayName}不能为空`)
+  .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workId)
+  .displayName("作业内容")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrderIem: WorkOrderItem) => workOrderIem.customerId)
+  .displayName("作业单位")
+  .required().withMessage(`\${$displayName}不能为空`)
 
   .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workNumber)
   .displayName("作业数量")

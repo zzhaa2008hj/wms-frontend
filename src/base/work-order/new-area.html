@@ -14,9 +14,10 @@
                                    k-option-label="请选择..."
                                    k-data-text-field="name"
                                    k-data-value-field="id"
-                                   k-value.two-way="warehouseId"
+                                   k-value.two-way="warehouseId & validate"
                                    k-data-source.bind="warehouseSource"
                                    k-enabled.two-way="!disabled"
+                                   k-on-change.delegate="validateWorkOrder($this,'warehouseId')"
                                    style="width: 60%">
                 </ak-drop-down-list>
             </ak-template>
