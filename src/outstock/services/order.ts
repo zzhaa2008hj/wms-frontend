@@ -3,6 +3,7 @@ import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoItem } from "@app/base/models/cargo-info";
 import { Order } from '@app/outstock/models/order';
 import { ValidVo } from "@app/outstock/models/validVo";
+import { WorkStatistics } from "@app/instock/models/work";
 
 /**
  * 查询条件
@@ -54,8 +55,8 @@ export class OrderService {
   /**
    * 商务审核
    */
-  auditBusiness(id: string, verifyStatus: number): Promise<void> {
-    return this.http.put(`/outstock/order/audit/${id}?verifyStatus=${verifyStatus}`, null).then(handleResult);
+  auditBusiness(id: string, verifyStatus: number, workStatistics?: WorkStatistics): Promise<void> {
+    return this.http.put(`/outstock/order/audit/${id}?verifyStatus=${verifyStatus}`, workStatistics).then(handleResult);
   }
 
   /**

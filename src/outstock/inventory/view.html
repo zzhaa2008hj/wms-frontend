@@ -1,107 +1,92 @@
 <template>
-    <div class="grid simple">
-        <div class="grid-body no-border">
-            <form>
-                <div class="row column-seperation">
-                    <h4>基本信息</h4>
-                    <div class="col-md-3">
-                        <label class="form-label">代理商名称*</label>
-                        <span class="help"></span>
-                        <div class="controls right">
-                            <input type="text" class="form-control"
-                                   value.bind="outstockInventoryVo.agentName" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">客户名称*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="outstockInventoryVo.customerName" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">批次号*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="outstockInventoryVo.batchNumber" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">合计重量*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="outstockInventoryVo.sumQuantity" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">合计件数*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="outstockInventoryVo.sumNumber" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">计量单位*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control"
-                                       value.bind="outstockInventoryVo.unit" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-label">备注</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <textarea type="text" class="form-control"
-                                       value.bind="outstockInventoryVo.remark" readonly>
-                                </textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row column-seperation">
-                    <h4>明细</h4>
-                    <div class="col-md-12">
-                        <span class="help"></span>
-                        <div class="controls right">
-                            <ak-grid k-data-source.bind="datasource" >
-                                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-                                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                                <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
-                                <ak-col k-field="cargoType == 1 ? '内贸': '保税'" k-title="货物性质"></ak-col>
-                                <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
-                                <ak-col k-field="actualOutQuantity" k-title="实出数量"></ak-col>
-                                <ak-col k-field="actualOutNumber" k-title="实出件数"></ak-col>
-                                <ak-col k-field="outstockDate" k-title="提货日期" k-format="{0:yyyy-MM-dd}"></ak-col>
-                                <ak-col k-field="unit" k-title="单位"></ak-col>
-                                <ak-col k-field="driver" k-title="司机"></ak-col>
-                                <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
-                                <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
-                                <ak-col k-field="phoneNumber" k-title="手机"></ak-col>
-                            </ak-grid>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="pull-right">
-                    <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()">取消</button>
-            </div>
+  <div class="grid simple">
+    <div class="grid-body">
+      <div class="page-title">
+        <h4>出库清单</h4>
+      </div>
+      <div class="row">
+        <div class="col-md-11"></div>
+        <div class="input-group col-md-1">
+          <button class="btn btn-small btn-primary" click.delegate="print()">打印</button>
         </div>
-                
-    </div>
+      </div>
+      <div class="col-md-9 col-md-offset-2">
+        <table border="1">
+          <tr>
+            <td align="center" colspan="9">
+              <h4>${organization.name}</h4>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" colspan="9">
+              <h4>出&nbsp;&nbsp;库&nbsp;&nbsp;完&nbsp;&nbsp;工&nbsp;&nbsp;单</h4>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="9" align="center">
+              <h5>提货单号：&nbsp;&nbsp;${cargoInfo.billLadingNumber}&nbsp;&nbsp;</h5>
+            </td>
+          </tr>
+          <tr>
+            <td align="center">提货单位：</td>
+            <td colspan="4">${outstockInventoryVo.customerName}</td>
+            <td align="center" colspan="2">日期：</td>
+            <td colspan="2">${outstockInventoryVo.outstockDateStr}</td>
+          </tr>
+          <tr>
+            <td align="center">品名</td>
+            <td align="center">账册编号</td>
+            <td align="center">库号</td>
+            <td align="center">货物性质</td>
+            <td align="center">提货人</td>
+            <td align="center">车号</td>
+            <td align="center">实出件数</td>
+            <td align="center">实出重量</td>
+            <td align="center">单据号</td>
+          </tr>
+          <template repeat.for="item of outstockInventoryVo.outstockInventoryItems">
+            <tr>
+              <td align="center">${item.cargoName}</td>
+              <td align="center"><input type="text" style="border: none"></td>
+              <td align="center">${item.warehouseName}</td>
+              <td align="center">${item.cargoType == 1 ? '内贸':'保税'}</td>
+              <td align="center">${item.driver}</td>
+              <td align="center">${item.plateNumber}</td>
+              <td align="center">${item.actualOutQuantity}</td>
+              <td align="center">${item.actualOutNumber}</td>
+              <td align="center"><input type="text" style="border: none"></td>
+            </tr>
+          </template>
+<tr>
+    <td align="right" colspan="6">合计：</td>
+    <td align="center">${outstockInventoryVo.sumNumber}</td>
+    <td align="center">${outstockInventoryVo.sumQuantity}</td>
+    <td align="center"></td>
+</tr>
+<tr>
+    <td align="center">备注：</td>
+    <td colspan="8">
+        <input type="text" style="border: none" value.bind="outstockInventoryVo.remark">
+    </td>
+</tr>
+<tr>
+    <td align="center">制单人：</td>
+    <td align="center">${outstockInventoryVo.createAccount}</td>
+    <td align="center">提货人：</td>
+    <td align="center"><input type="text" style="border: none"></td>
+    <td align="center">提货司机：</td>
+    <td align="center">${drivers}</td>
+    <td align="center">仓管员：</td>
+    <td align="center" colspan="2"><input type="text" style="border: none"></td>
+</tr>
+<tr>
+    <td align="center">制单日期：</td>
+    <td colspan="8">
+        ${nowDateTime}
+    </td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </template>
