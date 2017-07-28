@@ -20,7 +20,6 @@ import { DictionaryData } from '@app/base/models/dictionary';
 
 export class CargoFlow {
   searchName: string;
-
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -114,13 +113,41 @@ export class CargoFlow {
     }
   }
 
-  async verifyHistory(id) {
+  async verifyHistory() {
+    let selectedRows = Array.from(this.grid.select());
+    if (selectedRows.length == 0) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
+      return;
+    }
+    if (selectedRows.length > 1) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择单条流水!" });
+      return;
+    }
+    let selectedRow = this.grid.select();
+    let dataItem = this.grid.dataItem(selectedRow);
+    let id = dataItem.id;
     let criteria: VerifyRecordCriteria = {};
     criteria.businessId = id;
     criteria.businessType = 1;
     let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: criteria, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
+  }
+
+  async changeHistory() {
+    let selectedRows = Array.from(this.grid.select());
+    if (selectedRows.length == 0) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
+      return;
+    }
+    if (selectedRows.length > 1) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择单条流水!" });
+      return;
+    }
+    let selectedRow = this.grid.select();
+    let dataItem = this.grid.dataItem(selectedRow);
+    let id = dataItem.id;
+    this.router.navigateToRoute("changeHistory", {id: id});
   }
 
   /**

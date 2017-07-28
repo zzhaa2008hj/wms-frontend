@@ -23,6 +23,10 @@ export class NewWorkItem {
   @observable
   parentUid: string;
 
+  @bindable
+  @observable
+  disabled: boolean;
+
   customersSource = new kendo.data.DataSource({
     transport: {
       read: options => {
@@ -90,7 +94,6 @@ export class NewWorkItem {
   // }
 
   parentUidChanged() {
-    console.log("this.parentUid" + this.parentUid);
     this.dataSource = this.newWorkArea.getNewDataSourceByUid(this.parentUid);
   }
 
@@ -103,7 +106,6 @@ export class NewWorkItem {
     }
 
     let { valid } = await this.validationController.validate();
-    console.log(this.validationController);
     return valid;
   }
 

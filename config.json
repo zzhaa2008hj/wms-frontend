@@ -138,7 +138,8 @@
       "moduleId": "./base/storage-history/index"
     },
     {
-      "route": "/outstock/order",
+      "route": "/outstock/:infoId?/outstock-orders",
+      "href": "/outstock/outstock-orders",
       "name": "outstockOrder",
       "title": "出库指令",
       "moduleId": "./outstock/order/index"

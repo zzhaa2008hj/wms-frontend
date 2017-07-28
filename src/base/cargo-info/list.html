@@ -35,11 +35,11 @@
       </ak-template>
     </ak-col>
     <ak-col k-field="orderNumber == null? 0:orderNumber" k-title="指令件数" k-width.bind="80"></ak-col>
-    <ak-col k-field="orderQuantity == null? 0:orderQuantity" k-title="指令重量" k-width.bind="80"></ak-col>
+    <ak-col k-field="orderQuantity == null? 0:orderQuantity" k-title="指令数量" k-width.bind="80"></ak-col>
     <ak-col k-field="instockNumber == null? 0:instockNumber" k-title="入库件数" k-width.bind="80"></ak-col>
-    <ak-col k-field="instockQuantity == null? 0:instockQuantity" k-title="入库重量" k-width.bind="80"></ak-col>
+    <ak-col k-field="instockQuantity == null? 0:instockQuantity" k-title="入库数量" k-width.bind="80"></ak-col>
     <ak-col k-field="outstockNumber == null? 0:outstockNumber" k-title="出库件数" k-width.bind="80"></ak-col>
-    <ak-col k-field="outstockQuantity == null? 0:outstockQuantity" k-title="出库重量" k-width.bind="80"></ak-col>
+    <ak-col k-field="outstockQuantity == null? 0:outstockQuantity" k-title="出库数量" k-width.bind="80"></ak-col>
     <ak-col k-title="备注" k-width.bind="160">
       <ak-template>
         <label if.bind="remark.length >= 9" title="${remark}">${remark.substring(0,9)}...</label>
@@ -53,6 +53,7 @@
         <a class="btn btn-small" href="/#/instock/${id}/cargo-flows">入库信息</a>
         <a class="btn btn-small" href="/#/instock/${id}/order-items">理货报告</a>
         <a class="btn btn-small" href="/#/instock/${id}/instock-orders">入库单</a>
+        <a class="btn btn-small" href="/#/outstock/${id}/outstock-orders">出库信息</a>
         <a class="btn btn-sm btn-small" route-href="route: changeHistory; params.bind:{id}">修改记录</a>
       </ak-template>
     </ak-col>

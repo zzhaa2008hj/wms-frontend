@@ -23,6 +23,10 @@ export class EditItems {
   @bindable
   areaId: string;
 
+  @bindable
+  @observable
+  disabled: boolean;
+
   customersSource = new kendo.data.DataSource({
     transport: {
       read: options => {

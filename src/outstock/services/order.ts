@@ -13,6 +13,7 @@ export interface OrderCriteria {
   customerName?: string;
   beginDate?: string;
   endDate?: string;
+  infoId?: string;
 }
 
 @autoinject

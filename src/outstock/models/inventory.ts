@@ -17,7 +17,7 @@ export interface OutstockInventory {
     customerName: string;
     // 批次号
     batchNumber: string;
-    // 合计重量
+    // 合计数量
     sumQuantity: number;
     // 合计件数
     sumNumber: number;

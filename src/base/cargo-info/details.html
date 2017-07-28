@@ -91,19 +91,19 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="form-label">指令数量*</label>
+                  <label class="form-label">提单号*</label>
                   <span class="help"></span>
                   <div class="controls">
-                    <input type="number" class="form-control" value.bind="cargoInfo.orderQuantity & toInt" readonly>
+                    <input type="text" class="form-control" readonly value.bind="cargoInfo.billLadingNumber">
                   </div>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="form-label">提单号*</label>
+                  <label class="form-label">指令数量*</label>
                   <span class="help"></span>
                   <div class="controls">
-                    <input type="text" class="form-control" readonly value.bind="cargoInfo.billLadingNumber">
+                    <input type="number" class="form-control" value.bind="cargoInfo.orderQuantity & toFloat" readonly>
                   </div>
                 </div>
               </div>

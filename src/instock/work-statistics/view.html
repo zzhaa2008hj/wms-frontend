@@ -42,8 +42,7 @@
                     <label class="form-label">入库日期</label>
                     <span class="help"></span>
                     <div class="controls">
-                        <input ak-datepicker="k-value.two-way : cargoFlow.instockDate"
-                               style="width: 50%" type="text" class="form-control" readonly>
+                        <input value.bind="cargoFlow.instockDateStr" type="text" readonly>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -104,6 +103,11 @@
                             <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
                         </ak-grid>
                     </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="pull-right">
+                    <a class="btn btn-primary" route-href="route: list">返回</a>
                 </div>
             </div>
         </div>

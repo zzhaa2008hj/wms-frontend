@@ -1,4 +1,4 @@
-import { autoinject } from "aurelia-dependency-injection";
+import { inject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { DataSourceFactory } from "@app/utils";
 import { OrderCriteria, OrderService } from '@app/outstock/services/order';
@@ -14,13 +14,14 @@ import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { ConstantValues } from "@app/common/models/constant-values";
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
+import { RouterParams } from '@app/common/models/router-params';
 
-@autoinject
 export class OrderList {
   orderCriteria: OrderCriteria = {};
   startDatePicker: any;
   endDatePicker: any;
   dataSource: kendo.data.DataSource;
+  id: string = '';
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -28,17 +29,19 @@ export class OrderList {
   };
   outstockStages: any[] = ConstantValues.OutstockStages;
 
-  constructor(private orderService: OrderService,
-              private messageDialogService: MessageDialogService,
-              private dataSourceFactory: DataSourceFactory,
-              private dialogService: DialogService,
-              private customhouseService: CustomhouseClearanceService,
-              private router: Router,
-              private verifyRecordService: VerifyRecordService) {
+  constructor(@inject private orderService: OrderService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject private dialogService: DialogService,
+              @inject private customhouseService: CustomhouseClearanceService,
+              @inject private router: Router,
+              @inject('routerParams') private routerParams: RouterParams,
+              @inject private verifyRecordService: VerifyRecordService) {
 
   }
 
   async activate() {
+    this.orderCriteria.infoId = this.routerParams.infoId;
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.orderService.queryOrders(this.orderCriteria)
         .map(res => {
@@ -205,9 +208,13 @@ export class OrderList {
   /**
    * 审核记录
    */
-  async verifyHistory(id) {
+  async verifyHistory() {
+    if (!this.id) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
+      return;
+    } 
     let criteria: VerifyRecordCriteria = {};
-    criteria.businessId = id;
+    criteria.businessId = this.id;
     criteria.businessType = 2;
     let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: criteria, lock: true })
       .whenClosed();
@@ -265,5 +272,20 @@ export class OrderList {
     } catch (err) {
       await this.messageDialogService.alert({ title: "撤回失败", message: err.message, icon: "error" });
     }
+  }
+
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    let dataItem = grid.dataItem(selectedRow);
+    this.id = dataItem.id;
+  }
+
+  async changeHistory() {
+    if (!this.id) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
+      return;
+    } 
+    this.router.navigateToRoute("changeHistory", {id: this.id});
   }
 }
