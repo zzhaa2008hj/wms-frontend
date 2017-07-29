@@ -37,7 +37,7 @@ export class OutstockInventoryView {
         // 只是查看
         item.unitName = unit.dictDataName;
       }
-      item.outstockDateStr = moment(item.outstockDate).format("YYYY-MM-DD");
+      item.outstockDateStr = moment(item.outstockDate).format("YYYY-MM-DD HH:mm:ss");
     });
   }
 

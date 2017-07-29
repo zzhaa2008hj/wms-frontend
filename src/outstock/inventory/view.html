@@ -14,73 +14,70 @@
         <table border="1">
           <tr>
             <td align="center" colspan="9">
-              <h4>${organization.name}</h4>
-            </td>
-          </tr>
-          <tr>
-            <td align="center" colspan="9">
+              <h3>${organization.name}</h3><br/>
               <h4>出&nbsp;&nbsp;库&nbsp;&nbsp;完&nbsp;&nbsp;工&nbsp;&nbsp;单</h4>
             </td>
           </tr>
           <tr>
-            <td colspan="9" align="center">
+            <td colspan="9" align="right">
               <h5>提货单号：&nbsp;&nbsp;${cargoInfo.billLadingNumber}&nbsp;&nbsp;</h5>
             </td>
           </tr>
           <tr>
             <td align="center">提货单位：</td>
             <td colspan="4">${outstockInventoryVo.customerName}</td>
-            <td align="center" colspan="2">日期：</td>
-            <td colspan="2">${outstockInventoryVo.outstockDateStr}</td>
+            <td align="center">批次号：</td>
+            <td colspan="3">${cargoInfo.batchNumber}</td>
+            <!-- <td align="center" colspan="2">制单日期：</td>
+            <td colspan="2">${outstockInventoryVo.outstockDateStr}</td> -->
           </tr>
           <tr>
-            <td align="center">品名</td>
+            <td align="center">货名</td>
+            <td align="center">货类</td>
             <td align="center">库号</td>
             <td align="center">货物性质</td>
             <td align="center">提货司机</td>
             <td align="center">车号</td>
-            <td align="center">实出件数</td>
+            <td align="center">提货日期</td>            
             <td align="center">实出重量</td>
-            <td align="center">提货日期</td>
-            <td align="center">单据号</td>
+            <td align="center">实出件数</td>            
           </tr>
           <template repeat.for="item of outstockInventoryVo.outstockInventoryItems">
             <tr>
               <td align="center">${item.cargoName}</td>
+              <td align="center">${item.cargoCategoryName}</td>
               <td align="center">${item.warehouseName}</td>
               <td align="center">${item.cargoType == 1 ? '内贸':'保税'}</td>
               <td align="center">${item.driver}</td>
               <td align="center">${item.plateNumber}</td>
+              <td align="center">${item.outstockDateStr}</td>              
               <td align="center">${item.actualOutQuantity}</td>
-              <td align="center">${item.actualOutNumber}</td>
-              <td align="center">${item.outstockDateStr}</td>
-              <td align="center"><input type="text" style="border: none"></td>
+              <td align="center">${item.actualOutNumber}</td>                            
             </tr>
           </template>
-<tr>
-    <td align="right" colspan="6">合计：</td>
-    <td align="center">${outstockInventoryVo.sumNumber}</td>
-    <td align="center">${outstockInventoryVo.sumQuantity}</td>
-    <td align="center"></td>
-</tr>
-<tr>
-    <td align="center">备注：</td>
-    <td colspan="8">
-        <input type="text" style="border: none" value.bind="outstockInventoryVo.remark">
-    </td>
-</tr>
-<tr>
-    <td align="center">提货人：</td>
-    <td align="center"><input type="text" style="border: none"></td>
-    <td align="center">仓管员：</td>
-    <td align="center"><input type="text" style="border: none"></td>
-    <td align="center">制单人：</td>
-    <td align="center"><input type="text" style="border: none" value.bind="outstockInventoryVo.employeeName"></td>
-    <td align="center">制单日期：</td>
-    <td align="center" colspan="2">${nowDateTime}</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
+          <tr>
+            <td align="right" colspan="7">合计：</td>
+            <td align="center">${outstockInventoryVo.sumQuantity}</td>
+            <td align="center">${outstockInventoryVo.sumNumber}</td>            
+          </tr>
+          <tr>
+            <td align="center">备注：</td>
+            <td colspan="8">
+              <input type="text" style="border: none" value.bind="outstockInventoryVo.remark">
+            </td>
+          </tr>
+          <tr>
+            <td align="center">提货人：</td>
+            <td align="center"><input type="text" style="border: none"></td>
+            <td align="center">仓管员：</td>
+            <td align="center"><input type="text" style="border: none"></td>
+            <td align="center">制单人：</td>
+            <td align="center"><input type="text" style="border: none" value.bind="outstockInventoryVo.employeeName"></td>
+            <td align="center">制单日期：</td>
+            <td align="center" colspan="2">${nowDateTime}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>
