@@ -12,7 +12,7 @@
       </div>
       <div class="col-md-9 col-md-offset-2">
         <table border="1">
-          <tr>
+           <tr>
             <td align="center" colspan="9">
               <h4>${organization.name}</h4>
             </td>
@@ -21,7 +21,7 @@
             <td align="center" colspan="9">
               <h4>出&nbsp;&nbsp;库&nbsp;&nbsp;完&nbsp;&nbsp;工&nbsp;&nbsp;单</h4>
             </td>
-          </tr>
+          </tr> 
           <tr>
             <td colspan="9" align="center">
               <h5>提货单号：&nbsp;&nbsp;${cargoInfo.billLadingNumber}&nbsp;&nbsp;</h5>
@@ -29,9 +29,7 @@
           </tr>
           <tr>
             <td align="center">提货单位：</td>
-            <td colspan="4">${outstockInventoryVo.customerName}</td>
-            <td align="center" colspan="2">日期：</td>
-            <td colspan="2">${outstockInventoryVo.outstockDateStr}</td>
+            <td colspan="8" align="left">${outstockInventoryVo.customerName}</td>
           </tr>
           <tr>
             <td align="center">品名</td>
@@ -51,8 +49,8 @@
               <td align="center">${item.cargoType == 1 ? '内贸':'保税'}</td>
               <td align="center">${item.driver}</td>
               <td align="center">${item.plateNumber}</td>
-              <td align="center">${item.actualOutQuantity}</td>
               <td align="center">${item.actualOutNumber}</td>
+              <td align="center">${item.actualOutQuantity}</td>
               <td align="center">${item.outstockDateStr}</td>
               <td align="center"><input type="text" style="border: none"></td>
             </tr>
