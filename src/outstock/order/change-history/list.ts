@@ -27,7 +27,6 @@ export class ChangeHistoryList {
 
   async detail(id) {
     let changeHistory = await this.orderService.getChangeHistory(id);
-    console.log(changeHistory)
       let result = await this.dialogService
         .open({ viewModel: OrderChangeHistoryDetail, model: changeHistory, lock: true })
         .whenClosed();

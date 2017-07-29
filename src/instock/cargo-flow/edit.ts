@@ -116,7 +116,6 @@ export class EditCargoFlow {
 
   onSelect(e) {
     let dataItem = this.dropDownListCargoItem.dataItem(e.item);
-    console.log(dataItem);
     this.cargoItems.splice(0, 0, dataItem);
     this.dataSourceCargoItem.data(this.cargoItems);
   }

@@ -58,7 +58,6 @@ export class DetailsCargoInfo {
   async activate({ id }) {
     //入库指令信息
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    console.log(this.units)
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
