@@ -14,7 +14,7 @@ import { MessageDialogService } from "ui";
 import { EditWorkOrder } from "./edit";
 import { WorkAreaService } from "@app/base/services/work";
 import { WorkOrderItemService } from "@app/instock/services/work-order";
-import { formValidationRenderer } from "@app/validation/support";
+import { datagridValidationRenderer } from "./new-area";
 
 @customElement('work-area-edit')
 export class EditWorArea {
@@ -205,7 +205,7 @@ export class EditWorArea {
 
     });
 
-    this.validationAreaController.addRenderer(formValidationRenderer);
+    this.validationAreaController.addRenderer(datagridValidationRenderer);
 
     this.editWorkOrder.getAreaDatasource(this.datasource);
 
@@ -315,6 +315,10 @@ export class EditWorArea {
 
   workOrderIdChanged() {
     alert(this.workOrderId);
+  }
+
+  validateWorkOrder(obj, propertyName: string) {
+    this.validationAreaController.validate({ object: obj, propertyName });
   }
 
 }
