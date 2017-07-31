@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { CargoItem } from "@app/base/models/cargo-info";
-import { Order } from '@app/outstock/models/order';
+import { Order, OrderItem } from '@app/outstock/models/order';
 import { ValidVo } from "@app/outstock/models/validVo";
 import { WorkStatistics } from "@app/instock/models/work";
 
@@ -128,12 +128,12 @@ export class OrderItemService {
   /**
    * 根据货物ID查明细
    */
-  async getItemsByOrderId(orderId: string): Promise<CargoItem[]> {
+  async getItemsByOrderId(orderId: string): Promise<OrderItem[]> {
     let res = await this.http.get(`/outstock/order/${orderId}/item`);
     return res.content;
   }
 
-  async getItemsByOrderIdAndType(orderId: string, type?: number): Promise<CargoItem[]> {
+  async getItemsByOrderIdAndType(orderId: string, type?: number): Promise<OrderItem[]> {
     let res = await this.http.get(`/outstock/order/${orderId}/items?type=${type}`);
     return res.content;
   }

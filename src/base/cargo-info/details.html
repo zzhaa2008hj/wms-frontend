@@ -181,17 +181,17 @@
             <div if.bind="outstockOrders.length == 0">
               暂无出库信息
             </div>
-            <div if.bind="instockOrders.length > 0">
+            <div if.bind="outstockOrders.length > 0">
               <ak-grid k-data-source.bind="outstockDatasource" >
                 <ak-col k-field="customerName" k-title="客户名称"></ak-col>
                 <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
                 <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
-                <ak-col k-field="sumQuantity" k-title="合计数量"></ak-col>
-                <ak-col k-field="sumNumber" k-title="合计件数"></ak-col>
+                <ak-col k-field="quantitySum" k-title="合计数量"></ak-col>
+                <ak-col k-field="numberSum" k-title="合计件数"></ak-col>
                 <ak-col k-field="unit" k-title="单位"></ak-col>
                 <ak-col k-field="remark" k-title="备注"></ak-col>
                 <ak-template for="detailTemplate">
-                    <outstock-item-info outstock-inventory-id.bind="$this.id"></outstock-item-info>
+                    <outstock-item-info outstock-order-id.bind="$this.id"></outstock-item-info>
                 </ak-template>
             </ak-grid>
             </div>

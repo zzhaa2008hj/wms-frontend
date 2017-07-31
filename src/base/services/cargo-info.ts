@@ -1,3 +1,4 @@
+import { Order } from '../../outstock/models/order';
 import { OutstockInventory } from '@app/outstock/models/inventory';
 import { InstockOrder } from '@app/instock/models/instock-order';
 import { autoinject } from "aurelia-dependency-injection";
@@ -175,5 +176,9 @@ export class CargoInfoService {
   async getOutstockInventories(cargoInfoId: string): Promise<OutstockInventory[]> {
     let res = await this.http.get(`/base/cargoInfo/${cargoInfoId}/outstockInfo`);
     return res.content;
+  }
+
+  async getOutstockOrders(cargoInfoId: string): Promise<Array<Order>> {
+    return this.http.get(`/outstock/order/list?cargoInfoId=${cargoInfoId}`).then(res => res.content);
   }
 }

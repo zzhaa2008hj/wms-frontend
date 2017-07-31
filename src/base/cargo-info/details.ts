@@ -1,4 +1,3 @@
-import { OutstockInventory } from '@app/outstock/models/inventory';
 import { InstockOrder } from '@app/instock/models/instock-order';
 import { DetailsCargoItem } from '@app/base/cargo-info/item-details';
 import { Router } from "aurelia-router";
@@ -8,6 +7,7 @@ import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { Order } from '@app/outstock/models/order';
 
 @autoinject
 export class DetailsCargoInfo {
@@ -22,14 +22,14 @@ export class DetailsCargoInfo {
   instockOrders: InstockOrder[];
   instockDatasource: kendo.data.DataSource;
 
-  outstockInventories: OutstockInventory[];
+  outstockOrders: Order[];
   outstockDatasource: kendo.data.DataSource;
 
   constructor(private router: Router,
-    private cargoInfoService: CargoInfoService,
-    private messageDialogService: MessageDialogService,
-    private dictionaryDataService: DictionaryDataService,
-    private dialogService: DialogService) {
+              private cargoInfoService: CargoInfoService,
+              private messageDialogService: MessageDialogService,
+              private dictionaryDataService: DictionaryDataService,
+              private dialogService: DialogService) {
     this.dataSource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -49,7 +49,7 @@ export class DetailsCargoInfo {
     this.outstockDatasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
-          options.success(this.outstockInventories);
+          options.success(this.outstockOrders);
         }
       }
     });
@@ -72,8 +72,8 @@ export class DetailsCargoInfo {
       }
     });
     //出库信息
-    this.outstockInventories = await this.cargoInfoService.getOutstockInventories(id);
-    this.outstockInventories.map(res => {
+    this.outstockOrders = await this.cargoInfoService.getOutstockOrders(id);
+    this.outstockOrders.map(res => {
       let unit = this.units.find(d => d.dictDataCode == res.unit);
       if (unit) {
         res.unit = unit.dictDataName;
