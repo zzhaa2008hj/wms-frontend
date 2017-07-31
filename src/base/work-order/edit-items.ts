@@ -1,10 +1,9 @@
 import { observable, inject, newInstance } from "aurelia-framework";
 import { bindable, customElement } from "aurelia-templating";
-import { ContractService } from "@app/base/services/contract";
 import { WorkInfoService } from "@app/base/services/work-info";
 import { EditWorArea } from "./edit-area";
 import { RouterParams } from '@app/common/models/router-params';
-import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { WorkOrderItemService, WorkOrderService } from '@app/instock/services/work-order';
 import { MessageDialogService } from "ui";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { ValidationController, ValidationRules } from 'aurelia-validation';
@@ -30,7 +29,7 @@ export class EditItems {
   customersSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.contractService.getCustomers(2)
+        this.workOrderService.listCustomersForWork()
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -48,9 +47,9 @@ export class EditItems {
   });
   //this.instockCargoItemId, this.type
 
-  constructor(@inject private contractService: ContractService,
-              @inject private workInfoService: WorkInfoService,
+  constructor(@inject private workInfoService: WorkInfoService,
               @inject private editWorArea: EditWorArea,
+              @inject private workOrderService: WorkOrderService,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderItemService: WorkOrderItemService,
               @inject private messageDialogService: MessageDialogService,
