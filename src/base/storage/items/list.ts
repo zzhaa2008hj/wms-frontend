@@ -44,6 +44,11 @@ export class StorageItemList {
   select() {
     this.dataSource.read();
   } 
+  reset() {
+    this.selectedWarehouseName = '';
+    this.selectedWarehouse = '';
+    this.dataSource.read();
+  }
 
   async selected() {
     let result = await this.dialogService
