@@ -29,14 +29,19 @@ export class WarehouseTree {
   }
 
   async activate(storageItem: StorageItemHistory) {
+    
+    let warehouses = [] as Warehouse[];
     if (storageItem.warehouseId) {
       this.selectedWarehouse = await this.warehouseService.getWarehouseById(storageItem.warehouseId);
     }
-    let warehouses = [] as Warehouse[];
-    if (storageItem.businessType == 1) {
+    if (storageItem.businessType) {
+      if (storageItem.businessType == 1) {
+        warehouses = await this.warehouseService.listWarehouse();
+      } else {
+        warehouses = await this.warehouseService.listWarehouseByStorageInfo(storageItem.storageInfoId);
+      }
+    }else {
       warehouses = await this.warehouseService.listWarehouse();
-    } else {
-      warehouses = await this.warehouseService.listWarehouseByStorageInfo(storageItem.storageInfoId);
     }
     this.helper = treeHelper(warehouses, { childrenKey: 'sub' });
     let cRootItems = this.helper.toTree();
