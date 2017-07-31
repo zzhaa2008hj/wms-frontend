@@ -3,27 +3,27 @@
     <h3>基础费率管理</h3>
   </div>
   <div class="row">
-    <div class="col-md-1"><a class="btn btn-small btn-success" route-href="route: new">费率设置</a></div>
-    <div class="col-md-11 m-b-10">
+    <div class="col-md-1"><a class="btn btn-small btn-success" route-href="route: new">新增费率</a></div>
+    <div class="col-md-11">
       <ak-drop-down-list k-value.two-way="rate.chargeCategory" k-option-label="请选择费用类别" k-data-text-field="text"
-        k-data-value-field="value" k-data-source.bind="chargeCategories">
+        k-data-value-field="value" style="width:130px;" k-data-source.bind="chargeCategories">
       </ak-drop-down-list>
-      <ak-drop-down-list class="m-l-15" k-value.two-way="rate.chargeType" k-option-label="请选择费用类型" k-data-text-field="text" k-data-value-field="value"
-        k-data-source.bind="chargeTypes">
+      <ak-drop-down-list class="m-l-5" k-value.two-way="rate.chargeType" k-option-label="请选择费用类型" k-data-text-field="text" k-data-value-field="value"
+        k-data-source.bind="chargeTypes" style="width:130px;">
       </ak-drop-down-list>
-      <ak-drop-down-list class="m-l-15" k-value.two-way="rate.customerCategory" k-option-label="请选择客户类别" k-data-text-field="text"
-        k-data-value-field="value" k-data-source.bind="customerCategories">
+      <ak-drop-down-list class="m-l-5" k-value.two-way="rate.customerCategory" k-option-label="请选择客户类别" k-data-text-field="text"
+        k-data-value-field="value" k-data-source.bind="customerCategories" style="width:130px;">
       </ak-drop-down-list>
-      <ak-drop-down-list class="m-l-15" k-value.two-way="rate.rateType" k-option-label="请选择作业类别" k-data-text-field="text" k-data-value-field="value"
-        k-data-source.bind="rateTypes">
+      <ak-drop-down-list class="m-l-5" k-value.two-way="rate.rateType" k-option-label="请选择作业类别" k-data-text-field="text" k-data-value-field="value"
+        k-data-source.bind="rateTypes" style="width:130px;">
       </ak-drop-down-list>
-      <ak-drop-down-list class="m-l-15" k-value.two-way="rate.warehouseType" k-option-label="请选择库位性质" k-data-text-field="dictDataName"
-        k-data-value-field="dictDataCode" k-data-source.bind="warehouseType">
+      <ak-drop-down-list class="m-l-5" k-value.two-way="rate.warehouseType" k-option-label="请选择库位性质" k-data-text-field="dictDataName"
+        k-data-value-field="dictDataCode" k-data-source.bind="warehouseType" style="width:130px;">
       </ak-drop-down-list>
-      <ak-drop-down-list class="m-l-15" k-value.two-way="rate.warehouseCategory" k-option-label="请选择库位类别" k-data-text-field="dictDataName"
-        k-data-value-field="dictDataCode" k-data-source.bind="warehouseCategory">
+      <ak-drop-down-list class="m-l-5" k-value.two-way="rate.warehouseCategory" k-option-label="请选择库位类别" k-data-text-field="dictDataName"
+        k-data-value-field="dictDataCode" k-data-source.bind="warehouseCategory" style="width:130px;">
       </ak-drop-down-list>
-      <input type="text" class="m-l-15" value.bind="rate.cargoCategoryName" disabled/>
+      <input type="text" style="width:80px;" class="m-l-5" value.bind="rate.cargoCategoryName" disabled/>
       <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择货类</a>
       <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
       <a class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></a>

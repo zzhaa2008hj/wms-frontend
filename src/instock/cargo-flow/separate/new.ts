@@ -61,7 +61,7 @@ export class NewSeparate {
     if (cargoItems) {
       for (let ci of cargoItems) {
         if (ci.unit) {
-          ci.unit = this.units.find(d => d.dictDataCode == ci.unit).dictDataName;
+          ci.unitStr = this.units.find(d => d.dictDataCode == ci.unit).dictDataName;
         }
         let cargoItem = await this.cargoItemService.getBaseCargoItemById(ci.cargoItemId);
         Object.assign(ci, { cargoSubCatergoryName: cargoItem.cargoSubCatergoryName, freeDays: cargoItem.freeDays });
