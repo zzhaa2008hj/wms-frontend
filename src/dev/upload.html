@@ -1,0 +1,16 @@
+<template>
+  <h4>上传</h4>
+
+  路径
+  <input value.bind="dir">
+  <button click.trigger="chooseFile()">Choose File</button> ${file.name}
+
+  <button click.trigger="upload()">Upload</button>
+  <wa-progress width="200px" height="5px"
+      if.bind="currentUpload"
+      value.bind="currentUpload.progress.loaded"
+      total.bind="currentUpload.progress.total" label="正在上传...">${percent}%</wa-progress>
+
+
+  <button if.bind="currentUpload" click.trigger="currentUpload.abort()">Cancel</button>
+</template>

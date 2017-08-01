@@ -1,6 +1,9 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8090"
+    "baseUrl": "http://192.168.133.118:8090"
+  },
+  "upload": {
+    "baseUrl": "http://192.168.133.118:5555"
   },
   "routes": [{
       "route": "/report",
