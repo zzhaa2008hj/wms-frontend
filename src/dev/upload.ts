@@ -1,3 +1,4 @@
+import { HttpClient } from "aurelia-http-client";
 import { DialogService } from "ui";
 import { autoinject } from "aurelia-framework";
 import { Uploader, Upload } from "@app/upload";
@@ -11,8 +12,13 @@ export class UploadDemo {
 
   currentUpload: Upload;
 
-  constructor(private uploader: Uploader, private dialogService: DialogService) {
+  private http: HttpClient;
 
+  constructor(private uploader: Uploader, private dialogService: DialogService) {
+    this.http = new HttpClient();
+    this.http.configure(builder => builder
+      .withBaseUrl(uploader['options'].baseUrl)
+    );
   }
 
   async chooseFile() {
@@ -22,10 +28,16 @@ export class UploadDemo {
   }
 
   async upload() {
-    this.currentUpload = this.uploader.upload(this.file, { path: this.dir + '/' + this.file.name });
+    let { key: dirKey } = await this.reserveDir(this.dir);
+
+    this.currentUpload = this.uploader.upload(this.file, { path: '/' + dirKey + '/' + this.file.name });
     let result = await this.currentUpload.result;
     console.log('result', result);
     this.currentUpload = null;
+  }
+
+  reserveDir(path: string): Promise<{key: string}> {
+    return this.http.put(path, {}).then(res => res.content);
   }
 
 }
