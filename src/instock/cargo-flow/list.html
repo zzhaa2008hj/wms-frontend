@@ -16,8 +16,8 @@
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true" k-resizable.bind="true" k-widget.bind="grid">
-    <ak-col k-selectable.bind="true" k-width.bind="30"></ak-col>    
+  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true" k-resizable.bind="true" k-widget.bind="grid" 
+    k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
     <ak-col k-title="入库流水单号" k-field="instockFlowNumber" k-width.bind="160">
       <ak-template>
         <a route-href="route: details; params.bind: { id: id }">${instockFlowNumber}</a>        

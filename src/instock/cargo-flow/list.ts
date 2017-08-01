@@ -21,6 +21,7 @@ import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 
 export class CargoFlow {
+  selectedItem: any;
   searchName: string;
   pageable = {
     refresh: true,
@@ -30,7 +31,6 @@ export class CargoFlow {
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
   private dataSource: kendo.data.DataSource;
-  private grid: any;
 
   constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private dialogService: DialogService,
@@ -130,18 +130,12 @@ export class CargoFlow {
   }
 
   async verifyHistory() {
-    let selectedRows = Array.from(this.grid.select());
-    if (selectedRows.length == 0) {
+    if (!this.selectedItem) {
       await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
       return;
     }
-    if (selectedRows.length > 1) {
-      await this.messageDialogService.alert({ title: "提示", message: "请选择单条流水!" });
-      return;
-    }
-    let selectedRow = this.grid.select();
-    let dataItem = this.grid.dataItem(selectedRow);
-    let id = dataItem.id;
+
+    let id = this.selectedItem.id;
     let criteria: VerifyRecordCriteria = {};
     criteria.businessId = id;
     criteria.businessType = 1;
@@ -151,18 +145,12 @@ export class CargoFlow {
   }
 
   async changeHistory() {
-    let selectedRows = Array.from(this.grid.select());
-    if (selectedRows.length == 0) {
+    if (!this.selectedItem) {
       await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
       return;
     }
-    if (selectedRows.length > 1) {
-      await this.messageDialogService.alert({ title: "提示", message: "请选择单条流水!" });
-      return;
-    }
-    let selectedRow = this.grid.select();
-    let dataItem = this.grid.dataItem(selectedRow);
-    let id = dataItem.id;
+    
+    let id = this.selectedItem.id;
     this.router.navigateToRoute("changeHistory", {id: id});
   }
 
@@ -215,17 +203,16 @@ export class CargoFlow {
    * 生成入库单
    */
   async createInstockOrder() {
-    let selectedRows = Array.from(this.grid.select());
-    if (selectedRows.length == 0) {
+    if (!this.selectedItem) {
       await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
       return;
     }
-    let ids = selectedRows.map(row => this.grid.dataItem(row).id);
+    let id = this.selectedItem.id;
 
     try {
       let conformed = await this.messageDialogService.confirm({ title: "提示", message: "确认生成入库单？" });
       if (!conformed) return;
-      await this.instockOrderService.createInstockOrder(ids);
+      await this.instockOrderService.createInstockOrder(id);
       await this.messageDialogService.alert({ title: "提示", message: "生成成功！" });
       this.dataSource.read();
       // 跳转 到入库单页面
@@ -239,12 +226,11 @@ export class CargoFlow {
    * 生成理货报告
    */
   async createInstockOrderItem() {
-    let selectedRoows = Array.from(this.grid.select());
-    if (selectedRoows.length == 0) {
+    if (!this.selectedItem) {
       await this.messageDialogService.alert({ title: "提示", message: "请选择流水！" });
       return;
     }
-    let ids = selectedRoows.map(row => this.grid.dataItem(row).id);
+    let ids = [this.selectedItem.id];
     try {
       let confirmed = await this.messageDialogService.confirm({ title: "提示", message: "确认生成理货报告？" });
       if (!confirmed) return;
@@ -276,5 +262,14 @@ export class CargoFlow {
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
+  }
+
+  /**
+   * 单选数据
+   */
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    this.selectedItem = grid.dataItem(selectedRow);
   }
 }
