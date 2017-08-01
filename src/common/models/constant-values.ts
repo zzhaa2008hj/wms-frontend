@@ -19,6 +19,15 @@ export class ConstantValues {
     }, {
       type: 6,
       name: "合同"
+    }, {
+      type: 7,
+      name: "零星作业"
+    }, {
+      type: 8,
+      name: "收费"
+    }, {
+      type: 9,
+      name: "付费"
     }];
   }
 
