@@ -95,19 +95,20 @@ export class NewCargoFlow {
     let keyRes = await this.attachmentService.getDirKey(this.cargoFlow.cargoInfoId);
 
     let index = 0;
-    for (let res of this.files) {
+    for (let file of this.files) {
       let fileName = uuid();      
-      let suffix = res.name.split(".")[1];
+      let suffix = file.name.split(".")[1];
       let uuidName = fileName + "." + suffix;
       let path = '/' + keyRes.key + '/' + uuidName;
-      this.currentUpload = this.uploader.upload(res, { path: path });
+      this.currentUpload = this.uploader.upload(file, { path: path });
       let result = await this.currentUpload.result;
       if (result.status == 'success') {
-          this.attachments.push({ uuidName: uuidName, realName: res.name });
+          this.attachments.push({ uuidName: uuidName, realName: file.name });
           index++;
       }
     }
     this.currentUpload = null;
+    this.dir = '';
     await this.dialogService.alert({ title: '上传完成', message: '上传完成，成功上传' + index + '条数据' });
     return;
   }
