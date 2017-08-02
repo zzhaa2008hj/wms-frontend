@@ -3,11 +3,11 @@ import { DialogService, MessageDialogService } from "ui";
 import { Container, inject } from 'aurelia-dependency-injection';
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
-import { CargoFlow, InstockCargoItem } from "@app/instock/models/cargo-flow";
+import { CargoFlow, cargoFlowValidationRules, InstockCargoItem } from "@app/instock/models/cargo-flow";
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
-import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { CodeService } from '@app/common/services/code';
 import { DictionaryDataService } from '@app/base/services/dictionary';
@@ -248,7 +248,7 @@ export class NewCargoFlow {
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
 
-    this.validationController.addObject(this.cargoFlow, validationRules);
+    this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
@@ -269,17 +269,3 @@ export class NewCargoFlow {
   }
 }
 
-const validationRules = ValidationRules
-  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
-  .displayName('联系人')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
-  .displayName('联系电话')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => /^[1][34578][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
-
-  .ensure((cargoFlow: CargoFlow) => cargoFlow.remark)
-  .displayName('备注')
-  .maxLength(500).withMessage(`\${$displayName} 过长`)
-  .rules;

@@ -145,5 +145,10 @@
     "name": "inventory",
     "title": "出库清单",
     "moduleId": "./outstock/inventory/index"
+  }, {
+    "route": "/fee/charge",
+    "name": "charge",
+    "title": "收费",
+    "moduleId": "./fee/charge/index"
   }]
 }

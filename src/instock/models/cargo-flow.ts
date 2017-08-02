@@ -1,4 +1,5 @@
 import { AttachmentMap } from '@app/common/models/attachment';
+import { ValidationRules } from 'aurelia-validation';
 /**
  * Created by Hui on 2017/6/19.
  */
@@ -87,3 +88,18 @@ export interface Vehicle {
   orgId: string;
   cargoName: string;
 }
+
+export const cargoFlowValidationRules = ValidationRules
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
+  .displayName('联系人')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
+  .displayName('联系电话')
+  .required().withMessage(`\${$displayName} 不能为空`)
+  .satisfies(x => /^[1][34578][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 过长`)
+  .rules;

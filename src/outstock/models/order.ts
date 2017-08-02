@@ -133,7 +133,7 @@ export const vehicleValidationRules = ValidationRules
   .ensure((vehicle: Vehicle) => vehicle.plateNumber)
   .displayName('车牌号')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => /^([\u4e00-\u9fa5][a-zA-Z](([DF](?![a-zA-Z0-9]*[IO])[0-9]{4,5})|([0-9]{5}[DF])))|([冀豫云辽黑湘皖鲁苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼渝京津沪新京军空海北沈兰济南广成使领A-Z]{1}[a-zA-Z0-9]{5,6}[a-zA-Z0-9挂学警港澳]{1})$/
+  .satisfies(x => /([冀豫云辽黑湘皖鲁苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼渝京津沪新京军空海北沈兰济南广成使领A-Z]{1}[a-zA-Z0-9]{5,6}[a-zA-Z0-9挂学警港澳]{1})$/
     .test(x)).withMessage(` 请输入正确车牌号`)
 
   .ensure((vehicle: Vehicle) => vehicle.driverName)
@@ -144,12 +144,11 @@ export const vehicleValidationRules = ValidationRules
   .ensure((vehicle: Vehicle) => vehicle.driverIdentityNumber)
   .displayName('身份证号')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/.test(x)
-                  || /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(x))
-                    .withMessage(` 请输入正确的15/18位身份证号`)
+  .satisfies(x => /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/.test(x)).withMessage(` 请输入正确的18位身份证号`)
 
   .ensure((vehicle: Vehicle) => vehicle.phoneNumber)
   .displayName('电话')
   .required().withMessage(`\${$displayName} 不能为空`)
   .satisfies(x => /^[1][34578][0-9]{9}$/.test(x)).withMessage(` 请输入正确的11位手机号码 e.g.139 0000 0000`)
   .rules;
+
