@@ -10,7 +10,8 @@ export class Charge {
 
     config.map([
       { route: '', name: 'list', moduleId: './list' },
-      { route: '/customer-confirmation', name: 'customerConfirm', moduleId: './customer-confirmation/new' },
+      { route: '/:id/customer-confirmation', name: 'customerConfirm', moduleId: './customer-confirmation/new' },
+      { route: '/:id/note', name: 'note', moduleId: './note' },
     ]);
     this.router = router;
   }
