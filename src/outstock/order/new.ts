@@ -61,6 +61,9 @@ export class NewOrder {
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -3, outstockStatus: 0 });
+    this.baseCargoInfo.map(res => {
+      res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")";
+    });
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);

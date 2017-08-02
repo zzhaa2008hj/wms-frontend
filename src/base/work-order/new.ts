@@ -309,13 +309,8 @@ const workOrderRules = ValidationRules
     return true;
   })
   .withMessage(`\${$displayName}不能为空`)
-  .satisfies(x => {
-    if (x) {
-      return /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/.test(x);
-    }
-    return true;
-  })
-  .withMessage(`\${$displayName}不符合规范`)
+  .satisfies(x => /^([\u4e00-\u9fa5][a-zA-Z](([DF](?![a-zA-Z0-9]*[IO])[0-9]{4,5})|([0-9]{5}[DF])))|([冀豫云辽黑湘皖鲁苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼渝京津沪新京军空海北沈兰济南广成使领A-Z]{1}[a-zA-Z0-9]{5,6}[a-zA-Z0-9挂学警港澳]{1})$/
+  .test(x)).withMessage(` 请输入正确车牌号`)
 
   .ensure((workOrder: WorkOrder) => workOrder.driverName)
   .displayName("司机名称")

@@ -1,14 +1,14 @@
 import { observable, inject, newInstance } from "aurelia-framework";
 import { bindable, customElement } from "aurelia-templating";
-import { ContractService } from "@app/base/services/contract";
 import { WorkInfoService } from "@app/base/services/work-info";
 import { NewWorArea } from "./new-area";
 import { RouterParams } from '@app/common/models/router-params';
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { WorkOrderItem } from "@app/instock/models/work";
-import { formValidationRenderer } from "@app/validation/support";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { MessageDialogService } from "ui";
+import { datagridValidationRenderer } from "./new-area";
+import { WorkOrderService } from '@app/instock/services/work-order';
 
 @customElement('area-items')
 export class NewWorkItem {
@@ -30,7 +30,7 @@ export class NewWorkItem {
   customersSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.contractService.getCustomers(2)
+        this.workOrderService.listCustomersForWork()
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -49,14 +49,14 @@ export class NewWorkItem {
   //this.instockCargoItemId, this.type
 
   //private resBind: Subscription;
-  constructor(@inject private contractService: ContractService,
-              @inject private workInfoService: WorkInfoService,
+  constructor(@inject private workInfoService: WorkInfoService,
               @inject private newWorkArea: NewWorArea,
+              @inject private workOrderService: WorkOrderService,
               @inject('routerParams') private routerParams: RouterParams,
               @newInstance() private validationController: ValidationController,
               @inject private eventAggregator: EventAggregator,
               @inject private messageDialogService: MessageDialogService) {
-    this.validationController.addRenderer(formValidationRenderer);
+    this.validationController.addRenderer(datagridValidationRenderer);
 
   }
 
@@ -112,12 +112,20 @@ export class NewWorkItem {
   async aa() {
     await this.verify();
   }
+
+  validateWorkOrderItem(obj, propertyName: string) {
+    this.validationController.validate({ object: obj, propertyName });
+  }
 }
 
 const workOrderItemRules = ValidationRules
-// .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workName)
-// .displayName("作业内容")
-// .required().withMessage(`\${$displayName}不能为空`)
+  .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workId)
+  .displayName("作业内容")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrderIem: WorkOrderItem) => workOrderIem.customerId)
+  .displayName("作业单位")
+  .required().withMessage(`\${$displayName}不能为空`)
 
   .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workNumber)
   .displayName("作业数量")

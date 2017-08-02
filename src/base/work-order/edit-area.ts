@@ -14,7 +14,7 @@ import { MessageDialogService } from "ui";
 import { EditWorkOrder } from "./edit";
 import { WorkAreaService } from "@app/base/services/work";
 import { WorkOrderItemService } from "@app/instock/services/work-order";
-import { formValidationRenderer } from "@app/validation/support";
+import { datagridValidationRenderer } from "./new-area";
 
 @customElement('work-area-edit')
 export class EditWorArea {
@@ -205,7 +205,7 @@ export class EditWorArea {
 
     });
 
-    this.validationAreaController.addRenderer(formValidationRenderer);
+    this.validationAreaController.addRenderer(datagridValidationRenderer);
 
     this.editWorkOrder.getAreaDatasource(this.datasource);
 
@@ -250,9 +250,24 @@ export class EditWorArea {
     this.newWorkOrder.getItemsDataSources(this.itemsDataSources);
   }
 
-  remove(e) {
-    this.datasource.remove(e);
-    this.itemsDataSources.delete(e.uid);
+  async remove(e) {
+    let confirmed = await this.messageDialogService.confirm({ title: "删除", message: "删除后无法修复" });
+    if (confirmed) {
+      if (e.id != null && e.id != "") {
+        try {
+          await this.workAreaService.removeWorkOrderArea(e.id);
+          await this.messageDialogService.alert({ title: "", message: "删除成功" });
+          this.datasource.remove(e);
+          this.itemsDataSources.delete(e.uid);
+        } catch (e) {
+          await this.messageDialogService.alert({ title: "错误", message: e.message, icon: 'error' });
+        }
+      } else {
+        await this.messageDialogService.alert({ title: "", message: "删除成功" });
+        this.datasource.remove(e);
+        this.itemsDataSources.delete(e.uid);
+      }
+    }
   }
 
   getNewDataSourceByUid(uid: string) {
@@ -300,6 +315,10 @@ export class EditWorArea {
 
   workOrderIdChanged() {
     alert(this.workOrderId);
+  }
+
+  validateWorkOrder(obj, propertyName: string) {
+    this.validationAreaController.validate({ object: obj, propertyName });
   }
 
 }

@@ -7,7 +7,7 @@
         <div class="form-group">
           <label class="form-label">批次号*</label>
           <span class="help"></span>
-          <ak-drop-down-list k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-filter="contains" k-data-text-field="batchNumber"
+          <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-filter="contains" k-data-text-field="batchNumberStr"
             k-data-value-field="id" k-data-source.bind="baseCargoInfo" k-on-select.delegate="onSelectCargoInfo($event.detail)"
             if.bind="!hasInfoId">
           </ak-drop-down-list>

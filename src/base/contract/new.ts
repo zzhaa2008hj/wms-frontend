@@ -83,13 +83,14 @@ export class NewContract {
             },
             chargeCategory: { editable: false },
             chargeType: { editable: false },
-            unit: { editable: false },
+            unitStr: { editable: false },
+            rateTypeStr: { editable: false },
             pricingMode: { editable: false },
             workName: { editable: false },
-            warehouseType: { editable: false },
+            warehouseTypeStr: { editable: false },
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
-            warehouseCategory: { editable: false },
+            warehouseCategoryStr: { editable: false },
             remark: { editable: false }
           }
         }
@@ -200,8 +201,10 @@ export class NewContract {
     //1 :
     if (contractType == 2) {
       this.customers = this.handlingCustomers;
+      this.contract.customerId = '';
     } else {
       this.customers = this.wareHouseCustomer;
+      this.contract.customerId = '';
     }
 
     if (contractType == 3) {

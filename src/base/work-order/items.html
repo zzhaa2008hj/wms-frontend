@@ -8,27 +8,30 @@
                                    k-option-label="请选择..."
                                    k-data-text-field="workName"
                                    k-data-value-field="id"
-                                   k-value.two-way="workId"
+                                   k-value.two-way="workId & validate"
                                    k-data-source.bind="worksSource"
                                    k-enabled.two-way="!disabled"
+                                   k-on-change.delegate="validateWorkOrderItem($this,'workId')"
                                    style="width: 60%">
                 </ak-drop-down-list>
             </ak-template>
         </ak-col>
         <ak-col k-field="workNumber" k-title="作业数量">
             <ak-template>
-                <input type="number" value.bind="workNumber & toInt & validate" blur.trigger="aa()" disabled.bind="disabled">
+                <input type="number" value.bind="workNumber & toInt & validate" blur.trigger="aa()"
+                       disabled.bind="disabled">
             </ak-template>
         </ak-col>
         <ak-col k-title="作业单位">
             <ak-template>
                 <ak-drop-down-list class="form-control"
                                    k-option-label="请选择..."
-                                   k-data-text-field="name"
+                                   k-data-text-field="shortName"
                                    k-data-value-field="id"
-                                   k-value.two-way="customerId"
+                                   k-value.two-way="customerId & validate"
                                    k-data-source.bind="customersSource"
                                    k-enabled.two-way="!disabled"
+                                   k-on-change.delegate="validateWorkOrderItem($this,'customerId')"
                                    style="width: 60%">
                 </ak-drop-down-list>
             </ak-template>

@@ -1,3 +1,4 @@
+import { InstockOrder } from '@app/instock/models/instock-order';
 import { DetailsCargoItem } from '@app/base/cargo-info/item-details';
 import { Router } from "aurelia-router";
 import { autoinject } from "aurelia-dependency-injection";
@@ -6,39 +7,80 @@ import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import { Order } from '@app/outstock/models/order';
 
 @autoinject
 export class DetailsCargoInfo {
   cargoInfo = {} as CargoInfo;
   cargoItems = [] as CargoItem[];
   cargoInfoId = '';
-  datasource: kendo.data.DataSource;
+  dataSource: kendo.data.DataSource;
   warehouseTypes = [] as DictionaryData[];
-  unit = [] as DictionaryData[];
+
+  units = [] as DictionaryData[];
+
+  instockOrders: InstockOrder[];
+  instockDatasource: kendo.data.DataSource;
+
+  outstockOrders: Order[];
+  outstockDatasource: kendo.data.DataSource;
 
   constructor(private router: Router,
-    private cargoInfoService: CargoInfoService,
-    private messageDialogService: MessageDialogService,
-    private dictionaryDataService: DictionaryDataService,
-    private dialogService: DialogService) {
-    this.datasource = new kendo.data.DataSource({
+              private cargoInfoService: CargoInfoService,
+              private messageDialogService: MessageDialogService,
+              private dictionaryDataService: DictionaryDataService,
+              private dialogService: DialogService) {
+    this.dataSource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
           options.success(this.cargoItems);
         }
       }
     });
+
+    this.instockDatasource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.instockOrders);
+        }
+      }
+    });
+
+    this.outstockDatasource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.outstockOrders);
+        }
+      }
+    });
   }
 
   async activate({ id }) {
-    this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+    //入库指令信息
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
-    this.cargoItems.map(res => res.unitStr = this.unit.find(d => d.dictDataCode == res.unit).dictDataName);
+    this.cargoItems.map(res => res.unitStr = this.units.find(d => d.dictDataCode == res.unit).dictDataName);
     //todo
-    //获取出入库信息、货权转移、货位转移
-
+    //入库信息
+    this.instockOrders = await this.cargoInfoService.getInstockOrder(id);
+    this.instockOrders.map(res => {
+      let unit = this.units.find(d => d.dictDataCode == res.unit);
+      if (unit) {
+        res.unit = unit.dictDataName;
+      }
+    });
+    //出库信息
+    this.outstockOrders = await this.cargoInfoService.getOutstockOrders(id);
+    this.outstockOrders.map(res => {
+      let unit = this.units.find(d => d.dictDataCode == res.unit);
+      if (unit) {
+        res.unit = unit.dictDataName;
+      }
+    });
+    //todo
+    //货权转移、货位转移
   }
 
   async view(id) {

@@ -5,6 +5,7 @@ import { ConsoleAppender } from 'aurelia-logging-console';
 import { RestClient } from "./utils";
 import { Container } from "aurelia-dependency-injection";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { Uploader } from "@app/upload";
 
 export async function configure(aurelia: Aurelia) {
   aurelia.use
@@ -20,6 +21,9 @@ export async function configure(aurelia: Aurelia) {
   aurelia.container.registerInstance('config', config);
   let apiBaseUrlOverride = localStorage.getItem('api.baseUrl');
   await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container);
+
+  aurelia.container.registerInstance(Uploader, new Uploader({ baseUrl: config.upload.baseUrl, method: 'PUT' }));
+
   await aurelia.start();
   await aurelia.setRoot();
 }
@@ -79,3 +83,4 @@ async function configureRestClient(baseUrl: string, container: Container) {
 
   container.registerInstance(RestClient, http);
 }
+

@@ -7,6 +7,7 @@ export interface CargoInfo {
   id: string;
 
   batchNumber: string;
+  batchNumberStr: string;
 
   billLadingNumber: string;
 

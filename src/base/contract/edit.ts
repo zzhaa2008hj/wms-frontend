@@ -64,13 +64,14 @@ export class EditContract {
             price: { type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, editable: true },
             chargeCategory: { editable: false },
             chargeType: { editable: false },
-            unit: { editable: false },
+            unitStr: { editable: false },
+            rateTypeStr: { editable: false },
             pricingMode: { editable: false },
             workName: { editable: false },
-            warehouseType: { editable: false },
+            warehouseTypeStr: { editable: false },
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
-            warehouseCategory: { editable: false },
+            warehouseCategoryStr: { editable: false },
             remark: { editable: false }
           }
         }

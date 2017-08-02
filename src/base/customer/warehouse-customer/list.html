@@ -1,36 +1,25 @@
 <template>
-    <div class="row">
-         <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增机构</a></div>
-        <div class="input-group"><input class="form-control" type="text" value.bind="searchName"
-                                        placeholder="请输入机构名称/联系人/联系人手机">
-            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-        </div>
+  <div class="row">
+    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增机构</a></div>
+    <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入机构名称/联系人/联系人手机">
+      <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
-    <ak-grid k-data-source.bind="dataSource"
-             k-sortable.bind="true"
-             k-reorderable.bind="true"
-             k-resizable.bind="true"
-             k-filterable.bind="true"
-             k-column-menu.bind="true"
-             k-pageable.bind="pageable">
-        <ak-col k-field="name" k-title="机构名称"></ak-col>
-        <ak-col k-field="shortName" k-title="机构简称"></ak-col>
-        <ak-col k-field="contactPerson" k-title="联系人"></ak-col>
-        <ak-col k-field="contactMobile" k-title="联系人手机"></ak-col>
-        <ak-col k-field="status" k-title="状态">
-            <ak-template>${status == 0 ? '禁用' : '启用'}</ak-template>
-        </ak-col>
-        <ak-col k-field="createTime" k-title="创建时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
-        <ak-col k-title="操作">
-            <ak-template>
-                <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">编辑</a>
-                    <button type="button" class="btn btn-success btn-small" if.bind="status==1"
-                            click.delegate="changeStatus(id,'0')">禁用
-                    </button>
-                    <button type="button" class="btn btn-success btn-small" if.bind="status==0"
-                            click.delegate="changeStatus(id,'1')">启用
-                    </button>
-            </ak-template>
-        </ak-col>
-    </ak-grid>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="name" k-title="机构名称"></ak-col>
+    <ak-col k-field="shortName" k-title="机构简称"></ak-col>
+    <ak-col k-field="contactPerson" k-title="联系人"></ak-col>
+    <ak-col k-field="contactMobile" k-title="联系人手机"></ak-col>
+    <ak-col k-field="status" k-title="状态">
+      <ak-template>${status == 0 ? '禁用' : '启用'}</ak-template>
+    </ak-col>
+    <ak-col k-field="createTime" k-title="创建时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <ak-col k-title="操作">
+      <ak-template>
+        <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">编辑</a>
+        <button type="button" class="btn btn-success btn-small" if.bind="status==1" click.delegate="changeStatus(id,'0')">禁用</button>
+        <button type="button" class="btn btn-success btn-small" if.bind="status==0" click.delegate="changeStatus(id,'1')">启用</button>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
 </template>

@@ -42,8 +42,8 @@
             <td align="center">箱号</td>
             <td align="center">库区</td>
             <td align="center">说明</td>
+            <td align="center">出库数量</td>            
             <td align="center">出库件数</td>
-            <td align="center">出库数量</td>
           </tr>
           <template repeat.for="item of cargoItems">
             <tr>
@@ -54,8 +54,8 @@
               <td align="center">${item.containerNumber}</td>
               <td align="center">${item.warehouseName}</td>
               <td align="center">${item.remark}</td>
+              <td align="center">${item.outstockQuantity}</td>              
               <td align="center">${item.outstockNumber}</td>
-              <td align="center">${item.outstockQuantity}</td>
             </tr>
           </template>
           <tr>
@@ -67,10 +67,10 @@
           <tr>
             <td colspan="7" align="right">合计:</td>
             <td>
-              <input type="text" style="border: none" value.bind="outstockOrder.numberSum">
+              <input type="text" style="border: none" value.bind="outstockOrder.quantitySum">
             </td>
             <td>
-              <input type="text" style="border: none" value.bind="outstockOrder.quantitySum">
+              <input type="text" style="border: none" value.bind="outstockOrder.numberSum">
             </td>
           </tr>
           <tr>

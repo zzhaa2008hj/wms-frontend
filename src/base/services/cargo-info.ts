@@ -1,3 +1,6 @@
+import { Order } from '../../outstock/models/order';
+import { OutstockInventory } from '@app/outstock/models/inventory';
+import { InstockOrder } from '@app/instock/models/instock-order';
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from '@app/utils';
 import { CargoCategory } from '@app/base/models/cargo-category';
@@ -155,5 +158,27 @@ export class CargoInfoService {
   async getCargoRatesByCargoItemId(cargoItemId: string): Promise<CargoRate[]> {
     let res = await this.http.get(`/base/cargoInfo/cargoItem/${cargoItemId}/cargoRate`);
     return res.content;
+  }
+
+  /**
+   * 根据货物信息id获取 入库信息
+   * @param cargoInfoId 
+   */
+  async getInstockOrder(cargoInfoId: string): Promise<InstockOrder[]> {
+    let res = await this.http.get(`/base/cargoInfo/${cargoInfoId}/instockOrder`);
+    return res.content;
+  }
+
+  /**
+   * 根据货物信息id获取 出库信息
+   * @param cargoInfoId 
+   */
+  async getOutstockInventories(cargoInfoId: string): Promise<OutstockInventory[]> {
+    let res = await this.http.get(`/base/cargoInfo/${cargoInfoId}/outstockInfo`);
+    return res.content;
+  }
+
+  async getOutstockOrders(cargoInfoId: string): Promise<Array<Order>> {
+    return this.http.get(`/outstock/order/list?cargoInfoId=${cargoInfoId}`).then(res => res.content);
   }
 }

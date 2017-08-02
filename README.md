@@ -10,3 +10,5 @@
 `jspm install`
 
 `git submodule update --init`
+
+`git pull origin master`  

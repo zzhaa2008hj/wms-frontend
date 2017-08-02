@@ -18,7 +18,6 @@ import { RouterParams } from '@app/common/models/router-params';
 import { CargoFlowService } from '@app/instock/services/cargo-flow';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { WorkOrderItem } from "@app/instock/models/work";
-import { WorkAreaService } from "@app/base/services/work";
 import { Order } from "@app/outstock/models/order";
 import { OrderService, OrderItemService } from "@app/outstock/services/order";
 import { CargoRateService } from "@app/base/services/rate";
@@ -126,7 +125,6 @@ export class EditWorkOrder {
               @inject private router: Router,
               @newInstance() private validationController: ValidationController,
               @inject private dictionaryDataService: DictionaryDataService,
-              @inject private workAreaService: WorkAreaService,
               @inject private orderItemService: OrderItemService,
               @inject private orderService: OrderService,
               @inject private cargoRateService: CargoRateService) {
@@ -276,27 +274,6 @@ export class EditWorkOrder {
     this.datasource.add({});
   }
 
-
-  async remove(e) {
-    let confirmed = await this.messageDialogService.confirm({ title: "删除", message: "删除后无法修复" });
-    if (confirmed) {
-      if (e.id != null && e.id != "") {
-        try {
-          await this.workAreaService.removeWorkOrderArea(e.id);
-          await this.messageDialogService.alert({ title: "", message: "删除成功" });
-          this.datasource.remove(e);
-          this.itemsDataSources.delete(e.uid);
-        } catch (e) {
-          await this.messageDialogService.alert({ title: "错误", message: e.message, icon: 'error' });
-        }
-      } else {
-        await this.messageDialogService.alert({ title: "", message: "删除成功" });
-        this.datasource.remove(e);
-        this.itemsDataSources.delete(e.uid);
-      }
-    }
-  }
-
   getNewDataSourceByUid(uid: string) {
     return this.itemsDataSources.get(uid);
   }
@@ -340,13 +317,8 @@ const workOrderRules = ValidationRules
     return true;
   })
   .withMessage(`\${$displayName}不能为空`)
-  .satisfies(x => {
-    if (x) {
-      return /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/.test(x);
-    }
-    return true;
-  })
-  .withMessage(`\${$displayName}不符合规范`)
+  .satisfies(x => /^([\u4e00-\u9fa5][a-zA-Z](([DF](?![a-zA-Z0-9]*[IO])[0-9]{4,5})|([0-9]{5}[DF])))|([冀豫云辽黑湘皖鲁苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼渝京津沪新京军空海北沈兰济南广成使领A-Z]{1}[a-zA-Z0-9]{5,6}[a-zA-Z0-9挂学警港澳]{1})$/
+  .test(x)).withMessage(` 请输入正确车牌号`)
 
 
   .ensure((workOrder: WorkOrder) => workOrder.driverName)

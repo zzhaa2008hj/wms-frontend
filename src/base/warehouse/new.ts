@@ -18,7 +18,8 @@ export class NewWarehouse {
 
   constructor(private dialogController: DialogController,
               private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+              validationControllerFactory: ValidationControllerFactory, 
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);

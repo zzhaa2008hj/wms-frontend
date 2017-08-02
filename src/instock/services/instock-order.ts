@@ -26,7 +26,8 @@ export class InstockOrderService {
   /**
    * 生成入库单
    */
-  createInstockOrder(ids: string[]): Promise<void> {
-    return this.http.post('/instock/order', ids).then(handleResult);
+  createInstockOrder(flowId: string): Promise<void> {
+    return this.http.post(`/instock/order/${flowId}`, null).then(handleResult);
   }
+
 }

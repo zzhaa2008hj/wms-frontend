@@ -10,7 +10,6 @@ import { NewWorkItem } from "./items";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 import { NewWorkOrder } from "./new";
 import { MessageDialogService } from "ui";
-import { formValidationRenderer } from "@app/validation/support";
 
 @customElement('work-area')
 export class NewWorArea {
@@ -131,7 +130,7 @@ export class NewWorArea {
         }
       }
     );
-    this.validationAreaController.addRenderer(formValidationRenderer);
+    this.validationAreaController.addRenderer(datagridValidationRenderer);
 
     this.newWorkOrder.getAreaDatasource(this.datasource);
 
@@ -222,6 +221,10 @@ export class NewWorArea {
     [...this.resBinds].forEach(e => e.dispose());
   }
 
+  validateWorkOrder(obj, propertyName: string) {
+    this.validationAreaController.validate({ object: obj, propertyName });
+  }
+
 }
 
 const workOrderAreaRules = ValidationRules
@@ -241,3 +244,42 @@ const workOrderAreaRules = ValidationRules
   .satisfies(x => x <= 1000000000000000 && x >= 0)
   .withMessage(`\${$displayName} 为无效值`)
   .rules;
+
+import { ValidationRenderer, RenderInstruction } from "aurelia-validation";
+
+export const datagridValidationRenderer: ValidationRenderer = {
+  render(instruction: RenderInstruction) {
+    for (let { elements, result } of instruction.unrender) {
+      if (result.valid) continue;
+      for (let element of elements) {
+        let formGroup = element.parentElement;
+        let label = formGroup.querySelector(`#validation-message-${result.id}`);
+        if (label) formGroup.removeChild(label);
+        if (formGroup.querySelectorAll('label.error').length == 0) {
+          element.classList.remove('error');
+        }
+        let dropDownFormGroup = element.parentElement.parentElement;
+        let dropDownLable = dropDownFormGroup.querySelector(`#validation-message-${result.id}`);
+        if (dropDownLable) dropDownFormGroup.removeChild(dropDownLable);
+        if (dropDownFormGroup.querySelectorAll('label.error').length == 0) {
+          element.classList.remove('error');
+        }
+      }
+    }
+    for (let { elements, result } of instruction.render) {
+      if (result.valid) continue;
+      for (let element of elements) {
+        element.classList.add('error');
+        const label = document.createElement('label');
+        label.className = 'error';
+        label.textContent = result.message;
+        label.id = `validation-message-${result.id}`;
+        if (element.tagName == "AK-DROP-DOWN-LIST") {
+          element.parentElement.parentElement.appendChild(label);
+        } else {
+          element.parentElement.appendChild(label);
+        }
+      }
+    }
+  }
+}; 

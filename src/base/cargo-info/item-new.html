@@ -25,7 +25,7 @@
                   <div class="input-group">
                     <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName & validate" readonly>
                     <div class="input-group-btn">
-                      <a class="btn" click.delegate="selectCargoCategory()">选择</a>
+                      <a class="btn btn-small" click.delegate="selectCargoCategory()">选择</a>
                     </div>
                   </div>
                 </div>
@@ -111,7 +111,7 @@
                       <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
                       <ak-col k-field="workName" k-title="作业内容"></ak-col>
                       <ak-col k-field="warehouseTypeStr" k-title="库位性质"></ak-col>
-                      <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
+                      <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
                       <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
                       <ak-col k-field="remark" k-title="备注"></ak-col>
                       <ak-template for="detailTemplate">

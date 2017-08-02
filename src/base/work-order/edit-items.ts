@@ -1,15 +1,14 @@
 import { observable, inject, newInstance } from "aurelia-framework";
 import { bindable, customElement } from "aurelia-templating";
-import { ContractService } from "@app/base/services/contract";
 import { WorkInfoService } from "@app/base/services/work-info";
 import { EditWorArea } from "./edit-area";
 import { RouterParams } from '@app/common/models/router-params';
-import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { WorkOrderItemService, WorkOrderService } from '@app/instock/services/work-order';
 import { MessageDialogService } from "ui";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { formValidationRenderer } from "@app/validation/support";
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { WorkOrderItem } from "@app/instock/models/work";
+import { datagridValidationRenderer } from "./new-area";
 
 @customElement('edit-area-items')
 export class EditItems {
@@ -30,7 +29,7 @@ export class EditItems {
   customersSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.contractService.getCustomers(2)
+        this.workOrderService.listCustomersForWork()
           .then(options.success)
           .catch(err => options.error("", "", err));
       }
@@ -48,15 +47,15 @@ export class EditItems {
   });
   //this.instockCargoItemId, this.type
 
-  constructor(@inject private contractService: ContractService,
-              @inject private workInfoService: WorkInfoService,
+  constructor(@inject private workInfoService: WorkInfoService,
               @inject private editWorArea: EditWorArea,
+              @inject private workOrderService: WorkOrderService,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private workOrderItemService: WorkOrderItemService,
               @inject private messageDialogService: MessageDialogService,
               @inject private eventAggregator: EventAggregator,
               @newInstance() private validationController: ValidationController) {
-    this.validationController.addRenderer(formValidationRenderer);
+    this.validationController.addRenderer(datagridValidationRenderer);
 
   }
 
@@ -124,12 +123,20 @@ export class EditItems {
     await this.verify();
   }
 
+  validateWorkOrderItem(obj, propertyName: string) {
+    this.validationController.validate({ object: obj, propertyName });
+  }
+
 }
 
 const workOrderItemRules = ValidationRules
-// .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workName)
-// .displayName("作业内容")
-// .required().withMessage(`\${$displayName}不能为空`)
+  .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workId)
+  .displayName("作业内容")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrderIem: WorkOrderItem) => workOrderIem.customerId)
+  .displayName("作业单位")
+  .required().withMessage(`\${$displayName}不能为空`)
 
   .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workNumber)
   .displayName("作业数量")
