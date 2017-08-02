@@ -1,3 +1,4 @@
+import { AttachmentMap } from '@app/common/models/attachment';
 import { ValidationRules } from 'aurelia-validation';
 import { AttachmentMap } from '@app/common/models/attachment';
 /**

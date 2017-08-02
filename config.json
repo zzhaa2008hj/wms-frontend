@@ -1,9 +1,10 @@
 {
   "api": {
-    "baseUrl": "http://192.168.133.118:8090"
+    "baseUrl": "http://localhost:8090"
   },
   "upload": {
-    "baseUrl": "http://192.168.133.118:5555"
+    "baseUrl": "http://192.168.133.118:5555",
+    "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "routes": [{
       "route": "/report",
@@ -11,11 +12,11 @@
       "title": "报表",
       "moduleId": "./report/index"
     },{
-      "route": "/base/attachments",
-      "name": "attachments",
-      "title": "附件",
-      "moduleId": "./common/attachment/index"
-    },{
+    "route": "/base/attachments",
+    "name": "attachments",
+    "title": "附件",
+    "moduleId": "./common/attachment/index"
+  },{
       "route": "/base/cargo-category",
       "name": "cargoCategory",
       "title": "货物种类",

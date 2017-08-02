@@ -43,8 +43,8 @@ export class NewCargoFlow {
   dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  file: File;
-  dir: string;
+  files: File[];
+  dir: string = '';
   currentUpload: Upload;
   attachments = [] as AttachmentMap[];
 
@@ -83,29 +83,34 @@ export class NewCargoFlow {
     }
   }
 
-  async chooseFile() {
-    let file = await this.dialogService.chooseFile();
-    this.file = file;
-    this.dir = this.file.name;
+  async chooseFiles() {
+    let fileArr = await this.dialogService.chooseFiles();
+    this.files = fileArr;
+    this.files.forEach(res => {
+      this.dir += res.name + ';';
+    });
   }
 
   async upload() {
-    let fileName = uuid();
-    let res = await this.attachmentService.getDirKey(this.cargoFlow.cargoInfoId);
-    let suffix = this.file.name.split(".")[1];
-    let uuidName = fileName + "." + suffix;
-    let path = '/' + res.key + '/' + uuidName;
+    let keyRes = await this.attachmentService.getDirKey(this.cargoFlow.cargoInfoId);
 
-    this.currentUpload = this.uploader.upload(this.file, { path: path });
-    let result = await this.currentUpload.result;
-    this.currentUpload = null;
-
-    if (result.status == 'success') {
-      this.attachments.push({ uuidName: uuidName, realName: this.file.name });
-    } else {
-      await this.dialogService.alert({ title: '上传失败', message: '上传失败', icon: 'warning' });
-      return;
+    let index = 0;
+    for (let file of this.files) {
+      let fileName = uuid();
+      let suffix = file.name.split(".")[1];
+      let uuidName = fileName + "." + suffix;
+      let path = '/' + keyRes.key + '/' + uuidName;
+      this.currentUpload = this.uploader.upload(file, { path: path });
+      let result = await this.currentUpload.result;
+      if (result.status == 'success') {
+          this.attachments.push({ uuidName: uuidName, realName: file.name });
+          index++;
+      }
     }
+    this.currentUpload = null;
+    this.dir = '';
+    await this.dialogService.alert({ title: '上传完成', message: '上传完成，成功上传' + index + '条数据' });
+    return;
   }
 
   async showDetail(data) {

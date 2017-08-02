@@ -1,0 +1,90 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-body no-border">
+            <div class="row column-seperation">
+                <h4>基本信息</h4>
+                <div class="col-md-6">
+                    <label class="form-label">客户名称</label>
+                    <span class="help"></span>
+                    <div class="controls right">
+                        <input type="text" class="form-control" value.bing="paymentInfo.customerName" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">费用合计</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="paymentAuditList.sumFee" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">结算开始日期</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="paymentInfo.chargeStartDateStr"
+                                   readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">结算结束日期</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="paymentInfo.chargeEndDateStr" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-label">备注</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <textarea type="text" class="form-control" value.bind="paymentInfo.remark"
+                                      readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row column-seperation">
+                <h4>对账清单详情</h4>
+                <div class="col-md-12">
+                    <span class="help"></span>
+                    <div class="controls right">
+                        <ak-grid k-data-source.bind="datasource" k-pageable.bind="pageable" k-sortable.bind="true"
+                                 k-resizable.bind="true">
+                            <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
+                            <ak-col k-field="workDate" k-title="作业日期"></ak-col>
+                            <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                            <ak-col k-field="cargoName" k-title="货名"></ak-col>
+                            <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                            <ak-col k-field="warehouseName" k-title="库区"></ak-col>
+                            <ak-col k-field="price" k-title="单价"></ak-col>
+                            <ak-col k-field="quantity" k-title="重量"></ak-col>
+                            <ak-col k-field="number" k-title="件数"></ak-col>
+                            <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                            <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+                            <ak-col k-field="remark" k-title="备注"></ak-col>
+                        </ak-grid>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-actions">
+                    <div class="pull-right">
+                        <button class="btn btn-primary" disabled.bind="disabled" click.trigger="check(1)"><i
+                                class="icon-ok"></i>通过
+                        </button>
+                        <button class="btn btn-danger" disabled.bind="disabled" click.trigger="check(0)"><i
+                                class="icon-ok"></i>拒绝
+                        </button>
+                        <a class="btn btn-default" disabled.bind="disabled" route-href="route: list">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
