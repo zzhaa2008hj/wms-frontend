@@ -6,22 +6,32 @@ import { ChargeAuditList } from "@app/fee/models/charge-audit";
 import { ChargeInfo } from "@app/fee/models/charge";
 import { ChargeAuditListService } from "@app/fee/services/charge-audit";
 import { ChargeInfoService } from "@app/fee/services/charge";
+import { Organization } from "@app/base/models/organization";
+import { OrganizationService } from "@app/base/services/organization";
+import * as moment from 'moment';
 
 @autoinject
 export class CustomerConfirm {
   disabled: boolean = false;
   chargeInfo: ChargeInfo;
   chargeAuditLists: ChargeAuditList[];
+  organization: Organization;
 
   constructor(private chargeInfoService: ChargeInfoService,
               private chargeAuditListService: ChargeAuditListService,
+              private organizationService: OrganizationService,
               private dialogService: DialogService,
               private router: Router) {
   }
 
   async activate(params) {
     this.chargeInfo = await this.chargeInfoService.getById(params.id);
-    this.chargeAuditLists = await this.chargeAuditListService.getByChargeInfoId(params.id);
+    this.chargeAuditLists = await this.chargeAuditListService.getListByChargeInfoId(params.id);
+    this.organization = await this.organizationService.getOrganization(this.chargeInfo.orgId);
+
+    this.chargeInfo.chargeStartDateStr = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD");
+    this.chargeInfo.chargeEndDateStr = moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD");
+
     let totalReceivableAmount = 0;
     let totalReceivedAmount = 0;
     this.chargeAuditLists.forEach(cal => {
