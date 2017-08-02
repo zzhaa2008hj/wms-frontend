@@ -5,6 +5,7 @@
 import { HttpClient, HttpResponseMessage, RequestBuilder } from "aurelia-http-client";
 import { autoinject } from "aurelia-dependency-injection";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { v4 } from 'uuid';
 
 export function copy<T extends Object>(obj: T): T {
   return Object.assign({}, obj);
@@ -215,6 +216,18 @@ export function createDataSource({read, serverPaging, pageSize, error}: DataSour
 
 export function md5(s: string): string {
   return window['md5'](s);
+}
+
+export function uuid(): string {
+  return replaceAll(v4(), "-", "");
+}
+
+export function replaceAll(s: string, sv: string, rv: string): string {
+  s = s.replace(sv, rv);
+  if (s.includes(sv)) {
+    s = replaceAll(s, sv, rv);
+  }
+  return s;
 }
 
 export interface TreeOptions {

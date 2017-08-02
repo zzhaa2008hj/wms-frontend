@@ -1,0 +1,30 @@
+<template>
+  <div class="page-title">
+    <h3>附件列表</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-9"></div>
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" value.bind="businessNumber" placeholder="请输入批次号/合同号">
+      <div class="input-group-addon" click.delegate="search()"><em class="fa fa-search"></em></div>
+    </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-title="客户名称" k-field="customerName" k-width.bind="160"></ak-col>
+    <ak-col k-field="businessNumber" k-title="批次号/合同号" k-width.bind="200"></ak-col>
+    <ak-col k-field="businessTypeStr" k-title="业务类型" k-width.bind="120"></ak-col>
+    <ak-col k-field="attachmentName" k-title="附件名称">
+      <ak-template>
+        <div class='customer-photo' style="background-image: url(${attachmentUrl});"></div>
+        <a class="m-l-10 pointer" click.delegate="showDetail(attachmentUrl)">${attachmentName}</a>
+      </ak-template>
+    </ak-col>
+    <ak-col k-field="uploaderName" k-title="上传人" k-width.bind="120"></ak-col>
+    <ak-col k-field="uploadTime" k-title="上传时间" k-width.bind="140" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <!-- <ak-col k-title="操作">
+      <ak-template>
+        <button class="btn btn-success btn-small" if.bind="category == 2 && verifyStatus ==null" click.delegate="edit(id)">审批</button>
+      </ak-template>
+    </ak-col> -->
+  </ak-grid>
+</template>

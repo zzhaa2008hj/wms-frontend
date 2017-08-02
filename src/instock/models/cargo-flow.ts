@@ -1,4 +1,5 @@
 import { ValidationRules } from 'aurelia-validation';
+import { AttachmentMap } from '@app/common/models/attachment';
 /**
  * Created by Hui on 2017/6/19.
  */
@@ -38,6 +39,8 @@ export interface CargoFlow {
   // 上一阶段
   lastStage: number;
   instockLastStageName: string;
+
+  attachments: AttachmentMap[];
 }
 export interface InstockCargoItem {
   //唯一性标识
