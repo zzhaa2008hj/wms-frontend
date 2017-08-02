@@ -10,7 +10,7 @@ export class Charge {
 
     config.map([
       { route: '', name: 'list', moduleId: './list' },
-      { route: '/audit/new', name: 'auditSecondFee', moduleId: './audit/new' },
+      { route: '/customer-confirmation', name: 'customerConfirm', moduleId: './customer-confirmation/new' },
     ]);
     this.router = router;
   }
