@@ -133,7 +133,7 @@ export const vehicleValidationRules = ValidationRules
   .ensure((vehicle: Vehicle) => vehicle.plateNumber)
   .displayName('车牌号')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => /^([\u4e00-\u9fa5][a-zA-Z](([DF](?![a-zA-Z0-9]*[IO])[0-9]{4,5})|([0-9]{5}[DF])))|([冀豫云辽黑湘皖鲁苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼渝京津沪新京军空海北沈兰济南广成使领A-Z]{1}[a-zA-Z0-9]{5,6}[a-zA-Z0-9挂学警港澳]{1})$/
+  .satisfies(x => /([冀豫云辽黑湘皖鲁苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼渝京津沪新京军空海北沈兰济南广成使领A-Z]{1}[a-zA-Z0-9]{5,6}[a-zA-Z0-9挂学警港澳]{1})$/
     .test(x)).withMessage(` 请输入正确车牌号`)
 
   .ensure((vehicle: Vehicle) => vehicle.driverName)
