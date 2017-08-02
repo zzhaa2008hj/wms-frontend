@@ -1,4 +1,4 @@
-import { Router } from "aurelia-router";
+import { Router } from 'aurelia-router';
 import { DialogService, MessageDialogService } from "ui";
 import { Container, inject } from 'aurelia-dependency-injection';
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
@@ -14,6 +14,11 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { observable } from 'aurelia-framework';
 import { vehicleValidationRules } from "@app/outstock/models/order";
+import { Upload, Uploader } from '@app/upload';
+import { uuid } from '@app/utils';
+import { AttachmentService } from '@app/common/services/attachment';
+import { AttachmentMap } from '@app/common/models/attachment';
+import { AttachmentDetail } from '@app/common/attachment/detail';
 
 /**
  * Created by Hui on 2017/6/23.
@@ -38,6 +43,10 @@ export class NewCargoFlow {
   dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
+  file: File;
+  dir: string;
+  currentUpload: Upload;
+  attachments = [] as AttachmentMap[];
 
   validationController: ValidationController;
   private dropDownListCargoItem: any;
@@ -48,9 +57,12 @@ export class NewCargoFlow {
               @inject private cargoInfoService: CargoInfoService,
               @inject private messageDialogService: MessageDialogService,
               @inject private codeService: CodeService,
+              @inject private uploader: Uploader,
+              @inject private attachmentService: AttachmentService,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject('routerParams') private routerParams: RouterParams,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -59,9 +71,7 @@ export class NewCargoFlow {
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
-    this.baseCargoInfo.map(res => {
-      res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")";
-    });
+    this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
@@ -70,6 +80,54 @@ export class NewCargoFlow {
       this.setCargoFlowInfo(cargoInfo);
       let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
       this.dataSourceBaseCargoItem.data(baseCargoItems);
+    }
+  }
+
+  async chooseFile() {
+    let file = await this.dialogService.chooseFile();
+    this.file = file;
+    this.dir = this.file.name;
+  }
+
+  async upload() {
+    let fileName = uuid();
+    let res = await this.attachmentService.getDirKey(this.cargoFlow.cargoInfoId);
+    let suffix = this.file.name.split(".")[1];
+    let uuidName = fileName + "." + suffix;
+    let path = '/' + res.key + '/' + uuidName;
+
+    this.currentUpload = this.uploader.upload(this.file, { path: path });
+    let result = await this.currentUpload.result;
+    this.currentUpload = null;
+
+    if (result.status == 'success') {
+      this.attachments.push({ uuidName: uuidName, realName: this.file.name });
+    } else {
+      await this.dialogService.alert({ title: '上传失败', message: '上传失败', icon: 'warning' });
+      return;
+    }
+  }
+
+  async showDetail(data) {
+    let item: AttachmentMap = data.item;
+    let path = '/' + this.cargoFlow.cargoInfoId + '/' + item.uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    let result = await this.dialogService
+      .open({ viewModel: AttachmentDetail, model: attachmentUrl, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+  }
+
+  async delete(data) {
+    let item: AttachmentMap = data.item;
+    let res = await this.attachmentService.getDirKey(this.cargoFlow.cargoInfoId);
+    let path = '/' + res.key + '/' + item.uuidName;
+    try {
+      await this.attachmentService
+        .deleteAttachments({ baseId: this.cargoFlow.cargoInfoId, url: path, uuidName: item.uuidName });
+      this.attachments = this.attachments.filter(res => res.uuidName != item.uuidName);
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "删除失败", message: err.message, icon: "error" });
     }
   }
 
@@ -160,6 +218,10 @@ export class NewCargoFlow {
     Object.assign(vehicles, this.dataSourceVehicle.data());
     let cargoItems = [];
     Object.assign(cargoItems, this.dataSourceCargoItem.data());
+    if (cargoItems.length == 0) {
+      await this.messageDialogService.alert({ title: "新增失败", message: '请选择入库货物', icon: 'warning' });
+      return;
+    }
     let orderQuantity = 0;
     let orderNumber = 0;
     if (vehicles) {
@@ -186,13 +248,13 @@ export class NewCargoFlow {
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
     }
 
-
     this.validationController.addObject(this.cargoFlow, validationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
     this.disabled = true;
     try {
+      this.cargoFlow.attachments = this.attachments;
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
@@ -205,7 +267,6 @@ export class NewCargoFlow {
   cancel() {
     this.router.navigateToRoute("list");
   }
-
 }
 
 const validationRules = ValidationRules

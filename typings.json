@@ -18,7 +18,8 @@
     "aurelia-templating": "github:aurelia/templating",
     "aurelia-templating-resources": "github:aurelia/templating-resources",
     "aurelia-validation": "github:aurelia/validation",
-    "ui": "github:eupwood/ui"
+    "ui": "github:eupwood/ui",
+    "uuid": "registry:npm/uuid#3.0.1+20161206160008"
   },
   "globalDependencies": {
     "jquery": "registry:dt/jquery#1.10.0+20170310222111",

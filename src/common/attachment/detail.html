@@ -1,0 +1,13 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 详情
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <img src.bind="imgSrc" />
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-white" click.trigger="cancel()">返回</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
