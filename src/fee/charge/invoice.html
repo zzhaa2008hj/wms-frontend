@@ -1,0 +1,29 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 费收审核
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="radio" name="invoiceTypes" model.bind="1" checked.bind="invoice.invoiceType"> 普通发票
+                </div>
+                <div class="col-md-4">
+                    <input type="radio" name="invoiceTypes" model.bind="2" checked.bind="invoice.invoiceType"> 增值税发票
+                </div>
+            </div>
+            <div class="form-group" style="width:500px">
+                <label class="form-label">录入发票号*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="text" class="form-control" value.bind="invoice.invoiceNumber">
+                 </div>
+            </div>
+
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">确认</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

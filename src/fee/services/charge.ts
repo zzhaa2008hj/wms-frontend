@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, RestClient } from "@app/utils";
 import { ChargeInfo } from "@app/fee/models/charge";
+import { Invoice } from "@app/fee/models/invoice";
 /**
  * Created by Hui on 2017/8/2.
  */
@@ -16,5 +17,13 @@ export class ChargeInfoService {
   async getById(id: string): Promise<ChargeInfo> {
     let res = await this.http.get(`/fee/charge-info/${id}`);
     return res.content;
+  }
+
+  issueChargeInvoice(id: string, invoice: Invoice) {
+    return this.http.put(`/fee/charge-info//chargeInvoice/${id}`, invoice).then(handleResult);
+  }
+
+  auditSecondFee(id: string, status: number) {
+    return this.http.put(`/fee/charge-info/${id}/${status}/audit`, null).then(handleResult);
   }
 }
