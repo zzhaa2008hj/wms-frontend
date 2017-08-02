@@ -1,0 +1,15 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 费收2审核
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <!--对账单显示-->
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="auditSecondFee(1)">审核通过</button>
+      <button class="btn btn-primary" click.trigger="auditSecondFee(0)">审核不通过</button>
+      <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

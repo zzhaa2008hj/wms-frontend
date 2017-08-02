@@ -1,0 +1,94 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-body no-border">
+      <!--对账信息-->
+      <h4>对账清单</h4>
+      <div class="row">
+        <div class="col-md-11"></div>
+        <div class="input-group col-md-1">
+          <button class="btn btn-small" click.delegate="print()">打印</button>
+        </div>
+      </div>
+      <div class="col-md-9 col-md-offset-2">
+        <table border="1">
+          <tr>
+            <td align="center" colspan="9">
+              <h4>${organization.name}对账清单</h4>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="9" align="right">
+              <h5>出库单号：&nbsp;&nbsp;${chargeInfo.chargeInfoNumber}&nbsp;&nbsp;</h5>
+            </td>
+          </tr>
+          <tr>
+            <td align="center">代理商名称:</td>
+            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.agentName"></td>
+            <td align="center" colspan="2">客户名称:</td>
+            <td colspan="2"><input type="text" style="border: none" value.bind="chargeInfo.customerName"></td>
+            <td align="center" colspan="2">付款单位:</td>
+            <td colspan="2"><input type="text" style="border: none" value.bind="chargeInfo.paymentUnit"></td>
+          </tr>
+          <tr>
+            <td align="center">结算开始日期:</td>
+            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.chargeStartDateStr"></td>
+            <td align="center" colspan="2">结算结束日期:</td>
+            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.chargeEndDateStr"></td>
+          </tr>
+          <tr>
+            <td align="center">序号</td>
+            <td align="center">批次号</td>
+            <td align="center">提单号</td>
+            <td align="center">箱量</td>
+            <td align="center">仓储费</td>
+            <td align="center">装卸费</td>
+            <td align="center">其他费用</td>
+            <td align="center">合计</td>
+            <td align="center">已收金额</td>
+            <td align="center">应收金额</td>
+          </tr>
+          <template repeat.for="chargeAuditList of chargeAuditLists">
+            <tr>
+              <td align="center">${chargeAuditList.index}</td>
+              <td align="center">${chargeAuditList.batchNumber}</td>
+              <td align="center">${chargeAuditList.billLadingNumber}</td>
+              <td align="center">${chargeAuditList.containerQuantity}</td>
+              <td align="center">${chargeAuditList.warehousingAmount}</td>
+              <td align="center">${chargeAuditList.loadingAmount}</td>
+              <td align="center">${chargeAuditList.otherAmount}</td>
+              <td align="center">${chargeAuditList.sumAmount}</td>
+              <td align="center">${chargeAuditList.receivedAmount}</td>
+              <td align="center">${chargeAuditList.receivableAmount}</td>
+            </tr>
+          </template>
+          <tr>
+            <td align="center">总计已收金额</td>
+            <td colspan="8"><input type="text" style="border: none" value.bind="chargeInfo.totalReceivedAmount"></td>
+            <td align="center">总计应收金额</td>
+            <td colspan="8"><input type="text" style="border: none" value.bind="chargeInfo.totalReceivableAmount"></td>
+          </tr>
+          <tr>
+            <td align="center">备注</td>
+            <td colspan="8">
+              <input type="text" style="border: none" value.bind="chargeInfo.remark">
+            </td>
+          </tr>
+          <tr>
+            <td align="right">制单人&nbsp;&nbsp;</td>
+            <td colspan="2" align="center">&nbsp;${chargeInfo.createAccount}&nbsp;</td>
+            <td align="right">制单日期&nbsp;&nbsp;</td>
+            <td align="center" colspan="2">&nbsp;${chargeInfo.createTimeStr}&nbsp;</td>
+            <td align="right">客户签字&nbsp;&nbsp;</td>
+            <td colspan="2"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="form-actions">
+        <div class="pull-right">
+          <button class="btn btn-primary" disabled.bind="disabled" click.delegate="customerConfirm()">确认</button>
+          <button class="btn btn-warning" click.trigger="cancel()">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

@@ -181,6 +181,7 @@ export class NewOrder {
         }
       }
 
+
       let quantitySum = 0;
       let numberSum = 0;
       orderItems.forEach(ci => {
