@@ -6,6 +6,7 @@ export class InvoiceEntry {
   invoice = {} as Invoice;
 
   constructor(private dialogController: DialogController) {
+    this.invoice.invoiceType = 1;
   }
 
   async save() {
