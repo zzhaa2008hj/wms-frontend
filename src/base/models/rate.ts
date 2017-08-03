@@ -51,7 +51,7 @@ export const rateValidationRules = ValidationRules
   .displayName('费用类别')
   .required().withMessage(`\${$displayName} 不能为空`)
   .ensure((rate: Rate) => rate.chargeType)
-  .displayName('费用类型')
+  .displayName('收付费')
   .required().withMessage(`\${$displayName} 不能为空`)
   .ensure((rate: Rate) => rate.customerCategory)
   .displayName('客户类别')
