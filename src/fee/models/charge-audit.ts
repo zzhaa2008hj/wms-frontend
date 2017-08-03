@@ -18,7 +18,33 @@ export interface ChargeAuditList {
   receivedAmount: number;
   remark: string;
   orgId: string;
+
+  chargeAuditItems: ChargeAuditItem[];
 }
 export interface ChargeAuditItem {
+  id: string;
+  chargeAuditId: string;
+  chargeType: number;
+  chargeCategory: number;
+  batchNumber: string;
+  cargoName: string;
+  cargoCategoryName: string;
+  cargo_subCategoryName: string;
+  warehouseId: string;
+  warehouseName: string;
+  number: number;
+  quantity: number;
+  unit: string;
+  startDate: Date;
+  endDate: Date;
+  containerType: number;
+  container_quantity: number;
+  storageDay: number;
+  storageRate: number;
+  remark: string;
+  orgId: string;
 
+  startDateStr: string;
+  endDateStr: string;
+  unitStr: string;
 }
