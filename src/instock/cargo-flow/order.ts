@@ -1,6 +1,3 @@
-import { DictionaryData } from '../../base/models/dictionary';
-import { DictionaryDataService } from '../../base/services/dictionary';
-
 import { autoinject } from "aurelia-dependency-injection";
 import { Organization } from '@app/base/models/organization';
 import { OrganizationService } from '@app/base/services/organization';
@@ -8,7 +5,9 @@ import { CargoFlow, InstockCargoItem } from '@app/instock/models/cargo-flow';
 import { CargoFlowService } from '@app/instock/services/cargo-flow';
 import { CargoItemService } from '@app/instock/services/cargo-item';
 import * as moment from 'moment';
-import { MessageDialogService } from 'ui';
+import { DictionaryData } from '@app/base/models/dictionary';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { print } from '@app/common/services/print-tool';
 
 @autoinject
 export class Order {
@@ -19,10 +18,10 @@ export class Order {
 
   constructor(private cargoFlowService: CargoFlowService,
               private cargoItemService: CargoItemService,
-              private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
               private organizationService: OrganizationService) {
   }
+
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
@@ -42,7 +41,19 @@ export class Order {
     }
   }
 
-  async print() {
-    this.messageDialogService.alert({ title: "打印成功", message: "打印成功" });
+  async printOrder() {
+    let title = "入库作业指令单";
+    let strHTML = $('#order').html();
+    print(title, strHTML, true);
+    // closePrint();
+    // todo 获取打印状态
+    //let res = checkPrintStatus(jobCode);
+    // if (res == 1) {
+    //   await this.messageDialogService.alert({title: '打印成功', message: '打印成功'});
+    //   return;
+    // } else {
+    //   await this.messageDialogService.alert({title: '打印失败', message: '打印失败', icon: 'error'});
+    //   return;
+    // }
   }
 }
