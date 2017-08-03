@@ -8,7 +8,7 @@ export class ChargeInfoList {
   dataSource: kendo.data.DataSource;
 
   constructor(private dialogService: DialogService,
-              private chargeInfoService: ChargeInfoService) {
+    private chargeInfoService: ChargeInfoService) {
 
   }
 

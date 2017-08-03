@@ -1,73 +1,114 @@
 <template>
   <div class="grid simple">
     <div class="grid-body no-border">
-      <h4>${organization.name}收费单详情</h4>
       <div class="row">
         <div class="col-md-11"></div>
         <div class="input-group col-md-1">
           <button class="btn btn-small" click.delegate="print()">打印</button>
         </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">代理商名称</label>
-        <span class="help"></span>
-        <div class="controls">
-          <input type="text" class="form-control" value.bind="chargeInfo.agentName" readonly>
-        </div>
+      <div class="col-md-9 col-md-offset-2">
+        <table border="1">
+          <tr>
+            <td align="center" colspan="9">
+              <h4>${organization.name}收费单详情</h4>
+            </td>
+          </tr>
+          <tr>
+            <td align="center">代理商名称:</td>
+            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.agentName"></td>
+            <td align="center" colspan="2">客户名称:</td>
+            <td colspan="2"><input type="text" style="border: none" value.bind="chargeInfo.customerName"></td>
+            <td align="center" colspan="2">付款单位:</td>
+            <td colspan="2"><input type="text" style="border: none" value.bind="chargeInfo.paymentUnit"></td>
+          </tr>
+          <tr>
+            <td align="center">结算开始日期:</td>
+            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.chargeStartDateStr"></td>
+            <td align="center" colspan="2">结算结束日期:</td>
+            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.chargeEndDateStr"></td>
+          </tr>
+          <tr>
+            <td align="center">序号</td>
+            <td align="center">批次号</td>
+            <td align="center">提单号</td>
+            <td align="center">箱量</td>
+            <td align="center">仓储费</td>
+            <td align="center">装卸费</td>
+            <td align="center">其他费用</td>
+            <td align="center">合计</td>
+            <td align="center">已收金额</td>
+            <td align="center">应收金额</td>
+            <td align="center">备注</td>
+          </tr>
+          <template repeat.for="chargeAuditList of chargeAuditLists">
+            <tr>
+              <td align="center">${chargeAuditList.index}</td>
+              <td align="center">${chargeAuditList.batchNumber}</td>
+              <td align="center">${chargeAuditList.billLadingNumber}</td>
+              <td align="center">${chargeAuditList.containerQuantity}</td>
+              <td align="center">${chargeAuditList.warehousingAmount}</td>
+              <td align="center">${chargeAuditList.loadingAmount}</td>
+              <td align="center">${chargeAuditList.otherAmount}</td>
+              <td align="center">${chargeAuditList.sumAmount}</td>
+              <td align="center">${chargeAuditList.receivedAmount}</td>
+              <td align="center">${chargeAuditList.receivableAmount}</td>
+              <td align="center">${chargeAuditList.remark}</td>
+            </tr>
+            <template if.bind="chargeAuditList.chargeAuditItem">
+              <tr>
+                <td align="center">费用类型</td>
+                <td align="center">费用类别</td>
+                <td align="center">货名</td>
+                <td align="center">货类</td>
+                <td align="center">品牌</td>
+                <td align="center">库区名称</td>
+                <td align="center">重量</td>
+                <td align="center">件数</td>
+                <td align="center">计量单位</td>
+                <td align="center">开始日期</td>
+                <td align="center">结束日期</td>
+                <td align="center">箱型</td>
+                <td align="center">箱量</td>
+                <td align="center">堆存天数</td>
+                <td align="center">堆存费率</td>
+                <td align="center">备注</td>
+              </tr>
+              <template repeat.for="chargeAuditItem of chargeAuditList.chargeAuditItems">
+                <tr>
+                  <td align="center"></td>
+                  <td align="center">${chargeAuditItem.chargeType}</td>
+                  <td align="center">${chargeAuditItem.chargeCategory}</td>
+                  <td align="center">${chargeAuditItem.cargoName}</td>
+                  <td align="center">${chargeAuditItem.cargoCategoryName}</td>
+                  <td align="center">${chargeAuditItem.cargoSubCategoryName}</td>
+                  <td align="center">${chargeAuditItem.warehouseName}</td>
+                  <td align="center">${chargeAuditItem.quantity}</td>
+                  <td align="center">${chargeAuditItem.number}</td>
+                  <td align="center">${chargeAuditItem.unitStr}</td>
+                  <td align="center">${chargeAuditItem.startDateStr}</td>
+                  <td align="center">${chargeAuditItem.endDateStr}</td>
+                  <td align="center">${chargeAuditItem.containerType}</td>
+                  <td align="center">${chargeAuditItem.containerQuantity}</td>
+                  <td align="center">${chargeAuditItem.storageDay}</td>
+                  <td align="center">${chargeAuditItem.storageRate}</td>
+                  <td align="center">${chargeAuditItem.remark}</td>
+                </tr>
+              </template>
+            </template>
+          </template>
+          <tr>
+            <td align="center">总计已收金额</td>
+            <td colspan="8"><input type="text" style="border: none" value.bind="chargeInfo.totalReceivedAmount"></td>
+            <td align="center">总计应收金额</td>
+            <td colspan="8"><input type="text" style="border: none" value.bind="chargeInfo.totalReceivableAmount"></td>
+          </tr>
+          <tr>
+            <td align="center">备注</td>
+            <td colspan="8">
+              <input type="text" style="border: none" value.bind="chargeInfo.remark">
+            </td>
+          </tr>
+        </table>
       </div>
-      <div class="form-group">
-        <label class="form-label">客户名称</label>
-        <span class="help"></span>
-        <div class="controls">
-          <input type="text" class="form-control" value.bind="chargeInfo.customerName" readonly>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">付款单位</label>
-        <span class="help"></span>
-        <div class="controls">
-          <input type="text" class="form-control" value.bind="chargeInfo.paymentUnit" readonly>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">结算开始日期</label>
-        <span class="help"></span>
-        <div class="controls">
-          <input type="text" class="form-control" value.bind="chargeInfo.chargeStartDateStr" readonly>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">结算结束日期</label>
-        <span class="help"></span>
-        <div class="controls">
-          <input type="text" class="form-control" value.bind="chargeInfo.chargeEndDateStr" readonly>
-        </div>
-      </div>
-      <div class="row column-seperation">
-        <ak-grid k-data-source.bind="chargeAuditLists" k-on-data-bound.delegate="onDataBound($event.detail)"
-                 k-on-detail-init.delegate="detailInit($event.detail)">
-          <ak-col k-field="index" k-title="序号"></ak-col>
-          <ak-col k-field="batchNumber" k-title="批次号 "></ak-col>
-          <ak-col k-field="billLadingNumber" k-title="提单号"></ak-col>
-          <ak-col k-field="containerQuantity" k-title="箱量 "></ak-col>
-          <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
-          <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
-          <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
-          <ak-col k-field="sumAmount" k-title="合计"></ak-col>
-          <ak-col k-field="receivedAmount" k-title="已收金额"></ak-col>
-          <ak-col k-field="receivableAmount" k-title="应收金额"></ak-col>
-          <ak-template for="detailTemplate">
-            <div class="tabstrip">
-              <ul>
-                <li class="k-state-active">明细</li>
-              </ul>
-              <div>
-                <div class="orders"></div>
-              </div>
-            </div>
-          </ak-template>
-        </ak-grid>
-      </div>
-    </div>
-  </div>
 </template>
