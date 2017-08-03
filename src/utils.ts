@@ -85,7 +85,7 @@ export abstract class RestClient extends HttpClient {
  * @deprecated
  * @see fixDate
  */
-export function dateConverter<T>(...keys: string[]): (obj: T) => T  {
+export function dateConverter<T>(...keys: string[]): (obj: T) => T {
   return obj => {
     keys.forEach(key => {
       let value = obj[key];
@@ -100,7 +100,7 @@ export function handleResult(res: HttpResponseMessage): void {
   throw new Error(`HTTP请求错误[${res.statusCode}] ${res.content}`);
 }
 
-export function extractResult({code = null, message, content}: { code: number, message: string, content: any }): any {
+export function extractResult({ code = null, message, content }: { code: number, message: string, content: any }): any {
   if (code == null) throw new Error("无code字段");
   if (code == 100) return content;
   let reason: string;
@@ -125,7 +125,7 @@ export interface DataSourceOptions {
 
 export interface DataSourceOptions2 {
 
-  readAll? : (params: any) => any[] | Promise<any[]>;
+  readAll?: (params: any) => any[] | Promise<any[]>;
   query?: (params: any) => Query<any>;
   // serverPaging?: boolean;
   pageSize?: number;
@@ -136,9 +136,9 @@ export interface DataSourceOptions2 {
 @autoinject
 export class DataSourceFactory {
 
-  constructor(private events: EventAggregator) {}
+  constructor(private events: EventAggregator) { }
 
-  create({readAll, query, pageSize, error: onError}: DataSourceOptions2) {
+  create({ readAll, query, pageSize, error: onError }: DataSourceOptions2) {
     let serverPaging: boolean;
     let read: (options: any) => void;
     let schema: any;
@@ -149,18 +149,18 @@ export class DataSourceFactory {
         data: 'data'
       };
       read = options => {
-          query(options.data).fetch(options.data)
-                        .then(options.success)
-                        .catch(err => options.error('', '', err));
-        };
+        query(options.data).fetch(options.data)
+          .then(options.success)
+          .catch(err => options.error('', '', err));
+      };
     } else if (readAll) {
       serverPaging = false;
       schema = null;
       read = options => {
-          Promise.resolve(readAll(options.data))
-              .then(options.success)
-              .catch(err => options.error('', '', err));
-        };
+        Promise.resolve(readAll(options.data))
+          .then(options.success)
+          .catch(err => options.error('', '', err));
+      };
     }
     let options: any = {
       transport: {
@@ -188,7 +188,7 @@ export class DataSourceFactory {
  * @deprecated
  * @see DataSourceFactory
  */
-export function createDataSource({read, serverPaging, pageSize, error}: DataSourceOptions) {
+export function createDataSource({ read, serverPaging, pageSize, error }: DataSourceOptions) {
 
   return new kendo.data.DataSource({
     transport: {
@@ -237,7 +237,7 @@ export interface TreeOptions {
 }
 
 export function treeHelper<T>(items: T[],
-                      { key = 'id', parentKey = 'parentId', childrenKey = 'children' }: TreeOptions): TreeHelper<T> {
+  { key = 'id', parentKey = 'parentId', childrenKey = 'children' }: TreeOptions): TreeHelper<T> {
   let map = new Map(items.map<[any, T]>(item => [item[key], item]));
   return {
     toTree() {
@@ -282,47 +282,47 @@ export interface TreeHelper<T> {
 
 class QueryImpl<T> implements Query<T> {
 
-    constructor(private request: RequestBuilder,
-                private params?: { [name: string]: any },
-                private headers?: { [name: string]: any },
-                private mapper?: Function) {
-      if (headers) {
-        for (let key of Object.keys(headers)) {
-          this.request = this.request.withHeader(key, headers[key]);
-        }
+  constructor(private request: RequestBuilder,
+    private params?: { [name: string]: any },
+    private headers?: { [name: string]: any },
+    private mapper?: Function) {
+    if (headers) {
+      for (let key of Object.keys(headers)) {
+        this.request = this.request.withHeader(key, headers[key]);
       }
     }
+  }
 
-    map<X>(f: (data: T) => X): Query<X> {
-      let fn = this.mapper ? data => f(this.mapper.call(null, data)) : f;
-      return new QueryImpl(this.request, this.params, this.headers, fn);
-    }
+  map<X>(f: (data: T) => X): Query<X> {
+    let fn = this.mapper ? data => f(this.mapper.call(null, data)) : f;
+    return new QueryImpl(this.request, this.params, this.headers, fn);
+  }
 
-    async fetch(options?: QueryOptions) {
-      let { skip = 0, take } = options;
-      let req = this.request;
-      let params;
-      if (take) {
-        let page = (skip / take) + 1;
-        let pageSize = options.take;
-        params = { page, pageSize };
-        if (this.params) {
-          Object.assign(params, this.params);
-        }
-        req = req.withParams(params);
-      } else if (this.params) {
-        params = this.params;
-        req = req.withParams(params);
+  async fetch(options?: QueryOptions) {
+    let { skip = 0, take } = options;
+    let req = this.request;
+    let params;
+    if (take) {
+      let page = (skip / take) + 1;
+      let pageSize = options.take;
+      params = { page, pageSize };
+      if (this.params) {
+        Object.assign(params, this.params);
       }
-      return req.asGet().send()
-        .then(res => {
-          let data = res.content.data;
-          if (this.mapper) data = data.map(this.mapper);
-          return {
-            total: res.content.total as number,
-            data: data as T[]
-          };
-        });
+      req = req.withParams(params);
+    } else if (this.params) {
+      params = this.params;
+      req = req.withParams(params);
     }
+    return req.asGet().send()
+      .then(res => {
+        let data = res.content.data;
+        if (this.mapper) data = data.map(this.mapper);
+        return {
+          total: res.content.total as number,
+          data: data as T[]
+        };
+      });
+  }
 
 }
