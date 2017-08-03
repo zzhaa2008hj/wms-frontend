@@ -96,7 +96,7 @@ export class NewCargoFlow {
 
     let index = 0;
     for (let file of this.files) {
-      let fileName = uuid();      
+      let fileName = uuid();
       let suffix = file.name.split(".")[1];
       let uuidName = fileName + "." + suffix;
       let path = '/' + keyRes.key + '/' + uuidName;

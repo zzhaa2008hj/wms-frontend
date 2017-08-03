@@ -44,4 +44,18 @@ export class ChargeInfoList {
     }
   }
 
+  /**
+   * 核销
+   */
+  async auditCancel(id: string) {
+    try {
+      let result = await this.dialogService.confirm({ title: "提示", message: "是否确定要核销当前结算需求！" });
+      if (!result) return;
+      await this.chargeInfoService.auditCancel(id);
+      await this.dialogService.alert({ title: "提示", message: "核销成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
 }

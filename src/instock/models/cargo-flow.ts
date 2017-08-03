@@ -1,5 +1,5 @@
-import { AttachmentMap } from '@app/common/models/attachment';
 import { ValidationRules } from 'aurelia-validation';
+import { AttachmentMap } from '@app/common/models/attachment';
 /**
  * Created by Hui on 2017/6/19.
  */

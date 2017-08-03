@@ -19,11 +19,15 @@ export class ChargeInfoService {
     return res.content;
   }
 
-  issueChargeInvoice(id: string, invoice: Invoice) {
+  issueChargeInvoice(id: string, invoice: Invoice): Promise<void> {
     return this.http.put(`/fee/charge-info//chargeInvoice/${id}`, invoice).then(handleResult);
   }
 
-  auditSecondFee(id: string, status: number) {
+  auditSecondFee(id: string, status: number): Promise<void> {
     return this.http.put(`/fee/charge-info/${id}/${status}/audit`, null).then(handleResult);
+  }
+
+  auditCancel(id: string): Promise<void> {
+    return this.http.put(`/fee/charge-info/chargeAuditCancel/${id}`, null).then(handleResult);
   }
 }
