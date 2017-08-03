@@ -8,7 +8,7 @@
       <ak-drop-down-list k-value.two-way="rate.chargeCategory" k-option-label="请选择费用类别" k-data-text-field="text"
         k-data-value-field="value" style="width:130px;" k-data-source.bind="chargeCategories">
       </ak-drop-down-list>
-      <ak-drop-down-list class="m-l-5" k-value.two-way="rate.chargeType" k-option-label="请选择费用类型" k-data-text-field="text" k-data-value-field="value"
+      <ak-drop-down-list class="m-l-5" k-value.two-way="rate.chargeType" k-option-label="请选择收付费" k-data-text-field="text" k-data-value-field="value"
         k-data-source.bind="chargeTypes" style="width:130px;">
       </ak-drop-down-list>
       <ak-drop-down-list class="m-l-5" k-value.two-way="rate.customerCategory" k-option-label="请选择客户类别" k-data-text-field="text"
@@ -31,7 +31,7 @@
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
     <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
-    <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="费用类型"></ak-col>
+    <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
     <ak-col k-field="customerCategory == 1 ? '仓储客户': '装卸单位' " k-title="客户类别"></ak-col>
     <ak-col k-field="price" k-title="单价"></ak-col>
     <ak-col k-field="unit" k-title="计量单位"></ak-col>
