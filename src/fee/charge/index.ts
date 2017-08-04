@@ -10,8 +10,8 @@ export class Charge {
 
     config.map([
       { route: '', name: 'list', moduleId: './list' },
-      { route: '/:id/customer-confirmation', name: 'customerConfirm', moduleId: './customer-confirmation/new' },
-      { route: '/:id/note', name: 'note', moduleId: './note' },
+      { route: '/:id/customer-confirmation', name: 'customerConfirm', moduleId: './customer-confirmation/new', title: '客户确认' },
+      { route: '/:id/note', name: 'note', moduleId: './note' , title: '收费单'},
     ]);
     this.router = router;
   }

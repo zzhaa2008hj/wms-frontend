@@ -5,6 +5,8 @@ import { OrganizationService } from "@app/base/services/organization";
 import { ChargeInfo } from "@app/fee/models/charge";
 import { ChargeAuditList } from "@app/fee/models/charge-audit";
 import { Organization } from "@app/base/models/organization";
+import * as moment from 'moment';
+
 @autoinject
 export class Audit {
   chargeInfo: ChargeInfo;
