@@ -189,4 +189,35 @@ export class ConstantValues {
       title: "出库完成"
     }];
   }
+
+  static get PayStage() {
+    return [{
+      stage: 0,
+      title: "未结算"
+    }, {
+      stage: 1,
+      title: "已生成对账清单"
+    }, {
+      stage: 2,
+      title: "装卸单位确认"
+    }, {
+      stage: 3,
+      title: "费收审核拒绝"
+    }, {
+      stage: 4,
+      title: "费收审核通过"
+    }, {
+      stage: 5,
+      title: "已核对生成付费单"
+    }, {
+      stage: 6,
+      title: "领导签字审核"
+    }, {
+      stage: 7,
+      title: "已开票"
+    }, {
+      stage: 8,
+      title: "已付费核销"
+    }];
+  }
 }
