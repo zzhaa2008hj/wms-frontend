@@ -10,7 +10,7 @@
       <div class="col-md-9 col-md-offset-2">
         <table border="1">
           <tr>
-            <td align="center" colspan="18">
+            <td align="center" colspan="17">
               <h4>${organization.name}收费单详情</h4>
             </td>
           </tr>
@@ -30,33 +30,28 @@
             <td colspan="5"></td>
           </tr>
           <tr>
-            <td align="center">序号</td>
+            <td align="center" colspan="2">序号</td>
             <td align="center" colspan="2">批次号</td>
             <td align="center" colspan="2">提单号</td>
-            <td align="center">箱量</td>
+            <td align="center" colspan="2">箱量</td>
             <td align="center" colspan="2">仓储费</td>
             <td align="center" colspan="2">装卸费</td>
             <td align="center" colspan="2">其他费用</td>
-            <td align="center">合计</td>
-            <td align="center" colspan="2">已收金额</td>
-            <td align="center" colspan="2">应收金额</td>
+            <td align="center" colspan="3">合计</td>
           </tr>
           <template repeat.for="chargeAuditList of chargeAuditLists">
             <tr>
-              <td align="center">${chargeAuditList.index}</td>
+              <td align="center" colspan="2">${chargeAuditList.index}</td>
               <td align="center" colspan="2">${chargeAuditList.batchNumber}</td>
               <td align="center" colspan="2">${chargeAuditList.billLadingNumber}</td>
-              <td align="center">${chargeAuditList.containerQuantity}</td>
+              <td align="center" colspan="2">${chargeAuditList.containerQuantity}</td>
               <td align="center" colspan="2">${chargeAuditList.warehousingAmount}</td>
               <td align="center" colspan="2">${chargeAuditList.loadingAmount}</td>
               <td align="center" colspan="2">${chargeAuditList.otherAmount}</td>
-              <td align="center">${chargeAuditList.sumAmount}</td>
-              <td align="center" colspan="2">${chargeAuditList.receivedAmount}</td>
-              <td align="center" colspan="2">${chargeAuditList.receivableAmount}</td>
+              <td align="center" colspan="3">${chargeAuditList.sumAmount}</td>
             </tr>
-            <!--<div>-->
-            <div if.bind="chargeAuditList.chargeAuditItems">
-              <tr>
+            <div>
+              <tr if.bind="chargeAuditList.chargeAuditItems.length > 0">
                 <td align="center"></td>
                 <td align="center">费用类型</td>
                 <td align="center">费用类别</td>
@@ -99,14 +94,12 @@
             </div>
           </template>
           <tr>
-            <td align="center" colspan="3">总计已收金额</td>
-            <td colspan="6">${chargeInfo.totalReceivedAmount}</td>
-            <td align="center" colspan="3">总计应收金额</td>
-            <td colspan="6">${chargeInfo.totalReceivableAmount}</td>
+            <td align="center" colspan="4">总计金额</td>
+            <td colspan="13">${chargeInfo.totalAmount}</td>
           </tr>
           <tr>
-            <td align="center" colspan="3">备注</td>
-            <td colspan="14">
+            <td align="center" colspan="4">备注</td>
+            <td colspan="13">
               <input type="text" style="border: none" value.bind="chargeInfo.remark">
             </td>
           </tr>

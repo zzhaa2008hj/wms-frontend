@@ -15,12 +15,11 @@ export interface ChargeInfo {
   auditTime: Date;
   remark: string;
   orgId: string;
+  type: number;
 
   chargeStartDateStr: string;
   chargeEndDateStr: string;
 
-  totalReceivableAmount: number;
-  totalReceivedAmount: number;
 }
 
 export interface ChargeItem {

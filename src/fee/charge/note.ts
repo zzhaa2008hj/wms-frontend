@@ -35,11 +35,9 @@ export class Note {
     this.chargeInfo.chargeEndDateStr = moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD");
 
     if (this.chargeAuditLists) {
-      for (let i in this.chargeAuditLists) {
-        let cal = this.chargeAuditLists[i];
-        cal.index = parseInt(i) + 1;
+      for (let cal of this.chargeAuditLists) {
         cal.chargeAuditItems = await this.chargeAuditItemService.getListByChargeAuditId(cal.id);
-        if (cal.chargeAuditItems) {
+        if (cal.chargeAuditItems.length > 0) {
           cal.chargeAuditItems.map(cai => {
             cai.unitStr = this.units.find(r => r.dictDataCode == cai.unit).dictDataName;
             cai.startDateStr = moment(cai.startDate).format("YYYY-MM-DD");
@@ -48,16 +46,13 @@ export class Note {
         }
       }
 
-      let totalReceivableAmount = 0;
-      let totalReceivedAmount = 0;
+      let totalAmount = 0;
       this.chargeAuditLists.forEach(cal => {
-        totalReceivableAmount += cal.receivableAmount;
-        if (cal.receivedAmount) totalReceivedAmount += cal.receivedAmount;
+        totalAmount += cal.sumAmount;
+        Object.assign(cal, { index: this.chargeAuditLists.indexOf(cal) + 1 });
       });
-      this.chargeInfo.totalReceivableAmount = totalReceivableAmount;
-      this.chargeInfo.totalReceivedAmount = totalReceivedAmount;
+      Object.assign(this.chargeInfo, { totalAmount: totalAmount });
     }
-    console.log(this.chargeAuditLists);
   }
 
   async print() {

@@ -33,18 +33,12 @@ export class CustomerConfirm {
     this.chargeInfo.chargeEndDateStr = moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD");
 
     if (this.chargeAuditLists) {
-      for (let i in this.chargeAuditLists) {
-        this.chargeAuditLists[i].index = parseInt(i) + 1;
-      }
-
-      let totalReceivableAmount = 0;
-      let totalReceivedAmount = 0;
+      let totalAmount = 0;
       this.chargeAuditLists.forEach(cal => {
-        totalReceivableAmount += cal.receivableAmount;
-        if (cal.receivedAmount) totalReceivedAmount += cal.receivedAmount;
+        totalAmount += cal.sumAmount;
+        Object.assign(cal, { index: this.chargeAuditLists.indexOf(cal) + 1 });
       });
-      this.chargeInfo.totalReceivableAmount = totalReceivableAmount;
-      this.chargeInfo.totalReceivedAmount = totalReceivedAmount;
+      Object.assign(this.chargeInfo, { totalAmount: totalAmount });
     }
   }
 

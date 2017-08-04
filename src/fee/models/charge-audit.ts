@@ -20,13 +20,11 @@ export interface ChargeAuditList {
   orgId: string;
 
   chargeAuditItems: ChargeAuditItem[];
-
-  index: number;
 }
 export interface ChargeAuditItem {
   id: string;
   chargeAuditId: string;
-  chargeType: number;
+  rateType: number;
   chargeCategory: number;
   batchNumber: string;
   cargoName: string;
