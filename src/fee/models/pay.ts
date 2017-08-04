@@ -1,5 +1,6 @@
 export class PaymentInfo {
   id: string;
+  
   customerId: string;
 
   customerName: string;
@@ -14,6 +15,8 @@ export class PaymentInfo {
 
   status: number;
 
+  statusTitle: string;
+
   lastStage: number;
 
   stage: number;
@@ -23,6 +26,12 @@ export class PaymentInfo {
   auditorName: string;
 
   auditTime: Date;
+  /**
+   * 1：自动生成 2：手动生成  
+   */
+  type: number;
+
+  remark: string;
 }
 
 export class PaymentAuditList {
