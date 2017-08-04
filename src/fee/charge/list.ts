@@ -1,15 +1,50 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { InvoiceEntry } from "@app/fee/charge/invoice";
-import { DialogService } from "ui";
+import { DialogService, MessageDialogService } from "ui";
 import { ChargeInfoService } from "@app/fee/services/charge";
 import { Audit } from "@app/fee/charge/audit/new";
+import { DataSourceFactory } from "@app/utils";
+import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
+import { VerifyRecordCriteria } from "@app/common/services/verify-record";
 @autoinject
 export class ChargeInfoList {
   dataSource: kendo.data.DataSource;
 
   constructor(private dialogService: DialogService,
+              private messageDialogService: MessageDialogService,
+              private dataSourceFactory: DataSourceFactory,
               private chargeInfoService: ChargeInfoService) {
 
+  }
+
+  async activate() {
+    this.dataSource = this.dataSourceFactory.create({
+      query: () => this.chargeInfoService.queryChargeInfo(),
+      pageSize: 10
+    });
+  }
+
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    let dataItem = grid.dataItem(selectedRow);
+    this.id = dataItem.id;
+  }
+
+  /**
+   * 审核记录
+   */
+  async verifyHistory() {
+    if (!this.id) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择结算需求单', icon: "error" });
+      return;
+    }
+    let criteria: VerifyRecordCriteria = {};
+    criteria.businessId = this.id;
+    criteria.businessType = 8;
+    let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: criteria, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
   }
 
   /**
@@ -36,7 +71,7 @@ export class ChargeInfoList {
       .whenClosed();
     if (result.wasCancelled) return;
     try {
-      await this.chargeInfoService.issueChargeInvoice(id, result.output);
+      await this.chargeInfoService.issueChargeInvoice(id, result.output.invoiceType, result.output.invoiceNumber);
       await this.dialogService.alert({ title: "提示", message: "发票录入成功！" });
       this.dataSource.read();
     } catch (err) {
