@@ -1,0 +1,23 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="form-group" style="width:500px">
+                <label class="form-label">实际付款金额</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="number" class="form-control" value.bind="paidAmount">
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="pull-right">
+                    <button class="btn btn-primary btn-small " click.delegate="save()">完成</button>
+                    <button class="btn btn-small" click.delegate="cancle()">取消</button>
+                </div>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

@@ -86,7 +86,7 @@ export class UploadConfirm {
   }
 
   async finish() {
-    await this.dialogController.ok(this.attachments);
+    await this.dialogController.ok(6);
   }
 
   async cancle() {
