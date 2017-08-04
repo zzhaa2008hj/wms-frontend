@@ -50,15 +50,11 @@ export class PaymentAuditList {
 export class PaymentAuditItem {
   id: string;
 
-  index: number;
-
   paymentAuditId: string;
 
   workOrderNumber: string;
 
   workDate: Date;
-
-  workDateStr: string;
 
   workName: string;
 
@@ -77,9 +73,4 @@ export class PaymentAuditItem {
   unit: string;
 
   sumAmount: number;
-}
-
-export interface Invoice {
-  invoiceType: number;
-  invoiceNumber: string;
 }    

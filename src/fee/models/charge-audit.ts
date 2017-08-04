@@ -20,6 +20,8 @@ export interface ChargeAuditList {
   orgId: string;
 
   chargeAuditItems: ChargeAuditItem[];
+
+  index: number;
 }
 export interface ChargeAuditItem {
   id: string;
