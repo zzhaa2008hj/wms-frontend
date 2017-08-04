@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { handleResult, RestClient } from "@app/utils";
+import { handleResult, Query, RestClient } from "@app/utils";
 import { ChargeInfo } from "@app/fee/models/charge";
 import { Invoice } from "@app/fee/models/invoice";
 /**
@@ -11,7 +11,7 @@ export class ChargeInfoService {
   }
 
   customerConfirm(chargeInfoId: string): Promise<void> {
-    return this.http.post(`/fee/charge-info/${chargeInfoId}/customerConfirm`, null).then(handleResult);
+    return this.http.put(`/fee/charge-info/${chargeInfoId}/customerConfirm`, null).then(handleResult);
   }
 
   async getById(id: string): Promise<ChargeInfo> {
@@ -19,8 +19,9 @@ export class ChargeInfoService {
     return res.content;
   }
 
-  issueChargeInvoice(id: string, invoice: Invoice): Promise<void> {
-    return this.http.put(`/fee/charge-info//chargeInvoice/${id}`, invoice).then(handleResult);
+  issueChargeInvoice(id: string, invoiceType: number, invoiceNumber: string): Promise<void> {
+    return this.http.put(`/fee/charge-info/chargeInvoice/${id}?invoiceType=${invoiceType}&invoiceNumber=${invoiceNumber}`, null)
+      .then(handleResult);
   }
 
   auditSecondFee(id: string, status: number): Promise<void> {
@@ -29,5 +30,9 @@ export class ChargeInfoService {
 
   auditCancel(id: string): Promise<void> {
     return this.http.put(`/fee/charge-info/chargeAuditCancel/${id}`, null).then(handleResult);
+  }
+
+  queryChargeInfo(): Query<ChargeInfo> {
+    return this.http.query<ChargeInfo>(`/fee/charge-info/page`);
   }
 }
