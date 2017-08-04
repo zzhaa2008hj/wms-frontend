@@ -8,6 +8,7 @@ import { ChargeInfoService } from "@app/fee/services/charge";
 import { DialogService } from "ui";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
+import * as moment from 'moment';
 
 @autoinject
 export class Note {
@@ -30,26 +31,33 @@ export class Note {
     this.organization = await this.organizationService.getOrganization(this.chargeInfo.orgId);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
-    for (let cal of this.chargeAuditLists) {
-      cal.chargeAuditItems = await this.chargeAuditItemService.getListByChargeAuditId(cal.id);
-      cal.chargeAuditItems.forEach(cai => {
-        cai.unitStr = this.units.find(r => r.dictDataCode == cai.unit).dictDataName;
-        cai.startDateStr = moment(cai.startDate).format("YYYY-MM-DD");
-        cai.endDateStr = moment(cai.endDate).format("YYYY-MM-DD");
-      });
-    }
-
     this.chargeInfo.chargeStartDateStr = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD");
     this.chargeInfo.chargeEndDateStr = moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD");
 
-    let totalReceivableAmount = 0;
-    let totalReceivedAmount = 0;
-    this.chargeAuditLists.forEach(cal => {
-      totalReceivableAmount += cal.receivableAmount;
-      if (cal.receivedAmount) totalReceivedAmount += cal.receivedAmount;
-    });
-    this.chargeInfo.totalReceivableAmount = totalReceivableAmount;
-    this.chargeInfo.totalReceivedAmount = totalReceivedAmount;
+    if (this.chargeAuditLists) {
+      for (let i in this.chargeAuditLists) {
+        let cal = this.chargeAuditLists[i];
+        cal.index = parseInt(i) + 1;
+        cal.chargeAuditItems = await this.chargeAuditItemService.getListByChargeAuditId(cal.id);
+        if (cal.chargeAuditItems) {
+          cal.chargeAuditItems.map(cai => {
+            cai.unitStr = this.units.find(r => r.dictDataCode == cai.unit).dictDataName;
+            cai.startDateStr = moment(cai.startDate).format("YYYY-MM-DD");
+            cai.endDateStr = moment(cai.endDate).format("YYYY-MM-DD");
+          });
+        }
+      }
+
+      let totalReceivableAmount = 0;
+      let totalReceivedAmount = 0;
+      this.chargeAuditLists.forEach(cal => {
+        totalReceivableAmount += cal.receivableAmount;
+        if (cal.receivedAmount) totalReceivedAmount += cal.receivedAmount;
+      });
+      this.chargeInfo.totalReceivableAmount = totalReceivableAmount;
+      this.chargeInfo.totalReceivedAmount = totalReceivedAmount;
+    }
+    console.log(this.chargeAuditLists);
   }
 
   async print() {

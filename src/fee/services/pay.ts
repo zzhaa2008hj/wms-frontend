@@ -1,7 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, RestClient, fixDate, Query } from "@app/utils";
-import { PaymentInfo, PaymentAuditList, PaymentAuditItem, Invoice } from "@app/fee/models/pay";
-import { AttachmentMap } from '@app/common/models/attachment';
+import { PaymentInfo, PaymentAuditList, PaymentAuditItem } from "@app/fee/models/pay";
 @autoinject
 export class PaymentInfoService {
   constructor(private http: RestClient) {
@@ -22,10 +21,6 @@ export class PaymentInfoService {
   audit(id: string, status: number): Promise<void> {
     return this.http.put(`/fee/paymentInfo/auditPayInvoice/${id}?status=${status}`, "").then(handleResult);
   }
-
-  verify(id: string, stage: number, list: AttachmentMap[]): Promise<void> {
-    return this.http.put(`/fee/paymentInfo/${id}/id/${stage}/stage`, list).then(handleResult);
-  }
 }
 
 @autoinject
@@ -35,10 +30,6 @@ export class PaymentAuditListService {
 
   getByPaymentInfoId(paymentInfoId: string): Promise<PaymentAuditList> {
     return this.http.get(`/fee/paymentAuditList/${paymentInfoId}/getByPaymentInfoId`).then(res => res.content);
-  }
-
-  updateByPaymentInfoId(paymentInfoId: string, invoice: Invoice): Promise<void> {
-    return this.http.put(`/fee/paymentAuditList/${paymentInfoId}/updateByPaymentInfoId`, invoice).then(handleResult);
   }
 }
 

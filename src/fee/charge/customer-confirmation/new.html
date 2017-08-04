@@ -12,74 +12,75 @@
       <div class="col-md-9 col-md-offset-2">
         <table border="1">
           <tr>
-            <td align="center" colspan="9">
-              <h4>${organization.name}对账清单</h4>
-            </td>
+            <td align="center" colspan="10"><h4>${organization.name}对账清单</h4></td>
           </tr>
           <tr>
-            <td align="center">代理商名称:</td>
-            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.agentName"></td>
+            <td align="center" colspan="2">代理商名称:</td>
+            <td colspan="1">${chargeInfo.agentName}</td>
             <td align="center" colspan="2">客户名称:</td>
-            <td colspan="2"><input type="text" style="border: none" value.bind="chargeInfo.customerName"></td>
+            <td colspan="1">${chargeInfo.customerName}</td>
             <td align="center" colspan="2">付款单位:</td>
-            <td colspan="2"><input type="text" style="border: none" value.bind="chargeInfo.paymentUnit"></td>
+            <td colspan="2">${chargeInfo.paymentUnit}</td>
           </tr>
           <tr>
-            <td align="center">结算开始日期:</td>
-            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.chargeStartDateStr"></td>
+            <td align="center" colspan="2">结算开始日期:</td>
+            <td colspan="2">${chargeInfo.chargeStartDateStr}</td>
             <td align="center" colspan="2">结算结束日期:</td>
-            <td colspan="4"><input type="text" style="border: none" value.bind="chargeInfo.chargeEndDateStr"></td>
+            <td colspan="4">${chargeInfo.chargeEndDateStr}</td>
           </tr>
           <tr>
-            <td align="center">序号</td>
-            <td align="center">批次号</td>
-            <td align="center">提单号</td>
-            <td align="center">箱量</td>
-            <td align="center">仓储费</td>
-            <td align="center">装卸费</td>
-            <td align="center">其他费用</td>
-            <td align="center">合计</td>
-            <td align="center">已收金额</td>
-            <td align="center">应收金额</td>
+            <td>序号</td>
+            <td>批次号</td>
+            <td>提单号</td>
+            <td>箱量</td>
+            <td>仓储费</td>
+            <td>装卸费</td>
+            <td>其他费用</td>
+            <td>合计</td>
+            <td>已收金额</td>
+            <td>应收金额</td>
           </tr>
           <template repeat.for="chargeAuditList of chargeAuditLists">
             <tr>
-              <td align="center">${chargeAuditList.index}</td>
-              <td align="center">${chargeAuditList.batchNumber}</td>
-              <td align="center">${chargeAuditList.billLadingNumber}</td>
-              <td align="center">${chargeAuditList.containerQuantity}</td>
-              <td align="center">${chargeAuditList.warehousingAmount}</td>
-              <td align="center">${chargeAuditList.loadingAmount}</td>
-              <td align="center">${chargeAuditList.otherAmount}</td>
-              <td align="center">${chargeAuditList.sumAmount}</td>
-              <td align="center">${chargeAuditList.receivedAmount}</td>
-              <td align="center">${chargeAuditList.receivableAmount}</td>
+              <td>${chargeAuditList.index}</td>
+              <td>${chargeAuditList.batchNumber}</td>
+              <td>${chargeAuditList.billLadingNumber}</td>
+              <td>${chargeAuditList.containerQuantity}</td>
+              <td>${chargeAuditList.warehousingAmount}</td>
+              <td>${chargeAuditList.loadingAmount}</td>
+              <td>${chargeAuditList.otherAmount}</td>
+              <td>${chargeAuditList.sumAmount}</td>
+              <td>${chargeAuditList.receivedAmount}</td>
+              <td>${chargeAuditList.receivableAmount}</td>
             </tr>
           </template>
           <tr>
-            <td align="center">总计已收金额</td>
-            <td colspan="8"><input type="text" style="border: none" value.bind="chargeInfo.totalReceivedAmount"></td>
-            <td align="center">总计应收金额</td>
-            <td colspan="8"><input type="text" style="border: none" value.bind="chargeInfo.totalReceivableAmount"></td>
+            <td colspan="2">总计已收金额</td>
+            <td colspan="2">${chargeInfo.totalReceivedAmount}</td>
+            <td colspan="2">总计应收金额</td>
+            <td colspan="4">${chargeInfo.totalReceivableAmount}</td>
           </tr>
           <tr>
-            <td align="center">备注</td>
+            <td colspan="2" align="center">备注</td>
             <td colspan="8">
               <input type="text" style="border: none" value.bind="chargeInfo.remark">
             </td>
           </tr>
           <tr>
-            <td align="right">制单人&nbsp;&nbsp;</td>
-            <td colspan="2" align="center">&nbsp;${chargeInfo.createAccount}&nbsp;</td>
-            <td align="right">制单日期&nbsp;&nbsp;</td>
-            <td align="center" colspan="2">&nbsp;${chargeInfo.createTimeStr}&nbsp;</td>
-            <td align="right">客户签字&nbsp;&nbsp;</td>
-            <td colspan="2"></td>
+            <td align="center">制单人&nbsp;&nbsp;</td>
+            <td colspan="2">&nbsp;${chargeInfo.createAccount}&nbsp;</td>
+            <td align="center">制单日期&nbsp;&nbsp;</td>
+            <td colspan="2">&nbsp;${chargeInfo.createTimeStr}&nbsp;</td>
+            <td align="center">客户签字&nbsp;&nbsp;</td>
+            <td colspan="3"></td>
           </tr>
         </table>
       </div>
       <div class="form-actions">
         <div class="pull-right">
+          <div class="input-group col-md-1">
+            <button class="btn btn-small" click.delegate="newUpdate()">上传客户确认对账单</button>
+          </div>
           <button class="btn btn-primary" disabled.bind="disabled" click.delegate="customerConfirm()">确认</button>
           <button class="btn btn-warning" click.trigger="cancel()">取消</button>
         </div>
