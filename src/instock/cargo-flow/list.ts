@@ -222,6 +222,15 @@ export class CargoFlow {
     }
   }
 
+  async separateHistory() {
+    if (!this.selectedItem) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
+      return;
+    }
+    let id = this.selectedItem.id;
+    this.router.navigateToRoute('separateHistory', {id: id});
+  }
+
   /**
    * 生成理货报告
    */

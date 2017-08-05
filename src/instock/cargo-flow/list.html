@@ -4,12 +4,12 @@
   </div>
   <div class="row">
     <div class="col-md-9">
-      <a class="btn btn-sm btn-small btn-success" click.delegate="add()">新增</a>
-      <a class="btn btn-sm btn-small btn-default" route-href="route: separateHistory">拆单历史记录</a>
-      <button class="btn btn-small" click.delegate="createInstockOrderItem()">生成理货报告</button>
-      <button class="btn btn-small" click.delegate="createInstockOrder()">生成入库单</button>
+      <a class="btn btn-small btn-success" click.delegate="add()">新增</a>
+      <button class="btn btn-small btn-primary" click.delegate="createInstockOrderItem()">生成理货报告</button>
+      <button class="btn btn-small btn-primary" click.delegate="createInstockOrder()">生成入库单</button>
       <a class="btn btn-small" click.delegate="changeHistory()">修改记录</a>
       <button class="btn btn-small" click.delegate="verifyHistory()">审核记录</button>
+      <a class="btn btn-small btn-default" click.delegate="separateHistory()">拆单历史记录</a>      
     </div>
     <div class="input-group">
       <input class="form-control" type="text" value.bind="searchName" placeholder="请输入流水号">
