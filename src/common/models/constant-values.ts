@@ -220,4 +220,14 @@ export class ConstantValues {
       title: "已付费核销"
     }];
   }
+
+  static get PaymentInfoType(){
+    return [{
+      stage:1,
+      title:"自动生成"
+    },{
+      stage:2,
+      title:"手动新增"
+    }];
+  }
 }
