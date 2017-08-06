@@ -57,13 +57,19 @@ export class PaymentAuditList {
 
   invoiceType: number;
 
+  invoiceTypeStr: string;
+
   invoiceStatus: number;
+
+  invoiceStatusStr: string;
 
   invoiceNumber: string;
 
   paymentDate: Date;
 
   paymentStatus: number;
+
+  paymentStatusStr: string;
 
   payableAmount: number;
 

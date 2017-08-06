@@ -221,13 +221,33 @@ export class ConstantValues {
     }];
   }
 
-  static get PaymentInfoType(){
+  static get PaymentInfoType() {
     return [{
-      stage:1,
-      title:"自动生成"
-    },{
-      stage:2,
-      title:"手动新增"
+      stage: 1,
+      title: "自动生成"
+    }, {
+      stage: 2,
+      title: "手动新增"
+    }];
+  }
+
+  static get InvoiceStatus() {
+    return [{
+      stage: 0,
+      title: "未开票"
+    }, {
+      stage: 1,
+      title: "已开票"
+    }];
+  }
+
+  static get PaymentStatus() {
+    return [{
+      stage: 0,
+      title: "未付款"
+    }, {
+      stage: 1,
+      title: "已付款"
     }];
   }
 }
