@@ -5,8 +5,6 @@ import { ConstantValues } from '@app/common/models/constant-values';
 import { NewPaymentInfo } from '@app/fee/pay/new';
 import { EditPaymentInfo } from '@app/fee/pay/edit';
 import { DialogService, MessageDialogService } from 'ui';
-import { VerifyRecordCriteria } from "@app/common/services/verify-record";
-import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
 import { LeaderVerify } from "./leader-verify";
 import { InvoiceInput } from "./invoice";
 import { VerifyRecordCriteria } from "@app/common/services/verify-record";
