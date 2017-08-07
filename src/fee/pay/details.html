@@ -1,190 +1,99 @@
 <template>
     <div class="grid simple">
-        <div class="grid-body">
-            <div class="page-title">
-                <h4>付费单</h4>
-            </div>
-            <div class="row">
-                <div class="col-md-11"></div>
-                <div class="input-group col-md-1">
-                    <button class="btn btn-small" click.delegate="print()">打印</button>
+        <div class="grid-body no-border">
+            <form>
+                <div class="row column-seperation">
+                    <h4>基本信息</h4>
+                    <div class="col-md-4">
+                        <label class="form-label">客户名称</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentInfo.customerName" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4" if.bind="paymentInfo.type == 1">
+                        <label class="form-label">结算开始日期</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentInfo.chargeStartDateStr"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4" if.bind="paymentInfo.type == 1">
+                        <label class="form-label">结算结束日期</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentInfo.chargeEndDateStr" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">结算生成方式</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentInfo.typeTitle" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">费用合计</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentAuditList.sumFee" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">开票状态</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentAuditList.invoiceStatusStr"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">票据类型</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentAuditList.invoiceTypeStr"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">票据编号</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentAuditList.invoiceNumber"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">付款状态</label>
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <input type="text" class="form-control" value.bind="paymentAuditList.paymentStatusStr"
+                                   readonly>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-12 col-md-offset-2" id="detail">
-                <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
-                    <tr>
-                        <td align="center" colspan="10">
-                            <h4>清单</h4>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">客户名称:</td>
-                        <td colspan="3">${paymentInfo.customerName}</td>
-                        <td colspan="2" align="center">结算生成方式:</td>
-                        <td colspan="3">${paymentInfo.typeTitle}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">结算开始日期:</td>
-                        <td colspan="3">${paymentInfo.chargeStartDateStr}</td>
-                        <td colspan="2" align="center">结算结束日期:</td>
-                        <td colspan="3">${paymentInfo.chargeEndDateStr}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">票据类型:</td>
-                        <td colspan="3">${paymentAuditList.invoiceTypeStr}</td>
-                        <td colspan="2" align="center">票据编号:</td>
-                        <td colspan="3">${paymentAuditList.invoiceNumber}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">开票状态:</td>
-                        <td colspan="3">${paymentAuditList.invoiceStatusStr}</td>
-                        <td colspan="2" align="center">付款状态:</td>
-                        <td colspan="3">${paymentAuditList.paymentStatusStr}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">费用合计:</td>
-                        <td colspan="8">${paymentAuditList.sumFee}</td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="10">对账清单明细</td>
-                    </tr>
-                    <tr>
-                        <td align="center">序号</td>
-                        <td align="center">作业日期</td>
-                        <td align="center">作业内容</td>
-                        <td align="center">货名</td>
-                        <td align="center">货类</td>
-                        <td align="center">库区</td>
-                        <td align="center">单价</td>
-                        <td align="center">作业数量</td>
-                        <td align="center">计量单位</td>
-                        <td align="center">费用合计</td>
-                    </tr>
-                    <template repeat.for="item of paymentAuditItemList">
-                        <tr>
-                            <td align="center">${item.index}</td>
-                            <td align="center">${item.workDateStr}</td>
-                            <td align="center">${item.workName}</td>
-                            <td align="center">${item.cargoName}</td>
-                            <td align="center">${item.cargoCategoryName}</td>
-                            <td align="center">${item.warehouseName}</td>
-                            <td align="center">${item.price}</td>
-                            <td align="center">222</td>
-                            <td align="center">${item.unit}</td>
-                            <td align="center">${item.sumAmount}</td>
-                        </tr>
-                    </template>
-                    <tr>
-                        <td colspan="2" align="center">备注</td>
-                        <td colspan="8">${paymentInfo.remark}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="right">制单人&nbsp;&nbsp;</td>
-                        <td colspan="3" align="center">${paymentInfo.createAccount}</td>
-                        <td colspan="2" align="right">制单日期&nbsp;&nbsp;</td>
-                        <td colspan="3" align="center">${paymentInfo.createTimeStr}</td>
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <div class="pull-right">
-                    <a class="btn btn-primary btn-small" route-href="route: list">返回</a>
+                <div class="row column-seperation" if.bind="paymentInfo.type ==1">
+                    <h4>清单明细</h4>
+                    <div class="col-md-12">
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <ak-grid k-data-source.bind="datasource">
+                                <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+                                <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                                <ak-col k-field="cargoName" k-title="货名"></ak-col>
+                                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                <ak-col k-field="warehouseName" k-title="库区"></ak-col>
+                                <ak-col k-field="price" k-title="单价"></ak-col>
+                                <ak-col k-field="quantity" k-title="重量"></ak-col>
+                                <ak-col k-field="number" k-title="件数"></ak-col>
+                                <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                                <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+                            </ak-grid>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </template>
-<!--<template>
-  <div class="grid simple">
-    <div class="grid-body no-border">
-      <form>
-        <div class="row column-seperation">
-          <h4>基本信息</h4>
-          <div class="col-md-4">
-            <label class="form-label">客户名称</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentInfo.customerName" readonly>
-            </div>
-          </div>
-          <div class="col-md-4" if.bind="paymentInfo.type == 1">
-            <label class="form-label">结算开始日期</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentInfo.chargeStartDateStr" readonly>
-            </div>
-          </div>
-          <div class="col-md-4" if.bind="paymentInfo.type == 1">
-            <label class="form-label">结算结束日期</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentInfo.chargeEndDateStr" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">结算生成方式</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentInfo.typeTitle" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">费用合计</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.sumFee" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">开票状态</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.invoiceStatusStr" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">票据类型</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.invoiceType" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">票据编号</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.invoiceNumber" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">付款状态</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.paymentStatusStr" readonly>
-            </div>
-          </div>
-        </div>
-        <div class="row column-seperation" if.bind="paymentInfo.type ==1">
-          <h4>清单明细</h4>
-          <div class="col-md-12">
-            <span class="help"></span>
-            <div class="controls right">
-              <ak-grid k-data-source.bind="datasource">
-                <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
-                <ak-col k-field="workName" k-title="作业内容"></ak-col>
-                <ak-col k-field="cargoName" k-title="货名"></ak-col>
-                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                <ak-col k-field="warehouseName" k-title="库区"></ak-col>
-                <ak-col k-field="price" k-title="单价"></ak-col>
-                <ak-col k-field="quantity" k-title="重量"></ak-col>
-                <ak-col k-field="number" k-title="件数"></ak-col>
-                <ak-col k-field="unit" k-title="计量单位"></ak-col>
-                <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
-              </ak-grid>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</template>-->

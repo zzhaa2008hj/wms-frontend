@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { PaymentInfo, PaymentAuditList } from "@app/fee/models/pay";
-import { PaymentInfoService, PaymentAuditListService } from "@app/fee/services/pay";
+import { PaymentInfo, PaymentAuditList, PaymentAuditItem } from "@app/fee/models/pay";
+import { PaymentInfoService, PaymentAuditListService, PaymentAuditItemService } from "@app/fee/services/pay";
 import * as moment from 'moment';
 import { DialogService } from "ui";
 import { UploadConfirm } from "./upload-confirm";
@@ -12,11 +12,13 @@ export class PaymentConfirm {
   paymentInfo: PaymentInfo;
   paymentAuditList: PaymentAuditList;
   paymentInfoId: string;
+  paymentAuditItems: PaymentAuditItem[];
 
   constructor(private paymentInfoService: PaymentInfoService,
               private paymentAuditListService: PaymentAuditListService,
               private dialogService: DialogService,
-              private router: Router) {
+              private router: Router,
+              private paymentAuditItemService: PaymentAuditItemService) {
 
   }
 
@@ -27,6 +29,15 @@ export class PaymentConfirm {
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
     this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
+
+    let index = 1;
+    this.paymentAuditItems = await this.paymentAuditItemService.listByPaymentAuditId(this.paymentAuditList.id).then(
+      res => res.map(r => {
+        r.workDateStr = moment(r.workDate).format("YYYY-MM-DD");
+        r.index = index++;
+        return r;
+      })
+    );
   }
 
   async check(num) {

@@ -13,35 +13,70 @@
             <div class="col-md-12 col-md-offset-2" id="confirm">
                 <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
                     <tr>
-                        <td align="center" colspan="8">
+                        <td align="center" colspan="13">
                             <h4>对账清单</h4>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center" nowrap>客户名称:</td>
-                        <td colspan="6" align="center" nowrap>${paymentInfo.customerName}</td>
+                        <td colspan="3" align="center" nowrap>客户名称:</td>
+                        <td colspan="10" align="center" nowrap>${paymentInfo.customerName}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center">结算开始日期:</td>
-                        <td colspan="2">${paymentInfo.chargeStartDateStr}</td>
-                        <td colspan="2" align="center">结算结束日期:</td>
-                        <td colspan="2">${paymentInfo.chargeEndDateStr}</td>
+                        <td colspan="3" align="center">结算开始日期:</td>
+                        <td colspan="4">${paymentInfo.chargeStartDateStr}</td>
+                        <td colspan="3" align="center">结算结束日期:</td>
+                        <td colspan="3">${paymentInfo.chargeEndDateStr}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center">备注</td>
-                        <td colspan="6">${paymentInfo.remark}</td>
+                        <td colspan="3" align="center">备注</td>
+                        <td colspan="10">${paymentInfo.remark}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center">费用合计:</td>
-                        <td colspan="6">${paymentAuditList.sumFee}</td>
+                        <td colspan="3" align="center">费用合计:</td>
+                        <td colspan="10">${paymentAuditList.sumFee}</td>
                     </tr>
                     <tr>
-                        <td align="right">制单人&nbsp;&nbsp;</td>
+                        <td align="center" colspan="13">对账清单明细</td>
+                    </tr>
+                    <tr>
+                        <td align="center">序号</td>
+                        <td align="center">作业单号</td>
+                        <td align="center">作业日期</td>
+                        <td align="center">作业内容</td>
+                        <td align="center">货名</td>
+                        <td align="center">货类</td>
+                        <td align="center">库区</td>
+                        <td align="center">单价</td>
+                        <td align="center">重量</td>
+                        <td align="center">件数</td>
+                        <td align="center">计量单位</td>
+                        <td align="center">费用合计</td>
+                        <td align="center">备注</td>
+                    </tr>
+                    <template repeat.for="item of paymentAuditItems">
+                        <tr>
+                            <td align="center">${item.index}</td>
+                            <td align="center">${item.workOrderNumber}</td>
+                            <td align="center">${item.workDateStr}</td>
+                            <td align="center">${item.workName}</td>
+                            <td align="center">${item.cargoName}</td>
+                            <td align="center">${item.cargoCategoryName}</td>
+                            <td align="center">${item.warehouseName}</td>
+                            <td align="center">${item.price}</td>
+                            <td align="center">${item.quantity}</td>
+                            <td align="center">${item.number}</td>
+                            <td align="center">${item.unit}</td>
+                            <td align="center">${item.sumAmount}</td>
+                            <td align="center">${item.remark}</td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td align="right" colspan="2">制单人&nbsp;&nbsp;</td>
                         <td colspan="2" align="center">${paymentInfo.createAccount}</td>
-                        <td align="right">制单日期&nbsp;&nbsp;</td>
-                        <td align="center">${paymentInfo.createTimeStr}</td>
-                        <td align="right">客户签字&nbsp;&nbsp;</td>
-                        <td colspan="2"></td>
+                        <td align="right" colspan="2">制单日期&nbsp;&nbsp;</td>
+                        <td align="center" colspan="2">${paymentInfo.createTimeStr}</td>
+                        <td align="right" colspan="2">客户签字&nbsp;&nbsp;</td>
+                        <td colspan="3"></td>
                     </tr>
                 </table>
             </div>

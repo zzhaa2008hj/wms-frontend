@@ -5,7 +5,6 @@ import { PaymentInfoService } from "@app/fee/services/pay";
 import * as moment from 'moment';
 import { ConstantValues } from '@app/common/models/constant-values';
 import { DictionaryDataService } from '@app/base/services/dictionary';
-import { print, addHeader } from '@app/common/services/print-tool';
 
 @autoinject
 export class ViewPaymentInfo {
@@ -23,13 +22,13 @@ export class ViewPaymentInfo {
   constructor(private router: Router,
               private dictionaryDataService: DictionaryDataService,
               private paymentInfoService: PaymentInfoService) {
-    // this.datasource = new kendo.data.DataSource({
-    //   transport: {
-    //     read: (options) => {
-    //       options.success(this.paymentAuditItemList);
-    //     }
-    //   }
-    // });
+    this.datasource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.paymentAuditItemList);
+        }
+      }
+    });
   }
 
   /**
@@ -70,17 +69,9 @@ export class ViewPaymentInfo {
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
     this.paymentInfo.typeTitle = this.paymentInfotype.find(r => r.stage == this.paymentInfo.type).title;
-    this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
   }
 
   cancel() {
     this.router.navigateToRoute("list");
-  }
-
-  print() {
-    let title = "清单";
-    let strHTML = $('#detail').html();
-    strHTML = addHeader(strHTML);
-    print(title, strHTML, true);
   }
 }
