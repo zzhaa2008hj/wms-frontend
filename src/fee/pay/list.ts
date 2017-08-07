@@ -121,6 +121,8 @@ export class PaymentInfoList {
   }
 
   async verifyPay(id) {
+    let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认付费核销" });
+    if (!confirmed) return;
     try {
       await this.paymentInfoService.verifyPay(id);
       await this.dialogService.alert({ title: "提示", message: "核销成功" });
