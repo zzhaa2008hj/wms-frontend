@@ -13,6 +13,11 @@ import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
 @autoinject
 export class PaymentInfoList {
   dataSource: kendo.data.DataSource;
+  pageable = {
+    refresh: true,
+    pageSizes: true,
+    buttonCount: 10
+  };
   keyword: string;
   payStage = ConstantValues.PayStage;
   paymentInfotype = ConstantValues.PaymentInfoType;
