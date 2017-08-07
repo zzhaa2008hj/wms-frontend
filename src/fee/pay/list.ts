@@ -11,6 +11,11 @@ import { InvoiceInput } from "./invoice";
 @autoinject
 export class ChargeInfoList {
   dataSource: kendo.data.DataSource;
+  pageable = {
+    refresh: true,
+    pageSizes: true,
+    buttonCount: 10
+  };
   keyword: string;
   payStage = ConstantValues.PayStage;
   paymentInfotype = ConstantValues.PaymentInfoType;
