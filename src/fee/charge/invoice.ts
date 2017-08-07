@@ -4,7 +4,7 @@ import { Invoice } from "@app/fee/models/invoice";
 
 @autoinject
 export class InvoiceEntry {
-  invoice = {} as { invoiceType: number, invoiceNumber: string };
+  invoice = {} as Invoice;
 
   constructor(private dialogController: DialogController) {
     this.invoice.invoiceType = 1;
