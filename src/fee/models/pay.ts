@@ -1,6 +1,6 @@
 export class PaymentInfo {
   id: string;
-  
+
   customerId: string;
 
   customerName: string;
@@ -21,6 +21,8 @@ export class PaymentInfo {
 
   stage: number;
 
+  stageTitle: string;
+
   auditorId: string;
 
   auditorName: string;
@@ -31,7 +33,19 @@ export class PaymentInfo {
    */
   type: number;
 
+  typeTitle: string;
+
   remark: string;
+
+  sumFee: number;
+}
+
+export class PaymentAuditListVo {
+  paymentInfo: PaymentInfo;
+
+  paymentAuditList: PaymentAuditList;
+
+  paymentAuditItemList: PaymentAuditItem[];
 }
 
 export class PaymentAuditList {
@@ -43,13 +57,19 @@ export class PaymentAuditList {
 
   invoiceType: number;
 
+  invoiceTypeStr: string;
+
   invoiceStatus: number;
+
+  invoiceStatusStr: string;
 
   invoiceNumber: string;
 
   paymentDate: Date;
 
   paymentStatus: number;
+
+  paymentStatusStr: string;
 
   payableAmount: number;
 

@@ -179,8 +179,8 @@
     {
       "route": "/fee/pay",
       "name": "pay",
-      "title": "付费",
-      "moduleId": "./fee/pay/index"
+      "title": "装卸结算",
+      "moduleId":"./fee/pay/index"
     }
   ]
 }

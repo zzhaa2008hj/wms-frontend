@@ -14,8 +14,13 @@ export class SeparateHistory {
 
   constructor(private cargoFlowSeparateService: CargoFlowSeparateService,
               private dataSourceFactory: DataSourceFactory) {
+    
+  }
+
+  activate(params) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.cargoFlowSeparateService.queryCargoFlowSeparates({ keywords: this.searchName }),
+      query: () => this.cargoFlowSeparateService
+        .queryCargoFlowSeparates({ flowId: params.id, keywords: this.searchName }),
       pageSize: 10
     });
   }

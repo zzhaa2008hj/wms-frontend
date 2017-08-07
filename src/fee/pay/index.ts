@@ -11,7 +11,7 @@ export class Pay {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new' },
-      { route: '/:id/details', name: 'details', moduleId: './details' }
+      { route: '/:id/details', name: 'details', moduleId: './details', title: '清单' }
       //{ route: '/:id/note', name: 'note', moduleId: './note' },
     ]);
     this.router = router;
