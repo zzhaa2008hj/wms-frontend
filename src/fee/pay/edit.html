@@ -1,0 +1,55 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 编辑
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="form-group">
+                <label class="form-label">结算生成方式*：</label>
+                <span class="help"></span>
+                <div if.bind="paymentInfo.type ==1" >
+                    <input type="radio" class="form-controls" name="type" model.bind="1" checked.bind="paymentInfo.type"  > 自动
+                </div>
+                <div if.bind="paymentInfo.type ==2">
+                    <input type="radio" class="form-controls"  name="type" model.bind="2" checked.bind="paymentInfo.type" > 手动
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">装卸单位名称*</label>
+                <span class="help"></span>
+                 <input value.bind="paymentInfo.customerName" type="text" class="form-control" disabled.bind="false" readonly>
+            </div>
+            <div if.bind="paymentInfo.type == 1">
+                <div class="form-group">
+                    <label class="form-label">结算开始日期</label>
+                    <span class="help"></span>
+                    <input value.bind="paymentInfo.chargeStartDateStr" type="text" class="form-control" disabled.bind="false" readonly>
+                </div>
+                <div class="form-group input-group">
+                    <label class="form-label">结算结束日期*</label>
+                    <span class="help"></span>
+                    <input ak-datepicker="k-value.two-way : paymentInfo.chargeEndDate & validate ; k-widget.two-way: endDatePicker" type="text"
+                        k-on-open.delegate="onOpen()" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group" if.bind="paymentInfo.type == 2">
+                <label class="form-label">费用合计*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="number" step="0.01" class="form-control" value.bind="paymentInfo.sumFee  & toFloat  & validate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <textarea type="text" class="form-control" value.bind="paymentInfo.remark & validate" maxlength="200">
+                </div>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">保存</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

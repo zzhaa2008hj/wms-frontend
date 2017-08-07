@@ -250,4 +250,14 @@ export class ConstantValues {
       title: "已付款"
     }];
   }
+
+    static get InvoiceType() {
+    return [{
+      stage: 1,
+      title: "普通发票"
+    }, {
+      stage: 2,
+      title: "增值税发票"
+    }];
+  }
 }
