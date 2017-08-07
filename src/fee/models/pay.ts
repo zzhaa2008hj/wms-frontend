@@ -1,6 +1,6 @@
 export class PaymentInfo {
   id: string;
-  
+
   customerId: string;
 
   customerName: string;
@@ -21,17 +21,37 @@ export class PaymentInfo {
 
   stage: number;
 
+  stageTitle: string;
+
   auditorId: string;
 
   auditorName: string;
 
   auditTime: Date;
   /**
-   * 1：自动生成 2：手动生成  
+   * 1：自动生成 2：手动生成
    */
   type: number;
 
+  typeTitle: string;
+
   remark: string;
+
+  sumFee: number;
+
+  createTime: Date; //创建时间
+
+  createTimeStr: string;
+
+  createAccount: String;  //创建账号
+}
+
+export class PaymentAuditListVo {
+  paymentInfo: PaymentInfo;
+
+  paymentAuditList: PaymentAuditList;
+
+  paymentAuditItemList: PaymentAuditItem[];
 }
 
 export class PaymentAuditList {
@@ -43,7 +63,11 @@ export class PaymentAuditList {
 
   invoiceType: number;
 
+  invoiceTypeStr: string;
+
   invoiceStatus: number;
+
+  invoiceStatusStr: string;
 
   invoiceNumber: string;
 
@@ -51,12 +75,16 @@ export class PaymentAuditList {
 
   paymentStatus: number;
 
+  paymentStatusStr: string;
+
   payableAmount: number;
 
   paidAmount: number;
 }
 
 export class PaymentAuditItem {
+  index: number;
+
   id: string;
 
   paymentAuditId: string;
@@ -64,6 +92,8 @@ export class PaymentAuditItem {
   workOrderNumber: string;
 
   workDate: Date;
+
+  workDateStr: string;
 
   workName: string;
 

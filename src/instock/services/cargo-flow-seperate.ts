@@ -10,7 +10,7 @@ export class CargoFlowSeparateService {
   constructor(private http: RestClient) {
   }
 
-  queryCargoFlowSeparates(param: { keywords: string }): Query<CargoFlowSeparate> {
+  queryCargoFlowSeparates(param: { flowId: string, keywords: string }): Query<CargoFlowSeparate> {
     return this.http.query(`/instock/cargo-flow-separate/page`, param);
   }
 

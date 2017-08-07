@@ -9,6 +9,7 @@ import * as moment from 'moment';
 @autoinject
 export class NewPaymentInfo {
 
+  disabled = false;
   validationController: ValidationController;
   paymentInfo = {} as PaymentInfo;
   customerDrop: kendo.ui.DropDownList;
@@ -39,14 +40,22 @@ export class NewPaymentInfo {
   }
 
   async validateWorkOrderItem(propertyName: string) {
+    if (this.paymentInfo.type == 1) {
+      this.endDatePicker.value(null)
+    }
     this.paymentInfo.chargeEndDate = null;
     this.paymentInfo.chargeStartDate = null;
     this.paymentInfo.chargeStartDateStr = null;
-    if (this.paymentInfo.customerId) {
-      let { chargeStartDate } = await this.paymentInfoService.getChargeStartDate(this.paymentInfo.customerId);
-      this.paymentInfo.chargeStartDateStr = moment(chargeStartDate).format("YYYY-MM-DD");
-      this.paymentInfo.chargeStartDate = chargeStartDate;
-      this.startChange();
+    if (!this.paymentInfo.customerId) {
+      this.endDatePicker.enable(false);
+    } else {
+      if (this.paymentInfo.type == 1) {
+        let { chargeStartDate } = await this.paymentInfoService.getChargeStartDate(this.paymentInfo.customerId);
+        this.paymentInfo.chargeStartDateStr = moment(chargeStartDate).format("YYYY-MM-DD");
+        this.paymentInfo.chargeStartDate = chargeStartDate;
+        this.startChange();
+        this.endDatePicker.enable(true);
+      }
     }
     this.validationController.validate({ object: this.paymentInfo, propertyName });
   }
@@ -58,11 +67,20 @@ export class NewPaymentInfo {
     this.paymentInfo.customerName = this.customerDrop.text();
     await this.dialogController.ok(this.paymentInfo);
   }
+  typeChange() {
+    if (this.paymentInfo.type == 1) {
+      this.endDatePicker.value(null)
+    }
+    this.paymentInfo.chargeEndDate = null;
+    this.paymentInfo.chargeStartDate = null;
+    this.paymentInfo.chargeStartDateStr = null;
+    this.paymentInfo.customerId = null;
+  }
 
   startChange() {
     let startDate = this.paymentInfo.chargeStartDate;
     startDate = new Date(startDate);
-    startDate.setDate(startDate.getDate());
+    startDate.setDate(startDate.getDate() + 1);
     this.endDatePicker.min(startDate);
   }
 
@@ -79,7 +97,7 @@ const validationRules = ValidationRules
 
   .ensure((paymentInfo: PaymentInfo) => paymentInfo.chargeEndDate)
   .displayName("结算结束日期")
-  .required().withMessage(`\${$displayName}不能为空`)
+  .satisfies((chargeEndDate, paymentInfo) => { if (paymentInfo.type == 1) { if (!chargeEndDate) { return false } } return true }).withMessage(`\${$displayName}不能为空`)
 
   .ensure((paymentInfo: PaymentInfo) => paymentInfo.type)
   .displayName("结算生成方式")
@@ -89,4 +107,14 @@ const validationRules = ValidationRules
   .displayName("备注")
   .maxLength(200).withMessage(`\${$displayName}最大长度为200`)
 
+  .ensure((paymentInfo: PaymentInfo) => paymentInfo.sumFee)
+  .displayName("费用合计")
+  .satisfies((sumFee, paymentInfo) => {
+    if(paymentInfo.type ==1){
+      return true;
+    }else{
+      return !!sumFee || (sumFee <= 1000000000000000 && sumFee > 0)
+    }
+  })
+  .withMessage(`\${$displayName} 为无效值(过大或过小)`)
   .rules;

@@ -1,24 +1,23 @@
 <template>
     <ux-dialog>
         <ux-dialog-header show-close-button.bind="true">
-            <i class="fa fa-check-square-o"></i> 新增
+            <i class="fa fa-check-square-o"></i> 编辑
         </ux-dialog-header>
         <ux-dialog-body>
             <div class="form-group">
                 <label class="form-label">结算生成方式*：</label>
                 <span class="help"></span>
-                <input type="radio" class="form-controls" name="type" model.bind="1" checked.bind="paymentInfo.type" change.delegate="typeChange()"
-                    disabled.bind='disabled' />自动
-                <input type="radio" class="form-controls" name="type" model.bind="2" checked.bind="paymentInfo.type" change.delegate="typeChange()"
-                    disabled.bind='disabled' />手动
+                <div if.bind="paymentInfo.type ==1" >
+                    <input type="radio" class="form-controls" name="type" model.bind="1" checked.bind="paymentInfo.type"  > 自动
+                </div>
+                <div if.bind="paymentInfo.type ==2">
+                    <input type="radio" class="form-controls"  name="type" model.bind="2" checked.bind="paymentInfo.type" > 手动
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label">装卸单位名称*</label>
                 <span class="help"></span>
-                <ak-drop-down-list k-option-label="请选择..." k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="paymentInfo.customerId & validate"
-                    k-data-source.bind="customersSource" k-enabled.two-way="!disabled" k-widget.two-way="customerDrop" k-on-change.delegate="validateWorkOrderItem('customerId')"
-                    style="width: 60%">
-                </ak-drop-down-list>
+                 <input value.bind="paymentInfo.customerName" type="text" class="form-control" disabled.bind="false" readonly>
             </div>
             <div if.bind="paymentInfo.type == 1">
                 <div class="form-group">
@@ -30,7 +29,7 @@
                     <label class="form-label">结算结束日期*</label>
                     <span class="help"></span>
                     <input ak-datepicker="k-value.two-way : paymentInfo.chargeEndDate & validate ; k-widget.two-way: endDatePicker" type="text"
-                        class="form-control" disabled.bind="true">
+                        k-on-open.delegate="onOpen()" class="form-control" >
                 </div>
             </div>
             <div class="form-group" if.bind="paymentInfo.type == 2">
@@ -44,7 +43,7 @@
                 <label class="form-label">备注</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <textarea type="text" class="form-control & validate" value.bind="paymentInfo.remark" maxlength="200">
+                    <textarea type="text" class="form-control" value.bind="paymentInfo.remark & validate" maxlength="200">
                 </div>
             </div>
         </ux-dialog-body>

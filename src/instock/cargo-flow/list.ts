@@ -120,8 +120,8 @@ export class CargoFlow {
     if (this.routerParams.infoId) {
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
       if (cargoInfo.instockStatus == 1) {
-         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
-         return;
+        await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
+        return;
       }
       this.router.navigateToRoute("new");
     } else {
@@ -149,9 +149,9 @@ export class CargoFlow {
       await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
       return;
     }
-    
+
     let id = this.selectedItem.id;
-    this.router.navigateToRoute("changeHistory", {id: id});
+    this.router.navigateToRoute("changeHistory", { id: id });
   }
 
   /**
@@ -219,6 +219,14 @@ export class CargoFlow {
       //this.router.navigateToRoute('instockOrder');
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  async separateHistory() {
+    if (this.selectedItem) {
+      this.router.navigateToRoute('separateHistory', { id: this.selectedItem.id });
+    } else {
+      this.router.navigateToRoute('separateHistory');
     }
   }
 

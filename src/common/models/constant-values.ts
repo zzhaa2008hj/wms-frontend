@@ -202,22 +202,65 @@ export class ConstantValues {
       title: "装卸单位确认"
     }, {
       stage: 3,
-      title: "费收审核拒绝"
+      title: "装卸单位未确认"
     }, {
       stage: 4,
-      title: "费收审核通过"
+      title: "费收审核拒绝"
     }, {
       stage: 5,
-      title: "已核对生成付费单"
+      title: "费收审核通过"
     }, {
       stage: 6,
-      title: "领导签字审核"
+      title: "已核对生成付费单"
     }, {
       stage: 7,
-      title: "已开票"
+      title: "领导签字审核"
     }, {
       stage: 8,
+      title: "已开票"
+    }, {
+      stage: 9,
       title: "已付费核销"
+    }];
+  }
+
+  static get PaymentInfoType() {
+    return [{
+      stage: 1,
+      title: "自动生成"
+    }, {
+      stage: 2,
+      title: "手动新增"
+    }];
+  }
+
+  static get InvoiceStatus() {
+    return [{
+      stage: 0,
+      title: "未开票"
+    }, {
+      stage: 1,
+      title: "已开票"
+    }];
+  }
+
+  static get PaymentStatus() {
+    return [{
+      stage: 0,
+      title: "未付款"
+    }, {
+      stage: 1,
+      title: "已付款"
+    }];
+  }
+
+  static get InvoiceType() {
+    return [{
+      stage: 1,
+      title: "普通发票"
+    }, {
+      stage: 2,
+      title: "增值税发票"
     }];
   }
 }

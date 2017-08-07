@@ -30,6 +30,7 @@ export class Verify {
 
   async activate(params) {
     this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(params.id);
+     console.log("this.paymentInfo", this.paymentInfo);
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
     this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);

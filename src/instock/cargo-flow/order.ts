@@ -7,7 +7,7 @@ import { CargoItemService } from '@app/instock/services/cargo-item';
 import * as moment from 'moment';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
-import { print } from '@app/common/services/print-tool';
+import { print, addHeader } from '@app/common/services/print-tool';
 
 @autoinject
 export class Order {
@@ -44,6 +44,7 @@ export class Order {
   async printOrder() {
     let title = "入库作业指令单";
     let strHTML = $('#order').html();
+    strHTML = addHeader(strHTML);
     print(title, strHTML, true);
     // closePrint();
     // todo 获取打印状态

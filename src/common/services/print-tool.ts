@@ -43,3 +43,9 @@ export function checkPrintStatus(jobCode: string): string {
   let lodop = w.CLODOP;
   return lodop.GET_VALUE("PRINT_STATUS_OK", jobCode);
 }
+
+export function addHeader(content: string): string {
+  let header = '<!DOCTYPE html><html><head></head><body>';
+  let footer = '</body>';
+  return header + content + footer;
+}

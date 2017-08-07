@@ -10,36 +10,29 @@
                     <button class="btn btn-small" click.delegate="print()">打印</button>
                 </div>
             </div>
-            <div class="col-md-9 col-md-offset-2">
-                <table border="1">
+            <div class="col-md-12 col-md-offset-2">
+                <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
                     <tr>
                         <td align="center" colspan="13">
                             <h4>付费单</h4>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="6" align="center">客户名称:</td>
-                        <td colspan="7"><input type="text" style="border: none" value.bind="paymentInfo.customerName">
-                        </td>
+                        <td colspan="3" align="center">客户名称:</td>
+                        <td colspan="10">${paymentInfo.customerName}</td>
                     </tr>
                     <tr>
                         <td colspan="3" align="center">结算开始日期:</td>
-                        <td colspan="4"><input type="text" style="border: none"
-                                               value.bind="paymentInfo.chargeStartDateStr"></td>
+                        <td colspan="4">${paymentInfo.chargeStartDateStr}</td>
                         <td colspan="3" align="center">结算结束日期:</td>
-                        <td colspan="3"><input type="text" style="border: none"
-                                               value.bind="paymentInfo.chargeEndDateStr"></td>
+                        <td colspan="3">${paymentInfo.chargeEndDateStr}</td>
                     </tr>
                     <tr>
-                        <td colspan="6" align="right">费用合计:</td>
-                        <td colspan="7">
-                            <input type="text" style="border: none" value.bind="paymentAuditList.sumFee">
-                        </td>
+                        <td colspan="3" align="center">费用合计:</td>
+                        <td colspan="10">${paymentAuditList.sumFee}</td>
                     </tr>
                     <tr>
-                        <td align="center" colspan="13">
-                            <h6>对账清单明细</h6>
-                        </td>
+                        <td align="center" colspan="13">对账清单明细</td>
                     </tr>
                     <tr>
                         <td align="center">序号</td>
@@ -56,7 +49,7 @@
                         <td align="center">费用合计</td>
                         <td align="center">备注</td>
                     </tr>
-                    <template repeat.for="item of cargoItems">
+                    <template repeat.for="item of paymentAuditItems">
                         <tr>
                             <td align="center">${item.index}</td>
                             <td align="center">${item.workOrderNumber}</td>
@@ -74,10 +67,8 @@
                         </tr>
                     </template>
                     <tr>
-                        <td colspan="6" align="center">备注</td>
-                        <td colspan="7">
-                            <input type="text" style="border: none" value.bind="paymentInfo.remark">
-                        </td>
+                        <td colspan="3" align="center">备注</td>
+                        <td colspan="10">${paymentInfo.remark}</td>
                     </tr>
                     <tr>
                         <td colspan="2" align="right">制单人&nbsp;&nbsp;</td>
@@ -89,10 +80,9 @@
                     </tr>
                 </table>
             </div>
-            <div class="form-actions">
+            <div>
                 <div class="pull-right">
-                    <button class="btn btn-primary btn-small" click.delegate="check()">装卸单位确认</button>
-                    <a class="btn btn-primary" route-href="route: list">取消</a>
+                    <a class="btn btn-primary btn-small" route-href="route: list">返回</a>
                 </div>
             </div>
         </div>
