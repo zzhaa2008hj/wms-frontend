@@ -199,21 +199,24 @@ export class ConstantValues {
       title: "已生成对账清单"
     }, {
       stage: 2,
-      title: "装卸单位确认"
+      title: "装卸单位未确认"
     }, {
       stage: 3,
-      title: "费收审核拒绝"
+      title: "装卸单位确认"
     }, {
       stage: 4,
-      title: "费收审核通过"
+      title: "费收审核拒绝"
     }, {
       stage: 5,
-      title: "已核对生成付费单"
+      title: "费收审核通过"
     }, {
       stage: 6,
-      title: "领导签字审核"
+      title: "已核对生成付费单"
     }, {
       stage: 7,
+      title: "领导签字审核"
+    }, {
+      stage: 8,
       title: "已开票"
     }, {
       stage: 8,
