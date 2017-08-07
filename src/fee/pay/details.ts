@@ -38,7 +38,9 @@ export class ViewPaymentInfo {
     this.paymentAuditList = this.paymentAuditListVo.paymentAuditList;
     this.paymentAuditList.invoiceStatusStr = this.invoiceStatus.find(r => r.stage == this.paymentAuditList.invoiceStatus).title;
     this.paymentAuditList.paymentStatusStr = this.paymentStatus.find(r => r.stage == this.paymentAuditList.paymentStatus).title;
-    this.paymentAuditList.invoiceTypeStr = this.invoiceType.find(r => r.stage == this.paymentAuditList.invoiceType).title;
+    if (this.paymentAuditList.invoiceStatus == 1) {
+      this.paymentAuditList.invoiceTypeStr = this.invoiceType.find(r => r.stage == this.paymentAuditList.invoiceType).title;
+    }
 
     this.paymentAuditItemList = this.paymentAuditListVo.paymentAuditItemList;
 
@@ -46,7 +48,8 @@ export class ViewPaymentInfo {
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
     this.paymentInfo.typeTitle = this.paymentInfotype.find(r => r.stage == this.paymentInfo.type).title;
-``  }
+    ``
+  }
 
   cancel() {
     this.router.navigateToRoute("list");
