@@ -1,3 +1,5 @@
+import { ValidationRules } from "aurelia-validation";
+
 export interface ChargeAuditList {
   id: string;
   chargeInfoId: string;
@@ -48,3 +50,10 @@ export interface ChargeAuditItem {
   endDateStr: string;
   unitStr: string;
 }
+
+export const chargeAuditListValidationRules = ValidationRules
+  .ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.invoiceNumber)
+  .displayName("发票号不能为空")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .rules;

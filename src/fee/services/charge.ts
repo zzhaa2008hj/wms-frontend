@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
 import { ChargeInfo } from "@app/fee/models/charge";
-import { Invoice } from "@app/fee/models/invoice";
+import { ChargeAuditList } from "@app/fee/models/charge-audit";
 /**
  * Created by Hui on 2017/8/2.
  */
@@ -19,9 +19,9 @@ export class ChargeInfoService {
     return res.content;
   }
 
-  issueChargeInvoice(id: string, invoice: Invoice): Promise<void> {
+  issueChargeInvoice(id: string, chargeAuditList: ChargeAuditList): Promise<void> {
     return this.http
-      .put(`/fee/charge-info/chargeInvoice/${id}?invoiceType=${invoice.invoiceType}&invoiceNumber=${invoice.invoiceNumber}`, null)
+      .put(`/fee/charge-info/chargeInvoice/${id}?invoiceType=${chargeAuditList.invoiceType}&invoiceNumber=${chargeAuditList.invoiceNumber}`, null)
       .then(handleResult);
   }
 
