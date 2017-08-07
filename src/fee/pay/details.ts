@@ -4,6 +4,7 @@ import { PaymentAuditList, PaymentAuditItem, PaymentAuditListVo, PaymentInfo } f
 import { PaymentInfoService } from "@app/fee/services/pay";
 import * as moment from 'moment';
 import { ConstantValues } from '@app/common/models/constant-values';
+import { DictionaryDataService } from '@app/base/services/dictionary';
 
 @autoinject
 export class ViewPaymentInfo {
@@ -19,7 +20,8 @@ export class ViewPaymentInfo {
   invoiceType = ConstantValues.InvoiceType;
 
   constructor(private router: Router,
-    private paymentInfoService: PaymentInfoService) {
+    private paymentInfoService: PaymentInfoService,
+    private dictionaryDataService: DictionaryDataService, ) {
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -33,6 +35,8 @@ export class ViewPaymentInfo {
    * 初始化后自动执行
    */
   async activate({ id }) {
+    let units = await this.dictionaryDataService.getDictionaryDatas('unit');
+
     this.paymentAuditListVo = await this.paymentInfoService.getPaymentAuditList(id);
 
     this.paymentAuditList = this.paymentAuditListVo.paymentAuditList;
@@ -43,6 +47,12 @@ export class ViewPaymentInfo {
     }
 
     this.paymentAuditItemList = this.paymentAuditListVo.paymentAuditItemList;
+    this.paymentAuditItemList.map(res => {
+      if (res.unit) {
+        res.unit = units.find(r => r.dictDataCode == res.unit).dictDataName;
+      }
+      return res;
+    });
 
     this.paymentInfo = this.paymentAuditListVo.paymentInfo;
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
