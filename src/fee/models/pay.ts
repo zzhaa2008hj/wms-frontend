@@ -1,6 +1,6 @@
 export class PaymentInfo {
   id: string;
-  
+
   customerId: string;
 
   customerName: string;
@@ -27,11 +27,17 @@ export class PaymentInfo {
 
   auditTime: Date;
   /**
-   * 1：自动生成 2：手动生成  
+   * 1：自动生成 2：手动生成
    */
   type: number;
 
   remark: string;
+
+  createTime: Date; //创建时间
+
+  createTimeStr: string;
+
+  createAccount: String;  //创建账号
 }
 
 export class PaymentAuditList {
@@ -57,6 +63,8 @@ export class PaymentAuditList {
 }
 
 export class PaymentAuditItem {
+  index: number;
+
   id: string;
 
   paymentAuditId: string;
@@ -64,6 +72,8 @@ export class PaymentAuditItem {
   workOrderNumber: string;
 
   workDate: Date;
+
+  workDateStr: string;
 
   workName: string;
 
