@@ -7,7 +7,7 @@
                     <label class="form-label">客户名称</label>
                     <span class="help"></span>
                     <div class="controls right">
-                        <input type="text" class="form-control" value.bing="paymentInfo.customerName" readonly>
+                        <input type="text" class="form-control" value.bind="paymentInfo.customerName" readonly>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -57,7 +57,7 @@
                         <ak-grid k-data-source.bind="datasource" k-pageable.bind="pageable" k-sortable.bind="true"
                                  k-resizable.bind="true">
                             <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
-                            <ak-col k-field="workDate" k-title="作业日期"></ak-col>
+                            <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
                             <ak-col k-field="workName" k-title="作业内容"></ak-col>
                             <ak-col k-field="cargoName" k-title="货名"></ak-col>
                             <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>

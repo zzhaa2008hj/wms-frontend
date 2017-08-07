@@ -7,7 +7,7 @@ import { uuid } from "@app/utils";
 import { AttachmentDetail } from "@app/common/attachment/detail";
 
 @autoinject
-export class UploadConfirm {
+export class LeaderVerify {
 
   file: File;
 
@@ -20,6 +20,8 @@ export class UploadConfirm {
   id: string;
 
   attachments = [] as AttachmentMap[];
+
+  disabled: boolean = false;
 
   constructor(private uploader: Uploader,
               private dialogService: DialogService,
@@ -86,7 +88,13 @@ export class UploadConfirm {
   }
 
   async finish() {
-    await this.dialogController.ok(6);
+    this.disabled = true;
+    if (this.attachments.length == 0) {
+      this.disabled = false;
+      await this.dialogService.alert({ title: "提示", message: "上传文件不能为空" });
+      return;
+    }
+    await this.dialogController.ok(this.attachments);
   }
 
   async cancle() {

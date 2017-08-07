@@ -1,16 +1,15 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { PaymentInfo, PaymentAuditList } from "@app/fee/models/pay";
+import { PaymentInfo, PaymentAuditList, PaymentAuditItem } from "@app/fee/models/pay";
 import { PaymentInfoService, PaymentAuditListService, PaymentAuditItemService } from "@app/fee/services/pay";
 import * as moment from "moment";
-import { DataSourceFactory } from "@app/utils";
 import { DialogService } from "ui";
-import { Router } from "aurelia-router";
 
 @autoinject
 export class Note {
   paymentInfo: PaymentInfo;
   paymentAuditList: PaymentAuditList;
   disabled: boolean = false;
+  paymentAuditItems: PaymentAuditItem[];
 
   datasource: kendo.data.DataSource;
   pageable = {
@@ -22,9 +21,7 @@ export class Note {
   constructor(private paymentInfoService: PaymentInfoService,
               private paymentAuditListService: PaymentAuditListService,
               private paymentAuditItemService: PaymentAuditItemService,
-              private dataSourceFactory: DataSourceFactory,
-              private dialogService: DialogService,
-              private router: Router) {
+              private dialogService: DialogService) {
 
   }
 
@@ -35,27 +32,19 @@ export class Note {
     this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
 
     let index = 1;
-
-    this.datasource = this.dataSourceFactory.create({
-      query: () => this.paymentAuditItemService.queryPaymentAuditItems({ paymentAuditId: this.paymentAuditList.id })
-        .map(res => {
-          res.index = index++;
-          res.workDateStr = moment(res.workDate).format("YYYY-MM-DD");
-          return res;
-        }),
-      pageSize: 10
-    });
+    this.paymentAuditItems = await this.paymentAuditItemService.listByPaymentAuditId(this.paymentAuditList.id).then(
+      res => res.map(r => {
+        r.workDateStr = moment(r.workDate).format("YYYY-MM-DD");
+        r.index = index++;
+        return r;
+      })
+    );
+    if (params.status == 1) {
+      this.paymentInfoService.updateStage(params.id, 6);
+    }
   }
 
-  async check(param) {
-    try {
-      this.disabled = true;
-      await this.paymentInfoService.audit(this.paymentInfo.id, param);
-      await this.dialogService.alert({ title: "提示", message: "操作成功" });
-      this.router.navigateToRoute("list");
-    } catch (e) {
-      await this.dialogService.alert({ title: "操作失败", message: e.message, icon: "error" });
-      this.disabled = false;
-    }
+  async print() {
+    await this.dialogService.alert({ title: "提示", message: "打印成功" });
   }
 }

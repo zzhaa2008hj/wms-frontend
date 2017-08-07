@@ -21,6 +21,13 @@
       <ak-template>
         <a class="btn btn-primary btn-small" route-href="route: details; params.bind: { id: id }">清单</a>
         <a if.bind='stage == 1' class="btn btn-primary btn-small" click.delegate="edit(id)">编辑</a>
+        <a class="btn btn-small" if.bind="stage==1" route-href="route: confirm; params.bind: {id: id}">装卸单位确认</a>
+        <a class="btn btn-small" if.bind="stage==3" route-href="route: verify; params.bind: {id: id}">费收审核</a>
+        <a class="btn btn-small" if.bind="stage==5" route-href="route: note; params.bind: {id: id, status: 1}">生成付费单</a>
+        <a class="btn btn-small" if.bind="stage>=5" route-href="route: note; params.bind: {id: id}">查看付费单</a>
+        <button class="btn btn-small" if.bind="stage==6" click.delegate="leaderVerify(id)">领导签字审核</button>
+        <button class="btn btn-small" if.bind="stage==7" click.delegate="invoice(id)">录入发票号</button>
+        <button class="btn btn-small" if.bind="stage==8" click.delegate="verifyPay(id)">付费核销</button>
       </ak-template>
     </ak-col>
   </ak-grid>
