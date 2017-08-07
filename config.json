@@ -175,6 +175,12 @@
       "name": "charge",
       "title": "收费",
       "moduleId": "./fee/charge/index"
+    },
+    {
+      "route": "/fee/pay",
+      "name": "pay",
+      "title": "付费",
+      "moduleId": "./fee/pay/index"
     }
   ]
 }
