@@ -9,6 +9,7 @@ import { VerifyRecordCriteria } from "@app/common/services/verify-record";
 @autoinject
 export class ChargeInfoList {
   dataSource: kendo.data.DataSource;
+  id: string = "";
 
   constructor(private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
@@ -71,7 +72,7 @@ export class ChargeInfoList {
       .whenClosed();
     if (result.wasCancelled) return;
     try {
-      await this.chargeInfoService.issueChargeInvoice(id, result.output.invoiceType, result.output.invoiceNumber);
+      await this.chargeInfoService.issueChargeInvoice(id, result.output);
       await this.dialogService.alert({ title: "提示", message: "发票录入成功！" });
       this.dataSource.read();
     } catch (err) {

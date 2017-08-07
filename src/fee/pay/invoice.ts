@@ -1,6 +1,7 @@
 import { DialogController } from "ui";
 import { autoinject } from "aurelia-dependency-injection";
-import { Invoice } from "@app/fee/models/pay";
+import { Invoice } from "@app/fee/models/invoice";
+
 @autoinject
 export class InvoiceEntry {
   invoice = {} as Invoice;

@@ -19,8 +19,9 @@ export class ChargeInfoService {
     return res.content;
   }
 
-  issueChargeInvoice(id: string, invoiceType: number, invoiceNumber: string): Promise<void> {
-    return this.http.put(`/fee/charge-info/chargeInvoice/${id}?invoiceType=${invoiceType}&invoiceNumber=${invoiceNumber}`, null)
+  issueChargeInvoice(id: string, invoice: Invoice): Promise<void> {
+    return this.http
+      .put(`/fee/charge-info/chargeInvoice/${id}?invoiceType=${invoice.invoiceType}&invoiceNumber=${invoice.invoiceNumber}`, null)
       .then(handleResult);
   }
 

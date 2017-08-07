@@ -4,12 +4,15 @@ import { DataSourceFactory } from "@app/utils";
 import { ConstantValues } from '@app/common/models/constant-values';
 import { NewPaymentInfo } from '@app/fee/pay/new';
 import { DialogService, MessageDialogService } from 'ui';
+import { VerifyRecordCriteria } from "@app/common/services/verify-record";
+import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
 
 @autoinject
-export class ChargeInfoList {
+export class PaymentInfoList {
   dataSource: kendo.data.DataSource;
   searchName: string;
   payStage = ConstantValues.PayStage;
+  id: string = "";
 
   constructor(private paymentInfoService: PaymentInfoService,
     private dataSourceFactory: DataSourceFactory,
@@ -19,7 +22,6 @@ export class ChargeInfoList {
   }
 
   async activate() {
-    console.log(11)
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.paymentInfoService.queryPaymentInfo({ searchName: this.searchName }).map(res => {
         console.log(res)
@@ -29,6 +31,29 @@ export class ChargeInfoList {
       }),
       pageSize: 10
     });
+  }
+
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    let dataItem = grid.dataItem(selectedRow);
+    this.id = dataItem.id;
+  }
+
+  /**
+   * 审核记录
+   */
+  async verifyHistory() {
+    if (!this.id) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择结算需求单', icon: "error" });
+      return;
+    }
+    let criteria: VerifyRecordCriteria = {};
+    criteria.businessId = this.id;
+    criteria.businessType = 9;
+    let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: criteria, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
   }
 
   select() {
