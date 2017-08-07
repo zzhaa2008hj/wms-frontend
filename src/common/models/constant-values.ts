@@ -251,7 +251,7 @@ export class ConstantValues {
     }];
   }
 
-    static get InvoiceType() {
+  static get InvoiceType() {
     return [{
       stage: 1,
       title: "普通发票"
