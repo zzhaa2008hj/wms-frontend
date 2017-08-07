@@ -55,5 +55,4 @@ export const chargeAuditListValidationRules = ValidationRules
   .ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.invoiceNumber)
   .displayName("发票号不能为空")
   .required().withMessage(`\${$displayName}不能为空`)
-
   .rules;

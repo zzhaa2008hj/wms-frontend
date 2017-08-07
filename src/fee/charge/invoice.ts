@@ -1,5 +1,5 @@
 import { DialogController } from "ui";
-import { autoinject } from "aurelia-dependency-injection";
+import { autoinject, Container } from "aurelia-dependency-injection";
 import { ChargeAuditList, chargeAuditListValidationRules } from "@app/fee/models/charge-audit";
 import { ValidationController, ValidationControllerFactory } from "aurelia-validation";
 import { formValidationRenderer } from "@app/validation/support";
@@ -7,9 +7,11 @@ import { formValidationRenderer } from "@app/validation/support";
 @autoinject
 export class InvoiceEntry {
   chargeAuditList = {} as ChargeAuditList;
+  validationController: ValidationController;
 
   constructor(private dialogController: DialogController,
-              private validationControllerFactory: ValidationControllerFactory) {
+              private validationControllerFactory: ValidationControllerFactory,
+              private container: Container) {
     this.chargeAuditList.invoiceType = 1;
     this.validationController = this.validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -17,7 +19,7 @@ export class InvoiceEntry {
   }
 
   activate() {
-    this.validationController.addObject(this.paymentAuditList, chargeAuditListValidationRules);
+    this.validationController.addObject(this.chargeAuditList, chargeAuditListValidationRules);
   }
 
   async save() {
