@@ -53,7 +53,6 @@ export class ViewPaymentInfo {
       }
       return res;
     });
-
     this.paymentInfo = this.paymentAuditListVo.paymentInfo;
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");

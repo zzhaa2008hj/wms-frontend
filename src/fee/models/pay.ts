@@ -99,6 +99,8 @@ export class PaymentAuditItem {
 
   number: number;
 
+  workNumber: number;
+
   unit: string;
 
   sumAmount: number;
