@@ -9,7 +9,7 @@ import { formValidationRenderer } from "@app/validation/support";
 @autoinject
 export class NewRateStep {
   rateId: string;
-  rateStep: RateStep;
+  rateStep = {} as RateStep;
   stepUnit = [{ text: "元/天", value: "元/天" }, { text: "元/吨", value: "元/吨" }];
   validationController: ValidationController;
 
@@ -19,6 +19,10 @@ export class NewRateStep {
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
 
+  }
+
+  activate(rateStep: RateStep) {
+    this.rateStep = rateStep;
   }
 
   async save() {
