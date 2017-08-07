@@ -4,7 +4,6 @@ import { PaymentAuditList, PaymentAuditItem, PaymentAuditListVo, PaymentInfo } f
 import { PaymentInfoService } from "@app/fee/services/pay";
 import * as moment from 'moment';
 import { ConstantValues } from '@app/common/models/constant-values';
-import { print, addHeader } from '@app/common/services/print-tool';
 
 @autoinject
 export class ViewPaymentInfo {
@@ -21,13 +20,13 @@ export class ViewPaymentInfo {
 
   constructor(private router: Router,
               private paymentInfoService: PaymentInfoService) {
-    // this.datasource = new kendo.data.DataSource({
-    //   transport: {
-    //     read: (options) => {
-    //       options.success(this.paymentAuditItemList);
-    //     }
-    //   }
-    // });
+    this.datasource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.paymentAuditItemList);
+        }
+      }
+    });
   }
 
   /**
@@ -51,29 +50,16 @@ export class ViewPaymentInfo {
       this.paymentAuditList.invoiceNumber = "无";
     }
 
-    let index = 1;
+
     this.paymentAuditItemList = this.paymentAuditListVo.paymentAuditItemList;
-    this.paymentAuditItemList.map(res => {
-      res.workDateStr = moment(res.workDate).format("YYYY-MM-DD");
-      res.index = index++;
-      return res;
-    });
 
     this.paymentInfo = this.paymentAuditListVo.paymentInfo;
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
     this.paymentInfo.typeTitle = this.paymentInfotype.find(r => r.stage == this.paymentInfo.type).title;
-    this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
   }
 
   cancel() {
     this.router.navigateToRoute("list");
-  }
-
-  print() {
-    let title = "清单";
-    let strHTML = $('#detail').html();
-    strHTML = addHeader(strHTML);
-    print(title, strHTML, true);
   }
 }
