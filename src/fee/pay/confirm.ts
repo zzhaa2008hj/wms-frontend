@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { DialogService } from "ui";
 import { UploadConfirm } from "./upload-confirm";
 import { Router } from "aurelia-router";
+import { print, addHeader } from "@app/common/services/print-tool";
 
 @autoinject
 export class PaymentConfirm {
@@ -50,7 +51,10 @@ export class PaymentConfirm {
     }
   }
 
-  async print() {
-    await this.dialogService.alert({ title: "提示", message: "打印成功" });
+  print() {
+    let title = "对账清单";
+    let strHTML = $("#confirm").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true);
   }
 }
