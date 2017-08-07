@@ -199,10 +199,10 @@ export class ConstantValues {
       title: "已生成对账清单"
     }, {
       stage: 2,
-      title: "装卸单位确认"
+      title: "装卸单位未确认"
     }, {
       stage: 3,
-      title: "装卸单位未确认"
+      title: "装卸单位确认"
     }, {
       stage: 4,
       title: "费收审核拒绝"
