@@ -27,14 +27,16 @@ export interface ChargeInfo {
   lastStageName: string;
 
   chargeItemList: ChargeItem[];
-  
+
+  createTime: Date;
+  createTimeStr: string;
 }
 
 export interface ChargeItem {
   id: string;
   remark: string;
   orgId: string;
-  
+
   // 需求表主键
   chargeInfoId: string;
   /**
@@ -67,7 +69,7 @@ export interface ChargeItem {
   unitName: string;
   rateTypeName: string;
   chargeCategoryName: string;
-  
+
   cargoItemId: string;
   actualPrice: number;
 }
