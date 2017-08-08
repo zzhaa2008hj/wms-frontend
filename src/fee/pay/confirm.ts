@@ -6,6 +6,8 @@ import { DialogService } from "ui";
 import { UploadConfirm } from "./upload-confirm";
 import { Router } from "aurelia-router";
 import { print, addHeader } from "@app/common/services/print-tool";
+import { DictionaryDataService } from "@app/base/services/dictionary";
+import { DictionaryData } from "@app/base/models/dictionary";
 
 @autoinject
 export class PaymentConfirm {
@@ -13,20 +15,28 @@ export class PaymentConfirm {
   paymentAuditList: PaymentAuditList;
   paymentInfoId: string;
   paymentAuditItems: PaymentAuditItem[];
+  units = [] as DictionaryData[];
 
   constructor(private paymentInfoService: PaymentInfoService,
               private paymentAuditListService: PaymentAuditListService,
               private dialogService: DialogService,
               private router: Router,
-              private paymentAuditItemService: PaymentAuditItemService) {
+              private paymentAuditItemService: PaymentAuditItemService,
+              private dictionaryDataService: DictionaryDataService) {
 
   }
 
   async activate(params) {
+    this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
+
     this.paymentInfoId = params.id;
     this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(params.id);
-    this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
-    this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
+    if (this.paymentInfo.chargeEndDate) {
+      this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
+    }
+    if (this.paymentInfo.chargeStartDate) {
+      this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
+    }
     this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
     this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
 
@@ -35,6 +45,7 @@ export class PaymentConfirm {
       res => res.map(r => {
         r.workDateStr = moment(r.workDate).format("YYYY-MM-DD");
         r.index = index++;
+        r.unit = this.units.find(e => e.dictDataCode == r.unit).dictDataName;
         return r;
       })
     );
