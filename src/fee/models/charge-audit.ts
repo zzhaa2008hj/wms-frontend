@@ -22,11 +22,13 @@ export interface ChargeAuditList {
   chargeAuditItems: ChargeAuditItem[];
 
   index: number;
+
+  paymentDateStr: string;
 }
 export interface ChargeAuditItem {
   id: string;
   chargeAuditId: string;
-  chargeType: number;
+  rateType: number;
   chargeCategory: number;
   batchNumber: string;
   cargoName: string;
@@ -49,4 +51,7 @@ export interface ChargeAuditItem {
   startDateStr: string;
   endDateStr: string;
   unitStr: string;
+
+  rateTypeName: string;
+  chargeCategoryName: string;
 }
