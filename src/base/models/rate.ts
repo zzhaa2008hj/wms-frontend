@@ -10,6 +10,7 @@ export interface Rate {
   // Rate
   chargeType: number;
   chargeCategory: number;
+  chargeCategoryStr: string;
   workId: string;
   workName: string;
   rateType: number;
@@ -28,7 +29,7 @@ export interface Rate {
   customerCategory: number;
 
   rateStep: RateStep[];
-
+  rateCategory: number;
 }
 
 export interface RateStep {

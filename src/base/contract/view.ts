@@ -12,6 +12,7 @@ import { ConstantValues } from '@app/common/models/constant-values';
 export class ViewContract {
   contractVo: ContractVo;
   contractTypes = ConstantValues.ContractTypes;
+  chargeCategory = ConstantValues.ChargeCategory;
   warehouses: WorkInfo[];
   datasource: kendo.data.DataSource;
   /**
@@ -65,6 +66,7 @@ export class ViewContract {
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
         let rateType = this.rateTypes.find(d => res.rateType == d.value);
+        res.chargeCategoryStr = this.chargeCategory.find(x => x.value == res.rateCategory).text;
         if (unit) {
           res.unitStr = unit.dictDataName;
         }

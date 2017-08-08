@@ -115,7 +115,9 @@
               <span class="help"></span>
               <div class="controls right">
                 <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid" k-on-detail-init.delegate="detailInit($event.detail)">
-                  <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
+                  <!-- <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col> -->
+                  <!-- <ak-col k-field="rateCategory == 1 ? '仓储费': rateCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col> -->
+                  <ak-col k-field="chargeCategoryStr" k-title="费用类别"></ak-col>
                   <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
                   <ak-col k-title="单价" k-field="price">
                   </ak-col>
