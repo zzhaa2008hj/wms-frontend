@@ -42,7 +42,7 @@ export class OrderView {
    * 打印出库单
    */
   printOutStockItem(){
-    let title = "付费单";
+    let title = "出库单";
     let strHTML = $("#outStockItem").html();
     strHTML = addHeader(strHTML);
     print(title, strHTML, true);
