@@ -22,6 +22,10 @@ export interface ChargeAuditList {
   orgId: string;
 
   chargeAuditItems: ChargeAuditItem[];
+
+  index: number;
+
+  paymentDateStr: string;
 }
 export interface ChargeAuditItem {
   id: string;
@@ -49,9 +53,12 @@ export interface ChargeAuditItem {
   startDateStr: string;
   endDateStr: string;
   unitStr: string;
+
+  rateTypeName: string;
+  chargeCategoryName: string;
 }
 
-export const chargeAuditListValidationRules = ValidationRules
+export const chargeAuditListValidationRules = ValidationRules 
   .ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.invoiceNumber)
   .displayName("发票号")
   .required().withMessage(`\${$displayName}不能为空`)
