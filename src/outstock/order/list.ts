@@ -228,7 +228,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    } 
+    }
     let criteria: VerifyRecordCriteria = {};
     criteria.businessId = this.id;
     criteria.businessType = 2;
@@ -262,6 +262,7 @@ export class OrderList {
     await this.orderService.updateStage(id, 9);
     this.dataSource.read();
   }
+
   /**
    * 撤回
    */
@@ -301,7 +302,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    } 
+    }
     this.router.navigateToRoute("changeHistory", {id: this.id});
   }
 }
