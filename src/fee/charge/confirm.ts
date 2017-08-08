@@ -44,7 +44,7 @@ export class CustomerConfirm {
   }
 
   // 打印对账单
-  async print() {
+  async printConfirm() {
     let title = "对账单";
     let strHTML = $("#confirm").html();
     strHTML = addHeader(strHTML);

@@ -56,7 +56,7 @@ export class Note {
     }
   }
 
-  print() {
+  printNote() {
     let title = "付费单";
     let strHTML = $("#note").html();
     strHTML = addHeader(strHTML);
