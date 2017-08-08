@@ -1,15 +1,37 @@
 <template>
   <div class="row m-b-5">
     <div class="col-md-3">
+      <a class="btn btn-small btn-success" route-href="route: new">新增结算申请</a>
       <button class="btn btn-small" click.delegate="verifyHistory()">审核记录</button>
+    </div>
+    <div class="col-md-9">
+      <div class="input-group left">
+        <input type="text" style="width: 220px;" value.bind="chargeInfoCriteria.keywords" placeholder="输入代理商或客户名称">
+      </div>
+      <div class="input-group left m-l-15">
+        <input class="form-control" ak-datepicker="k-value.two-way: chargeInfoCriteria.beginDate; k-widget.two-way: startDatePicker"
+          k-on-change.delegate="startChange()" placeholder="请输入开始时间">
+      </div>
+      <div class="input-group left m-l-15">
+        <input class="form-control" ak-datepicker="k-value.two-way: chargeInfoCriteria.endDate; k-widget.two-way: endDatePicker" k-on-change.delegate="endChange()"
+          placeholder="请输入结束时间"/>
+      </div>
+      <div class="input-group left m-l-5">
+        <div class="input-group-addon search" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></div>
+        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
+      </div>
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row"
-           k-on-change.delegate="rowSelected($event.detail)">
-    <ak-col k-field="agentName" k-title="代理商名称" k-width.bind="100"></ak-col>
-    <ak-col k-field="customerName" k-title="客户名称" k-width.bind="100"></ak-col>
-    <ak-col k-field="lastStage" k-title="上阶段" k-width.bind="150"></ak-col>
-    <ak-col k-field="stage" k-title="当前阶段" k-width.bind="150"></ak-col>
+    k-on-change.delegate="rowSelected($event.detail)">
+    <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
+    <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+    <ak-col k-field="chargeStartDate" k-title="结算开始日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="chargeEndDate" k-title="结算结束日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="paymentUnit" k-title="付款单位"></ak-col>
+    <ak-col k-field="status == 1 ? '完成':'未完成'" k-title="状态"></ak-col>
+    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
+    <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
         <a class="btn btn-small" route-href="route: customerConfirm; params.bind: { id: id }">客户确认</a>
@@ -17,7 +39,8 @@
         <a class="btn btn-small" route-href="route: note; params.bind: { id: id }">查看收费单</a>
         <button class="btn btn-small btn-primary" click.delegate="invoiceEntry(id)">发票录入</button>
         <button class="btn btn-small btn-primary" click.delegate="auditCancel(id)">核销</button>
+        <button class="btn btn-small btn-primary" if.bind="stage == 0" click.delegate="createChargeAuditList(id)">生成对账清单</button>
       </ak-template>
-    </ak-col>
-  </ak-grid>
+</ak-col>
+</ak-grid>
 </template>

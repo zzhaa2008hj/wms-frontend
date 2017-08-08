@@ -1,0 +1,154 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-body no-border">
+      <form submit.delegate="save()">
+        <div class="row column-seperation">
+          <h4>基本信息</h4>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">代理商名称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="chargeInfo.agentId"
+                  k-data-source.bind="agents" k-widget.two-way="agentWidget" k-on-close.delegate="validateProperty('agentId')">
+                </ak-drop-down-list>
+                <input class="form-control" type="hidden" value.bind="chargeInfo.agentId & validate ">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">客户名称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="chargeInfo.customerId"
+                  k-data-source.bind="customers" k-widget.two-way="customerWidget" k-on-change.delegate="customerChanged()" k-on-close.delegate="validateProperty('customerId')">
+                </ak-drop-down-list>
+                <input class="form-control" type="hidden" value.bind="chargeInfo.customerId & validate ">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">付款单位*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeInfo.paymentUnit & validate" disabled.bind="disabled">
+              </div>
+            </div>
+          </div>
+         
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-label">备注</label>
+              <span class="help"></span>
+              <div class="controls">
+                <textarea type="text" class="form-control" value.bind="chargeInfo.remark & validate" disabled.bind="disabled"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row column-seperation">
+          <h4>费用明细</h4>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">批次号*</label>
+              <div class="controls">
+                <ak-drop-down-list k-value.two-way="batchNumber" k-data-text-field="value" k-data-value-field="key"
+                  k-data-source.bind="batchNumbers" k-enabled.two-way="!disabled">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">费用类型*</label>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;"  k-value.two-way="rateType"  k-option-label="请选择..." k-data-text-field="text"
+                  k-data-value-field="value" k-data-source.bind="workInfoCategorys" k-enabled.two-way="!disabled">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">费用类别*</label>
+              <div class="controls">
+                <ak-drop-down-list k-value.two-way="chargeCategory"  k-option-label="请选择..." k-data-text-field="text"
+                  k-data-value-field="value" k-data-source.bind="chargeCategorys" k-enabled.two-way="!disabled">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <span class="help"></span>
+            <div class="controls right">
+              <a class="btn btn-primary" click.delegate="addChargeItem()">新增货物和费率</a>
+              <ak-grid k-data-source.bind="chargeItemDataSource" k-widget.bind="customerGrid" k-editable.bind="true">
+                <ak-col k-field="batchNumber" k-title="批次号">
+                   <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="batchNumber" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="rateType" k-title="费用类型">
+                   <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="rateTypeName" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="chargeCategory" k-title="费用类别">
+                   <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="chargeCategoryName" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="cargoCategoryName" k-title="货物名称">
+                  <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="cargoCategoryName" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="cargoSubCategoryName" k-title="品牌">
+                  <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="cargoSubCategoryName" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="warehouseName" k-title="库区">
+                  <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="warehouseName" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="quantity" k-title="数量">
+                  <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="quantity" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="number" k-title="件数">
+                  <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="number" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="unit" k-title="计量单位">
+                  <ak-template>
+                    <input type="text" style="border: none;background-color:transparent;" value.bind="unitName" readonly/>
+                  </ak-template>
+                </ak-col>
+                <ak-col k-field="actualPrice" k-title="实际费率">
+                  <ak-template>
+                    <input type="number" value.bind="actualPrice" step="0.01"/>
+                  </ak-template>
+                </ak-col>
+              </ak-grid>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-actions">
+            <div class="pull-right">
+              <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
+              <a class="btn btn-white" click.trigger="cancel()">返回</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
