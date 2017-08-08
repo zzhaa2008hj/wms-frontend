@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { MessageDialogService } from 'ui';
 import { Order, OrderItem } from '@app/outstock/models/order';
 import { OrderService } from '@app/outstock/services/order';
+import { addHeader, print } from "@app/common/services/print-tool";
 
 @autoinject
 export class OrderWork {
@@ -21,6 +22,7 @@ export class OrderWork {
               private dictionaryDataService: DictionaryDataService,
               private organizationService: OrganizationService) {
   }
+
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.outstockOrder = await this.outstockOrderService.viewWorkOrder(params.id);
@@ -45,7 +47,10 @@ export class OrderWork {
     }
   }
 
-  async print() {
-    this.messageDialogService.alert({ title: "打印成功", message: "打印成功" });
+  async printOrderWork() {
+    let title = "出库作业指令单";
+    let strHTML = $("#orderWork").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true);
   }
 }
