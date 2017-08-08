@@ -61,7 +61,7 @@ export class Note {
     let strHTML = $("#note").html();
     strHTML = addHeader(strHTML);
     print(title, strHTML, true);
-    await this.dialogService.alert({ title: "提示", message: "打印成功！" });
+    // await this.dialogService.alert({ title: "提示", message: "打印成功！" });
   }
 
 }
