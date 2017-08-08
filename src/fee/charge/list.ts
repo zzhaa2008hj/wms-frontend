@@ -1,6 +1,8 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { InvoiceEntry } from "@app/fee/charge/invoice";
 import { DialogService, MessageDialogService } from "ui";
+import { ChargeInfoService } from "@app/fee/services/charge";
+import { DataSourceFactory } from "@app/utils";
 import { ChargeInfoService, ChargeInfoCriteria } from "@app/fee/services/charge";
 import { Audit } from "@app/fee/charge/audit/new";
 import { DataSourceFactory } from '@app/utils';
