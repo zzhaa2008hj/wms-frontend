@@ -56,11 +56,11 @@ export class Note {
     }
   }
 
-  async print() {
+  print() {
     let title = "付费单";
     let strHTML = $("#note").html();
     strHTML = addHeader(strHTML);
-    await print(title, strHTML, true);
+    print(title, strHTML, true);
     // await this.dialogService.alert({ title: "提示", message: "打印成功！" });
   }
 
