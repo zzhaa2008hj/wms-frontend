@@ -17,7 +17,6 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
-import { addHeader } from "@app/common/services/print-tool";
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -194,7 +193,6 @@ export class OrderList {
    * @returns {Promise<void>}
    */
   async createOutstockOrder(id) {
-
     try {
       await this.orderService.createOutstockOrder(id);
       let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库单" });
@@ -202,7 +200,7 @@ export class OrderList {
         this.dataSource.read();
         return;
       }
-      // 跳转 到出库单页面 打印出库单
+      // 跳转 到出库单页面
       this.router.navigateToRoute('outstock-orderItem-view', { id: id });
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
@@ -230,7 +228,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    }
+    } 
     let criteria: VerifyRecordCriteria = {};
     criteria.businessId = this.id;
     criteria.businessType = 2;
@@ -264,7 +262,6 @@ export class OrderList {
     await this.orderService.updateStage(id, 9);
     this.dataSource.read();
   }
-
   /**
    * 撤回
    */
@@ -304,7 +301,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    }
-    this.router.navigateToRoute("changeHistory", { id: this.id });
+    } 
+    this.router.navigateToRoute("changeHistory", {id: this.id});
   }
 }
