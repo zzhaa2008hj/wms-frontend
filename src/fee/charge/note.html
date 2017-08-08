@@ -7,27 +7,35 @@
           <button class="btn btn-small" click.delegate="print()">打印</button>
         </div>
       </div>
-      <div class="col-md-9 col-md-offset-2">
-        <table border="1">
+      <div class="col-md-12 col-md-offset-2" id="note">
+        <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
           <tr>
-            <td align="center" colspan="17">
+            <td align="center" colspan="18">
               <h4>${organization.name}收费单详情</h4>
             </td>
           </tr>
           <tr>
-            <td align="center" colspan="3">代理商名称:</td>
-            <td colspan="3">${chargeInfo.agentName}</td>
-            <td align="center" colspan="3">客户名称:</td>
-            <td colspan="3">${chargeInfo.customerName}</td>
-            <td align="center" colspan="3">付款单位:</td>
-            <td colspan="3">${chargeInfo.paymentUnit}</td>
+            <td align="center" colspan="2">代理商名称:</td>
+            <td colspan="4">${chargeInfo.agentName}</td>
+            <td align="center" colspan="2">客户名称:</td>
+            <td colspan="4">${chargeInfo.customerName}</td>
+            <td align="center" colspan="2">付款单位:</td>
+            <td colspan="4">${chargeInfo.paymentUnit}</td>
           </tr>
           <tr>
-            <td align="center" colspan="3">结算开始日期:</td>
-            <td colspan="3">${chargeInfo.chargeStartDateStr}</td>
-            <td align="center" colspan="3">结算结束日期:</td>
-            <td colspan="3">${chargeInfo.chargeEndDateStr}</td>
-            <td colspan="5"></td>
+            <td align="center" colspan="2">结算开始日期:</td>
+            <td colspan="4">${chargeInfo.chargeStartDateStr}</td>
+            <td align="center" colspan="2">结算结束日期:</td>
+            <td colspan="4">${chargeInfo.chargeEndDateStr}</td>
+            <td align="center" colspan="2">总计金额</td>
+            <td colspan="4">${chargeInfo.totalAmount}</td>
+          </tr>
+          <tr>
+            <td align="center" colspan="2">备注</td>
+            <td colspan="16">${chargeInfo.remark}</td>
+          </tr>
+          <tr>
+            <td align="center" colspan="18">清单明细</td>
           </tr>
           <tr>
             <td align="center" colspan="2">序号</td>
@@ -37,7 +45,8 @@
             <td align="center" colspan="2">仓储费</td>
             <td align="center" colspan="2">装卸费</td>
             <td align="center" colspan="2">其他费用</td>
-            <td align="center" colspan="3">合计</td>
+            <td align="center" colspan="2">合计</td>
+            <td align="center" colspan="2">备注</td>
           </tr>
           <template repeat.for="chargeAuditList of chargeAuditLists">
             <tr>
@@ -48,11 +57,12 @@
               <td align="center" colspan="2">${chargeAuditList.warehousingAmount}</td>
               <td align="center" colspan="2">${chargeAuditList.loadingAmount}</td>
               <td align="center" colspan="2">${chargeAuditList.otherAmount}</td>
-              <td align="center" colspan="3">${chargeAuditList.sumAmount}</td>
+              <td align="center" colspan="2">${chargeAuditList.sumAmount}</td>
+              <td align="center" colspan="2">${chargeAuditList.remark}</td>
             </tr>
             <div>
               <tr if.bind="chargeAuditList.chargeAuditItems.length > 0">
-                <td align="center"></td>
+                <td align="center">&nbsp;&nbsp;</td>
                 <td align="center">费用类型</td>
                 <td align="center">费用类别</td>
                 <td align="center">货名</td>
@@ -69,6 +79,7 @@
                 <td align="center">堆存天数</td>
                 <td align="center">堆存费率</td>
                 <td align="center">备注</td>
+                <td align="center">&nbsp;</td>
               </tr>
               <template repeat.for="chargeAuditItem of chargeAuditList.chargeAuditItems">
                 <tr>
@@ -89,20 +100,11 @@
                   <td align="center">${chargeAuditItem.storageDay}</td>
                   <td align="center">${chargeAuditItem.storageRate}</td>
                   <td align="center">${chargeAuditItem.remark}</td>
+                  <td align="center"></td>
                 </tr>
               </template>
             </div>
           </template>
-          <tr>
-            <td align="center" colspan="4">总计金额</td>
-            <td colspan="13">${chargeInfo.totalAmount}</td>
-          </tr>
-          <tr>
-            <td align="center" colspan="4">备注</td>
-            <td colspan="13">
-              <input type="text" style="border: none" value.bind="chargeInfo.remark">
-            </td>
-          </tr>
         </table>
       </div>
     </div>
