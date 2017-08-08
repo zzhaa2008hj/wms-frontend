@@ -53,6 +53,6 @@ export interface ChargeAuditItem {
 
 export const chargeAuditListValidationRules = ValidationRules
   .ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.invoiceNumber)
-  .displayName("发票号不能为空")
+  .displayName("发票号")
   .required().withMessage(`\${$displayName}不能为空`)
   .rules;

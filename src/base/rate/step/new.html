@@ -5,17 +5,17 @@
         </ux-dialog-header>
         <ux-dialog-body>
             <div class="form-group">
-                <label class="form-label">阶梯号*</label>
+                <label class="form-label">阶梯号</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.stepNum & validate">
+                    <input type="text" class="form-control" value.bind="rateStep.stepNum" readonly>
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">开始值*</label>
+                <label class="form-label">开始值</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.stepStart & validate">
+                    <input type="text" class="form-control" value.bind="rateStep.stepStart" readonly>
                 </div>
             </div>
             <div class="form-group">
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">阶梯价</label>
+                <label class="form-label">阶梯价*</label>
                 <span class="help"></span>
                 <div class="controls">
                     <input type="text" class="form-control" value.bind="rateStep.stepPrice & validate">
@@ -46,7 +46,7 @@
                 <label class="form-label">备注</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.remark & validate">
+                    <input type="text" class="form-control" value.bind="rateStep.remark">
                 </div>
             </div>
 

@@ -120,6 +120,10 @@ export const rateStepValidationRules = ValidationRules
   .displayName('开始值')
   .required().withMessage(`\${$displayName} 不能为空`)
 
+  .ensure((rateStep: RateStep) => rateStep.stepPrice)
+  .displayName('阶梯价')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
   .ensure((rateStep: RateStep) => rateStep.remark)
   .displayName('备注')
   .maxLength(500).withMessage(`\${$displayName} 过长`)

@@ -10,12 +10,12 @@ export class InvoiceEntry {
   validationController: ValidationController;
 
   constructor(private dialogController: DialogController,
-              private validationControllerFactory: ValidationControllerFactory,
-              private container: Container) {
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
     this.chargeAuditList.invoiceType = 1;
-    this.validationController = this.validationControllerFactory.create();
+    this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
-    this.container.registerInstance(ValidationController, this.validationController);
+    container.registerInstance(ValidationController, this.validationController);
   }
 
   activate() {
