@@ -2,7 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
 import { ChargeInfo, ChargeItem } from "@app/fee/models/charge";
 import { ChargeAuditList } from "@app/fee/models/charge-audit";
-
+import { Attachment } from "@app/common/models/attachment";
 /**
  * Created by Hui on 2017/8/2.
  */
@@ -11,8 +11,8 @@ export class ChargeInfoService {
   constructor(private http: RestClient) {
   }
 
-  customerConfirm(chargeInfoId: string): Promise<void> {
-    return this.http.put(`/fee/charge-info/${chargeInfoId}/customerConfirm`, null).then(handleResult);
+  customerConfirm(chargeInfoId: string, stage: number, list: Attachment[]): Promise<void> {
+    return this.http.put(`/fee/charge-info/${chargeInfoId}/${stage}/customerConfirm`, list).then(handleResult);
   }
 
   async getById(id: string): Promise<ChargeInfo> {
