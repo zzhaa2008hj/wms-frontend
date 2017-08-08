@@ -54,8 +54,6 @@ export class CustomerConfirm {
   }
 
   async customerConfirm(num: number) {
-
-
     this.disabled = true;
     try {
       if (num == 0) {
