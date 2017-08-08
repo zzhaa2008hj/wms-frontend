@@ -1,0 +1,82 @@
+<template xmlns:c="http://www.w3.org/1999/html">
+  <div class="grid simple">
+    <div class="grid-body">
+      <div class="page-title">
+        <h4>对账清单</h4>
+      </div>
+      <div class="row">
+        <div class="col-md-11"></div>
+        <div class="input-group col-md-1">
+          <button class="btn btn-small" click.delegate="print()">打印</button>
+        </div>
+      </div>
+      <div class="col-md-12 col-md-offset-2" id="confirm">
+        <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+          <tr>
+            <td align="center" colspan="9"><h4>${organization.name}对账清单</h4></td>
+          </tr>
+          <tr>
+            <td align="center">代理商名称:</td>
+            <td colspan="2">${chargeInfo.agentName}</td>
+            <td align="center">客户名称:</td>
+            <td colspan="2">${chargeInfo.customerName}</td>
+            <td align="center">付款单位:</td>
+            <td colspan="2">${chargeInfo.paymentUnit}</td>
+          </tr>
+          <tr>
+            <td align="center">结算开始日期:</td>
+            <td colspan="2">${chargeInfo.chargeStartDateStr}</td>
+            <td align="center">结算结束日期:</td>
+            <td colspan="2">${chargeInfo.chargeEndDateStr}</td>
+            <td align="center">总计金额</td>
+            <td colspan="2">${chargeInfo.totalAmount}</td>
+          </tr>
+          <tr>
+            <td align="center">备注</td>
+            <td colspan="8">${chargeInfo.remark}</td>
+          </tr>
+          <tr>
+            <td align="center" colspan="9">对账清单明细</td>
+          </tr>
+          <tr>
+            <td align="center">序号</td>
+            <td align="center">批次号</td>
+            <td align="center">提单号</td>
+            <td align="center">箱量</td>
+            <td align="center">仓储费</td>
+            <td align="center">装卸费</td>
+            <td align="center">其他费用</td>
+            <td align="center">合计</td>
+            <td align="center">备注</td>
+          </tr>
+          <template repeat.for="chargeAuditList of chargeAuditLists">
+            <tr>
+              <td align="center">${chargeAuditList.index}</td>
+              <td align="center">${chargeAuditList.batchNumber}</td>
+              <td align="center">${chargeAuditList.billLadingNumber}</td>
+              <td align="center">${chargeAuditList.containerQuantity}</td>
+              <td align="center">${chargeAuditList.warehousingAmount}</td>
+              <td align="center">${chargeAuditList.loadingAmount}</td>
+              <td align="center">${chargeAuditList.otherAmount}</td>
+              <td align="center">${chargeAuditList.sumAmount}</td>
+              <td align="center">${chargeAuditList.remark}</td>
+            </tr>
+          </template>
+          <tr>
+            <td align="right">制单人&nbsp;&nbsp;</td>
+            <td colspan="2">&nbsp;${chargeInfo.createAccount}&nbsp;</td>
+            <td align="right">制单日期&nbsp;&nbsp;</td>
+            <td colspan="2">&nbsp;${chargeInfo.createTimeStr}&nbsp;</td>
+            <td align="right">客户签字&nbsp;&nbsp;</td>
+            <td colspan="2"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="pull-right">
+      <button class="btn btn-primary" click.delegate="customerConfirm(1)">客户确认</button>
+      <button class="btn btn-warning" click.delegate="customerConfirm(0)">客户未确认</button>
+      <button class="btn btn-small" route-href="route: list;">取消</button>
+    </div>
+  </div>
+</template>

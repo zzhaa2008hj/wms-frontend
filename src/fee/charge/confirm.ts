@@ -7,8 +7,9 @@ import { ChargeAuditListService } from "@app/fee/services/charge-audit";
 import { ChargeInfoService } from "@app/fee/services/charge";
 import { Organization } from "@app/base/models/organization";
 import { OrganizationService } from "@app/base/services/organization";
-import * as moment from 'moment';
-import { NewUpload } from "@app/fee/charge/customer-confirmation/upload";
+import * as moment from "moment";
+import { NewUpload } from "@app/fee/charge/upload";
+import { addHeader, print } from "@app/common/services/print-tool";
 
 @autoinject
 export class CustomerConfirm {
@@ -44,22 +45,30 @@ export class CustomerConfirm {
 
   // 打印对账单
   async print() {
+    let title = "对账单";
+    let strHTML = $("#confirm").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true);
     await this.dialogService.alert({ title: "提示", message: "打印成功！" });
   }
 
-  //上传客户确认信息
-  async newUpdate() {
-    let result = await this.dialogService.open({ viewModel: NewUpload, model: this.chargeInfo.id, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
-    this.disabled = false;
-  }
+  async customerConfirm(num: number) {
 
-  async customerConfirm() {
+
     this.disabled = true;
     try {
-      await this.chargeInfoService.customerConfirm(this.chargeInfo.id);
-      await this.dialogService.alert({ title: "提示", message: "客户确认成功！" });
+      if (num == 0) {
+        await this.chargeInfoService.customerConfirm(this.chargeInfo.id, 2, []);
+      }
+      if (num == 1) {
+        //上传客户确认信息
+        let result = await this.dialogService.open({ viewModel: NewUpload, model: this.chargeInfo.id, lock: true })
+          .whenClosed();
+        if (result.wasCancelled) return;
+
+        await this.chargeInfoService.customerConfirm(this.chargeInfo.id, 3, result.output);
+      }
+      await this.dialogService.alert({ title: "提示", message: "操作成功！" });
       this.router.navigateToRoute('list');
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });

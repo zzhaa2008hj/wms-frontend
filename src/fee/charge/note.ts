@@ -9,6 +9,7 @@ import { DialogService } from "ui";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import * as moment from 'moment';
+import { addHeader, print } from "@app/common/services/print-tool";
 
 @autoinject
 export class Note {
@@ -56,6 +57,10 @@ export class Note {
   }
 
   async print() {
+    let title = "付费单";
+    let strHTML = $("#note").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true);
     await this.dialogService.alert({ title: "提示", message: "打印成功！" });
   }
 
