@@ -33,10 +33,6 @@ export class ChargeInfoService {
   auditCancel(id: string): Promise<void> {
     return this.http.put(`/fee/charge-info/chargeAuditCancel/${id}`, null).then(handleResult);
   }
-
-  queryChargeInfo(): Query<ChargeInfo> {
-    return this.http.query<ChargeInfo>(`/fee/charge-info/page`);
-  }
   /**
    * 查询结算需求 - 分页
    */
