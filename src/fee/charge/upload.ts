@@ -4,6 +4,7 @@ import { AttachmentService } from "@app/common/services/attachment";
 import { uuid } from "@app/utils";
 import { AttachmentMap } from "@app/common/models/attachment";
 import { Upload, Uploader } from "@app/upload";
+import { AttachmentDetail } from "@app/common/attachment/detail";
 @autoinject
 export class NewUpload {
   files: File[];
@@ -11,6 +12,7 @@ export class NewUpload {
   currentUpload: Upload;
   attachments = [] as AttachmentMap[];
   chargeInfoId: string;
+  private disabled: boolean = false;
 
   constructor(private dialogController: DialogController,
               private dialogService: DialogService,
@@ -53,6 +55,16 @@ export class NewUpload {
     return;
   }
 
+  async showDetail(data) {
+    let item: AttachmentMap = data.item;
+    let path = '/' + this.chargeInfoId + '/' + item.uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    let result = await this.dialogService
+      .open({ viewModel: AttachmentDetail, model: attachmentUrl, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+  }
+
   async delete(data) {
     let item: AttachmentMap = data.item;
     let res = await this.attachmentService.getDirKey(this.chargeInfoId);
@@ -66,7 +78,13 @@ export class NewUpload {
   }
 
   async save() {
-    await this.dialogController.ok();
+    this.disabled = true;
+    if (this.attachments.length == 0) {
+      await this.dialogService.alert({ title: "提示", message: "上传内容不可为空" });
+      this.disabled = false;
+      return;
+    }
+    await this.dialogController.ok(this.attachments);
   }
 
   async cancel() {
