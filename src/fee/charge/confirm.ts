@@ -32,6 +32,7 @@ export class CustomerConfirm {
 
     this.chargeInfo.chargeStartDateStr = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD");
     this.chargeInfo.chargeEndDateStr = moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD");
+    this.chargeInfo.createTimeStr = moment(this.chargeInfo.createTime).format("YYYY-MM-DD");
 
     if (this.chargeAuditLists) {
       let totalAmount = 0;
