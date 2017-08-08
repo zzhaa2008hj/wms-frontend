@@ -60,7 +60,7 @@ export class Note {
     let title = "付费单";
     let strHTML = $("#note").html();
     strHTML = addHeader(strHTML);
-    print(title, strHTML, true);
+    await print(title, strHTML, true);
     // await this.dialogService.alert({ title: "提示", message: "打印成功！" });
   }
 
