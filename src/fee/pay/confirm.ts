@@ -31,8 +31,12 @@ export class PaymentConfirm {
 
     this.paymentInfoId = params.id;
     this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(params.id);
-    this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
-    this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
+    if (this.paymentInfo.chargeEndDate) {
+      this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
+    }
+    if (this.paymentInfo.chargeStartDate) {
+      this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
+    }
     this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
     this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
 
