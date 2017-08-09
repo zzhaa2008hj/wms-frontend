@@ -181,6 +181,12 @@
       "name": "pay",
       "title": "装卸结算",
       "moduleId":"./fee/pay/index"
+    },
+    {
+      "route": "/report/daily-inventory",
+      "name": "daily-inventory",
+      "title": "出入库明细",
+      "moduleId":"./report/daily-inventory/index"
     }
   ]
 }
