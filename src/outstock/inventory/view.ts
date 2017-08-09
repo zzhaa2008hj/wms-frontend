@@ -9,6 +9,7 @@ import { OrganizationService } from '@app/base/services/organization';
 import { Organization } from '@app/base/models/organization';
 import * as moment from 'moment';
 import { CargoInfo } from '@app/base/models/cargo-info';
+import { addHeader, print } from "@app/common/services/print-tool";
 
 export class OutstockInventoryView {
   outstockInventoryVo: OutstockInventoryVo;
@@ -18,11 +19,11 @@ export class OutstockInventoryView {
   cargoInfo: CargoInfo;
   drivers: string;
 
-  constructor( @inject private router: Router,
-    @inject private outstockInventoryService: OutstockInventoryService,
-    @inject private dictionaryDataService: DictionaryDataService,
-    @inject private organizationService: OrganizationService,
-    @inject private cargoInfoService: CargoInfoService) {
+  constructor(@inject private router: Router,
+              @inject private outstockInventoryService: OutstockInventoryService,
+              @inject private dictionaryDataService: DictionaryDataService,
+              @inject private organizationService: OrganizationService,
+              @inject private cargoInfoService: CargoInfoService) {
   }
 
   async activate({ id }) {
@@ -30,7 +31,7 @@ export class OutstockInventoryView {
     this.outstockInventoryVo = await this.outstockInventoryService.getOutstockInventory(id);
     this.organization = await this.organizationService.getOrganization(this.outstockInventoryVo.orgId);
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.outstockInventoryVo.cargoInfoId);
-    
+
     this.outstockInventoryVo.outstockInventoryItems.map(item => {
       let unit = this.units.find(d => item.unit == d.dictDataCode);
       if (unit) {
@@ -44,4 +45,12 @@ export class OutstockInventoryView {
   cancel() {
     this.router.navigateToRoute("list");
   }
+
+  printOutstockInventory() {
+    let title = "出库清单";
+    let strHTML = $("#outstockInventory").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true);
+  }
+
 }
