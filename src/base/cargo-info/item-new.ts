@@ -167,6 +167,9 @@ export class NewCargoItem {
   }
   async save() {
     await this.cargoRateDataSource.sync();
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     //let cargoRateList = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
     let cargoRateList = this.cargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
     cargoRateList.forEach(r => {
@@ -177,10 +180,7 @@ export class NewCargoItem {
     this.cargoItem.cargoRates = cargoRateList;
     this.cargoItem.unitStr = this.unitDatasource.find(d => this.cargoItem.unit == d.dictDataCode).dictDataName;
 
-    let { valid } = await this.validationController.validate();
-    if (!valid) return;
     await this.dialogController.ok(this.cargoItem);
-
   }
 
   async cancel() {
