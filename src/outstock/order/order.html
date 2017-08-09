@@ -13,7 +13,9 @@
       <div class="col-md-9 col-md-offset-2" id="orderWork">
         <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
           <tr>
-            <td align="center" colspan="9"><h4>${organization.name}出库指令单</h4></td>
+            <td align="center" colspan="9">
+              <h4>${organization.name}出库指令单</h4>
+            </td>
           </tr>
           <tr>
             <td colspan="9" align="right">
@@ -21,29 +23,16 @@
             </td>
           </tr>
           <tr>
-            <td align="center" colspan="2">代理商名称:</td>
-            <td colspan="2">${outstockOrder.agentName}</td>
+            <td align="center">代理商名称:</td>
+            <td colspan="4">${outstockOrder.agentName}</td>
             <td align="center" colspan="2">客户名称:</td>
-            <td colspan="3">${outstockOrder.customerName}</td>
+            <td colspan="2">${outstockOrder.customerName}</td>
           </tr>
           <tr>
-            <td align="center" colspan="2">批次号:</td>
-            <td colspan="2">${outstockOrder.batchNumber}</td>
+            <td align="center">批次号:</td>
+            <td colspan="4">${outstockOrder.batchNumber}</td>
             <td align="center" colspan="2">出库日期:</td>
-            <td colspan="3">${outstockOrder.outstockDateStr}</td>
-          </tr>
-          <tr>
-            <td align="center" colspan="2">合计数量:</td>
-            <td colspan="2">${outstockOrder.quantitySum}</td>
-            <td align="center" colspan="2">合计件数:</td>
-            <td colspan="3">${outstockOrder.numberSum}</td>
-          </tr>
-          <tr>
-            <td align="center" colspan="2">备注</td>
-            <td colspan="7">${outstockOrder.remark}</td>
-          </tr>
-          <tr>
-            <td align="center" colspan="9">出库指令明细</td>
+            <td colspan="2">${outstockOrder.outstockDateStr}</td>
           </tr>
           <tr>
             <td align="center">序号</td>
@@ -53,7 +42,7 @@
             <td align="center">箱号</td>
             <td align="center">库区</td>
             <td align="center">说明</td>
-            <td align="center">出库数量</td>            
+            <td align="center">出库数量</td>
             <td align="center">出库件数</td>
           </tr>
           <template repeat.for="item of cargoItems">
@@ -65,11 +54,19 @@
               <td align="center">${item.containerNumber}</td>
               <td align="center">${item.warehouseName}</td>
               <td align="center">${item.remark}</td>
-              <td align="center">${item.outstockQuantity}</td>              
+              <td align="center">${item.outstockQuantity}</td>
               <td align="center">${item.outstockNumber}</td>
             </tr>
           </template>
-
+          <tr>
+            <td align="center">备注</td>
+            <td colspan="8">${outstockOrder.remark}</td>
+          </tr>
+          <tr>
+            <td colspan="7" align="right">合计:</td>
+            <td>${outstockOrder.quantitySum}</td>
+            <td>${outstockOrder.numberSum}</td>
+          </tr>
           <tr>
             <td align="right">制单人&nbsp;&nbsp;</td>
             <td colspan="2" align="center">&nbsp;${outstockOrder.createAccount}&nbsp;</td>

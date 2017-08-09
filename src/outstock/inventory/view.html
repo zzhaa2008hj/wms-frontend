@@ -7,7 +7,7 @@
       <div class="row">
         <div class="col-md-11"></div>
         <div class="input-group col-md-1">
-          <button class="btn btn-small btn-primary" click.delegate="printOutstockInventory()">打印</button>
+          <button class="btn btn-small btn-primary" click.delegate="print()">打印</button>
         </div>
       </div>
       <div class="col-md-11 col-md-offset-1" id="outstockInventory">
@@ -25,22 +25,9 @@
           </tr>
           <tr>
             <td align="center" nowrap>提货单位：</td>
-            <td colspan="3" nowrap>${outstockInventoryVo.customerName}</td>
+            <td colspan="4" nowrap>${outstockInventoryVo.customerName}</td>
             <td align="center" nowrap>批次号：</td>
-            <td colspan="4" nowrap>${cargoInfo.batchNumber}</td>
-          </tr>
-          <tr>
-            <td align="center">合计重量：</td>
-            <td colspan="3">${outstockInventoryVo.sumQuantity}</td>
-            <td align="center">合计件数：</td>
-            <td colspan="4">${outstockInventoryVo.sumNumber}</td>
-          </tr>
-          <tr>
-            <td align="center">备注：</td>
-            <td colspan="8">${outstockInventoryVo.remark}</td>
-          </tr>
-          <tr>
-            <td align="center" colspan="9">清单明细</td>
+            <td colspan="3" nowrap>${cargoInfo.batchNumber}</td>
           </tr>
           <tr>
             <td align="center" nowrap>货名</td>
@@ -67,10 +54,19 @@
             </tr>
           </template>
           <tr>
+            <td align="right" colspan="7">合计：</td>
+            <td align="center">${outstockInventoryVo.sumQuantity}</td>
+            <td align="center">${outstockInventoryVo.sumNumber}</td>
+          </tr>
+          <tr>
+            <td align="center">备注：</td>
+            <td colspan="8">${outstockInventoryVo.remark}</td>
+          </tr>
+          <tr>
             <td align="center" nowrap>提货人：</td>
-            <td align="center">&nbsp;&nbsp;</td>
+            <td align="center"></td>
             <td align="center" nowrap>仓管员：</td>
-            <td align="center">&nbsp;&nbsp;</td>
+            <td align="center"></td>
             <td align="center" nowrap>制单人：</td>
             <td align="center" nowrap>${outstockInventoryVo.employeeName}</td>
             <td align="center" nowrap>制单日期：</td>

@@ -9,7 +9,7 @@ import { OrganizationService } from '@app/base/services/organization';
 import { Organization } from '@app/base/models/organization';
 import * as moment from 'moment';
 import { CargoInfo } from '@app/base/models/cargo-info';
-import { addHeader, print } from "@app/common/services/print-tool";
+import { addHeader, print } from '@app/common/services/print-tool';
 
 export class OutstockInventoryView {
   outstockInventoryVo: OutstockInventoryVo;
@@ -46,11 +46,11 @@ export class OutstockInventoryView {
     this.router.navigateToRoute("list");
   }
 
-  printOutstockInventory() {
+  print() {
     let title = "出库清单";
-    let strHTML = $("#outstockInventory").html();
+    let strHTML = $('#outstockInventory').html();
     strHTML = addHeader(strHTML);
     print(title, strHTML, true);
   }
-
 }
+
