@@ -5,7 +5,6 @@ import { ChargeInfo } from "@app/fee/models/charge";
 import { ChargeAuditList } from "@app/fee/models/charge-audit";
 import { Organization } from "@app/base/models/organization";
 import { ChargeInfoService } from "@app/fee/services/charge";
-import { DialogService } from "ui";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import * as moment from 'moment';
@@ -22,7 +21,6 @@ export class Note {
               private chargeAuditListService: ChargeAuditListService,
               private chargeAuditItemService: ChargeAuditItemService,
               private dictionaryDataService: DictionaryDataService,
-              private dialogService: DialogService,
               private organizationService: OrganizationService) {
   }
 
@@ -61,7 +59,6 @@ export class Note {
     let strHTML = $("#note").html();
     strHTML = addHeader(strHTML);
     print(title, strHTML, true);
-    // await this.dialogService.alert({ title: "提示", message: "打印成功！" });
   }
 
 }
