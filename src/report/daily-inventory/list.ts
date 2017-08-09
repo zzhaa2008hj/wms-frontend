@@ -22,8 +22,8 @@ export class DailyInventoryList {
   };
 
   constructor(private dailyInventoryService: DailyInventoryService,
-    private dictionaryDataService: DictionaryDataService,
-    private dataSourceFactory: DataSourceFactory) {
+              private dictionaryDataService: DictionaryDataService,
+              private dataSourceFactory: DataSourceFactory) {
 
   }
 
