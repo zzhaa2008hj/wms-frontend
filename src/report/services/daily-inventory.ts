@@ -17,4 +17,9 @@ export class DailyInventoryService {
     return this.http.query<DailyInventory>(`/report/daily-inventory/page`, criteria)
       .map(res => fixDate(res, 'createTime'));
   }
+
+  async pageAll(criteria?: Criteria): Promise<DailyInventory[]> {
+    let res = await this.http.createRequest(`/report/daily-inventory/pageAll`).withParams(criteria).asGet().send();
+    return res.content;
+  }
 }

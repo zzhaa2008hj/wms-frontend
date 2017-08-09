@@ -31,4 +31,7 @@ export interface DailyInventory {
   warehouseName: string;
 
   createTime: Date;
+  createTimeStr: string;
+
+  index: number;
 }

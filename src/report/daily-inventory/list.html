@@ -17,6 +17,9 @@
         <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
         <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
       </div>
+      <div class="input-group left m-l-5">
+         <button class="btn btn-small" click.delegate="getItems()">打印</button>
+      </div>
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
@@ -34,4 +37,48 @@
     <ak-col k-field="createTime" k-title="创建日期" k-format='{0:yyyy-MM-dd}'></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
   </ak-grid>
+
+  <div class="col-md-9 col-md-offset-2" style="display: none;" id="dailyInventory">
+    <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+      <tr>
+        <td align="center" colspan="14">
+          <h4>每日出入库明细</h4>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">序号</td>
+        <td align="center">客户名称</td>
+        <td align="center">批次号</td>
+        <td align="center">货类</td>
+        <td align="center">货名</td>
+        <td align="center">入库数量</td>
+        <td align="center">入库件数</td>
+        <td align="center">出库数量</td>
+        <td align="center">出库件数</td>
+        <td align="center">单位</td>
+        <td align="center">箱号</td>
+        <td align="center">库区</td>
+        <td align="center">日期</td>
+        <td align="center">说明</td>
+      </tr>
+      <template repeat.for="item of items">
+        <tr>
+          <td align="center">${item.index}</td>
+          <td align="center">${item.customerName}</td>
+          <td align="center">${item.batchNumber}</td>
+          <td align="center">${item.cargoCategoryName}</td>          
+          <td align="center">${item.cargoName}</td>
+          <td align="center">${item.instockQuantity}</td>
+          <td align="center">${item.instockNumber}</td>
+          <td align="center">${item.outstockQuantity}</td>
+          <td align="center">${item.outstockNumber}</td>
+          <td align="center">${item.unit}</td>
+          <td align="center">${item.containerNumber}</td>
+          <td align="center">${item.warehouseName}</td>
+          <td align="center">${item.createTimeStr}</td>
+          <td align="center">${item.remark}</td>
+        </tr>
+      </template>
+    </table>
+  </div>
 </template>
