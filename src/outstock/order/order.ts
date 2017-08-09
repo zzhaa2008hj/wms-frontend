@@ -5,7 +5,6 @@ import { autoinject } from "aurelia-dependency-injection";
 import { Organization } from '@app/base/models/organization';
 import { OrganizationService } from '@app/base/services/organization';
 import * as moment from 'moment';
-import { MessageDialogService } from 'ui';
 import { Order, OrderItem } from '@app/outstock/models/order';
 import { OrderService } from '@app/outstock/services/order';
 import { addHeader, print } from "@app/common/services/print-tool";
@@ -18,7 +17,6 @@ export class OrderWork {
   cargoItems = [] as OrderItem[];
 
   constructor(private outstockOrderService: OrderService,
-              private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
               private organizationService: OrganizationService) {
   }

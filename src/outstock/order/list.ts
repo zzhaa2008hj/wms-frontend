@@ -17,7 +17,6 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
-import { addHeader } from "@app/common/services/print-tool";
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
