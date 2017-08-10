@@ -1,11 +1,12 @@
 <template>
   <div class="row m-b-5">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <a class="btn btn-small btn-success" click.delegate="add()">新增出库指令</a>
+      <a class="btn btn-small btn-success" route-href="route:additional-recording">补录</a>
       <a class="btn btn-small" click.delegate="changeHistory()">修改记录</a>
       <button class="btn btn-small" click.delegate="verifyHistory()">审核记录</button>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-8">
       <div class="input-group left">
         <input type="text" style="width: 220px;" value.bind="cargoInfoCriteria.searchName" placeholder="输入批次号、代理商或客户名称">
       </div>

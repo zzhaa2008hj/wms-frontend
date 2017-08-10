@@ -89,9 +89,13 @@ export interface Vehicle {
   cargoName: string;
 }
 
-export const cargoFlowValidationRules = ValidationRules
+export const  cargoFlowValidationRules = ValidationRules
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
   .displayName('联系人')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.instockFlowNumber)
+  .displayName('入库流水单号')
   .required().withMessage(`\${$displayName} 不能为空`)
 
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
