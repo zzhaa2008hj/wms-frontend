@@ -68,6 +68,14 @@ export class CargoInfoService {
   }
 
   /**
+   * 判断批次号是否已存在
+   * @param batchNumber 
+   */
+  async existBatchNumber(batchNumber: string): Promise<any> {
+    let res = await this.http.get(`base/cargoInfo/existBatchNumber?batchNumber=${batchNumber}`);
+    return res.content;
+  }
+  /**
    * 获取客户信息
    * @param customerType
    */
@@ -81,6 +89,14 @@ export class CargoInfoService {
    */
   async getBatchNumber(): Promise<any> {
     let res = await this.http.get(`/base/code/generate?type=0`);
+    return res.content;
+  }
+
+  /**
+   *  根据时间获取批次号
+   */
+  async getBatchNumberByDate(date: number): Promise<any> {
+    let res = await this.http.get(`/base/code/generateCodeByDate?type=0&date=${date}`);
     return res.content;
   }
 

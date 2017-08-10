@@ -17,6 +17,7 @@ export class Order {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
+      { route: '/additional-recording', name: 'additional-recording', moduleId: './additional-recording', title: "补录" },
       { route: '/:id/edit', name: 'edit', moduleId: './edit', title: "编辑" },
       { route: '/:id/detail', name: 'detail', moduleId: './detail', title: "详情" },
       { route: '/order-work/:id', name: 'order-work', moduleId: './order', title: "出库作业指令单" },
