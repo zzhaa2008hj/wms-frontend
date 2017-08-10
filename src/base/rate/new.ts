@@ -35,7 +35,7 @@ export class NewRate {
     data: []
   });
   validationController: ValidationController;
-  private stepIndex: number = 0;
+  private stepIndex: number = 1;
   private stepStart: number = 0;
 
   constructor(private router: Router,
