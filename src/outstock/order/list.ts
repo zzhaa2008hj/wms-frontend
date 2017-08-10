@@ -17,6 +17,7 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
+import { UploadInfo } from "./upload-info";
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -211,8 +212,8 @@ export class OrderList {
     if (this.routerParams.infoId) {
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
       if (cargoInfo.outstockStatus == 1) {
-         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部出完，无法新增出库", icon: 'error' });
-         return;
+        await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部出完，无法新增出库", icon: 'error' });
+        return;
       }
       this.router.navigateToRoute("new");
     } else {
@@ -228,7 +229,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    } 
+    }
     let criteria: VerifyRecordCriteria = {};
     criteria.businessId = this.id;
     criteria.businessType = 2;
@@ -258,10 +259,18 @@ export class OrderList {
     }
   }
 
-  async uploadInfo(id) {
-    await this.orderService.updateStage(id, 9);
+  async uploadInfo(id, cargoInfoId) {
+    let result = await this.dialogService.open({
+      viewModel: UploadInfo,
+      model: cargoInfoId,
+      lock: true
+    }).whenClosed();
+    if (result.wasCancelled) return;
+    // await this.orderService.updateStage(id, 9);
+    await this.orderService.uploadInfo(id, 9, result.output);
     this.dataSource.read();
   }
+
   /**
    * 撤回
    */
@@ -301,7 +310,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    } 
-    this.router.navigateToRoute("changeHistory", {id: this.id});
+    }
+    this.router.navigateToRoute("changeHistory", { id: this.id });
   }
 }

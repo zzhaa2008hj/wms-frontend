@@ -4,6 +4,7 @@ import { CargoItem } from "@app/base/models/cargo-info";
 import { Order, OrderItem } from '@app/outstock/models/order';
 import { ValidVo } from "@app/outstock/models/validVo";
 import { WorkStatistics } from "@app/instock/models/work";
+import { AttachmentMap } from "@app/common/models/attachment";
 
 /**
  * 查询条件
@@ -103,6 +104,11 @@ export class OrderService {
   updateStage(id: string, stage: number): Promise<void> {
     return this.http.put(`/outstock/order/${id}/changeStage/${stage}`, '').then(handleResult);
   }
+
+  uploadInfo(id: string, stage: number, list: AttachmentMap[]): Promise<void> {
+    return this.http.put(`/outstock/order/${id}/uploadInfo/${stage}`, list).then(handleResult);
+  }
+
 
   async viewWorkOrder(id: string): Promise<Order> {
     let res = await this.http.get(`/outstock/order/${id}/outstockWorkOrder`);

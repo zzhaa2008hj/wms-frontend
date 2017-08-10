@@ -6,8 +6,11 @@ import { OrderService } from "@app/outstock/services/order";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
 import * as moment from 'moment';
-import { DialogService} from "ui";
+import { DialogService } from "ui";
 import { Router } from "aurelia-router";
+import { AttachmentMap } from "@app/common/models/attachment";
+import { AttachmentService } from "@app/common/services/attachment";
+import { AttachmentDetail } from "@app/common/attachment/detail";
 
 export class VerifyBusinessDialogEdit {
   disabled: boolean = false;
@@ -19,11 +22,14 @@ export class VerifyBusinessDialogEdit {
   verifyStatus: number;
   order: Order;
 
+  attachments = [] as AttachmentMap[];
+
   constructor(@inject private orderService: OrderService,
               @inject private cargoInfoService: CargoInfoService,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private dialogService: DialogService,
               @inject private router: Router,
+              @inject private attachmentService: AttachmentService,
               @inject('outstockOrderId') private outstockOrder: Order) {
   }
 
@@ -35,15 +41,27 @@ export class VerifyBusinessDialogEdit {
 
     this.orderItems = this.order.outstockOrderItems.map(res => {
       let dict = units.find(r => r.dictDataCode == res.unit);
-        if (dict) {
-          res.unitStr = dict.dictDataName;
-        }
+      if (dict) {
+        res.unitStr = dict.dictDataName;
+      }
       return res;
     });
     this.vehicles = this.order.outstockVehicles;
     this.order.outstockDateStr = moment(this.order.outstockDate).format("YYYY-MM-DD");
     this.cargoInfo.warehouseTypeStr = this.warehouseTypes
       .find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
+
+    let arr = await this.attachmentService.listAttachments({ businessType: 2, businessId: this.outstockOrder.id });
+    if (arr != null && arr.length > 0) {
+      arr.forEach(res => {
+        let attachment = {} as AttachmentMap;
+        attachment.realName = res.attachmentName;
+        attachment.uuidName = res.attachmentUrl;
+        attachment.status = 2;
+        attachment.path = this.getPath(res.attachmentUrl);
+        this.attachments.push(attachment);
+      });
+    }
   }
 
   /**
@@ -59,6 +77,22 @@ export class VerifyBusinessDialogEdit {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
       this.disabled = false;
     }
+  }
+
+  getPath(uuidName) {
+    let path = '/' + this.order.cargoInfoId + '/' + uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    return attachmentUrl;
+  }
+
+  async showDetail(data) {
+    let item: AttachmentMap = data.item;
+    let path = '/' + this.order.cargoInfoId + '/' + item.uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    let result = await this.dialogService
+      .open({ viewModel: AttachmentDetail, model: attachmentUrl, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
   }
 
 }
