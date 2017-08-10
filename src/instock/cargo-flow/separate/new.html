@@ -11,7 +11,14 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">入库流水单号</label>
+          <label class="form-label">拆单前入库流水单号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.oldInstockFlowNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">拆单后入库流水单号</label>
           <span class="help"></span>
           <div class="controls">
             <input type="text" class="form-control" value.bind="cargoFlow.instockFlowNumber" readonly>
@@ -77,6 +84,7 @@
               </ak-template>
             </ak-col>
           </ak-grid>
+          <label class="form-label">车辆信息</label>
           <ak-grid k-data-source.bind="dataSourceVehicle">
             <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
             <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>

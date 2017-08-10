@@ -41,6 +41,8 @@ export interface CargoFlow {
   instockLastStageName: string;
 
   attachments: AttachmentMap[];
+
+  oldInstockFlowNumber: string;
 }
 export interface InstockCargoItem {
   //唯一性标识
