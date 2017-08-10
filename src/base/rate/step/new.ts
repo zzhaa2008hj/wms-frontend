@@ -27,7 +27,7 @@ export class NewRateStep {
   async activate(rateStep: RateStep) {
     this.rateStep = rateStep;
 
-    this.stepUnits = await this.dictionaryDataService.getDictionaryDatas("stepUnit");
+    this.stepUnits = await this.dictionaryDataService.getDictionaryDatas("unit");
   }
 
   async save() {
