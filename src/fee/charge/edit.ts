@@ -1,7 +1,5 @@
 import { Router } from "aurelia-router";
 import { inject, newInstance } from 'aurelia-dependency-injection';
-import { CargoInfoService } from '@app/base/services/cargo-info';
-import { Organization } from '@app/base/models/organization';
 import { ValidationController } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
 import { ChargeInfo, ChargeItem, chargeInfoValidationRules } from '@app/fee/models/charge';
@@ -14,10 +12,7 @@ import { CargoRateStep } from '@app/base/models/cargo-info';
 
 export class NewChargeInfo {
   disabled: boolean = false;
-  agents: Organization[];
-  agentWidget: any;
-  customers: Organization[];
-  customerWidget: any;
+ 
   chargeInfo = {} as ChargeInfo;
   batchNumbers = new kendo.data.HierarchicalDataSource({
     data: []
@@ -65,7 +60,6 @@ export class NewChargeInfo {
   units = [] as DictionaryData[];
 
   constructor(@inject private router: Router,
-              @inject private cargoInfoService: CargoInfoService,
               @newInstance() private validationController: ValidationController,
               @inject private chargeInfoService: ChargeInfoService,
               @inject private dialogService: DialogService,
@@ -73,37 +67,45 @@ export class NewChargeInfo {
     validationController.addRenderer(formValidationRenderer);
   }
 
-  async activate() {
-    this.validationController.addObject(this.chargeInfo, chargeInfoValidationRules);
-
-    //仓储代理商
-    this.agents = await this.cargoInfoService.getCustomers(1);
-    //仓储客户
-    this.customers = await this.cargoInfoService.getCustomers(1);
+  async activate({id}) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
+
+    this.chargeInfo = await this.chargeInfoService.getChargeInfoAndItems(id);
+    if (this.chargeInfo && this.chargeInfo.chargeItemList && this.chargeInfo.chargeItemList.length > 0) {
+      this.chargeInfo.chargeItemList.map(item => {
+        let unit = this.units.find(r => r.dictDataCode == item.unit);
+        if (unit) {
+          item.unitName = unit.dictDataName;
+        }
+        let rateType = ConstantValues.WorkInfoCategory.find(r => r.value == item.rateType);
+        if (rateType) {
+          item.rateTypeName = rateType.text;
+        }
+        let chargeCategory = ConstantValues.ChargeCategory.find(r => r.value == item.chargeCategory);
+        if (chargeCategory) {
+          item.chargeCategoryName = chargeCategory.text;
+        }
+      });
+    }
+    this.chargeItems = this.chargeInfo.chargeItemList;
+
+    this.customerChanged();
   }
 
   /**
    * 客户 -> 批次
    */
   async customerChanged() {
-    this.chargeInfo.customerId = this.customerWidget.value();
-    this.chargeInfo.customerName = this.customerWidget.text();
-    this.chargeInfo.agentId = this.agentWidget.value();
-    this.chargeInfo.agentName = this.agentWidget.text();
-    this.chargeInfo.paymentUnit = this.customerWidget.text();
     if (this.chargeInfo.customerId) {
       let batchNumbers = await this.chargeInfoService.getBatchNumbers(this.chargeInfo.customerId);
       if (batchNumbers) {
         let bs = batchNumbers.map(b => Object.assign({key: b, value: b}));
         this.batchNumbers.data(bs);
+        this.batchNumber = bs[0].value;
       }
     }
   }
 
-  validateProperty(propertyName: string) {
-    this.validationController.validate({ object: this.chargeInfo, propertyName });
-  }
   cancel() {
     this.router.navigateToRoute("list");
   }
@@ -151,15 +153,16 @@ export class NewChargeInfo {
   /**
    * 保存
    */
-  async save() {
+  async update() {
+    this.validationController.addObject(this.chargeInfo, chargeInfoValidationRules);
     this.chargeInfo.chargeItemList = this.chargeItems;
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
     this.disabled = true;
     try {
-      await this.chargeInfoService.saveChargeInfo(this.chargeInfo);
-      await this.dialogService.alert({ title: "提示", message: "新增成功"});
+      await this.chargeInfoService.updateChargeInfo(this.chargeInfo.id, this.chargeInfo);
+      await this.dialogService.alert({ title: "提示", message: "修改成功"});
       this.cancel();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: 'error' });

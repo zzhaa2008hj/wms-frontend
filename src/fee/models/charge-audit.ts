@@ -43,7 +43,7 @@ export interface ChargeAuditItem {
   unit: string;
   startDate: Date;
   endDate: Date;
-  containerType: number;
+  containerType: string;
   container_quantity: number;
   storageDay: number;
   storageRate: number;
@@ -53,7 +53,7 @@ export interface ChargeAuditItem {
   startDateStr: string;
   endDateStr: string;
   unitStr: string;
-
+  containerTypeStr: string;
   rateTypeName: string;
   chargeCategoryName: string;
 }
@@ -63,3 +63,13 @@ export const chargeAuditListValidationRules = ValidationRules
   .displayName("发票号")
   .required().withMessage(`\${$displayName}不能为空`)
   .rules;
+
+export const auditListValidationRules = ValidationRules 
+.ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.batchNumber)
+.displayName("批次号")
+.required().withMessage(`\${$displayName}不能为空`)
+
+.ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.billLadingNumber)
+.displayName("提单号")
+.required().withMessage(`\${$displayName}不能为空`)
+.rules;

@@ -1,3 +1,6 @@
+import { ChargeAuditList } from '@app/fee/models/charge-audit';
+import { ValidationRules } from 'aurelia-validation';
+import { CargoRateStep } from '@app/base/models/cargo-info';
 export interface ChargeInfo {
   id: string;
   agentId: string;
@@ -28,6 +31,7 @@ export interface ChargeInfo {
 
   chargeItemList: ChargeItem[];
   
+  chargeAuditList: ChargeAuditList[];
 }
 
 export interface ChargeItem {
@@ -69,5 +73,23 @@ export interface ChargeItem {
   chargeCategoryName: string;
   
   cargoItemId: string;
+  cargoRateId: string;
   actualPrice: number;
+  pricingMode: number;
+  price: number;
+  cargoRateStepList: CargoRateStep[];
 }
+
+export const chargeInfoValidationRules = ValidationRules
+  .ensure((info: ChargeInfo) => info.agentId)
+  .displayName('代理商名称')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((info: ChargeInfo) => info.customerId)
+  .displayName('客户名称')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((info: ChargeInfo) => info.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 长度不能超过500`)
+  .rules;
