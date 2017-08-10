@@ -17,6 +17,7 @@ import { AttachmentService } from "@app/common/services/attachment";
 import { AttachmentMap } from "@app/common/models/attachment";
 import { Uploader, Upload } from "@app/upload";
 import { AttachmentDetail } from "@app/common/attachment/detail";
+import { OrganizationService } from "@app/base/services/organization";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -59,6 +60,7 @@ export class NewOrder {
               @inject private messageDialogService: MessageDialogService,
               @inject private cargoInfoService: CargoInfoService,
               @inject private codeService: CodeService,
+              @inject private organizationService: OrganizationService,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject validationControllerFactory: ValidationControllerFactory,
@@ -107,7 +109,7 @@ export class NewOrder {
     }
   }
 
-  setOrderInfo(dataItem: CargoInfo) {
+  async setOrderInfo(dataItem: CargoInfo) {
     this.order.agentId = dataItem.agentId;
     this.order.agentName = dataItem.agentName;
     this.order.customerId = dataItem.customerId;
@@ -117,7 +119,13 @@ export class NewOrder {
     this.order.cargoInfoId = dataItem.id;
     this.order.id = null;
     this.order.lastBatch = 0;
-    this.order.paymentUnit = dataItem.customerName;
+
+    let customer = await this.organizationService.getOrganization(dataItem.customerId);
+    if(customer) {
+      this.order.paymentUnit = customer.name;
+      this.order.contactPerson=customer.contactPerson;
+      this.order.contactNumber=customer.contactMobile;
+    }
   }
 
   async getBaseCargoItems() {
