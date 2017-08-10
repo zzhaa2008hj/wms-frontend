@@ -39,7 +39,9 @@ export class ChargeInfoService {
   pageChargeInfo(chargeInfoCriteria?: ChargeInfoCriteria): Query<ChargeInfo> {
     return this.http.query<ChargeInfo>(`/fee/charge-info/page`, chargeInfoCriteria).map(info => {
       info.chargeStartDate = new Date(info.chargeStartDate);
-      info.chargeEndDate = new Date(info.chargeEndDate);
+      if (info.chargeEndDate) {
+        info.chargeEndDate = new Date(info.chargeEndDate);
+      }
       return info;
     });
   }
@@ -64,6 +66,21 @@ export class ChargeInfoService {
    */
   async saveChargeInfo(chargeInfo: ChargeInfo): Promise<void> {
     await this.http.post(`/fee/charge-info`, chargeInfo).then(handleResult);
+  }
+
+  /**
+   * 获取申请明细
+   */
+  async getChargeInfoAndItems(infoId: string): Promise<ChargeInfo> {
+    let res = await this.http.get(`/fee/charge-info/${infoId}/items`);
+    return res.content;
+  }
+
+  /**
+   * 更新需求
+   */
+  async updateChargeInfo(id: string, chargeInfo: ChargeInfo): Promise<void> {
+    await this.http.put(`/fee/charge-info/${id}`, chargeInfo).then(handleResult);
   }
 }
 export interface ChargeInfoCriteria {

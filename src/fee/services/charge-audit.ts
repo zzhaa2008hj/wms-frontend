@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { ChargeAuditList } from "@app/fee/models/charge-audit";
 import { RestClient, handleResult, Query, fixDate } from '@app/utils';
+import { ChargeInfo } from '@app/fee/models/charge';
 /**
  * Created by Hui on 2017/8/2.
  */
@@ -26,7 +27,12 @@ export class ChargeAuditListService {
    */
   pageChargeAuditList(chargeAuditCriteria?: ChargeAuditCriteria): Query<ChargeAuditList> {
     return this.http.query<ChargeAuditList>(`/fee/charge-audit-list/page`, chargeAuditCriteria)
-    .map(info => fixDate(info, 'paymentDate'));
+    .map(info => {
+      if (info.paymentDate) {
+        info.paymentDate = new Date(info.paymentDate);
+      }
+      return info;
+    });
   }
 
   /**
@@ -35,6 +41,13 @@ export class ChargeAuditListService {
   async getChargeAuditListAndItems(chargeAuditListId: string): Promise<ChargeAuditList> {
     let res = await this.http.get(`/fee/charge-audit-list/${chargeAuditListId}`);
     return res.content;
+  }
+
+  /**
+   * 手动生成对账清单
+   */
+  async saveChargeInfoAndAuditList(chargeInfo: ChargeInfo): Promise<void> {
+    await this.http.post(`/fee/charge-audit-list`, chargeInfo).then(handleResult);
   }
 }
 

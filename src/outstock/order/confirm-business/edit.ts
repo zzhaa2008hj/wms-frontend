@@ -57,4 +57,8 @@ export class VerifyBusinessDialogEdit {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
   }
+
+  goBack() {
+    this.router.navigateToRoute("outstockOrder");
+  }
 }
