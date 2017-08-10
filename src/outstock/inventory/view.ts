@@ -50,7 +50,7 @@ export class OutstockInventoryView {
     let title = "出库清单";
     let strHTML = $('#outstockInventory').html();
     strHTML = addHeader(strHTML);
-    print(title, strHTML, true);
+    print(title, strHTML, true, 2);
   }
 }
 

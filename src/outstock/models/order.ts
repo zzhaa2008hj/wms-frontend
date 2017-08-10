@@ -1,4 +1,5 @@
 import { ValidationRules } from 'aurelia-validation';
+import { AttachmentMap } from '@app/common/models/attachment';
 export interface Order {
   id: string;
   cargoInfoId: string;
@@ -46,6 +47,8 @@ export interface Order {
   createTimeStr: string;
 
   outstockLastStageName: string;
+
+  attachments: AttachmentMap[];
 }
 
 export interface OrderItem {
