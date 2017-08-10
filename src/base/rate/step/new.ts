@@ -3,6 +3,8 @@ import { autoinject, Container } from "aurelia-dependency-injection";
 import { RateStep, rateStepValidationRules } from "@app/base/models/rate";
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { DictionaryDataService } from "@app/base/services/dictionary";
+import { DictionaryData } from "@app/base/models/dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -10,10 +12,11 @@ import { formValidationRenderer } from "@app/validation/support";
 export class NewRateStep {
   rateId: string;
   rateStep = {} as RateStep;
-  stepUnit = [{ text: "元/天", value: "元/天" }, { text: "元/吨", value: "元/吨" }];
   validationController: ValidationController;
+  stepUnits: DictionaryData[];
 
   constructor(private dialogController: DialogController,
+              private dictionaryDataService: DictionaryDataService,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -21,8 +24,10 @@ export class NewRateStep {
 
   }
 
-  activate(rateStep: RateStep) {
+  async activate(rateStep: RateStep) {
     this.rateStep = rateStep;
+
+    this.stepUnits = await this.dictionaryDataService.getDictionaryDatas("stepUnit");
   }
 
   async save() {

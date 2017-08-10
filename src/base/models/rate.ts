@@ -44,6 +44,8 @@ export interface RateStep {
   stepPrice: number;
   stepUnit: string; //元/天、元/吨
 
+  stepUnitStr: string;
+
 }
 
 export const rateValidationRules = ValidationRules
