@@ -51,24 +51,26 @@ export class NewCargoFlow {
   validationController: ValidationController;
   private dropDownListCargoItem: any;
 
-  constructor(@inject private router: Router,
-              @inject private cargoFlowService: CargoFlowService,
-              @inject private dialogService: DialogService,
-              @inject private cargoInfoService: CargoInfoService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private codeService: CodeService,
-              @inject private uploader: Uploader,
-              @inject private attachmentService: AttachmentService,
-              @inject private dictionaryDataService: DictionaryDataService,
-              @inject('routerParams') private routerParams: RouterParams,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+  constructor( @inject private router: Router,
+    @inject private cargoFlowService: CargoFlowService,
+    @inject private dialogService: DialogService,
+    @inject private cargoInfoService: CargoInfoService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private codeService: CodeService,
+    @inject private uploader: Uploader,
+    @inject private attachmentService: AttachmentService,
+    @inject private dictionaryDataService: DictionaryDataService,
+    @inject('routerParams') private routerParams: RouterParams,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate() {
+    this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
+
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
@@ -103,8 +105,8 @@ export class NewCargoFlow {
       this.currentUpload = this.uploader.upload(file, { path: path });
       let result = await this.currentUpload.result;
       if (result.status == 'success') {
-          this.attachments.push({ uuidName: uuidName, realName: file.name });
-          index++;
+        this.attachments.push({ uuidName: uuidName, realName: file.name });
+        index++;
       }
     }
     this.currentUpload = null;
@@ -137,6 +139,9 @@ export class NewCargoFlow {
   }
 
   async onSelectCargoInfo(e) {
+    if (this.cargoFlow) {
+      this.validationController.removeObject(this.cargoFlow);
+    }
     //初始化数据
     this.cargoFlow = {} as CargoFlow;
     this.cargoItems = [];
@@ -152,6 +157,7 @@ export class NewCargoFlow {
       this.baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
       this.dataSourceBaseCargoItem.data(this.baseCargoItems);
     }
+    this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
   }
 
   setCargoFlowInfo(dataItem: CargoInfo) {

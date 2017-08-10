@@ -127,6 +127,10 @@ export class AdditionalRecordingCargoFlow {
 
   async onSelectCargoInfo(e) {
     //初始化数据
+    if (this.cargoFlow) {
+      this.validationController.removeObject(this.cargoFlow);
+    }
+    this.cargoFlowDatePicker.value("");
     this.cargoFlow = {} as CargoFlow;
     this.cargoItems = [];
     this.vehicle = [];
@@ -139,6 +143,8 @@ export class AdditionalRecordingCargoFlow {
       this.baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
       this.dataSourceBaseCargoItem.data(this.baseCargoItems);
     }
+    this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
+
   }
 
   /**

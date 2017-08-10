@@ -89,7 +89,9 @@ export class AdditionalRecordingSeparate {
     //todo
     //必填项验证  入库单号和入库流水单号的生成问题
     if (this.cargoFlowDatePicker.value()) {
-      let res = await this.codeService.generateCodeByDate("2", this.cargoFlowDatePicker.value().getTime(), this.cargoFlow.batchNumber);
+      // let res = await this.codeService.generateCodeByDate("2", this.cargoFlowDatePicker.value().getTime(), this.cargoFlow.batchNumber);
+      // this.cargoFlow.instockFlowNumber = res.content;
+      let res = await this.codeService.generateCodeByDate("5",this.cargoFlowDatePicker.value().getTime());
       this.cargoFlow.instockFlowNumber = res.content;
     }
   }

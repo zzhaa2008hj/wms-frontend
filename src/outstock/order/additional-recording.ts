@@ -58,6 +58,8 @@ export class AdditionalRecording {
   }
 
   async activate() {
+    this.validationController.addObject(this.order, orderValidationRules);
+
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -3, outstockStatus: 0 });
     this.baseCargoInfo.map(res => {
@@ -67,17 +69,20 @@ export class AdditionalRecording {
 
   async onSelectCargoInfo(e) {
     this.outstockOrderDatePicker.value("");
-
+    if (this.order) {
+      this.validationController.removeObject(this.order);
+    }
     this.order = {} as Order;
     this.outstockOrderItems = [] as OrderItem[];
     this.vehicles.data([]);
-    this.orderItems.data([]); 
+    this.orderItems.data([]);
     this.outstockCargoItems.data([]);
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     if (dataItem.id) {
       this.setOrderInfo(dataItem);
       this.getBaseCargoItems();
     }
+    this.validationController.addObject(this.order, orderValidationRules);
   }
 
   /**
