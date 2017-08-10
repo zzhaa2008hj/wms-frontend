@@ -13,6 +13,7 @@ import { formValidationRenderer } from "@app/validation/support";
 import { observable } from 'aurelia-framework';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { CodeService } from "@app/common/services/code";
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -44,9 +45,10 @@ export class NewSeparate {
               private cargoFlowSeparateService: CargoFlowSeparateService,
               private messageDialogService: MessageDialogService,
               private cargoItemService: CargoItemService,
+              private codeService: CodeService,
               private vehicleService: InstockVehicleService,
               private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, 
+              validationControllerFactory: ValidationControllerFactory,
               container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -56,7 +58,11 @@ export class NewSeparate {
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
-    //this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
+
+    this.cargoFlow.oldInstockFlowNumber = this.cargoFlow.instockFlowNumber;
+    let res = await this.codeService.generateCode("5");
+    this.cargoFlow.instockFlowNumber = res.content;
+
     let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     if (cargoItems) {
       for (let ci of cargoItems) {
