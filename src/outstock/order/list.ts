@@ -17,6 +17,7 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
+import { UploadInfo } from "./upload-info";
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -258,8 +259,15 @@ export class OrderList {
     }
   }
 
-  async uploadInfo(id) {
-    await this.orderService.updateStage(id, 9);
+  async uploadInfo(id, cargoInfoId) {
+    let result = await this.dialogService.open({
+      viewModel: UploadInfo,
+      model: cargoInfoId,
+      lock: true
+    }).whenClosed();
+    if (result.wasCancelled) return;
+    // await this.orderService.updateStage(id, 9);
+    await this.orderService.uploadInfo(id, 9, result.output);
     this.dataSource.read();
   }
 
@@ -303,6 +311,6 @@ export class OrderList {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
     }
-    this.router.navigateToRoute("changeHistory", {id: this.id});
+    this.router.navigateToRoute("changeHistory", { id: this.id });
   }
 }
