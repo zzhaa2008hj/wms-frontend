@@ -9,8 +9,10 @@
               <label class="form-label">代理商名称*</label>
               <span class="help"></span>
               <div class="controls">
-                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="chargeInfo.agentId"
-                  k-data-source.bind="agents" k-widget.two-way="agentWidget" k-on-close.delegate="validateProperty('agentId')">
+                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName"
+                                   k-data-value-field="id" k-value.two-way="chargeInfo.agentId"
+                                   k-data-source.bind="agents" k-widget.two-way="agentWidget"
+                                   k-on-close.delegate="validateProperty('agentId')">
                 </ak-drop-down-list>
                 <input class="form-control" type="hidden" value.bind="chargeInfo.agentId & validate ">
               </div>
@@ -21,8 +23,11 @@
               <label class="form-label">客户名称*</label>
               <span class="help"></span>
               <div class="controls">
-                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="chargeInfo.customerId"
-                  k-data-source.bind="customers" k-widget.two-way="customerWidget" k-on-change.delegate="customerChanged()" k-on-close.delegate="validateProperty('customerId')">
+                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName"
+                                   k-data-value-field="id" k-value.two-way="chargeInfo.customerId"
+                                   k-data-source.bind="customers" k-widget.two-way="customerWidget"
+                                   k-on-change.delegate="customerChanged()"
+                                   k-on-close.delegate="validateProperty('customerId')">
                 </ak-drop-down-list>
                 <input class="form-control" type="hidden" value.bind="chargeInfo.customerId & validate ">
               </div>
@@ -38,7 +43,7 @@
               </div>
             </div>
           </div>
-         
+
           <div class="col-md-12">
             <div class="form-group">
               <label class="form-label">备注</label>
