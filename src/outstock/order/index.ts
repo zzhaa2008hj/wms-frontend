@@ -27,8 +27,7 @@ export class Order {
       { route: '/:id/verify-deputy-general', name: 'verify-deputy-general', moduleId: './verify-deputy-general/index',
         title: '副总审核' },
       { route: '/work-order/:id/:type', name: 'work-order', moduleId: '/dist/base/work-order/index', title: "作业列表" },
-      { route: '/:id/confirm-business', name: 'confirm-business', moduleId: './confirm-business/index', title: '商务确认' },
-      { route: '/:id/outstock-orderItem-view', name: 'outstock-orderItem-view', moduleId: './item/view', title: '出库单详情' }
+      { route: '/:id/confirm-business', name: 'confirm-business', moduleId: './confirm-business/index', title: '商务确认' }
     ]);
     this.router = router;
   }
