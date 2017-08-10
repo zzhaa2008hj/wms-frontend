@@ -13,6 +13,9 @@ export class Charge {
       { route: '/:id/confirm', name: 'confirm', moduleId: './confirm', title: '客户确认' },
       { route: '/:id/note', name: 'note', moduleId: './note' , title: '收费单'},
       { route: '/new', name: 'new', moduleId: './new' },
+      { route: '/new-audit', name: 'new-audit', moduleId: './new-audit' },
+      { route: '/:id/view', name: 'view', moduleId: './view' },
+      { route: '/:id/edit', name: 'edit', moduleId: './edit' }
     ]);
     this.router = router;
   }
