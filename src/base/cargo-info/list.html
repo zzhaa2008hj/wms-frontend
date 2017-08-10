@@ -1,9 +1,10 @@
 <template>
   <div class="row">
     <div class="col-md-1"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增入库指令</a></div>
+    <div class="col-md-1"><a class="btn btn-sm btn-small btn-success" route-href="route: additional-recording">补录入库指令</a></div>
     <!--<input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockBeginDate" type="text" class="form-control">
         <input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockendDate" type="text" class="form-control">-->
-    <div class="col-md-7">
+    <div class="col-md-6">
       <button class="btn btn-small btn-primary" click.delegate="createOutstockInventory()">生成出库清单</button>
       <button class="btn btn-sm btn-small" click.delegate="changeHistory()">修改记录</button>
     </div>
