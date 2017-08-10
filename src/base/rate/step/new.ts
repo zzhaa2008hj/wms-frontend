@@ -21,7 +21,6 @@ export class NewRateStep {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
-
   }
 
   async activate(rateStep: RateStep) {

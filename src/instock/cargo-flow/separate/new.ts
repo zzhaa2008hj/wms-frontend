@@ -48,7 +48,7 @@ export class NewSeparate {
               private codeService: CodeService,
               private vehicleService: InstockVehicleService,
               private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, 
+              validationControllerFactory: ValidationControllerFactory,
               container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -59,10 +59,8 @@ export class NewSeparate {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
 
-    this.cargoFlow.oldInstockFlowNumber= this.cargoFlow.instockFlowNumber;
-    let resi = await this.codeService.generateCode("1");
-    console.log(resi);
-    let res = await this.codeService.generateCode("2", this.cargoFlow.batchNumber);
+    this.cargoFlow.oldInstockFlowNumber = this.cargoFlow.instockFlowNumber;
+    let res = await this.codeService.generateCode("5");
     this.cargoFlow.instockFlowNumber = res.content;
 
     let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
