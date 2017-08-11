@@ -108,7 +108,7 @@
                   </ak-template>
                 </ak-col>
                 <ak-col k-field="price" k-title="单一单价"></ak-col>
-                <ak-col k-field="actualPrice" k-title="实际费率"></ak-col>
+                <ak-col k-field="actualPrice" k-title="实际单一单价"></ak-col>
                 <ak-template for="detailTemplate">
                   <rate-steps rate-steps.bind="cargoRateStepList" if.bind="pricingMode !=1 "></rate-steps>
                   <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
