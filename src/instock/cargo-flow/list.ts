@@ -19,6 +19,7 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 
 export class CargoFlow {
   selectedItem: any;
@@ -32,18 +33,19 @@ export class CargoFlow {
   units = [] as DictionaryData[];
   private dataSource: kendo.data.DataSource;
 
-  constructor(@inject private cargoFlowService: CargoFlowService,
-              @inject private dialogService: DialogService,
-              @inject private cargoInfoService: CargoInfoService,
-              @inject private verifyRecordService: VerifyRecordService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private dataSourceFactory: DataSourceFactory,
-              @inject private customhouseService: CustomhouseClearanceService,
-              @inject('routerParams') private routerParams: RouterParams,
-              @inject private instockOrderService: InstockOrderService,
-              @inject private router: Router,
-              @inject private dictionaryDataService: DictionaryDataService,
-              @inject private orderItemService: OrderItemService) {
+  constructor( @inject private cargoFlowService: CargoFlowService,
+    @inject private dialogService: DialogService,
+    @inject private cargoInfoService: CargoInfoService,
+    @inject private verifyRecordService: VerifyRecordService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private dataSourceFactory: DataSourceFactory,
+    @inject private customhouseService: CustomhouseClearanceService,
+    @inject('routerParams') private routerParams: RouterParams,
+    @inject private instockOrderService: InstockOrderService,
+    @inject private router: Router,
+    @inject private dictionaryDataService: DictionaryDataService,
+    @inject private orderItemService: OrderItemService,
+    @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -260,6 +262,12 @@ export class CargoFlow {
     if (params.stage == 6) {
       mess1 = "确认完成作业？";
       mess2 = "完成作业！";
+      try {
+        await this.workOrderItemService.checkHasWorkItem(params.id, 1);
+      } catch (err) {
+        let confirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
+        if(!confirmed) return;
+      }
     }
     try {
       let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });

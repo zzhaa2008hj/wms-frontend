@@ -7,7 +7,7 @@ export interface AttachmentCriteria {
   businessNumber?: string;
   baseId?: string;
   businessType?: number;
-  businessId?: string
+  businessId?: string;
 }
 
 export class AttachmentService {

@@ -83,9 +83,10 @@ export class WorkOrderItemService {
   saveWorkOrderItem(workOrderItem: WorkOrderItem): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrderItem`, workOrderItem).then(handleResult);
   }
+
   /**
    * 根据作业区域ID获取作业内容
-   * @param workAreaId 
+   * @param workAreaId
    */
   getWorkOrderItemList(workAreaId: string): Promise<WorkOrderItem[]> {
     return this.http.get(`/base/warehouseWorkOrderItem/${workAreaId}/list`).then(res => res.content);
@@ -95,22 +96,26 @@ export class WorkOrderItemService {
     return this.http.put(`/base/warehouseWorkOrderItem/${id}`, '').then(handleResult);
   }
 
-  getWorkDetails(flowId: string): Promise<WorkOrderDetail[]>{
+  getWorkDetails(flowId: string): Promise<WorkOrderDetail[]> {
     return this.http.get(`/base/warehouseWorkOrderItem/${flowId}/detail`)
-    .then(res => {
-      let details = res.content;
-      details.map(details => fixDate(details,"workDate"))
-      return details;
-    });
+      .then(res => {
+        let details = res.content;
+        details.map(details => fixDate(details, "workDate"));
+        return details;
+      });
   }
 
-  getOutstockWorkDetails(outstockOrderId: string): Promise<WorkOrderDetail[]>{
+  getOutstockWorkDetails(outstockOrderId: string): Promise<WorkOrderDetail[]> {
     return this.http.get(`/base/warehouseWorkOrderItem/${outstockOrderId}/outstockDetail`)
-    .then(res => {
-      let details = res.content;
-      details.map(details => fixDate(details,"workDate"))
-      return details;
-    });
+      .then(res => {
+        let details = res.content;
+        details.map(details => fixDate(details, "workDate"));
+        return details;
+      });
+  }
+
+  checkHasWorkItem(orderId:string, type: number): Promise<void>{
+    return this.http.get(`/base/warehouseWorkOrderItem/${orderId}/check?type=${type}`).then(handleResult);
   }
 }
 
@@ -118,6 +123,7 @@ export class WorkOrderItemService {
 export class WorkOrderAreaService {
   constructor(private http: RestClient) {
   }
+
   /**
    * 根据作业ID获取作业区域
    */
