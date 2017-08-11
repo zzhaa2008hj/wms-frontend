@@ -18,7 +18,7 @@ import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { UploadInfo } from "./upload-info";
-import { WorkOrderItemService } from "@app/instock/services/work-order"
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -246,24 +246,27 @@ export class OrderList {
   async changeStage(params) {
     let mess1 = "确认开始作业？";
     let mess2 = "开始作业！";
+    let checkConfirmed: boolean;
     if (params.stage == 14) {
       mess1 = "确认完成作业？";
       mess2 = "完成作业！";
-      // let arr = await this.workOrderItemService.getOutstockWorkDetails(params.id);
-      // if (arr == null || arr.length == 0) {
-      //   await this.dialogService.alert({title: "提示", message:"没有作业过程信息"});
-      //   return;
-      // }
+      let arr = await this.workOrderItemService.getOutstockWorkDetails(params.id);
+      if (arr == null || arr.length == 0) {
+        await this.dialogService.alert({ title: "提示", message: "没有作业过程信息" });
+        return;
+      }
       try {
         await this.workOrderItemService.checkHasWorkItem(params.id, 2);
       } catch (err) {
-        let confirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
-        if(!confirmed) return;
+        checkConfirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
+        if (!checkConfirmed) return;
       }
     }
     try {
-      let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
-      if (!confirmed) return;
+      if (!checkConfirmed) {
+        let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
+        if (!confirmed) return;
+      }
       await this.orderService.updateStage(params.id, params.stage);
       await this.messageDialogService.alert({ title: "提示", message: mess2 });
       this.dataSource.read();
