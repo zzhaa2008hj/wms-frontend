@@ -18,6 +18,7 @@ import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { UploadInfo } from "./upload-info";
+import { WorkOrderItemService } from "@app/instock/services/work-order"
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -40,7 +41,8 @@ export class OrderList {
               @inject private cargoInfoService: CargoInfoService,
               @inject private router: Router,
               @inject('routerParams') private routerParams: RouterParams,
-              @inject private verifyRecordService: VerifyRecordService) {
+              @inject private verifyRecordService: VerifyRecordService,
+              @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -247,6 +249,17 @@ export class OrderList {
     if (params.stage == 14) {
       mess1 = "确认完成作业？";
       mess2 = "完成作业！";
+      // let arr = await this.workOrderItemService.getOutstockWorkDetails(params.id);
+      // if (arr == null || arr.length == 0) {
+      //   await this.dialogService.alert({title: "提示", message:"没有作业过程信息"});
+      //   return;
+      // }
+      try {
+        await this.workOrderItemService.checkHasWorkItem(params.id, 2);
+      } catch (err) {
+        let confirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
+        if(!confirmed) return;
+      }
     }
     try {
       let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
