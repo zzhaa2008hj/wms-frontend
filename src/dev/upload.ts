@@ -8,7 +8,7 @@ export class UploadDemo {
 
   file: File;
 
-  dir: string = '/';
+  dir: string = '';
 
   currentUpload: Upload;
 

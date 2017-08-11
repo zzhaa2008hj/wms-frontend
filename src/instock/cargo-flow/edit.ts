@@ -31,7 +31,7 @@ export class EditCargoFlow {
 
   file: File;
   files: File[];
-  dir: string;
+  dir: string = "";
   currentUpload: Upload;
   attachments = [] as AttachmentMap[];
 

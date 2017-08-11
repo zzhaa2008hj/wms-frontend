@@ -48,7 +48,7 @@ export class NewOrder {
 
   file: File;
   files: File[];
-  dir: string;
+  dir: string = "";
   currentUpload: Upload;
   attachments = [] as AttachmentMap[];
 
@@ -122,10 +122,10 @@ export class NewOrder {
     this.order.outstockDate = new Date();
 
     let customer = await this.organizationService.getOrganization(dataItem.customerId);
-    if(customer) {
+    if (customer) {
       this.order.paymentUnit = customer.name;
-      this.order.contactPerson=customer.contactPerson;
-      this.order.contactNumber=customer.contactMobile;
+      this.order.contactPerson = customer.contactPerson;
+      this.order.contactNumber = customer.contactMobile;
     }
   }
 

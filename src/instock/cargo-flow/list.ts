@@ -33,19 +33,19 @@ export class CargoFlow {
   units = [] as DictionaryData[];
   private dataSource: kendo.data.DataSource;
 
-  constructor( @inject private cargoFlowService: CargoFlowService,
-    @inject private dialogService: DialogService,
-    @inject private cargoInfoService: CargoInfoService,
-    @inject private verifyRecordService: VerifyRecordService,
-    @inject private messageDialogService: MessageDialogService,
-    @inject private dataSourceFactory: DataSourceFactory,
-    @inject private customhouseService: CustomhouseClearanceService,
-    @inject('routerParams') private routerParams: RouterParams,
-    @inject private instockOrderService: InstockOrderService,
-    @inject private router: Router,
-    @inject private dictionaryDataService: DictionaryDataService,
-    @inject private orderItemService: OrderItemService,
-    @inject private workOrderItemService: WorkOrderItemService) {
+  constructor(@inject private cargoFlowService: CargoFlowService,
+              @inject private dialogService: DialogService,
+              @inject private cargoInfoService: CargoInfoService,
+              @inject private verifyRecordService: VerifyRecordService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject private customhouseService: CustomhouseClearanceService,
+              @inject('routerParams') private routerParams: RouterParams,
+              @inject private instockOrderService: InstockOrderService,
+              @inject private router: Router,
+              @inject private dictionaryDataService: DictionaryDataService,
+              @inject private orderItemService: OrderItemService,
+              @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -259,19 +259,27 @@ export class CargoFlow {
   async changeStage(params) {
     let mess1 = "确认开始作业？";
     let mess2 = "开始作业！";
+    let checkConfirmed: boolean;
     if (params.stage == 6) {
       mess1 = "确认完成作业？";
       mess2 = "完成作业！";
+      let arr = await this.workOrderItemService.getWorkDetails(params.id);
+      if (arr == null || arr.length == 0) {
+        await this.dialogService.alert({ title: "提示", message: "没有作业过程信息" });
+        return;
+      }
       try {
         await this.workOrderItemService.checkHasWorkItem(params.id, 1);
       } catch (err) {
-        let confirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
-        if(!confirmed) return;
+        checkConfirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
+        if (!checkConfirmed) return;
       }
     }
     try {
-      let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
-      if (!confirmed) return;
+      if (!checkConfirmed) {
+        let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
+        if (!confirmed) return;
+      }
       await this.cargoFlowService.updateFlowStage(params.id, params.stage);
       await this.messageDialogService.alert({ title: "提示", message: mess2 });
       this.dataSource.read();
