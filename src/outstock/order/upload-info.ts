@@ -11,7 +11,7 @@ export class UploadInfo {
 
   file: File;
 
-  dir: string;
+  dir: string = "";
 
   currentUpload: Upload;
 

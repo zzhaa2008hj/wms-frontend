@@ -11,7 +11,7 @@ export class UploadConfirm {
 
   file: File;
 
-  dir: string;
+  dir: string = "";
 
   currentUpload: Upload;
 

@@ -11,7 +11,7 @@ export class LeaderVerify {
 
   file: File;
 
-  dir: string;
+  dir: string = "";
 
   currentUpload: Upload;
 

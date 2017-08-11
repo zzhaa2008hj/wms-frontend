@@ -30,7 +30,7 @@ export class EditOrder {
 
   file: File;
   files: File[];
-  dir: string;
+  dir: string = "";
   currentUpload: Upload;
   attachments = [] as AttachmentMap[];
 
