@@ -68,12 +68,13 @@ export class CargoInfoService {
 
   /**
    * 判断批次号是否已存在
-   * @param batchNumber 
+   * @param batchNumber
    */
   async existBatchNumber(batchNumber: string): Promise<any> {
     let res = await this.http.get(`base/cargoInfo/existBatchNumber?batchNumber=${batchNumber}`);
     return res.content;
   }
+
   /**
    * 获取客户信息
    * @param customerType
@@ -198,8 +199,9 @@ export class CargoInfoService {
     return this.http.get(`/outstock/order/list?cargoInfoId=${cargoInfoId}`).then(res => res.content);
   }
 
-  async getListByBatchValidation(enteringMode?: number = 0): Promise<Array<CargoInfo>> {
-    let res = await this.http.get(`/base/cargoInfo/batchValidation?enteringMode=${enteringMode}`);
+  async getListByBatchValidation(enteringMode?: number): Promise<Array<CargoInfo>> {
+    let res = await this.http.createRequest(`/base/cargoInfo/batchValidation`)
+      .withParams({ enteringMode: enteringMode }).asGet().send();
     return res.content
   }
 }
