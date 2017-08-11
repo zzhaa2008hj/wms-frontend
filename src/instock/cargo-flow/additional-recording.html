@@ -1,7 +1,5 @@
 <template>
   <div class="grid simple">
-    <div class="grid-title no-border">新增入库</h4>
-    </div>
     <div class="grid-body no-border"><br>
       <form submit.delegate="addNewCargoFlow()">
         <div class="form-group">
@@ -18,8 +16,8 @@
         <div class="form-group input-group">
           <span class="help"></span>
           <label class="form-label">入库流水时间</label>
-          <input ak-datepicker=" k-widget.two-way: cargoFlowDatePicker ;k-max.bind:maxDate" k-on-change.delegate="createInstockFlowNumber()"
-            type="text" class="form-control">
+          <input ak-datepicker=" k-widget.two-way: cargoFlowDatePicker ;k-max.bind:maxDate;k-enabled.two-way:false;k-value.two-way:cargoFlow.instockDate  & validate"
+            k-on-change.delegate="createInstockFlowNumber()" type="text" class="form-control">
         </div>
         <div class="form-group">
           <label class="form-label">入库流水单号*</label>
