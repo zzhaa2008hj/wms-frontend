@@ -26,17 +26,25 @@ export class ChargeAuditListView {
    */
   async activate({ id }) {
     let units = await this.dictionaryDataService.getDictionaryDatas("unit");
+    let containerTypes = await this.dictionaryDataService.getDictionaryDatas("containerType");
     this.chargeAuditList = await this.chargeAuditListService.getChargeAuditListAndItems(id);
-    this.chargeAuditList.paymentDateStr = moment(this.chargeAuditList.paymentDate).format("YYYY-MM-DD hh:mm:ss");
+    this.chargeAuditList.paymentDateStr = this.chargeAuditList.paymentDate == null ? '' : moment(this.chargeAuditList.paymentDate).format("YYYY-MM-DD hh:mm:ss");
 
     this.chargeAuditList.chargeAuditItems.map(item => {
       let unit = units.find(r => r.dictDataCode == item.unit);
       if (unit) {
         item.unitStr = unit.dictDataName;
       }
-      item.startDate = new Date(item.startDate);
-      item.endDate = new Date(item.endDate);
-
+      let containerType = containerTypes.find(r => r.dictDataCode == item.containerType);
+      if (containerType) {
+        item.containerTypeStr = containerType.dictDataName;
+      }
+      if (item.startDate) {
+        item.startDate = new Date(item.startDate);
+      }
+      if (item.endDate) {
+        item.endDate = new Date(item.endDate);
+      }
       let rateType = ConstantValues.WorkInfoCategory.find(r => r.value == item.rateType);
       if (rateType) {
         item.rateTypeName = rateType.text;

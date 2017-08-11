@@ -114,6 +114,10 @@ export const orderValidationRules = ValidationRules
   .ensure((order: Order) => order.batchNumber)
   .required().withMessage(`请选择批次`)
 
+  .ensure((order: Order) => order.outstockOrderNumber)
+  .displayName('出库单号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
   .ensure((order: Order) => order.paymentUnit)
   .displayName('付款单位')
   .required().withMessage(`\${$displayName} 不能为空`)

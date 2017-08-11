@@ -4,7 +4,6 @@ import { Container, inject } from 'aurelia-dependency-injection';
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
 import { NewVehicle } from "@app/instock/cargo-flow/vehicle/new";
 import { CargoFlow, cargoFlowValidationRules, InstockCargoItem } from "@app/instock/models/cargo-flow";
-import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
@@ -20,10 +19,7 @@ import { AttachmentService } from '@app/common/services/attachment';
 import { AttachmentMap } from '@app/common/models/attachment';
 import { AttachmentDetail } from '@app/common/attachment/detail';
 
-/**
- * Created by Hui on 2017/6/23.
- */
-export class NewCargoFlow {
+export class AdditionalRecordingCargoFlow {
   @observable disabled: boolean = false;
   baseCargoItems: CargoItem[];
   cargoItems = [] as InstockCargoItem[];
@@ -50,6 +46,8 @@ export class NewCargoFlow {
 
   validationController: ValidationController;
   private dropDownListCargoItem: any;
+  cargoFlowDatePicker: kendo.ui.DatePicker;
+  maxDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
 
   constructor( @inject private router: Router,
     @inject private cargoFlowService: CargoFlowService,
@@ -60,7 +58,6 @@ export class NewCargoFlow {
     @inject private uploader: Uploader,
     @inject private attachmentService: AttachmentService,
     @inject private dictionaryDataService: DictionaryDataService,
-    @inject('routerParams') private routerParams: RouterParams,
     validationControllerFactory: ValidationControllerFactory,
     container: Container) {
     this.validationController = validationControllerFactory.create();
@@ -70,25 +67,9 @@ export class NewCargoFlow {
 
   async activate() {
     this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
-
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    let baseCargoInfos = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
-    let batchValidation = await this.cargoInfoService.getListByBatchValidation();
-    this.baseCargoInfo = [] ;
-    batchValidation.forEach(bv => {
-      let baseCargeInfo = baseCargoInfos.find(bci => bci.batchNumber == bv.batchNumber)
-      if (baseCargeInfo) this.baseCargoInfo.push(baseCargeInfo);
-    })
+    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
-    if (this.routerParams.infoId) {
-      this.hasInfoId = true;
-      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
-      let res = await this.codeService.generateCode("2", cargoInfo.batchNumber);
-      this.cargoFlow.instockFlowNumber = res.content;
-      this.setCargoFlowInfo(cargoInfo);
-      let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
-      this.dataSourceBaseCargoItem.data(baseCargoItems);
-    }
   }
 
   async chooseFiles() {
@@ -145,10 +126,11 @@ export class NewCargoFlow {
   }
 
   async onSelectCargoInfo(e) {
+    //初始化数据
     if (this.cargoFlow) {
       this.validationController.removeObject(this.cargoFlow);
     }
-    //初始化数据
+    this.cargoFlowDatePicker.value("");
     this.cargoFlow = {} as CargoFlow;
     this.cargoItems = [];
     this.vehicle = [];
@@ -157,14 +139,22 @@ export class NewCargoFlow {
 
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     if (dataItem.id) {
-      let res = await this.codeService.generateCode("2", dataItem.batchNumber);
-      this.cargoFlow.instockFlowNumber = res.content;
       this.setCargoFlowInfo(dataItem);
       this.baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
       this.dataSourceBaseCargoItem.data(this.baseCargoItems);
-      this.cargoFlow.instockDate = new Date();
     }
     this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
+
+  }
+
+  /**
+   * 根据批次号和入库流水时间生成入库流水单号
+   */
+  async createInstockFlowNumber() {
+    if (this.cargoFlowDatePicker.value()) {
+      let res = await this.codeService.generateCodeByDate("2", this.cargoFlowDatePicker.value().getTime(), this.cargoFlow.batchNumber);
+      this.cargoFlow.instockFlowNumber = res.content;
+    }
   }
 
   setCargoFlowInfo(dataItem: CargoInfo) {

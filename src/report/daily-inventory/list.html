@@ -8,7 +8,7 @@
         <input type="text" value.bind="criteria.customerName" placeholder="请输入客户名称">
       </div>
       <div class="input-group left m-l-5">
-        <input ak-datepicker="k-value.two-way: criteria.makeDate" placeholder="请选择制单时间" type="text" class="form-control" disabled.bind="disabled">
+        <input ak-datepicker="k-value.two-way: criteria.makeDate" placeholder="请选择制单时间" type="text" class="form-control">
       </div>
       <div class="input-group left m-l-5">
         <input type="text" value.bind="criteria.batchNumber" placeholder="请输入批次号">
@@ -34,7 +34,7 @@
     <ak-col k-field="unit" k-title="单位"></ak-col>
     <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
     <ak-col k-field="warehouseName" k-title="库区"></ak-col>
-    <ak-col k-field="createTime" k-title="统计日期" k-format='{0:yyyy-MM-dd}'></ak-col>
+    <ak-col k-field="dataTime" k-title="出入库日期" k-format='{0:yyyy-MM-dd}'></ak-col>
   </ak-grid>
 
   <div class="col-md-9 col-md-offset-2" style="display: none;" id="dailyInventory">
@@ -57,9 +57,9 @@
         <td align="center">单位</td>
         <td align="center">箱号</td>
         <td align="center">库区</td>
-        <td align="center">统计日期</td>
+        <td align="center">出入库日期</td>
       </tr>
-      <template repeat.for="item of items">
+      <template repeat.for="item of inventoryVo.data">
         <tr>
           <td align="center">${item.index}</td>
           <td align="center">${item.customerName}</td>
@@ -73,9 +73,25 @@
           <td align="center">${item.unit}</td>
           <td align="center">${item.containerNumber}</td>
           <td align="center">${item.warehouseName}</td>
-          <td align="center">${item.createTimeStr}</td>
+          <td align="center">${item.dataTimeStr}</td>
         </tr>
       </template>
+      <tr>
+        <td align="right" colspan="5">合计：</td>
+        <td align="center">${inventoryVo.totalInstockQuantity}</td>
+        <td align="center">${inventoryVo.totalInstockNumber}</td>
+        <td align="center">${inventoryVo.totalOutstockQuantity}</td>
+        <td align="center">${inventoryVo.totalOutstockNumber}</td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td align="right" colspan="12">
+          统计日期：
+        </td>
+        <td align="center">
+          ${criteria.makeDate}
+        </td>
+      </tr>
     </table>
   </div>
 </template>

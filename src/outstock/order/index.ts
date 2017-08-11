@@ -17,6 +17,7 @@ export class Order {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
+      { route: '/additional-recording·', name: 'additional-recording', moduleId: './additional-recording', title: "补录" },
       { route: '/:id/edit', name: 'edit', moduleId: './edit', title: "编辑" },
       { route: '/:id/detail', name: 'detail', moduleId: './detail', title: "详情" },
       { route: '/order-work/:id', name: 'order-work', moduleId: './order', title: "出库作业指令单" },
@@ -26,8 +27,7 @@ export class Order {
       { route: '/:id/verify-deputy-general', name: 'verify-deputy-general', moduleId: './verify-deputy-general/index',
         title: '副总审核' },
       { route: '/work-order/:id/:type', name: 'work-order', moduleId: '/dist/base/work-order/index', title: "作业列表" },
-      { route: '/:id/confirm-business', name: 'confirm-business', moduleId: './confirm-business/index', title: '商务确认' },
-      { route: '/:id/outstock-orderItem-view', name: 'outstock-orderItem-view', moduleId: './item/view', title: '出库单详情' }
+      { route: '/:id/confirm-business', name: 'confirm-business', moduleId: './confirm-business/index', title: '商务确认' }
     ]);
     this.router = router;
   }

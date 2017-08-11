@@ -2,7 +2,7 @@
   <require from="./rate-step-element"></require>
   <div class="grid simple">
     <div class="grid-body no-border">
-      <form submit.delegate="save()">
+      <form submit.delegate="update()">
         <div class="row column-seperation">
           <h4>基本信息</h4>
           <div class="col-md-3">
@@ -10,12 +10,7 @@
               <label class="form-label">代理商名称*</label>
               <span class="help"></span>
               <div class="controls">
-                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName"
-                                   k-data-value-field="id" k-value.two-way="chargeInfo.agentId"
-                                   k-data-source.bind="agents" k-widget.two-way="agentWidget"
-                                   k-on-close.delegate="validateProperty('agentId')">
-                </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="chargeInfo.agentId & validate ">
+                <input class="form-control" type="text" value.bind="chargeInfo.agentName" readonly>
               </div>
             </div>
           </div>
@@ -24,13 +19,7 @@
               <label class="form-label">客户名称*</label>
               <span class="help"></span>
               <div class="controls">
-                <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName"
-                                   k-data-value-field="id" k-value.two-way="chargeInfo.customerId"
-                                   k-data-source.bind="customers" k-widget.two-way="customerWidget"
-                                   k-on-change.delegate="customerChanged()"
-                                   k-on-close.delegate="validateProperty('customerId')">
-                </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="chargeInfo.customerId & validate ">
+                <input class="form-control" type="text" value.bind="chargeInfo.customerName" readonly>
               </div>
             </div>
           </div>
@@ -40,11 +29,11 @@
               <label class="form-label">付款单位*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="text" class="form-control" value.bind="chargeInfo.paymentUnit & validate" disabled.bind="disabled">
+                <input type="text" class="form-control" value.bind="chargeInfo.paymentUnit" readonly>
               </div>
             </div>
           </div>
-
+         
           <div class="col-md-12">
             <div class="form-group">
               <label class="form-label">备注</label>
@@ -64,20 +53,10 @@
                 <ak-drop-down-list k-value.two-way="batchNumber" k-data-text-field="value" k-data-value-field="key"
                   k-data-source.bind="batchNumbers" k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="batchNumber & validate ">
+                <input class="form-control" type="hidden" value.bind="batchNumber">
               </div>
             </div>
           </div>
-          <!-- <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">费用类型*</label>
-              <div class="controls">
-                <ak-drop-down-list style="width: 300px;"  k-value.two-way="rateType"  k-option-label="请选择..." k-data-text-field="text"
-                  k-data-value-field="value" k-data-source.bind="workInfoCategorys" k-enabled.two-way="!disabled">
-                </ak-drop-down-list>
-              </div>
-            </div>
-          </div> -->
           <div class="col-md-3">
             <div class="form-group">
               <label class="form-label">费用类别*</label>

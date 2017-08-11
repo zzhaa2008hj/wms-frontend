@@ -5,7 +5,7 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import * as moment from 'moment';
 import { addHeader, print } from '@app/common/services/print-tool';
-import { DailyInventory } from '@app/report/models/daily-inventory';
+import { DailyInventoryVo } from '@app/report/models/daily-inventory';
 
 @autoinject
 export class DailyInventoryList {
@@ -13,7 +13,7 @@ export class DailyInventoryList {
   criteria: Criteria = {};
   dataSource: kendo.data.DataSource;
   units: DictionaryData[] = [] as DictionaryData[];
-  items = [] as DailyInventory[];
+  inventoryVo = {} as DailyInventoryVo;
 
   pageable = {
     refresh: true,
@@ -53,11 +53,11 @@ export class DailyInventoryList {
   }
 
   async getItems() {
-    this.items = await this.dailyInventoryService.pageAll(this.criteria);
+    this.inventoryVo = await this.dailyInventoryService.pageAll(this.criteria);
     let index = 1;
-    await this.items.map(res => {
+    await this.inventoryVo.data.map(res => {
       res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
-      res.createTimeStr = moment(res.createTime).format("YYYY-MM-DD");
+      res.dataTimeStr = moment(res.dataTime).format("YYYY-MM-DD");
       res.index = index++;
       return res;
     });

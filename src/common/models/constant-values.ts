@@ -276,18 +276,21 @@ export class ConstantValues {
       title: "客户确认"
     }, {
       stage: 3,
-      title: "费收审核拒绝"
+      title: "客户未确认"
     }, {
       stage: 4,
-      title: "费收审核通过"
+      title: "费收审核拒绝"
     }, {
       stage: 5,
-      title: "已核对生成收费单"
+      title: "费收审核通过"
     }, {
       stage: 6,
-      title: "已开票"
+      title: "已核对生成收费单"
     }, {
       stage: 7,
+      title: "已开票"
+    }, {
+      stage: 8,
       title: "已收费核销"
     }];
   }
