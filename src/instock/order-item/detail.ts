@@ -6,7 +6,7 @@ import { Organization } from '@app/base/models/organization';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import * as moment from 'moment';
-import { MessageDialogService } from 'ui';
+import { addHeader, print } from "@app/common/services/print-tool";
 
 @autoinject
 export class OrderItemDetail {
@@ -18,7 +18,6 @@ export class OrderItemDetail {
   constructor(private orderItemService: OrderItemService,
               private organizationService: OrganizationService,
               private dictionaryDataService: DictionaryDataService,
-              private messageDialogService: MessageDialogService,
               private tallyItemService: TallyItemService) {
 
   }
@@ -41,6 +40,9 @@ export class OrderItemDetail {
   }
 
   async print() {
-    this.messageDialogService.alert({ title: "打印成功", message: "打印成功" });
+    let title = "理货报告";
+    let strHTML = $("#orderItem").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true);
   }
 }
