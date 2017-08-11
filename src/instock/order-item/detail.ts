@@ -31,7 +31,7 @@ export class OrderItemDetail {
     this.tallyItems = await this.tallyItemService.listTallyItems(params.id);
     let index = 1;
     this.tallyItems.map(res => {
-      res.instockDate = moment(res.instockDate).format("YYYY-MM-DD HH:mm:ss");
+      res.instockDate = moment(res.instockDate).format("YYYY-MM-DD");
       if (res.unit) {
         res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
       }
