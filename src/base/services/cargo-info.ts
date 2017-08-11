@@ -53,8 +53,7 @@ export class CargoInfoService {
    * @param wareHouseType
    */
   async getContractCargoRates(contractId: string, warehouseType: string): Promise<CargoRate[]> {
-    let res = await this.http.
-      get(`base/contract/contractRateList?contractId=${contractId}&warehouseType=${warehouseType}`);
+    let res = await this.http.get(`base/contract/contractRateList?contractId=${contractId}&warehouseType=${warehouseType}`);
     return res.content;
   }
 
@@ -103,7 +102,7 @@ export class CargoInfoService {
 
   /**
    * 查询货物明细
-   * @param id 
+   * @param id
    */
   async getCargoItems(id: string): Promise<CargoItem[]> {
     let res = await this.http.get(`base/cargoInfo/cargoItem/${id}`);
@@ -120,7 +119,7 @@ export class CargoInfoService {
 
   /**
    * 删除入库指令
-   * @param id 
+   * @param id
    */
   delete(id: string): Promise<void> {
     return this.http.delete(`base/cargoInfo/${id}`).then(handleResult);
@@ -151,9 +150,10 @@ export class CargoInfoService {
     let res = await this.http.createRequest(`/base/cargoInfo/list`).withParams(criteria).asGet().send();
     return res.content;
   }
+
   /**
    * 根据货物明细ID 获取费率和费率
-   * @param cargoItemId 
+   * @param cargoItemId
    */
   async getCargoRatesByCargoItemId(cargoItemId: string): Promise<CargoRate[]> {
     let res = await this.http.get(`/base/cargoInfo/cargoItem/${cargoItemId}/cargoRate`);
@@ -162,7 +162,7 @@ export class CargoInfoService {
 
   /**
    * 根据货物信息id获取 入库信息
-   * @param cargoInfoId 
+   * @param cargoInfoId
    */
   async getInstockOrder(cargoInfoId: string): Promise<InstockOrder[]> {
     let res = await this.http.get(`/base/cargoInfo/${cargoInfoId}/instockOrder`);
@@ -171,7 +171,7 @@ export class CargoInfoService {
 
   /**
    * 根据货物信息id获取 出库信息
-   * @param cargoInfoId 
+   * @param cargoInfoId
    */
   async getOutstockInventories(cargoInfoId: string): Promise<OutstockInventory[]> {
     let res = await this.http.get(`/base/cargoInfo/${cargoInfoId}/outstockInfo`);
@@ -180,5 +180,10 @@ export class CargoInfoService {
 
   async getOutstockOrders(cargoInfoId: string): Promise<Array<Order>> {
     return this.http.get(`/outstock/order/list?cargoInfoId=${cargoInfoId}`).then(res => res.content);
+  }
+
+  async getListByBatchValidation(enteringMode?: number = 0): Promise<Array<CargoInfo>> {
+    let res = await this.http.get(`/base/cargoInfo/batchValidation?enteringMode=${enteringMode}`);
+    return res.content
   }
 }

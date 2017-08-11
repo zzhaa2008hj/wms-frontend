@@ -29,6 +29,12 @@
           </div>
         </div>
         <div class="form-group">
+          <div class="form-label">入库日期</div>
+          <div class="controls">
+            <input ak-datepicker="k-value.two-way : cargoFlow.instockDate & validate" type="text">
+          </div>
+        </div>
+        <div class="form-group">
           <label class="form-label">联系人*</label>
           <span class="help"></span>
           <div class="controls">
@@ -66,9 +72,9 @@
               <label repeat.for="item of attachments">
                 <a class="pointer" click.delegate="showDetail($this)" if.bind="item.status!=0">${item.realName}</a>
                 <a class="pointer m-l-10" click.delegate="delete($this)" if.bind="item.status!=0">删除</a>
-              </label>  
-            </div>               
-          </div>  
+              </label>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">

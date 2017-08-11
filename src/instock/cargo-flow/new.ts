@@ -70,7 +70,13 @@ export class NewCargoFlow {
 
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
+    let baseCargoInfos = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
+    let batchValidation = await this.cargoInfoService.getListByBatchValidation();
+    this.baseCargoInfo = [] ;
+    batchValidation.forEach(bv => {
+      let baseCargeInfo = baseCargoInfos.find(bci => bci.batchNumber == bv.batchNumber)
+      if (baseCargeInfo) this.baseCargoInfo.push(baseCargeInfo);
+    })
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
@@ -103,8 +109,8 @@ export class NewCargoFlow {
       this.currentUpload = this.uploader.upload(file, { path: path });
       let result = await this.currentUpload.result;
       if (result.status == 'success') {
-          this.attachments.push({ uuidName: uuidName, realName: file.name });
-          index++;
+        this.attachments.push({ uuidName: uuidName, realName: file.name });
+        index++;
       }
     }
     this.currentUpload = null;
@@ -151,6 +157,7 @@ export class NewCargoFlow {
       this.setCargoFlowInfo(dataItem);
       this.baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
       this.dataSourceBaseCargoItem.data(this.baseCargoItems);
+      this.cargoFlow.instockDate = new Date();
     }
   }
 
