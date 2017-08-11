@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { ChargeAuditList } from "@app/fee/models/charge-audit";
-import { RestClient, handleResult, Query, fixDate } from '@app/utils';
+import { RestClient, handleResult, Query } from '@app/utils';
 import { ChargeInfo } from '@app/fee/models/charge';
 /**
  * Created by Hui on 2017/8/2.
