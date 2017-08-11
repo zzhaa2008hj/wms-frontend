@@ -14,7 +14,7 @@
         <div class="form-group input-group">
           <span class="help"></span>
           <label class="form-label">出库指令时间</label>
-          <input ak-datepicker=" k-widget.two-way: outstockOrderDatePicker ;k-max.bind:maxDate" k-on-change.delegate="createOutstockOrderNumber()"
+          <input ak-datepicker=" k-widget.two-way: outstockOrderDatePicker ;k-max.bind:maxDate;k-enabled.two-way:false" k-on-change.delegate="createOutstockOrderNumber()"
             type="text" class="form-control">
         </div>
         <div class="form-group">
