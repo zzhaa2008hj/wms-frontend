@@ -60,6 +60,11 @@ export interface CargoInfo {
 
   remark: string;
 
+  /**
+   * 录入方式  1/null:正常录入 2：补录
+   */
+  enteringMode: number;
+
   cargoItems: CargoItem[];
 }
 

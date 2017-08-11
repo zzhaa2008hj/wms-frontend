@@ -19,14 +19,14 @@
         <div class="form-group input-group">
           <span class="help"></span>
           <label class="form-label">入库流水拆单时间</label>
-          <input ak-datepicker=" k-widget.two-way: cargoFlowDatePicker ;k-max.bind:maxDate" k-on-change.delegate="createInstockFlowNumber()"
+          <input ak-datepicker=" k-widget.two-way: cargoFlowDatePicker ;k-max.bind:maxDate;k-value.two-way:cargoFlow.instockDate & validate" k-on-change.delegate="createInstockFlowNumber()"
             type="text" class="form-control">
         </div>
         <div class="form-group">
           <label class="form-label">拆单后入库流水单号</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="cargoFlow.instockFlowNumber" placeholder="选择入库流水拆单时间后自定生成" readonly>
+            <input type="text" class="form-control" value.bind="cargoFlow.instockFlowNumber & validate" placeholder="选择入库流水拆单时间后自定生成" readonly>
           </div>
         </div>
         <div class="form-group">

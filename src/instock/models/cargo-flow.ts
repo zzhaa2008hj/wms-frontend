@@ -43,6 +43,12 @@ export interface CargoFlow {
   attachments: AttachmentMap[];
 
   oldInstockFlowNumber: string;
+
+  /**
+   * 录入方式  1/null:正常录入 2：补录
+   */
+  enteringMode: number;
+
 }
 export interface InstockCargoItem {
   //唯一性标识
@@ -91,7 +97,7 @@ export interface Vehicle {
   cargoName: string;
 }
 
-export const  cargoFlowValidationRules = ValidationRules
+export const cargoFlowValidationRules = ValidationRules
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
   .displayName('联系人')
   .required().withMessage(`\${$displayName} 不能为空`)
@@ -99,6 +105,17 @@ export const  cargoFlowValidationRules = ValidationRules
   .ensure((cargoFlow: CargoFlow) => cargoFlow.instockFlowNumber)
   .displayName('入库流水单号')
   .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.instockDate)
+  .displayName('入库流水时间')
+  .satisfies((instockDate, cargoFlow) => {
+    if (cargoFlow.enteringMode == 2) {
+      if (instockDate) { return false };
+    } else {
+      return true;
+    }
+  })
+  .withMessage(`\${$displayName} 不能为空`)
 
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
   .displayName('联系电话')
