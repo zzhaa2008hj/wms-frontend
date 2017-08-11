@@ -33,5 +33,20 @@ export interface DailyInventory {
   createTime: Date;
   createTimeStr: string;
 
+  dataTime: Date;
+  dataTimeStr: string;
+
   index: number;
+}
+
+export interface DailyInventoryVo {
+  totalInstockQuantity: number;
+
+  totalInstockNumber: number;
+
+  totalOutstockQuantity: number;
+
+  totalOutstockNumber: number;
+  
+  data: DailyInventory[];
 }
