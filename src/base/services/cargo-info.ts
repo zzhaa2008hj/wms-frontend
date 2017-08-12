@@ -19,6 +19,7 @@ export interface CargoInfoCriteria {
   instockStatus?: number;
   outstockStatus?: number;
   finished?: number;
+  enteringMode?: number;
 }
 
 @autoinject
