@@ -68,8 +68,9 @@ export class AdditionalRecordingCargoFlow {
   async activate() {
     this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
+    this.baseCargoInfo = await this.cargoInfoService.getListByBatchValidation(2);
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
+     
   }
 
   async chooseFiles() {

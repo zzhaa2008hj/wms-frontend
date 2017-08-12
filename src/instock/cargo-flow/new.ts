@@ -72,13 +72,7 @@ export class NewCargoFlow {
     this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
 
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    let baseCargoInfos = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
-    let batchValidation = await this.cargoInfoService.getListByBatchValidation();
-    this.baseCargoInfo = [] ;
-    batchValidation.forEach(bv => {
-      let baseCargeInfo = baseCargoInfos.find(bci => bci.batchNumber == bv.batchNumber)
-      if (baseCargeInfo) this.baseCargoInfo.push(baseCargeInfo);
-    })
+    this.baseCargoInfo = await this.cargoInfoService.getListByBatchValidation();
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
