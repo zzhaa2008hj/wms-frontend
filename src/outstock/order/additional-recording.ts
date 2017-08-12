@@ -12,9 +12,9 @@ import { observable } from 'aurelia-framework';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { copy } from "@app/utils";
-import { RouterParams } from '@app/common/models/router-params';
+import { OrganizationService } from "@app/base/services/organization";
 
-export class AdditionalRecording {
+export class OutstockOrderAdditionalRecording {
   @observable disabled: boolean = false;
   units = [] as DictionaryData[];
   order = {} as Order;
@@ -49,6 +49,7 @@ export class AdditionalRecording {
     @inject private messageDialogService: MessageDialogService,
     @inject private cargoInfoService: CargoInfoService,
     @inject private codeService: CodeService,
+    @inject private organizationService: OrganizationService,
     @inject private dictionaryDataService: DictionaryDataService,
     @inject validationControllerFactory: ValidationControllerFactory,
     @inject container: Container) {
@@ -83,18 +84,30 @@ export class AdditionalRecording {
       this.getBaseCargoItems();
     }
     this.validationController.addObject(this.order, orderValidationRules);
+    if (this.order.batchNumber) {
+      this.outstockOrderDatePicker.enable(true);
+    } else {
+      this.outstockOrderDatePicker.enable(false);
+    }
   }
 
   /**
    * 根据出库单时间生成出库单号
    */
   async createOutstockOrderNumber() {
-    if (this.outstockOrderDatePicker.value()) {
-      let res = await this.codeService.generateCodeByDate("3", this.outstockOrderDatePicker.value().getTime(), this.order.batchNumber);
-      this.order.outstockOrderNumber = res.content;
+    if (this.order.batchNumber) {
+      if (this.outstockOrderDatePicker.value()) {
+        let res = await this.codeService.generateCodeByDate("3", this.outstockOrderDatePicker.value().getTime(), this.order.batchNumber);
+        this.order.outstockOrderNumber = res.content;
+      }
+    } else {
+      await this.messageDialogService.alert({ title: "错误", message: '没有批次号，无法生成出库单号！', icon: 'warning' });
+      this.outstockOrderDatePicker.value("");
+      return;
     }
   }
-  setOrderInfo(dataItem: CargoInfo) {
+
+  async setOrderInfo(dataItem: CargoInfo) {
     this.order.agentId = dataItem.agentId;
     this.order.agentName = dataItem.agentName;
     this.order.customerId = dataItem.customerId;
@@ -105,6 +118,13 @@ export class AdditionalRecording {
     this.order.id = null;
     this.order.lastBatch = 0;
     this.order.paymentUnit = dataItem.customerName;
+
+    let customer = await this.organizationService.getOrganization(dataItem.customerId);
+    if (customer) {
+      this.order.paymentUnit = customer.name;
+      this.order.contactPerson = customer.contactPerson;
+      this.order.contactNumber = customer.contactMobile;
+    }
   }
 
   async getBaseCargoItems() {
@@ -164,7 +184,7 @@ export class AdditionalRecording {
           ci.canQuantity -= oi.orderQuantity;
           if (ci.canQuantity < 0) {
             return this.messageDialogService.alert({
-              title: "新增失败",
+              title: "补录失败",
               message: `货物:${ci.cargoName}    累计出库数量超出可出库数量,请检查后重新提交`,
               icon: 'error'
             });
@@ -173,7 +193,7 @@ export class AdditionalRecording {
           ci.canNumber -= oi.orderNumber;
           if (ci.canNumber < 0) {
             return this.messageDialogService.alert({
-              title: "新增失败",
+              title: "补录失败",
               message: `货物:${ci.cargoName}    累计出库件数超出可出库件数,请检查后重新提交`,
               icon: 'error'
             });
@@ -193,7 +213,7 @@ export class AdditionalRecording {
       Object.assign(this.order, { outstockOrderItems: orderItems });
     }
     if (this.order.outstockOrderItems.length == 0) {
-      return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库货物信息", icon: 'error' });
+      return this.messageDialogService.alert({ title: "补录失败", message: "请填写出库货物信息", icon: 'error' });
     }
 
     let vehicles = [];
@@ -207,16 +227,16 @@ export class AdditionalRecording {
       Object.assign(this.order, { outstockVehicles: vehicles });
     }
     if (this.order.outstockVehicles.length == 0) {
-      return this.messageDialogService.alert({ title: "新增失败", message: "请填写出库车辆信息", icon: 'error' });
+      return this.messageDialogService.alert({ title: "补录失败", message: "请填写出库车辆信息", icon: 'error' });
     }
 
     this.disabled = true;
     try {
       await this.orderService.saveOrder(this.order);
-      await this.messageDialogService.alert({ title: "新增成功" });
+      await this.messageDialogService.alert({ title: "补录成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "补录失败", message: err.message, icon: 'error' });
       this.disabled = false;
     }
   }

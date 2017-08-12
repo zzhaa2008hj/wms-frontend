@@ -6,22 +6,22 @@
       <form submit.delegate="addNewOrder()">
         <div class="form-group">
           <label class="form-label">批次号*</label>
-          <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-data-text-field="batchNumberStr" k-data-value-field="batchNumber"
-            k-filter="contains" k-data-source.bind="baseCargoInfo" k-on-change.delegate="onSelectCargoInfo($event.detail)"
+          <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-data-text-field="batchNumberStr"
+            k-data-value-field="batchNumber" k-filter="contains" k-data-source.bind="baseCargoInfo" k-on-change.delegate="onSelectCargoInfo($event.detail)"
             k-value.bind="order.batchNumber & validate" k-enabled.two-way="!hasInfoId">
           </ak-drop-down-list>
         </div>
         <div class="form-group input-group">
           <span class="help"></span>
-          <label class="form-label">出库指令时间</label>
-          <input ak-datepicker=" k-widget.two-way: outstockOrderDatePicker ;k-max.bind:maxDate" k-on-change.delegate="createOutstockOrderNumber()"
-            type="text" class="form-control">
+          <label class="form-label">出库日期</label>
+          <input ak-datepicker=" k-value.two-way:order.outstockDate & validate;k-widget.two-way: outstockOrderDatePicker ;k-max.bind:maxDate;k-enabled.two-way:false"
+            k-on-change.delegate="createOutstockOrderNumber()" type="text" class="form-control">
         </div>
         <div class="form-group">
           <label class="form-label">出库单号*</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" class="form-control" value.bind="order.outstockOrderNumber & validate" placeholder="选择出库指令时间后自动生成" readonly>
+            <input type="text" class="form-control" value.bind="order.outstockOrderNumber & validate" placeholder="选择出库日期后自动生成" readonly>
           </div>
         </div>
         <div class="form-group">

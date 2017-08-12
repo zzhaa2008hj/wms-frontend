@@ -78,6 +78,7 @@ export class AdditionalRecordingSeparate {
       }
     }
     this.cargoItems = cargoItems;
+    this.cargoFlow.instockDate = null;
     this.dataSourceCargoItem.data(cargoItems);
     this.dataSourceVehicle.data(this.vehicles);
   }
@@ -160,10 +161,10 @@ export class AdditionalRecordingSeparate {
     this.disabled = true;
     try {
       await this.cargoFlowSeparateService.saveCargoFlowSeparate(this.cargoFlow);
-      await this.messageDialogService.alert({ title: "新增成功" });
+      await this.messageDialogService.alert({ title: "拆单补录成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "拆单补录失败", message: err.message, icon: 'error' });
       this.disabled = false;
     }
   }
@@ -177,6 +178,14 @@ export class AdditionalRecordingSeparate {
 const validationRules = ValidationRules
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
   .displayName('联系人')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.instockFlowNumber)
+  .displayName('拆单后入库流水单号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.instockDate)
+  .displayName('入库流水拆单时间')
   .required().withMessage(`\${$displayName} 不能为空`)
 
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
