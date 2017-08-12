@@ -119,6 +119,7 @@ export class NewOrder {
     this.order.cargoInfoId = dataItem.id;
     this.order.id = null;
     this.order.lastBatch = 0;
+    this.order.outstockDate = new Date();
 
     let customer = await this.organizationService.getOrganization(dataItem.customerId);
     if (customer) {
