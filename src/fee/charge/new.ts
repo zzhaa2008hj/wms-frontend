@@ -116,6 +116,14 @@ export class NewChargeInfo {
       return this.dialogService.alert({ title: "提示", message: "请选择批次和费用类别", icon: 'error' });
     }
     let items = await this.chargeInfoService.getItems(this.batchNumber, this.chargeCategory);
+    if (items && items.length == 0) {
+      return await this.dialogService.alert({ title: "提示", message: "无此费用可结算", icon: 'error' });
+    }
+    if (items.length == undefined) {
+      let m = {message: ''};
+      Object.assign(m, items);
+      return await this.dialogService.alert({ title: "提示", message: m.message, icon: 'error' });
+    }
     if (items) {
       items.map(item => {
         let unit = this.units.find(r => r.dictDataCode == item.unit);
