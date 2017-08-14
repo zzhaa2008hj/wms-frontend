@@ -95,8 +95,8 @@ export const cargoFlowValidationRules = ValidationRules
   .ensure((cargoFlow: CargoFlow) => cargoFlow.instockDate)
   .displayName('入库流水时间')
   .satisfies((instockDate, cargoFlow) => {
-    if (cargoFlow.enteringMode == 2) {
-      if (instockDate) { return false };
+    if (cargoFlow.enteringMode == 2 && instockDate) {
+      return false;
     } else {
       return true;
     }

@@ -17,37 +17,37 @@
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable"
     k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
-    <ak-col k-title="批次号" k-width.bind="120">
+    <ak-col k-title="批次号" k-width.bind="105">
       <ak-template>
         <a route-href="route: details; params.bind: { id: id }">${batchNumber}</a>
       </ak-template>
     </ak-col>
     <ak-col k-field="agentName" k-title="代理商" k-width.bind="100"></ak-col>
     <ak-col k-field="customerName" k-title="客户名称" k-width.bind="100"></ak-col>
-    <ak-col k-field="billLadingNumber" k-title="提单号" k-width.bind="120"></ak-col>
-    <ak-col k-field="warehouseTypeStr" k-title="库区性质" k-width.bind="80"></ak-col>
-    <ak-col k-field="cargoForm" k-title="货物形式" k-width.bind="80">
+    <ak-col k-field="billLadingNumber" k-title="提单号" k-width.bind="150"></ak-col>
+    <ak-col k-field="warehouseTypeStr" k-title="库区性质" k-width.bind="70"></ak-col>
+    <ak-col k-field="cargoForm" k-title="货物形式" k-width.bind="70">
       <ak-template>
         ${cargoForm ==1 ?'散装': '集装箱'}
       </ak-template>
     </ak-col>
-    <ak-col k-field="cargoType" k-title="货物性质" k-width.bind="80">
+    <ak-col k-field="cargoType" k-title="货物性质" k-width.bind="70">
       <ak-template>
         ${cargoType ==1 ?'内贸': '保税'}
       </ak-template>
     </ak-col>
-    <ak-col k-field="orderNumber == null? 0:orderNumber" k-title="指令件数" k-width.bind="80"></ak-col>
-    <ak-col k-field="orderQuantity == null? 0:orderQuantity" k-title="指令数量" k-width.bind="80"></ak-col>
-    <ak-col k-field="instockNumber == null? 0:instockNumber" k-title="入库件数" k-width.bind="80"></ak-col>
-    <ak-col k-field="instockQuantity == null? 0:instockQuantity" k-title="入库数量" k-width.bind="80"></ak-col>
-    <ak-col k-field="outstockNumber == null? 0:outstockNumber" k-title="出库件数" k-width.bind="80"></ak-col>
-    <ak-col k-field="outstockQuantity == null? 0:outstockQuantity" k-title="出库数量" k-width.bind="80"></ak-col>
-    <ak-col k-field="instockStatus" k-title="入库状态" k-width.bind="80">
+    <ak-col k-field="orderNumber == null? 0:orderNumber" k-title="指令件数" k-width.bind="70"></ak-col>
+    <ak-col k-field="orderQuantity == null? 0:orderQuantity" k-title="指令数量" k-width.bind="70"></ak-col>
+    <ak-col k-field="instockNumber == null? 0:instockNumber" k-title="入库件数" k-width.bind="70"></ak-col>
+    <ak-col k-field="instockQuantity == null? 0:instockQuantity" k-title="入库数量" k-width.bind="70"></ak-col>
+    <ak-col k-field="outstockNumber == null? 0:outstockNumber" k-title="出库件数" k-width.bind="70"></ak-col>
+    <ak-col k-field="outstockQuantity == null? 0:outstockQuantity" k-title="出库数量" k-width.bind="70"></ak-col>
+    <ak-col k-field="instockStatus" k-title="入库状态" k-width.bind="70">
       <ak-template>
         ${instockStatus ==1 ?'完成': '未完成'}
       </ak-template>
     </ak-col>
-    <ak-col k-field="outstockStatus" k-title="出库状态" k-width.bind="80">
+    <ak-col k-field="outstockStatus" k-title="出库状态" k-width.bind="70">
       <ak-template>
         ${outstockStatus ==1 ?'完成': '未完成'}
       </ak-template>
