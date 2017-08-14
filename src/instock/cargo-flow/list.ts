@@ -20,8 +20,9 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 
-export class CargoFlow {
+export class CargoFlowList {
   selectedItem: any;
   searchName: string;
   pageable = {
@@ -131,6 +132,15 @@ export class CargoFlow {
       if (cargoInfo.instockStatus == 1) {
         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
         return;
+      }
+      //验证理货报告生成状态
+      let cargoFlows: CargoFlow[] = await  this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
+      if (cargoFlows) {
+        let cfs = cargoFlows.filter(cf => cf.stage > 8);
+        if (cfs.length > 0) {
+          await this.messageDialogService.alert({ title: "失败", message: "该批次货物已生成理货报告，无法新增入库", icon: 'error' });
+          return;
+        }
       }
       this.router.navigateToRoute("new");
     } else {

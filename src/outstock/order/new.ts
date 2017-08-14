@@ -93,6 +93,9 @@ export class NewOrder {
   }
 
   async onSelectCargoInfo(e) {
+    if (this.order) {
+      this.validationController.removeObject(this.order);
+    }
 
     this.order = {} as Order;
     this.outstockOrderItems = [] as OrderItem[];
