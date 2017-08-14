@@ -34,6 +34,7 @@ export class NewRateStep {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
+    this.rateStep.stepUnitStr = this.stepUnits.find(su => su.dictDataCode == this.rateStep.stepUnit).dictDataName;
     await this.dialogController.ok(this.rateStep);
   }
 
