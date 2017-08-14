@@ -124,6 +124,12 @@ export class NewChargeInfo {
       Object.assign(m, items);
       return await this.dialogService.alert({ title: "提示", message: m.message, icon: 'error' });
     }
+    // 过滤重复
+    for (let item of this.chargeItems) {
+      if (item.batchNumber == this.batchNumber && item.chargeCategory == this.chargeCategory) {
+        return;
+      }
+    };
     if (items) {
       items.map(item => {
         let unit = this.units.find(r => r.dictDataCode == item.unit);
