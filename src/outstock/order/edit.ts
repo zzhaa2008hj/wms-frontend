@@ -158,9 +158,10 @@ export class EditOrder {
     try {
       this.order.attachments = this.attachments;
       console.log("this.order.attachments", this.order.attachments);
-      await this.orderService.updateOrder(this.order);
-      await this.messageDialogService.alert({ title: "修改成功" });
-      this.router.navigateToRoute("list");
+      console.log(this.order.outstockDate)
+     // await this.orderService.updateOrder(this.order);
+     // await this.messageDialogService.alert({ title: "修改成功" });
+      //this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
       this.disabled = false;

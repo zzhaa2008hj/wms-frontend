@@ -68,8 +68,9 @@ export class AdditionalRecordingCargoFlow {
   async activate() {
     this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -1 });
+    this.baseCargoInfo = await this.cargoInfoService.getListByBatchValidation(2);
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
+     
   }
 
   async chooseFiles() {
@@ -144,6 +145,11 @@ export class AdditionalRecordingCargoFlow {
       this.dataSourceBaseCargoItem.data(this.baseCargoItems);
     }
     this.validationController.addObject(this.cargoFlow, cargoFlowValidationRules);
+    if (this.cargoFlow.batchNumber) {
+      this.cargoFlowDatePicker.enable(true);
+    } else {
+      this.cargoFlowDatePicker.enable(false);
+    }
 
   }
 
@@ -151,9 +157,15 @@ export class AdditionalRecordingCargoFlow {
    * 根据批次号和入库流水时间生成入库流水单号
    */
   async createInstockFlowNumber() {
-    if (this.cargoFlowDatePicker.value()) {
-      let res = await this.codeService.generateCodeByDate("2", this.cargoFlowDatePicker.value().getTime(), this.cargoFlow.batchNumber);
-      this.cargoFlow.instockFlowNumber = res.content;
+    if (this.cargoFlow.batchNumber) {
+      if (this.cargoFlowDatePicker.value()) {
+        let res = await this.codeService.generateCodeByDate("2", this.cargoFlowDatePicker.value().getTime(), this.cargoFlow.batchNumber);
+        this.cargoFlow.instockFlowNumber = res.content;
+      }
+    }else{
+       await this.messageDialogService.alert({ title: "错误", message: '没有批次号，无法生成入库流水单号！', icon: 'warning' });
+       this.cargoFlowDatePicker.value("");
+       return ;
     }
   }
 
@@ -262,12 +274,14 @@ export class AdditionalRecordingCargoFlow {
 
     this.disabled = true;
     try {
+      //录入状态设为 补录 2
+      this.cargoFlow.enteringMode = 2;
       this.cargoFlow.attachments = this.attachments;
       await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
-      await this.messageDialogService.alert({ title: "新增成功" });
+      await this.messageDialogService.alert({ title: "补录成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "补录失败", message: err.message, icon: 'error' });
       this.disabled = false;
     }
   }
