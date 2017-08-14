@@ -32,20 +32,21 @@ export class CargoFlow {
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
   private dataSource: kendo.data.DataSource;
+  existEntering = false;
 
-  constructor(@inject private cargoFlowService: CargoFlowService,
-              @inject private dialogService: DialogService,
-              @inject private cargoInfoService: CargoInfoService,
-              @inject private verifyRecordService: VerifyRecordService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private dataSourceFactory: DataSourceFactory,
-              @inject private customhouseService: CustomhouseClearanceService,
-              @inject('routerParams') private routerParams: RouterParams,
-              @inject private instockOrderService: InstockOrderService,
-              @inject private router: Router,
-              @inject private dictionaryDataService: DictionaryDataService,
-              @inject private orderItemService: OrderItemService,
-              @inject private workOrderItemService: WorkOrderItemService) {
+  constructor( @inject private cargoFlowService: CargoFlowService,
+    @inject private dialogService: DialogService,
+    @inject private cargoInfoService: CargoInfoService,
+    @inject private verifyRecordService: VerifyRecordService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private dataSourceFactory: DataSourceFactory,
+    @inject private customhouseService: CustomhouseClearanceService,
+    @inject('routerParams') private routerParams: RouterParams,
+    @inject private instockOrderService: InstockOrderService,
+    @inject private router: Router,
+    @inject private dictionaryDataService: DictionaryDataService,
+    @inject private orderItemService: OrderItemService,
+    @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -70,6 +71,12 @@ export class CargoFlow {
           }),
         pageSize: 10
       });
+      //查询该入库单的信息 判断是否是补录的入库单
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.enteringMode && cargoInfo.enteringMode == 2) {
+          this.existEntering = true;
+      }
+
     } else {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })

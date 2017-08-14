@@ -18,6 +18,7 @@ import { uuid } from '@app/utils';
 import { AttachmentService } from '@app/common/services/attachment';
 import { AttachmentMap } from '@app/common/models/attachment';
 import { AttachmentDetail } from '@app/common/attachment/detail';
+import { RouterParams } from '@app/common/models/router-params';
 
 export class AdditionalRecordingCargoFlow {
   @observable disabled: boolean = false;
@@ -58,6 +59,7 @@ export class AdditionalRecordingCargoFlow {
     @inject private uploader: Uploader,
     @inject private attachmentService: AttachmentService,
     @inject private dictionaryDataService: DictionaryDataService,
+    @inject('routerParams') private routerParams: RouterParams,
     validationControllerFactory: ValidationControllerFactory,
     container: Container) {
     this.validationController = validationControllerFactory.create();
@@ -70,7 +72,13 @@ export class AdditionalRecordingCargoFlow {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.getListByBatchValidation(2);
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
-     
+    if (this.routerParams.infoId) {
+      this.hasInfoId = true;
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      this.setCargoFlowInfo(cargoInfo);
+      let baseCargoItems = await this.cargoFlowService.listBaseCargoItems(this.cargoFlow.cargoInfoId);
+      this.dataSourceBaseCargoItem.data(baseCargoItems);
+    }
   }
 
   async chooseFiles() {

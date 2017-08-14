@@ -13,6 +13,7 @@ import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { copy } from "@app/utils";
 import { OrganizationService } from "@app/base/services/organization";
+import { RouterParams } from '@app/common/models/router-params';
 
 export class OutstockOrderAdditionalRecording {
   @observable disabled: boolean = false;
@@ -52,6 +53,7 @@ export class OutstockOrderAdditionalRecording {
     @inject private organizationService: OrganizationService,
     @inject private dictionaryDataService: DictionaryDataService,
     @inject validationControllerFactory: ValidationControllerFactory,
+    @inject('routerParams') private routerParams: RouterParams,
     @inject container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -66,6 +68,16 @@ export class OutstockOrderAdditionalRecording {
     this.baseCargoInfo.map(res => {
       res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")";
     });
+
+    if (this.routerParams.infoId) {
+      this.hasInfoId = true;
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      this.order.cargoInfoId = this.routerParams.infoId;
+      this.order.batchNumber = cargoInfo.batchNumber;
+
+      this.setOrderInfo(cargoInfo);
+      this.getBaseCargoItems();
+    }
   }
 
   async onSelectCargoInfo(e) {
