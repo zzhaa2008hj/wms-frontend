@@ -14,7 +14,7 @@ export class ChargeInfoList {
   dataSource: kendo.data.DataSource;
   id: string = "";
 
-  chargeInfoCriteria: ChargeInfoCriteria;
+  chargeInfoCriteria = {} as ChargeInfoCriteria;
   startDatePicker: any;
   endDatePicker: any;
 
