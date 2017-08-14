@@ -3,7 +3,7 @@ import { autoinject, Container } from "aurelia-dependency-injection";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { CargoInfo } from "@app/base/models/cargo-info";
-import { CargoFlow, Vehicle } from "@app/instock/models/cargo-flow";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { Router } from "aurelia-router";
 import { CargoFlowSeparateService } from "@app/instock/services/cargo-flow-seperate";
@@ -14,6 +14,7 @@ import { observable } from 'aurelia-framework';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { CodeService } from "@app/common/services/code";
+import { InstockVehicle } from "@app/instock/models/instock-vehicle";
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -31,7 +32,7 @@ export class NewSeparate {
   dataSourceSeparateCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  vehicles = [] as Vehicle[];
+  vehicles = [] as InstockVehicle[];
   dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
@@ -72,8 +73,9 @@ export class NewSeparate {
         let cargoItem = await this.cargoItemService.getBaseCargoItemById(ci.cargoItemId);
         Object.assign(ci, { cargoSubCatergoryName: cargoItem.cargoSubCatergoryName, freeDays: cargoItem.freeDays });
         let vehicles = await this.vehicleService.listInstockVehicles(ci.id);
+
         vehicles.forEach(v => {
-          Object.assign(v, { cargoName: ci.cargoName });
+          v.cargoName = ci.cargoName;
           this.vehicles.push(v);
         });
       }
