@@ -3,7 +3,7 @@ import { autoinject, Container } from "aurelia-dependency-injection";
 import { CargoItemService } from "@app/instock/services/cargo-item";
 import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
 import { CargoInfo } from "@app/base/models/cargo-info";
-import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { CargoFlow, Vehicle } from "@app/instock/models/cargo-flow";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { Router } from "aurelia-router";
 import { CargoFlowSeparateService } from "@app/instock/services/cargo-flow-seperate";
@@ -31,7 +31,7 @@ export class NewSeparate {
   dataSourceSeparateCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  vehicles = [];
+  vehicles = [] as Vehicle[];
   dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
@@ -117,22 +117,15 @@ export class NewSeparate {
 
 
   async addCargoFlowSeparate() {
-    let vehicles = [];
-    Object.assign(vehicles, this.dataSourceVehicle.data());
     let cargoItems = [];
     Object.assign(cargoItems, this.dataSourceCargoItem.data());
     let orderQuantity = 0;
     let orderNumber = 0;
-    if (vehicles || cargoItems) {
+    if (cargoItems) {
       cargoItems.forEach(ci => {
         orderQuantity += ci.orderQuantity;
         orderNumber += ci.orderNumber;
-        let vs = [];
-        vehicles.forEach(v => {
-          if (ci.sign == v.sign) {
-            vs.push(v);
-          }
-        });
+        let vs= this.vehicles.filter(v => ci.id == v.instockGoodsId);
         Object.assign(ci, { vehicles: vs });
       });
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });
