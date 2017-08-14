@@ -60,6 +60,7 @@ export class CargoInfoList {
   select() {
     this.dataSource.read();
   }
+
   /**
    * 单选数据
    */
@@ -70,6 +71,7 @@ export class CargoInfoList {
     this.infoId = dataItem.id;
     this.batchNumber = dataItem.batchNumber;
   }
+
   /**
    * 生成出库清单
    */
@@ -98,6 +100,14 @@ export class CargoInfoList {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
     }
-    this.router.navigateToRoute('changeHistory', {id: this.infoId});
+    this.router.navigateToRoute('changeHistory', { id: this.infoId });
+  }
+
+  async goOutstockOrders(id: string, instockStatus: number) {
+    if (instockStatus != 1) {
+      await this.messageDialogService.alert({ title: "失败", message: "该批次货物未有入库货物，无法进行出库操作", icon: 'error' });
+      return;
+    }
+    window.location.href = `/#/outstock/${id}/outstock-orders`;
   }
 }

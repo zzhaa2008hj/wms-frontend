@@ -61,6 +61,10 @@ export class NewRate {
     if (this.rateSteps.length > 0) {
       this.stepIndex = this.rateSteps.length;
       this.stepStart = this.rateSteps[this.stepIndex - 1].stepEnd;
+      this.rateSteps.forEach(rs=>{
+        rs.stepUnitStr = this.unit.find(u => u.dictDataCode == rs.stepUnit).dictDataName;
+      });
+
       this.dataSourceRateStep.data(this.rateSteps);
     }
   }

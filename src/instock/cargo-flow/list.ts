@@ -125,6 +125,15 @@ export class CargoFlow {
         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
         return;
       }
+      //验证理货报告生成状态
+      let cargoFlows: CargoFlow[] = await  this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
+      if (cargoFlows) {
+        let cfs = cargoFlows.filter(cf => cf.stage > 8);
+        if (cfs.length > 0) {
+          await this.messageDialogService.alert({ title: "失败", message: "该批次货物已生成理货报告，无法新增入库", icon: 'error' });
+          return;
+        }
+      }
       this.router.navigateToRoute("new");
     } else {
       this.router.navigateToRoute("new");
