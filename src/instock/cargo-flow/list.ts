@@ -20,8 +20,9 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 
-export class CargoFlow {
+export class CargoFlowList {
   selectedItem: any;
   searchName: string;
   pageable = {
@@ -32,20 +33,21 @@ export class CargoFlow {
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
   private dataSource: kendo.data.DataSource;
+  existEntering = false;
 
-  constructor(@inject private cargoFlowService: CargoFlowService,
-              @inject private dialogService: DialogService,
-              @inject private cargoInfoService: CargoInfoService,
-              @inject private verifyRecordService: VerifyRecordService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private dataSourceFactory: DataSourceFactory,
-              @inject private customhouseService: CustomhouseClearanceService,
-              @inject('routerParams') private routerParams: RouterParams,
-              @inject private instockOrderService: InstockOrderService,
-              @inject private router: Router,
-              @inject private dictionaryDataService: DictionaryDataService,
-              @inject private orderItemService: OrderItemService,
-              @inject private workOrderItemService: WorkOrderItemService) {
+  constructor( @inject private cargoFlowService: CargoFlowService,
+    @inject private dialogService: DialogService,
+    @inject private cargoInfoService: CargoInfoService,
+    @inject private verifyRecordService: VerifyRecordService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private dataSourceFactory: DataSourceFactory,
+    @inject private customhouseService: CustomhouseClearanceService,
+    @inject('routerParams') private routerParams: RouterParams,
+    @inject private instockOrderService: InstockOrderService,
+    @inject private router: Router,
+    @inject private dictionaryDataService: DictionaryDataService,
+    @inject private orderItemService: OrderItemService,
+    @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -70,6 +72,12 @@ export class CargoFlow {
           }),
         pageSize: 10
       });
+      //查询该入库单的信息 判断是否是补录的入库单
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.enteringMode && cargoInfo.enteringMode == 2) {
+          this.existEntering = true;
+      }
+
     } else {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
@@ -124,6 +132,15 @@ export class CargoFlow {
       if (cargoInfo.instockStatus == 1) {
         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
         return;
+      }
+      //验证理货报告生成状态
+      let cargoFlows: CargoFlow[] = await  this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
+      if (cargoFlows) {
+        let cfs = cargoFlows.filter(cf => cf.stage > 8);
+        if (cfs.length > 0) {
+          await this.messageDialogService.alert({ title: "失败", message: "该批次货物已生成理货报告，无法新增入库", icon: 'error' });
+          return;
+        }
       }
       this.router.navigateToRoute("new");
     } else {

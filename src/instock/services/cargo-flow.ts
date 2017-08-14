@@ -57,4 +57,9 @@ export class CargoFlowService {
   updateFlowStage(id: string, stage: number): Promise<void> {
     return this.http.put(`/instock/cargo-flow/${id}/changStage/${stage}`, '').then(handleResult);
   }
+
+  async getListByCargoInfoId(infoId: string): Promise<CargoFlow[]> {
+    let res = await this.http.get(`/instock/cargo-flow/${infoId}/cargoInfoId`);
+    return res.content;
+  }
 }
