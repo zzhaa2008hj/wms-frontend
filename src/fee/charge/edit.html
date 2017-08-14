@@ -46,7 +46,7 @@
         </div>
         <div class="row column-seperation">
           <h4>费用明细</h4>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <div class="form-group">
               <label class="form-label">批次号*</label>
               <div class="controls">
@@ -57,7 +57,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <div class="form-group">
               <label class="form-label">费用类别*</label>
               <div class="controls">
@@ -67,6 +67,16 @@
               </div>
             </div>
           </div>
+          <div class="col-md-2">
+            <div class="form-group"> 
+             <label class="form-label">费用类别*</label>
+              <div class="controls"> 
+               <ak-drop-down-list k-value.two-way="chargeCategory"  k-option-label="请选择..." k-data-text-field="text"
+                 k-data-value-field="value" k-data-source.bind="chargeCategoryVos" k-enabled.two-way="!disabled">
+               </ak-drop-down-list>
+              </div> 
+            </div> 
+         </div
           <div class="col-md-12">
             <span class="help"></span>
             <div class="controls right">
