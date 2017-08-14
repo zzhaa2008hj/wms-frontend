@@ -1,5 +1,6 @@
 import { ValidationRules } from 'aurelia-validation';
 import { AttachmentMap } from '@app/common/models/attachment';
+import { InstockVehicle } from "@app/instock/models/instock-vehicle";
 /**
  * Created by Hui on 2017/6/19.
  */
@@ -76,25 +77,10 @@ export interface InstockCargoItem {
   freeDays: number;
 
   //车辆信息
-  vehicles: Vehicle[];
+  vehicles: InstockVehicle[];
 
   // 下标
   index: number;
-}
-
-export interface Vehicle {
-  //唯一性标识
-  sign?: string;
-
-  id: string;
-  instockGoodsId: string;
-  plateNumber: string;
-  driverName: string;
-  driverIdentityNumber: string;
-  phoneNumber: string;
-  remark: string;
-  orgId: string;
-  cargoName: string;
 }
 
 export const cargoFlowValidationRules = ValidationRules
