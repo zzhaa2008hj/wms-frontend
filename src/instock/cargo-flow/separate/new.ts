@@ -73,7 +73,6 @@ export class NewSeparate {
         let cargoItem = await this.cargoItemService.getBaseCargoItemById(ci.cargoItemId);
         Object.assign(ci, { cargoSubCatergoryName: cargoItem.cargoSubCatergoryName, freeDays: cargoItem.freeDays });
         let vehicles = await this.vehicleService.listInstockVehicles(ci.id);
-
         vehicles.forEach(v => {
           v.cargoName = ci.cargoName;
           this.vehicles.push(v);
