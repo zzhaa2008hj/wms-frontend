@@ -41,6 +41,12 @@ export class ViewChargeInfo {
         if (chargeCategory) {
           item.chargeCategoryName = chargeCategory.text;
         }
+        item.cargoRateStepList.map(rate => {
+          let unit = this.units.find(r => r.dictDataCode == rate.stepUnit);
+          if (unit) {
+            rate.stepUnitName = unit.dictDataName;
+          }
+        });
       });
     }
   }

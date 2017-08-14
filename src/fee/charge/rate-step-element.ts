@@ -30,7 +30,7 @@ export class RateStepList {
           stepEnd: { editable: false },
           stepPrice: { editable: false },
           actualStepPrice: { editable: true, type: 'number', validation: { required: false, min: 0, max: 10000000 } },
-          stepUnit: { editable: false },
+          stepUnitName: { editable: false },
           remark: { editable: false }
         }
       }
