@@ -31,18 +31,19 @@ export class OrderList {
     pageSizes: true,
     buttonCount: 10
   };
+  existEntering = false;
   outstockStages: any[] = ConstantValues.OutstockStages;
 
-  constructor(@inject private orderService: OrderService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private dataSourceFactory: DataSourceFactory,
-              @inject private dialogService: DialogService,
-              @inject private customhouseService: CustomhouseClearanceService,
-              @inject private cargoInfoService: CargoInfoService,
-              @inject private router: Router,
-              @inject('routerParams') private routerParams: RouterParams,
-              @inject private verifyRecordService: VerifyRecordService,
-              @inject private workOrderItemService: WorkOrderItemService) {
+  constructor( @inject private orderService: OrderService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private dataSourceFactory: DataSourceFactory,
+    @inject private dialogService: DialogService,
+    @inject private customhouseService: CustomhouseClearanceService,
+    @inject private cargoInfoService: CargoInfoService,
+    @inject private router: Router,
+    @inject('routerParams') private routerParams: RouterParams,
+    @inject private verifyRecordService: VerifyRecordService,
+    @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -63,6 +64,13 @@ export class OrderList {
         }),
       pageSize: 10
     });
+    if (this.routerParams.infoId) {
+      //查询该入库单的信息 判断是否是补录的入库单
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.enteringMode && cargoInfo.enteringMode == 2) {
+        this.existEntering = true;
+      }
+    }
   }
 
   async delete(id) {
