@@ -20,8 +20,9 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 
-export class CargoFlow {
+export class CargoFlowList {
   selectedItem: any;
   searchName: string;
   pageable = {
