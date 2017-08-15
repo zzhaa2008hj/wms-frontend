@@ -103,6 +103,10 @@ export class ConstantValues {
     return [{ text: "仓储费", value: 1 }, { text: "装卸费", value: 2 }, { text: "其他费用", value: 3 }];
   }
 
+  static get ChargeCategoryVo() {
+    return [{ text: "仓储费", value: 1 }, { text: "作业费", value: 2 }];
+  }
+
   static get CustomerCategory() {
     return [{ text: "仓储客户", value: 1 }, { text: "装卸单位", value: 2 }];
   }

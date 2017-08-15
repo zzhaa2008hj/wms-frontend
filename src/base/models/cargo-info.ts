@@ -170,4 +170,6 @@ export interface CargoRateStep {
   stepPrice: number;
 
   stepUnit: string;
+
+  stepUnitName: string;
 }

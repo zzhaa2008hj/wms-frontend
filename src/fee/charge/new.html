@@ -57,42 +57,42 @@
         </div>
         <div class="row column-seperation">
           <h4>费用明细</h4>
-          <div class="col-md-3">
-            <div class="form-group">
+          <div class="col-md-2">
+             <div class="form-group"> 
               <label class="form-label">批次号*</label>
-              <div class="controls">
+               <div class="controls"> 
                 <ak-drop-down-list k-value.two-way="batchNumber" k-data-text-field="value" k-data-value-field="key"
                   k-data-source.bind="batchNumbers" k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
                 <input class="form-control" type="hidden" value.bind="batchNumber & validate ">
-              </div>
-            </div>
+               </div> 
+             </div> 
           </div>
-          <!-- <div class="col-md-3">
-            <div class="form-group">
+          <div class="col-md-2">
+             <div class="form-group"> 
+              <label class="form-label">费用类别*</label>
+               <div class="controls"> 
+                <ak-drop-down-list k-value.two-way="chargeCategory"  k-option-label="请选择..." k-data-text-field="text"
+                  k-data-value-field="value" k-data-source.bind="chargeCategoryVos" k-enabled.two-way="!disabled">
+                </ak-drop-down-list>
+               </div> 
+             </div> 
+          </div>
+          <div class="col-md-2">
+            <div class="form-group"> 
               <label class="form-label">费用类型*</label>
-              <div class="controls">
-                <ak-drop-down-list style="width: 300px;"  k-value.two-way="rateType"  k-option-label="请选择..." k-data-text-field="text"
+               <div class="controls"> 
+                <ak-drop-down-list k-value.two-way="rateType"  k-option-label="请选择..." k-data-text-field="text"
                   k-data-value-field="value" k-data-source.bind="workInfoCategorys" k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
-              </div>
-            </div>
-          </div> -->
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">费用类别*</label>
-              <div class="controls">
-                <ak-drop-down-list k-value.two-way="chargeCategory"  k-option-label="请选择..." k-data-text-field="text"
-                  k-data-value-field="value" k-data-source.bind="chargeCategorys" k-enabled.two-way="!disabled">
-                </ak-drop-down-list>
-              </div>
-            </div>
-          </div>
+               </div> 
+             </div> 
+          </div> 
           <div class="col-md-12">
             <span class="help"></span>
             <div class="controls right">
-              <a class="btn btn-primary" click.delegate="addChargeItem()">新增货物和费率</a>
-              <a class="btn btn-danger" click.delegate="deleteChargeItem()">删除货物和费率</a>
+              <a class="btn btn-primary" click.delegate="addChargeItem()">新增结算明细</a>
+              <a class="btn btn-danger" click.delegate="deleteChargeItem()">删除结算明细</a>
               <ak-grid k-data-source.bind="chargeItemDataSource" k-widget.bind="customerGrid" k-editable.bind="true" >
                 <ak-col k-field="batchNumber" k-title="批次号" k-width="110px"></ak-col>
                 <ak-col k-field="rateTypeName" k-title="费用类型"></ak-col>
