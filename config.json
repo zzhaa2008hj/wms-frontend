@@ -6,7 +6,33 @@
     "baseUrl": "http://192.168.133.118:5555",
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
-  "routes": [{
+
+  "routes": [
+    {
+      "route": "/report/daily-charge",
+      "name": "daily-charge",
+      "title": "每日收费",
+      "moduleId":"./report/daily-charge/index"
+    },
+    {
+      "route": "/report/daily-payment",
+      "name": "daily-payment",
+      "title": "每日付费",
+      "moduleId":"./report/daily-payment/index"
+    },
+    {
+      "route": "/report/monthly-charge",
+      "name": "monthly-charge",
+      "title": "每月收费",
+      "moduleId":"./report/monthly-charge/index"
+    },
+    {
+      "route": "/report/monthly-payment",
+      "name": "monthly-payment",
+      "title": "每月付费",
+      "moduleId":"./report/monthly-payment/index"
+    },
+    {
       "route": "/report",
       "name": "report",
       "title": "报表",
