@@ -159,7 +159,7 @@ export interface CargoRate {
 export interface CargoRateStep {
   id: string;
 
-  // cargoRateId: String;
+ // cargoRateId: String;
 
   customerRateId: String;
 
@@ -174,7 +174,7 @@ export interface CargoRateStep {
   stepUnit: string;
 
   stepUnitName: string;
-  
+
   stepUnitStr: string;
 
   actualStepPrice: number;
