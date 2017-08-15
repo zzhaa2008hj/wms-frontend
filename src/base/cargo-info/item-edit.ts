@@ -22,9 +22,9 @@ export class EditCargoItem {
   rateTypes = ConstantValues.WorkInfoCategory;
 
   constructor(private dialogController: DialogController,
-              private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, 
-              container: Container) {
+    private dictionaryDataService: DictionaryDataService,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
 
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -67,6 +67,13 @@ export class EditCargoItem {
       let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       let rateType = this.rateTypes.find(d => res.rateType == d.value);
+      if (res.cargoRateSteps) {
+        res.cargoRateSteps.map(r => {
+          let unit = this.unitDatasource.find(d => r.stepUnit == d.dictDataCode);
+          r.stepUnitStr = unit.dictDataName;
+          return r;
+        });
+      }
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
@@ -81,6 +88,7 @@ export class EditCargoItem {
       }
       return res;
     });
+    console.log(this.cargoRates)
   }
 
   async save() {
@@ -145,7 +153,7 @@ export class EditCargoItem {
           field: 'stepPrice',
           title: '阶梯价'
         },
-        { field: 'stepUnit', title: '单位' },
+        { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
       ],
       save: (e) => {

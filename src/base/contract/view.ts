@@ -56,6 +56,7 @@ export class ViewContract {
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.contractVo = await this.contractService.getContract(id);
+    this.contractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.contractVo.contract.contractType).name;
     if (this.contractVo.contract.contractType == 3) {
       //库区信息
       this.warehouses = await this.contractService.getWarehouses();
@@ -83,13 +84,14 @@ export class ViewContract {
       });
       this.baseRateAndSteps = rates;
       this.baseRateStep = this.contractVo.rateStepVos;
+      this.baseRateStep.map(res => {
+        if (res.stepUnit) {
+          res.stepUnitStr = this.unit.find(r => r.dictDataCode == res.stepUnit).dictDataName;
+        }
+        return res;
+      });
     }
   }
-
-  formatMethod(type: number) {
-    return ['客户仓储', '装卸单位', '库区租赁', 'delete'][type - 1] || 'unknown';
-  }
-
 
   cancel() {
     this.router.navigateToRoute("list");
@@ -112,7 +114,7 @@ export class ViewContract {
         { field: 'stepStart', title: '开始值' },
         { field: 'stepEnd', title: '结束值' },
         { field: 'stepPrice', title: '阶梯价' },
-        { field: 'stepUnit', title: '单位' },
+        { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
       ]
     });

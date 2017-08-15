@@ -118,6 +118,12 @@ export class EditContract {
       });
       this.baseRateAndSteps = rates;
       this.baseRateStep = this.contractVo.rateStepVos;
+      this.baseRateStep.map(res => {
+        if (res.stepUnit) {
+          res.stepUnitStr = this.unit.find(r => r.dictDataCode == res.stepUnit).dictDataName;
+        }
+        return res;
+      });
     }
     this.validationController.addObject(this.contract, validationRules);
   }
@@ -244,7 +250,7 @@ export class EditContract {
           //template: '<input type="text" value.bind=" stepPrice & validate & notify">'
 
         },
-        { field: 'stepUnit', title: '单位' },
+        { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
       ],
       save: function (e) {
