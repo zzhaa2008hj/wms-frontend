@@ -37,7 +37,7 @@ export class ContractList {
   }
 
   async delete(id) {
-    let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定删除该角色！" });
+    let confirm = await this.messageDialogService.confirm({ title: "提示", message: "确定删除该合同！" });
     if (confirm) {
       try {
         await this.contractService.delete(id);

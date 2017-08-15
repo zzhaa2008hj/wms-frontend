@@ -100,7 +100,6 @@ export class NewCargoItem {
           }
           return true;
         });
-
         r.cargoRateSteps.forEach((steps) => {
           let id = steps.id;
           this.contractCargoRateSteps.every((contractRes, stepIndex, stepArr) => {
@@ -139,6 +138,11 @@ export class NewCargoItem {
       if (rateType) {
         res.rateTypeStr = rateType.text;
       }
+      return res;
+    });
+    this.contractCargoRateSteps.map(res => {
+      let unit = this.unitDatasource.find(d => res.stepUnit == d.dictDataCode);
+        res.stepUnitStr = unit.dictDataName;
       return res;
     });
   }
@@ -234,7 +238,7 @@ export class NewCargoItem {
           //template: '<input type="text" value.bind=" stepPrice & validate & notify">'
 
         },
-        { field: 'stepUnit', title: '单位' },
+        { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
       ],
       save: function (e) {

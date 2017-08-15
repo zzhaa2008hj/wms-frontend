@@ -17,7 +17,7 @@ import { ConstantValues } from '@app/common/models/constant-values';
 export class NewContract {
   disabled: boolean = false;
   validationController: ValidationController;
-  
+
   contractVo = {} as ContractVo;
   contract = {} as Contract;
   unit = [] as DictionaryData[];
@@ -48,6 +48,7 @@ export class NewContract {
    * 基础阶梯费率
    */
   baseRateStep: RateStep[];
+  instockStages: any[] = ConstantValues.InstockStages;
 
   constructor(private router: Router,
     private contractService: ContractService,
@@ -150,6 +151,12 @@ export class NewContract {
     });
     this.baseRateAndSteps = rates;
     this.baseRateStep = await this.contractService.getBaseRateStep();
+    this.baseRateStep.map(res => {
+      if (res.stepUnit) {
+        res.stepUnitStr = this.unit.find(r => r.dictDataCode == res.stepUnit).dictDataName;
+      }
+      return res;
+    });
   }
 
   validateProperty(propertyName: string) {
@@ -301,7 +308,7 @@ export class NewContract {
           //template: '<input type="text" value.bind=" stepPrice & validate & notify">'
 
         },
-        { field: 'stepUnit', title: '单位' },
+        { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
       ],
       save: function (e) {

@@ -8,11 +8,11 @@
         <div class="grid simple">
           <div class="grid-body no-border">
             <div class="row column-seperation">
-              <h4>基本信息</h4>
+              <h4>基本信息(修改前)</h4>
               <div class="col-md-12">
                 <label class="form-label">合同类型*</label>
                 <div class="controls right">
-                  <label>${oldContractVo.contract.contractType}</label>
+                  <label>${oldContractVo.contract.contractTypeStr}</label>
                 </div>
               </div>
               <div class="col-md-3">
@@ -117,7 +117,7 @@
                       <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
                       <ak-col k-field="remark" k-title="备注"></ak-col>
                       <ak-template for="detailTemplate">
-                        <div class="newRateSteps" if.bind="pricingMode !=1 "></div>
+                        <div class="oldRateSteps" if.bind="pricingMode !=1 "></div>
                         <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
                       </ak-template>
                     </ak-grid>
@@ -132,11 +132,11 @@
         <div class="grid simple">
           <div class="grid-body no-border">
             <div class="row column-seperation">
-              <h4>基本信息</h4>
+              <h4>基本信息(修改后)</h4>
               <div class="col-md-12">
                 <label class="form-label">合同类型*</label>
                 <div class="controls right">
-                  <label>${newContractVo.contract.contractType}</label>
+                  <label>${newContractVo.contract.contractTypeStr}</label>
                 </div>
               </div>
               <div class="col-md-3">
