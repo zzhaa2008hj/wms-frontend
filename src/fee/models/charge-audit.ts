@@ -56,6 +56,17 @@ export interface ChargeAuditItem {
   containerTypeStr: string;
   rateTypeName: string;
   chargeCategoryName: string;
+
+  // 作业表主键
+  workOrderId: string;
+  // 作业过程主键
+  workOrderItemId: string;
+  // 作业内容名称
+  workInfoName: string;
+  // 费用
+  amount: number;
+  // 作业日期
+  workDate: Date;
 }
 
 export const chargeAuditListValidationRules = ValidationRules 

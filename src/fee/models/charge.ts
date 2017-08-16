@@ -81,6 +81,8 @@ export interface ChargeItem {
   pricingMode: number;
   price: number;
   cargoRateStepList: CargoRateStep[];
+  // 作业内容
+  workName: string;
 }
 
 export const chargeInfoValidationRules = ValidationRules

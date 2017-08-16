@@ -212,7 +212,7 @@ export class OrderList {
         return;
       }
       // 跳转 到出库单页面
-      this.router.navigateToRoute('outstock-orderItem-view', { id: id });
+      window.location.href = `#/outstock/order/item/${id}/view`;
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }

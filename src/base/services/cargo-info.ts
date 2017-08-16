@@ -205,4 +205,12 @@ export class CargoInfoService {
       .withParams({ enteringMode: enteringMode }).asGet().send();
     return res.content
   }
+
+  /**
+   * 根据批次获取客户货物信息
+   */
+  async getByBatchNumber(batchNumber: string): Promise<CargoInfo> {
+    let res = await this.http.get(`/base/cargoInfo/batchNumber/${batchNumber}`);
+    return res.content;
+  }
 }
