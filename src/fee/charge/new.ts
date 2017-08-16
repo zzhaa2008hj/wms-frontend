@@ -11,6 +11,7 @@ import { DialogService } from "ui";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { CargoRateStep } from '@app/base/models/cargo-info';
+import { uuid } from '@app/utils';
 
 export class NewChargeInfo {
   disabled: boolean = false;
@@ -27,7 +28,7 @@ export class NewChargeInfo {
 
   batchNumber: string;
   chargeCategory: number;
-  rateType: number;
+  rateType: number = -1;
 
   chargeItems: ChargeItem[] = [];
   chargeItemDataSource = new kendo.data.DataSource({
@@ -36,7 +37,7 @@ export class NewChargeInfo {
         options.success(this.chargeItems);
       },
       update: (options) => {
-          options.success();
+        options.success();
       },
       destroy: (options) => {
         options.success();
@@ -50,6 +51,7 @@ export class NewChargeInfo {
           batchNumber: { editable: false },
           rateTypeName: { editable: false },
           chargeCategory: { editable: false },
+          chargeCategoryName: { editable: false },
           cargoCategoryName: { editable: false },
           warehouseName: { editable: false },
           quantity: { editable: false },
@@ -58,6 +60,7 @@ export class NewChargeInfo {
           pricingMode: { editable: false },
           price: { editable: false },
           actualPrice: { editable: true, type: 'number', validation: { required: false, min: 0, max: 10000000 }},
+          workName: {editable: false}
         }
       }
     }
@@ -113,8 +116,8 @@ export class NewChargeInfo {
    * 列出申请明细
    */
   async addChargeItem() {
-    if (!this.batchNumber || !this.chargeCategory || !this.rateType) {
-      return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类型、费用类别", icon: 'error' });
+    if (!this.batchNumber || !this.chargeCategory) {
+      return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类别", icon: 'error' });
     }
     let items = await this.chargeInfoService.getItems(this.batchNumber, this.chargeCategory, this.rateType);
     if (items && items.length == 0) {
@@ -126,11 +129,32 @@ export class NewChargeInfo {
       return await this.dialogService.alert({ title: "提示", message: m.message, icon: 'error' });
     }
     // 过滤重复
-    for (let item of this.chargeItems) {
-      if (item.batchNumber == this.batchNumber && item.chargeCategory == this.chargeCategory && item.rateType == this.rateType) {
-        return;
+    if (2 == this.chargeCategory) {
+      for (let item of this.chargeItems) {
+        if (!this.rateType || -1 == this.rateType) {
+          if (item.batchNumber == this.batchNumber && (2 == item.chargeCategory || 3 == item.chargeCategory)) {
+            return;
+          }
+        }else {
+          if (item.batchNumber == this.batchNumber && (2 == item.chargeCategory || 3 == item.chargeCategory) && item.rateType == this.rateType) {
+            return;
+          }
+        }
+      }
+    }else {
+      for (let item of this.chargeItems) {
+        if (!this.rateType || -1 == this.rateType) {
+          if (item.batchNumber == this.batchNumber && item.chargeCategory == this.chargeCategory) {
+            return;
+          }
+        }else {
+          if (item.batchNumber == this.batchNumber && item.chargeCategory == this.chargeCategory && item.rateType == this.rateType) {
+            return;
+          }
+        }
       }
     }
+    
     if (items) {
       items.map(item => {
         let unit = this.units.find(r => r.dictDataCode == item.unit);
@@ -151,8 +175,12 @@ export class NewChargeInfo {
             if (unit) {
               rate.stepUnitName = unit.dictDataName;
             }
+            // 临时加id，让组件修改时识别
+            rate.id = uuid();
           });
         }
+        // 临时加id，让组件修改时识别
+        item.id = uuid();
       });
     }
     
@@ -163,12 +191,31 @@ export class NewChargeInfo {
   }
 
   async deleteChargeItem() {
-    if (!this.batchNumber || !this.chargeCategory || !this.rateType) {
-      return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类型、费用类别", icon: 'error' });
+    if (!this.batchNumber || !this.chargeCategory) {
+      return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类别", icon: 'error' });
     }
-    this.chargeItems = this.chargeItems.filter(item => 
-      item.batchNumber != this.batchNumber || item.chargeCategory != this.chargeCategory || item.rateType != this.rateType
-    );
+    if (2 == this.chargeCategory) {
+      if (this.rateType && -1 != this.rateType) {
+        this.chargeItems = this.chargeItems.filter(item => 
+          item.batchNumber != this.batchNumber || (2 != item.chargeCategory && 3 != item.chargeCategory) || item.rateType != this.rateType
+        );
+      }else {
+        this.chargeItems = this.chargeItems.filter(item => 
+          item.batchNumber != this.batchNumber || (2 != item.chargeCategory && 3 != item.chargeCategory)
+        );
+      }
+    }else {
+      if (this.rateType && -1 != this.rateType) {
+        this.chargeItems = this.chargeItems.filter(item => 
+          item.batchNumber != this.batchNumber || item.chargeCategory != this.chargeCategory || item.rateType != this.rateType
+        );
+      }else {
+        this.chargeItems = this.chargeItems.filter(item => 
+          item.batchNumber != this.batchNumber || item.chargeCategory != this.chargeCategory
+        );
+      }
+    }
+    
     this.chargeItemDataSource.read();
   }
 
@@ -176,6 +223,15 @@ export class NewChargeInfo {
    * 保存
    */
   async save() {
+    // 去除临时id
+    if (this.chargeItems) {
+      this.chargeItems.forEach(item => {
+        item.id = null;
+        if (item.cargoRateStepList) {
+          item.cargoRateStepList.forEach(rate => rate.id = null);
+        }
+      });
+    }
     this.chargeInfo.chargeItemList = this.chargeItems;
     let { valid } = await this.validationController.validate();
     if (!valid) return;
@@ -190,5 +246,4 @@ export class NewChargeInfo {
       this.disabled = false;
     }
   }
-
 }
