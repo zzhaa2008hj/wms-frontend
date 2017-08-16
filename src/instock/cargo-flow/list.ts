@@ -135,7 +135,7 @@ export class CargoFlowList {
       }
       //验证理货报告生成状态
       let cargoFlows: CargoFlow[] = await this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
-      if (cargoFlows.length > 0) {
+      if (cargoFlows && cargoFlows.length > 0) {
         let cfs = cargoFlows.filter(cf => cf.stage < 9);
         if (cfs.length == 0) {
           await this.messageDialogService.alert({ title: "失败", message: "该批次货物已生成理货报告，无法新增入库", icon: 'error' });
