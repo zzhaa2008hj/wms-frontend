@@ -33,7 +33,7 @@
               </div>
             </div>
           </div>
-         
+
           <div class="col-md-12">
             <div class="form-group">
               <label class="form-label">备注</label>
@@ -50,20 +50,10 @@
             <div class="form-group">
               <label class="form-label">批次号*</label>
               <div class="controls">
-                <ak-drop-down-list k-value.two-way="batchNumber" k-data-text-field="value" k-data-value-field="key"
-                  k-data-source.bind="batchNumbers" k-enabled.two-way="!disabled">
+                <ak-drop-down-list k-value.two-way="batchNumber" k-data-text-field="value" k-data-value-field="key" k-data-source.bind="batchNumbers"
+                  k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
                 <input class="form-control" type="hidden" value.bind="batchNumber">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <label class="form-label">费用类别*</label>
-              <div class="controls">
-                <ak-drop-down-list k-value.two-way="chargeCategory"  k-option-label="请选择..." k-data-text-field="text"
-                  k-data-value-field="value" k-data-source.bind="chargeCategorys" k-enabled.two-way="!disabled">
-                </ak-drop-down-list>
               </div>
             </div>
           </div>
@@ -76,16 +66,26 @@
                </ak-drop-down-list>
               </div> 
             </div> 
-         </div
+         </div>
+         <div class="col-md-2">
+           <div class="form-group"> 
+             <label class="form-label">费用类型*</label>
+              <div class="controls"> 
+               <ak-drop-down-list k-value.two-way="rateType"  k-option-label="请选择..." k-data-text-field="text"
+                 k-data-value-field="value" k-data-source.bind="workInfoCategorys" k-enabled.two-way="!disabled">
+               </ak-drop-down-list>
+              </div> 
+            </div> 
+         </div> 
           <div class="col-md-12">
             <span class="help"></span>
             <div class="controls right">
-              <a class="btn btn-primary" click.delegate="addChargeItem()">新增货物和费率</a>
-              <a class="btn btn-danger" click.delegate="deleteChargeItem()">删除货物和费率</a>
-              <ak-grid k-data-source.bind="chargeItemDataSource" k-widget.bind="customerGrid" k-editable.bind="true" >
+              <a class="btn btn-primary" click.delegate="addChargeItem()">新增结算明细</a>
+              <a class="btn btn-danger" click.delegate="deleteChargeItem()">删除结算明细</a>
+              <ak-grid k-data-source.bind="chargeItemDataSource" k-widget.bind="customerGrid" k-editable.bind="true">
                 <ak-col k-field="batchNumber" k-title="批次号" k-width="110px"></ak-col>
-                <ak-col k-field="rateTypeName" k-title="费用类型"></ak-col>
                 <ak-col k-field="chargeCategoryName" k-title="费用类别"></ak-col>
+                <ak-col k-field="rateTypeName" k-title="费用类型"></ak-col>
                 <ak-col k-field="cargoCategoryName" k-title="货物名称"></ak-col>
                 <ak-col k-field="warehouseName" k-title="库区"></ak-col>
                 <ak-col k-field="quantity" k-title="数量"></ak-col>
@@ -93,11 +93,12 @@
                 <ak-col k-field="unitName" k-title="计量单位"></ak-col>
                 <ak-col k-field="pricingMode" k-title="计价方式">
                   <ak-template>
-                     ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
+                    ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
                   </ak-template>
                 </ak-col>
                 <ak-col k-field="price" k-title="单一单价"></ak-col>
-                <ak-col k-field="actualPrice" k-title="实际费率"></ak-col>
+                <ak-col k-field="actualPrice" k-title="实际单一单价"></ak-col>
+                <ak-col k-field="workName" k-title="作业内容"></ak-col>
                 <ak-template for="detailTemplate">
                   <rate-steps rate-steps.bind="cargoRateStepList" if.bind="pricingMode !=1 "></rate-steps>
                   <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
