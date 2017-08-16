@@ -35,19 +35,19 @@ export class CargoFlowList {
   private dataSource: kendo.data.DataSource;
   existEntering = false;
 
-  constructor( @inject private cargoFlowService: CargoFlowService,
-    @inject private dialogService: DialogService,
-    @inject private cargoInfoService: CargoInfoService,
-    @inject private verifyRecordService: VerifyRecordService,
-    @inject private messageDialogService: MessageDialogService,
-    @inject private dataSourceFactory: DataSourceFactory,
-    @inject private customhouseService: CustomhouseClearanceService,
-    @inject('routerParams') private routerParams: RouterParams,
-    @inject private instockOrderService: InstockOrderService,
-    @inject private router: Router,
-    @inject private dictionaryDataService: DictionaryDataService,
-    @inject private orderItemService: OrderItemService,
-    @inject private workOrderItemService: WorkOrderItemService) {
+  constructor(@inject private cargoFlowService: CargoFlowService,
+              @inject private dialogService: DialogService,
+              @inject private cargoInfoService: CargoInfoService,
+              @inject private verifyRecordService: VerifyRecordService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject private customhouseService: CustomhouseClearanceService,
+              @inject('routerParams') private routerParams: RouterParams,
+              @inject private instockOrderService: InstockOrderService,
+              @inject private router: Router,
+              @inject private dictionaryDataService: DictionaryDataService,
+              @inject private orderItemService: OrderItemService,
+              @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -75,7 +75,7 @@ export class CargoFlowList {
       //查询该入库单的信息 判断是否是补录的入库单
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
       if (cargoInfo.enteringMode && cargoInfo.enteringMode == 2) {
-          this.existEntering = true;
+        this.existEntering = true;
       }
 
     } else {
@@ -134,8 +134,8 @@ export class CargoFlowList {
         return;
       }
       //验证理货报告生成状态
-      let cargoFlows: CargoFlow[] = await  this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
-      if (cargoFlows) {
+      let cargoFlows: CargoFlow[] = await this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
+      if (cargoFlows.length > 0) {
         let cfs = cargoFlows.filter(cf => cf.stage < 9);
         if (cfs.length == 0) {
           await this.messageDialogService.alert({ title: "失败", message: "该批次货物已生成理货报告，无法新增入库", icon: 'error' });
