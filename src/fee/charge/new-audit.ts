@@ -9,6 +9,8 @@ import { ChargeAuditListService } from "@app/fee/services/charge-audit";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { DialogService } from "ui";
 import { auditListValidationRules, ChargeAuditList } from '@app/fee/models/charge-audit';
+import { ChargeInfoService } from "@app/fee/services/charge";
+import * as moment from 'moment';
 
 export class NewChargeInfo {
   disabled: boolean = false;
@@ -21,19 +23,46 @@ export class NewChargeInfo {
   workInfoCategorys = ConstantValues.WorkInfoCategory;
   chargeCategorys = ConstantValues.ChargeCategory;
 
-  batchNumber: string;
-  chargeCategory: number;
-
-  chargeAuditDataSource = new kendo.data.DataSource();
+  chargeAuditDataSource = new kendo.data.DataSource({
+    transport: {
+      read: (options) => {
+        options.success(this.chargeInfo);
+      },
+      update: (options) => {
+        options.success();
+      },
+      destroy: (options) => {
+        options.success();
+      }
+    },
+    schema: {
+      model: {
+        id: 'id',
+        fields: {
+          batchNumber: { validation: { required: true }},
+          billLadingNumber: { validation: { required: true }},
+          warehousingAmount: { type: 'number'},
+          loadingAmount: { type: 'number' },
+          otherAmount: { type: 'number'},
+          sumAmount: { type: 'number', editable: false }
+        }
+      }
+    }
+  });
 
   startDatePicker: any;
   endDatePicker: any;
+
+  batchNumbers = new kendo.data.HierarchicalDataSource({
+    data: []
+  });
 
   constructor(@inject private router: Router,
               @inject private cargoInfoService: CargoInfoService,
               @newInstance() private validationController: ValidationController,
               @inject private chargeAuditListService: ChargeAuditListService,
-              @inject private dialogService: DialogService) {
+              @inject private dialogService: DialogService,
+              @inject private chargeInfoService: ChargeInfoService,) {
     validationController.addRenderer(formValidationRenderer);
   }
 
@@ -55,6 +84,19 @@ export class NewChargeInfo {
     this.chargeInfo.agentId = this.agentWidget.value();
     this.chargeInfo.agentName = this.agentWidget.text();
     this.chargeInfo.paymentUnit = this.customerWidget.text();
+
+    if (this.chargeInfo.customerId) {
+      let batchNumbers = await this.chargeInfoService.getBatchNumbers(this.chargeInfo.customerId);
+      if (batchNumbers) {
+        let bs = batchNumbers.map(b => Object.assign({key: b, value: b}));
+        this.batchNumbers.data(bs);
+      }
+    }
+  }
+
+  async batchNumberChange(itemLine) {
+    let cargoInfo = await this.cargoInfoService.getByBatchNumber(itemLine.batchNumber);
+    itemLine.billLadingNumber = cargoInfo.billLadingNumber;
   }
 
   validateProperty(propertyName: string) {
@@ -75,12 +117,14 @@ export class NewChargeInfo {
         this.validationController.addObject(c, auditListValidationRules);
         let { valid } = await this.validationController.validate();
         if (!valid) return;
+        c.sumAmount = c.loadingAmount + c.otherAmount + c.warehousingAmount;
       }
       Object.assign(this.chargeInfo, { chargeAuditList: chargeAuditList });
     }
     if (this.chargeInfo.chargeAuditList.length == 0) {
       return this.dialogService.alert({ title: "提示", message: "请填写账单信息", icon: 'error' });
     }
+    this.chargeInfo.chargeEndDate = moment(this.chargeInfo.chargeEndDate).hour(23).minute(59).second(59).toDate();
     console.log(this.chargeInfo);
     
     this.disabled = true;

@@ -56,7 +56,7 @@ export class ChargeInfoService {
   /**
    * 获取相关结算申请明细
    */
-  async getItems(batchNumber: string, chargeCategory: number, rateType: number): Promise<ChargeItem[]> {
+  async getItems(batchNumber: string, chargeCategory: number, rateType?: number): Promise<ChargeItem[]> {
     let res = await this.http.get(`/fee/charge-info/item?batchNumber=${batchNumber}&chargeCategory=${chargeCategory}&rateType=${rateType}`);
     return res.content;
   }
