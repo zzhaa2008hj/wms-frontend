@@ -12,6 +12,7 @@ import { Rate } from '@app/base/models/rate';
 export class List {
   searchName: string;
   rate = {} as Rate;
+  selectedItem: any;
 
   pageable = {
     refresh: true,
@@ -82,6 +83,19 @@ export class List {
   reset() {
     this.rate = {} as Rate;
     this.dataSource.read();
+  }
+
+  copyRate() {
+
+  }
+
+    /**
+   * 单选数据
+   */
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    this.selectedItem = grid.dataItem(selectedRow);
   }
 
   async changeState(id) {

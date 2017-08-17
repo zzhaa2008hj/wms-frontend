@@ -32,8 +32,8 @@ export class CargoFlowList {
   };
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
+  existEntering = false;  
   private dataSource: kendo.data.DataSource;
-  existEntering = false;
 
   constructor(@inject private cargoFlowService: CargoFlowService,
               @inject private dialogService: DialogService,
