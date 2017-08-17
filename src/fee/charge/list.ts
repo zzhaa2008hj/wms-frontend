@@ -74,12 +74,12 @@ export class ChargeInfoList {
   /**
    * 费收2审核
    */
-  async auditSecondFee(id) {
-    let result = await this.dialogService.open({ viewModel: Audit, model: {}, lock: true })
+  async auditSecondFee(info) {
+    let result = await this.dialogService.open({ viewModel: Audit, model: info, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     try {
-      await this.chargeInfoService.auditSecondFee(id, result.output);
+      await this.chargeInfoService.auditSecondFee(info.id, result.output);
       await this.dialogService.alert({ title: "提示", message: "审核通过！" });
       this.dataSource.read();
     } catch (err) {
