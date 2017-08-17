@@ -1,39 +1,27 @@
 <template>
-    <div class="page-title">
-        <h3>公告管理</h3>
-    </div>
-    <div class="row">
-        <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增</a></div>
+  <div class="page-title">
+    <h3>公告管理</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增</a></div>
 
-        <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入标题">
-            <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-        </div>
+    <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入标题">
+      <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
-    <ak-grid k-data-source.bind="dataSource"
-             k-pageable.bind="pageable"
-             k-sortable.bind="true">
-        <ak-col k-title="公告类别" k-field="category ==1 ? '内部公告':'外部公告'"></ak-col>
-        <ak-col k-title="标题" k-field="title"></ak-col>
-        <ak-col k-title="是否显示" k-field="visible==1 ? '显示':'隐藏'"></ak-col>
-        <ak-template for="detailTemplate">
-            <div class="tabstrip">
-                <ul>
-                    <li>内容</li>
-                </ul>
-                <div>
-                    ${content}
-                </div>
-            </div>
-        </ak-template>
-        <ak-col k-title="操作">
-            <ak-template>
-                <button class="btn btn-warning btn-small" if.bind="visible == 1" click.delegate="changeVisible(id)">
-                    隐藏
-                </button>
-                <button class="btn btn-primary btn-small" if.bind="visible == 2" click.delegate="changeVisible(id)">
-                    显示
-                </button>
-            </ak-template>
-        </ak-col>
-    </ak-grid>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable" k-sortable.bind="true">
+    <ak-col k-title="公告类别" k-field="category ==1 ? '内部公告':'外部公告'"></ak-col>
+    <ak-col k-title="标题" k-field="title"></ak-col>
+    <ak-col k-title="是否显示" k-field="visible==1 ? '显示':'隐藏'"></ak-col>
+    <ak-col k-title="日期" k-field="createTime" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <ak-template for="detailTemplate">
+      <div innerhtml.bind="content | sanitizeHTML"></div>
+    </ak-template>
+    <ak-col k-title="操作">
+      <ak-template>
+        <button class="btn btn-warning btn-small" if.bind="visible == 1" click.delegate="changeVisible(id)">隐藏</button>
+        <button class="btn btn-primary btn-small" if.bind="visible == 2" click.delegate="changeVisible(id)">显示</button>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
 </template>

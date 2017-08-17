@@ -2,6 +2,7 @@ import { MessageDialogService } from "ui";
 import { NoticeService } from "@app/base/services/notice";
 import { DataSourceFactory } from "@app/utils";
 import { autoinject } from "aurelia-dependency-injection";
+
 @autoinject
 export class Notice {
   searchName: string;
@@ -34,6 +35,4 @@ export class Notice {
       await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
     }
   }
-
-
 }

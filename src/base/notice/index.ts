@@ -6,7 +6,7 @@ export class NoticeRouter {
   configureRouter(config: RouterConfiguration, router: Router) {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
-      { route: '/new', name: 'new', moduleId: './new', title: "新增" },
+      { route: '/new', name: 'new', moduleId: './new', title: "新增" }
     ]);
     this.router = router;
 

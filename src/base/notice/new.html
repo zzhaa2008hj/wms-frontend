@@ -23,7 +23,8 @@
           <label class="form-label">内容</label>
           <span class="help"></span>
           <div class="controls">
-            <textarea type="text" class="form-control" value.bind="notice.content & validate" disabled.bind="disabled"></textarea>
+            <textarea ak-rich-editor="k-tools.bind: tools; k-resizable: resizable; k-widget.two-way: editor;" class="form-control" 
+              value.bind="notice.content & validate" disabled.bind="disabled"></textarea>
           </div>
         </div>
 
@@ -35,6 +36,5 @@
         </div>
       </form>
     </div>
-  </div>
   </div>
 </template>
