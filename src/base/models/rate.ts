@@ -65,9 +65,23 @@ export const rateValidationRules = ValidationRules
   .ensure((rate: Rate) => rate.pricingMode)
   .displayName('计价方式')
   .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((rate: Rate) => rate.price)
+  .displayName('单价')
+  .satisfies((x: number, rate: Rate) => {
+    if ((x == null || x <= 0) && rate.pricingMode == 1) {
+      return false;
+    }
+    return true;
+  }).withMessage(`\${$displayName} 不能为空并且应大于0`)
   .ensure((rate: Rate) => rate.unit)
   .displayName('计量单位')
-  .required().withMessage(`\${$displayName} 不能为空`)
+  .satisfies((x: string, rate: Rate) => {
+    if ((x == '' || x == null) && rate.pricingMode == 1) {
+      return false;
+    }
+    return true;
+  }).withMessage(`\${$displayName} 不能为空`)
 
   .ensure((rate: Rate) => rate.rateType)
   .displayName('作业类别')
@@ -81,7 +95,7 @@ export const rateValidationRules = ValidationRules
   .ensure((rate: Rate) => rate.workName)
   .displayName('作业内容')
   .satisfies((x: string, rate: Rate) => {
-    if (x == '' && rate.chargeCategory != 1) {
+    if ((x == '' || x == null) && rate.chargeCategory != 1) {
       return false;
     }
     return true;
@@ -91,7 +105,7 @@ export const rateValidationRules = ValidationRules
   .ensure((rate: Rate) => rate.warehouseType)
   .displayName('库位性质')
   .satisfies((x: string, rate: Rate) => {
-    if (x == '' && rate.chargeCategory == 1) {
+    if ((x == '' || x == null) && rate.chargeCategory == 1) {
       return false;
     }
     return true;
@@ -100,7 +114,7 @@ export const rateValidationRules = ValidationRules
   .ensure((rate: Rate) => rate.warehouseCategory)
   .displayName('库位类别')
   .satisfies((x: string, rate: Rate) => {
-    if (x == '' && rate.chargeCategory == 1) {
+    if ((x == '' || x == null) && rate.chargeCategory == 1) {
       return false;
     }
     return true;

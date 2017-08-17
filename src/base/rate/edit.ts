@@ -100,9 +100,18 @@ export class NewRate {
     if (this.rateSteps) {
       Object.assign(this.rate, { rateStep: this.rateSteps });
     }
+    if (this.rate.pricingMode == 2) {
+      this.rate.price = null;
+      this.rate.unit = '';
+    }
     this.validationController.addObject(this.rate, rateValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+
+    if (this.rate.pricingMode == 2 && this.rate.rateStep.length == 0) {
+      await this.messageDialogService.alert({ title: "新增失败", message: '请设置阶梯费率', icon: 'error' });
+      return;
+    }
 
     this.disabled = true;
     try {

@@ -2,7 +2,7 @@ import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
 import { autoinject, Container } from "aurelia-dependency-injection";
 import { Rate, RateStep, rateValidationRules } from '@app/base/models/rate';
-import { RateService } from "@app/base/services/rate";
+import { RateService, RateStepService } from '@app/base/services/rate';
 import { NewRateStep } from "@app/base/rate/step/new";
 import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
@@ -40,19 +40,37 @@ export class NewRate {
 
   constructor(private router: Router,
               private rateService: RateService,
+              private rateStepService: RateStepService,
               private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+              validationControllerFactory: ValidationControllerFactory, 
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
   }
 
-  async activate() {
+  async activate(params) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
+
+    if (params.id) {
+      this.rate = await this.rateService.getRate(params.id);
+      this.rate.id = null;
+      this.rateSteps = await this.rateStepService.listRateStepByRateId(params.id);
+      if (this.rateSteps.length > 0) {
+        this.stepIndex = this.rateSteps.length;
+        this.stepStart = this.rateSteps[this.stepIndex - 1].stepEnd;
+        this.rateSteps.forEach(rs => {
+          rs.id = null;
+          rs.rateId = null;
+          rs.stepUnitStr = this.unit.find(u => u.dictDataCode == rs.stepUnit).dictDataName;
+        });
+        this.dataSourceRateStep.data(this.rateSteps);
+      }
+    } 
   }
 
   async selectWorkInfo() {
@@ -86,9 +104,18 @@ export class NewRate {
     if (this.rateSteps) {
       Object.assign(this.rate, { rateStep: this.rateSteps });
     }
+    if (this.rate.pricingMode == 2) {
+      this.rate.price = null;
+      this.rate.unit = '';
+    }
     this.validationController.addObject(this.rate, rateValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+
+    if (this.rate.pricingMode == 2 && this.rate.rateStep.length == 0) {
+      await this.messageDialogService.alert({ title: "新增失败", message: '请设置阶梯费率', icon: 'error' });
+      return;
+    }
 
     this.disabled = true;
     try {

@@ -1,4 +1,5 @@
 <template>
+  <require from="./recipients"></require>
   <div class="page-title">
     <h3>基础费率管理</h3>
   </div>
@@ -45,6 +46,10 @@
     <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
     <ak-col k-field="pricingMode== 1 ? '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
+    <ak-template for="detailTemplate">
+      <rate-recipients if.bind="pricingMode == 2" rate-id.bind="$this.id"></rate-recipients>
+      <h4 if.bind="pricingMode == 1" style="text-align: center">无阶梯费率</h4>
+    </ak-template>
     <ak-col k-title="操作" k-width.bind="200">
       <ak-template>
         <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">编辑</a>
