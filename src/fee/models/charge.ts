@@ -83,6 +83,8 @@ export interface ChargeItem {
   cargoRateStepList: CargoRateStep[];
   // 作业内容
   workName: string;
+  // 业务主键
+  businessId: string;
 }
 
 export const chargeInfoValidationRules = ValidationRules
