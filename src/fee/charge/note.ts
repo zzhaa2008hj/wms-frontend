@@ -9,6 +9,7 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import * as moment from 'moment';
 import { addHeader, print } from "@app/common/services/print-tool";
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class Note {
@@ -33,14 +34,32 @@ export class Note {
     this.chargeInfo.chargeStartDateStr = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD");
     this.chargeInfo.chargeEndDateStr = moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD");
 
+    let containerTypes = await this.dictionaryDataService.getDictionaryDatas("containerType");
+
     if (this.chargeAuditLists) {
       for (let cal of this.chargeAuditLists) {
         cal.chargeAuditItems = await this.chargeAuditItemService.getListByChargeAuditId(cal.id);
         if (cal.chargeAuditItems.length > 0) {
           cal.chargeAuditItems.map(cai => {
-            cai.unitStr = this.units.find(r => r.dictDataCode == cai.unit).dictDataName;
+            let unit = this.units.find(r => r.dictDataCode == cai.unit);
+            if (unit) {
+              cai.unitStr = unit.dictDataName;
+            }
             cai.startDateStr = moment(cai.startDate).format("YYYY-MM-DD");
             cai.endDateStr = moment(cai.endDate).format("YYYY-MM-DD");
+
+            let containerType = containerTypes.find(r => r.dictDataCode == cai.containerType);
+            if (containerType) {
+              cai.containerTypeStr = containerType.dictDataName;
+            }
+            let rateType = ConstantValues.WorkInfoCategory.find(r => r.value == cai.rateType);
+            if (rateType) {
+              cai.rateTypeName = rateType.text;
+            }
+            let chargeCategory = ConstantValues.ChargeCategory.find(r => r.value == cai.chargeCategory);
+            if (chargeCategory) {
+              cai.chargeCategoryName = chargeCategory.text;
+            }
           });
         }
       }
