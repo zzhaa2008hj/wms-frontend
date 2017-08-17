@@ -95,8 +95,8 @@ export class Audit {
       scrollable: false,
       sortable: true,
       columns: [
-        { field: 'rateTypeName', title: '收付费' },
         { field: 'chargeCategoryName', title: '费用类别' },
+        { field: 'rateTypeName', title: '费用类型' },
         { field: 'cargoName', title: '货名' },
         { field: 'cargoCategoryName', title: '货类' },
         { field: 'cargoSubCategoryName', title: '品牌' },
