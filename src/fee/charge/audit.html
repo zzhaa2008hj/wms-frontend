@@ -43,7 +43,7 @@
       <div class="row column-seperation">
         <ak-grid k-data-source.bind="chargeAuditLists" k-on-data-bound.delegate="onDataBound($event.detail)"
                  k-on-detail-init.delegate="detailInit($event.detail)">
-          <ak-col k-field="index" k-title="序号"></ak-col>
+          <!-- <ak-col k-field="index" k-title="序号"></ak-col> -->
           <ak-col k-field="batchNumber" k-title="批次号 "></ak-col>
           <ak-col k-field="billLadingNumber" k-title="提单号"></ak-col>
           <ak-col k-field="containerQuantity" k-title="箱量 "></ak-col>
@@ -68,7 +68,7 @@
     </ux-dialog-body>
     <ux-dialog-footer>
       <button class="btn btn-primary" click.trigger="auditSecondFee(1)">审核通过</button>
-      <button class="btn btn-primary" click.trigger="auditSecondFee(0)">审核不通过</button>
+      <button class="btn btn-warning" click.trigger="auditSecondFee(0)">审核不通过</button>
       <button class="btn btn-white" click.trigger="cancel()">取消</button>
     </ux-dialog-footer>
   </ux-dialog>

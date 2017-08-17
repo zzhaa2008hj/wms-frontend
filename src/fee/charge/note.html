@@ -84,8 +84,8 @@
               <template repeat.for="chargeAuditItem of chargeAuditList.chargeAuditItems">
                 <tr>
                   <td align="center"></td>
-                  <td align="center">${chargeAuditItem.chargeType}</td>
-                  <td align="center">${chargeAuditItem.chargeCategory}</td>
+                  <td align="center">${chargeAuditItem.rateTypeName}</td>
+                  <td align="center">${chargeAuditItem.chargeCategoryName}</td>
                   <td align="center">${chargeAuditItem.cargoName}</td>
                   <td align="center">${chargeAuditItem.cargoCategoryName}</td>
                   <td align="center">${chargeAuditItem.cargoSubCategoryName}</td>
@@ -95,7 +95,7 @@
                   <td align="center">${chargeAuditItem.unitStr}</td>
                   <td align="center">${chargeAuditItem.startDateStr}</td>
                   <td align="center">${chargeAuditItem.endDateStr}</td>
-                  <td align="center">${chargeAuditItem.containerType}</td>
+                  <td align="center">${chargeAuditItem.containerTypeStr}</td>
                   <td align="center">${chargeAuditItem.containerQuantity}</td>
                   <td align="center">${chargeAuditItem.storageDay}</td>
                   <td align="center">${chargeAuditItem.storageRate}</td>

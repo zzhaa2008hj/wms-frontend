@@ -13,7 +13,9 @@
       <div class="col-md-12 col-md-offset-2" id="confirm">
         <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
           <tr>
-            <td align="center" colspan="9"><h4>${organization.name}对账清单</h4></td>
+            <td align="center" colspan="9">
+              <h4>${organization.name}对账清单</h4>
+            </td>
           </tr>
           <tr>
             <td align="center">代理商名称:</td>
@@ -76,7 +78,7 @@
     <div class="pull-right">
       <button class="btn btn-primary" click.delegate="customerConfirm(1)">客户确认</button>
       <button class="btn btn-warning" click.delegate="customerConfirm(0)">客户未确认</button>
-      <button class="btn btn-small" route-href="route: list;">取消</button>
+      <a class="btn" route-href="route: list">取消</a>
     </div>
   </div>
 </template>

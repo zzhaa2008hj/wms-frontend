@@ -1,25 +1,33 @@
 import { autoinject } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { MessageResultService } from "@app/base/services/message";
+import { ReadNotification } from "@app/base/notifications/read";
+import { DialogService } from "ui";
 
 @autoinject
-export class Notifier {
+export class Notifier1 {
 
   private es: EventSource;
 
-  constructor(private events: EventAggregator) {
+  constructor(private events: EventAggregator,
+              private dialogService : DialogService,
+              private messageResultService : MessageResultService
+              ) {
 
-    events.subscribe('user:authenticate', event => {
-      let { userId, orgId } = event; //
-      let es = new EventSource("..."); //TODO
-      es.onmessage = e => {
-        let msg = JSON.parse(e.data);
-        events.publish('notification:message', msg);
-      };
-      es.onerror = e => console.error(e);
-      this.es = es;
+    events.subscribe('event-source:message', event => {
+        let { title, body, requireInteraction,tag,type} = event;
+
+        console.log(tag);
+        let notification =new Notification(title, {body: body, title : title,requireInteraction:requireInteraction,icon:  '/assets/images/note.png'});
+        notification.onclick =async click =>{
+            if(type==1)
+            {
+                messageResultService.updateMessage(tag);
+            }
+            await this.dialogService.open({viewModel: ReadNotification ,model:{title,body},lock: true}).whenClosed();
+        }
     });
   }
-
   subscribe(listener: (msg: any) => void, event: string = "message") {
     this.events.subscribe(`notification:${event}`, listener);
   }
