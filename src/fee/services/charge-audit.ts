@@ -1,5 +1,5 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { ChargeAuditList } from "@app/fee/models/charge-audit";
+import { ChargeAuditList, ChargeAuditItem } from "@app/fee/models/charge-audit";
 import { RestClient, handleResult, Query } from '@app/utils';
 import { ChargeInfo } from '@app/fee/models/charge';
 /**
@@ -56,7 +56,7 @@ export class ChargeAuditItemService {
   constructor(private http: RestClient) {
   }
 
-  async getListByChargeAuditId(chargeAuditId: string) {
+  async getListByChargeAuditId(chargeAuditId: string): Promise<ChargeAuditItem[]> {
     let res = await this.http.get(`/fee/charge-audit-item/${chargeAuditId}/chargeAuditId`);
     return res.content;
   }
