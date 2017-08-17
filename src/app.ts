@@ -1,12 +1,16 @@
 import { inject, computedFrom } from "aurelia-framework";
 import { Router, RouterConfiguration } from "aurelia-router";
+import { Notifier } from "@app/event-source";
+import { Notifier1 } from "@app/notification";
 kendo.culture('zh');
 
 export class App {
 
   router: Router;
 
-  constructor( @inject('config') private config: any) {
+  constructor( @inject('config') private config: any,
+               @inject private notifier: Notifier,
+               @inject private notifier1:Notifier1) {
 
   }
 
