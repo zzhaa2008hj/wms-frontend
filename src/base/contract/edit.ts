@@ -62,7 +62,7 @@ export class EditContract {
           id: 'id',
           fields: {
             price: { type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, editable: true },
-            chargeCategory: { editable: false },
+            rateCategory: { editable: false },
             chargeType: { editable: false },
             unitStr: { editable: false },
             rateTypeStr: { editable: false },

@@ -56,7 +56,8 @@ export class ViewContract {
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.contractVo = await this.contractService.getContract(id);
-    this.contractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.contractVo.contract.contractType).name;
+    this.contractVo.contract.contractTypeStr = this.contractTypes
+      .find(r => r.type == this.contractVo.contract.contractType).name;
     if (this.contractVo.contract.contractType == 3) {
       //库区信息
       this.warehouses = await this.contractService.getWarehouses();

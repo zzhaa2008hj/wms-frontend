@@ -7,6 +7,7 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { VerifyRecordService, VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { ConstantValues } from '@app/common/models/constant-values';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class ContractList {
@@ -18,14 +19,16 @@ export class ContractList {
     pageSizes: true,
     buttonCount: 10
   };
+  contractId: string;
   contractTypes: any[] = ConstantValues.ContractTypes;
   contractStages = ConstantValues.ContractStage;
 
   constructor(private contractService: ContractService,
-    private messageDialogService: MessageDialogService,
-    private dialogService: DialogService,
-    private verifyRecordService: VerifyRecordService,
-    private dataSourceFactory: DataSourceFactory) {
+              private messageDialogService: MessageDialogService,
+              private dialogService: DialogService,
+              private verifyRecordService: VerifyRecordService,
+              private router: Router,
+              private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.contractService.queryContracts({ searchName: this.searchName }).map(res => {
         res.contractTypeStr = this.contractTypes.find(r => r.type == res.contractType).name;
@@ -74,12 +77,31 @@ export class ContractList {
     }
   }
 
-  async verifyHistory(id) {
+  async verifyHistory() {
+    if (!this.contractId) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择合同', icon: "error" });
+      return;
+    }
     let criteria: VerifyRecordCriteria = {};
-    criteria.businessId = id;
+    criteria.businessId = this.contractId;
     criteria.businessType = 6;
     let result = await this.dialogService.open({ viewModel: VerifyRecordDialogList, model: criteria, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
+  }
+
+  async changeHistory() {
+    if (!this.contractId) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择合同', icon: "error" });
+      return;
+    }
+    this.router.navigateToRoute('changeHistory', { id: this.contractId });
+  }
+
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    let dataItem = grid.dataItem(selectedRow);
+    this.contractId = dataItem.id;
   }
 }
