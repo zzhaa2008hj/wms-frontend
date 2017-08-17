@@ -61,7 +61,7 @@ export class NewRate {
     if (this.rateSteps.length > 0) {
       this.stepIndex = this.rateSteps.length;
       this.stepStart = this.rateSteps[this.stepIndex - 1].stepEnd;
-      this.rateSteps.forEach(rs=>{
+      this.rateSteps.forEach(rs => {
         rs.stepUnitStr = this.unit.find(u => u.dictDataCode == rs.stepUnit).dictDataName;
       });
 
@@ -126,7 +126,7 @@ export class NewRate {
 
   async addStep() {
     let rateStep = {} as RateStep;
-    rateStep.stepNum = this.stepIndex;
+    rateStep.stepNum = this.stepIndex + 1;
     rateStep.stepStart = this.stepStart;
     let result = await this.dialogService.open({ viewModel: NewRateStep, model: rateStep, lock: true })
       .whenClosed();
