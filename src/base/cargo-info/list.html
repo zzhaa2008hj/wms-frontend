@@ -1,9 +1,9 @@
 <template>
   <div class="row">
-    <div class="col-md-1"><a class="btn btn-sm btn-small btn-success" route-href="route: new">新增入库指令</a></div>
-    <div class="col-md-1"><a class="btn btn-sm btn-small btn-success" route-href="route: additional-recording">补录入库指令</a></div>
-    <!--<input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockBeginDate" type="text" class="form-control">
-        <input ak-datepicker="k-value.two-way : cargoInfoCriteria.instockendDate" type="text" class="form-control">-->
+    <div class="col-md-2">
+      <a class="btn btn-sm btn-small btn-success" route-href="route: new">新增入库指令</a>
+      <a class="btn btn-sm btn-small btn-success" route-href="route: additional-recording">补录入库指令</a>
+    </div>
     <div class="col-md-6">
       <button class="btn btn-small btn-primary" click.delegate="createOutstockInventory()">生成出库清单</button>
       <button class="btn btn-sm btn-small" click.delegate="changeHistory()">修改记录</button>
@@ -22,8 +22,8 @@
         <a route-href="route: details; params.bind: { id: id }">${batchNumber}</a>
       </ak-template>
     </ak-col>
-    <ak-col k-field="agentName" k-title="代理商" k-width.bind="100"></ak-col>
-    <ak-col k-field="customerName" k-title="客户名称" k-width.bind="100"></ak-col>
+    <ak-col k-field="agentName" k-title="代理商" k-width.bind="90"></ak-col>
+    <ak-col k-field="customerName" k-title="客户名称" k-width.bind="90"></ak-col>
     <ak-col k-field="billLadingNumber" k-title="提单号" k-width.bind="150"></ak-col>
     <ak-col k-field="warehouseTypeStr" k-title="库区性质" k-width.bind="70"></ak-col>
     <ak-col k-field="cargoForm" k-title="货物形式" k-width.bind="70">
@@ -58,15 +58,15 @@
         <label if.bind="remark.length < 9">${remark}</label>
       </ak-template>
     </ak-col>
-    <ak-col k-title="操作" k-width.bind="420">
+    <ak-col k-title="操作" k-width.bind="270">
       <ak-template>
         <a class="btn btn-small" if.bind="cargoFlowSize == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
         <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
         <a class="btn btn-small" href="/#/instock/${id}/cargo-flows">入库信息</a>
-        <a class="btn btn-small" href="/#/instock/${id}/order-items">理货报告</a>
-        <a class="btn btn-small" href="/#/instock/${id}/instock-orders">入库单</a>
+        <!-- <a class="btn btn-small" href="/#/instock/${id}/order-items">理货报告</a>
+        <a class="btn btn-small" href="/#/instock/${id}/instock-orders">入库单</a> -->
         <!--<a class="btn btn-small" href="/#/outstock/${id}/outstock-orders">出库信息</a>-->
-        <a class="btn btn-small"  click.delegate="goOutstockOrders(id,instockStatus)">出库信息</a>
+        <a class="btn btn-small" click.delegate="goOutstockOrders(id,instockStatus)">出库信息</a>
       </ak-template>
     </ak-col>
   </ak-grid>
