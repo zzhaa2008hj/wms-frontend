@@ -1,6 +1,6 @@
 import { Router, RouterConfiguration } from "aurelia-router";
 
-export class Report {
+export class ReportMonthly {
 
   router: Router;
 
