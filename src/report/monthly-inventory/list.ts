@@ -11,7 +11,7 @@ export class StorageHistoryList {
     type: 1
   };
   dataSource: kendo.data.DataSource;
-  types = [{id: 1, name: '按客户'}, {id: 2, name: '按货物'}, {id: 3, name: '按总计'}];
+  types = [{ id: 1, name: '按客户' }, { id: 2, name: '按货物' }, { id: 3, name: '按总计' }];
 
   startDatePicker: any;
   endDatePicker: any;
@@ -39,12 +39,9 @@ export class StorageHistoryList {
       }),
       pageSize: 10
     });
-    console.log("this.beginDate",this.search.beginDate);
-    console.log("this.dataSource",this.dataSource);
   }
 
   select() {
-    alert(this.search.type+"-----searchType-----");
     this.search.beginDate = this.search.beginDate ? moment(this.search.beginDate).format("YYYY-MM-DD") : '';
     this.search.endDate = this.search.endDate ? moment(this.search.endDate).format("YYYY-MM-DD") : '';
     this.dataSource.read();
