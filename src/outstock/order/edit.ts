@@ -9,7 +9,7 @@ import { Order, OrderItem, orderValidationRules, vehicleValidationRules } from "
 import { CargoInfo } from "@app/base/models/cargo-info";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
-import { copy, uuid } from "@app/utils";
+import { copy, fixDate, uuid } from "@app/utils";
 import { AttachmentService } from "@app/common/services/attachment";
 import { AttachmentMap } from "@app/common/models/attachment";
 import { Uploader, Upload } from "@app/upload";
@@ -68,7 +68,7 @@ export class EditOrder {
 
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.order = await this.orderService.getOrderById(params.id);
+    this.order = await this.orderService.getOrderById(params.id).then(res => fixDate(res, "outstockDate"));
     let canDeliveries = await this.orderService.getValidOutstockNum(this.order.cargoInfoId);
     if (this.order.outstockOrderItems) {
       this.outstockOrderItems = this.order.outstockOrderItems;
@@ -157,11 +157,9 @@ export class EditOrder {
     this.disabled = true;
     try {
       this.order.attachments = this.attachments;
-      console.log("this.order.attachments", this.order.attachments);
-      console.log(this.order.outstockDate)
-     // await this.orderService.updateOrder(this.order);
-     // await this.messageDialogService.alert({ title: "修改成功" });
-      //this.router.navigateToRoute("list");
+      await this.orderService.updateOrder(this.order);
+      await this.messageDialogService.alert({ title: "修改成功" });
+      this.router.navigateToRoute("list");
     } catch (err) {
       await this.messageDialogService.alert({ title: "修改失败", message: err.message, icon: 'error' });
       this.disabled = false;
