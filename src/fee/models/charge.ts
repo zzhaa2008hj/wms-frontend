@@ -85,6 +85,8 @@ export interface ChargeItem {
   workName: string;
   // 业务主键
   businessId: string;
+  // 作业区域主键
+  workOrderAreaId: string;
 }
 
 export const chargeInfoValidationRules = ValidationRules
