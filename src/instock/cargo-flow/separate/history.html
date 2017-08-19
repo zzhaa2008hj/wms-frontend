@@ -15,6 +15,7 @@
     <ak-col k-title="拆单后流水单号2" k-field="secondNumberAfterSeparate"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
+        <a class="btn btn-small" route-href="route: separateOrder; params.bind: { id: id }">查看拆单指令单</a>
         <a class="btn btn-sm btn-small btn-primary" route-href="route: separateDetail; params.bind: { id: id }">详情</a>
       </ak-template>
     </ak-col>
