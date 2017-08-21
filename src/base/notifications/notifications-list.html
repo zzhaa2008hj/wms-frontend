@@ -1,0 +1,48 @@
+<template>
+    <div class="grid simple">
+        <div>
+            <div id="tabstrip" ak-tabstrip="k-animation.bind: { open: { effects: 'fadeIn' } }">
+                <ul>
+                    <li class="k-state-active">未读消息</li>
+                    <li>全部消息</li>
+                    <li>公告</li>
+                </ul>
+                <!-- 未读消息-->
+                <div>
+                    <div>
+                        <button class="btn btn-primary" click.trigger="setRead()">标记全部为已读</button>
+                        <ak-grid k-data-source.bind="unreadDataSource" k-pageable.bind="pageable">
+                           <ak-col k-title="标题" k-field="title">
+                               <ak-template><a href="javaScript:void(0)" click.trigger="detail($this)">${title} </a></ak-template>
+                           </ak-col>
+                            <ak-col k-title="时间" k-field="sendDate" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+                        </ak-grid>
+                    </div>
+                </div>
+                <!-- 未读消息end -->
+                <!-- 全部消息-->
+                <div>
+                    <div>
+                        <ak-grid k-data-source.bind="allDataSource" k-pageable.bind="pageable">
+                            <ak-col k-title="标题" k-field="title">
+                                <ak-template><a href="javaScript:void(0)" click.trigger="detail($this)">${title} </a></ak-template>
+                            </ak-col>
+                            <ak-col k-title="时间" k-field="sendDate"  k-format="{0:yyyy-MM-dd HH:mm:ss}" ></ak-col>
+                        </ak-grid>
+                    </div>
+                </div>
+                <!-- 全部消息 end-->
+                <!-- 公告-->
+                <div>
+                        <ak-grid k-data-source.bind="noteDataSource" k-pageable.bind="pageable">
+                            <ak-col k-title="标题" k-field="title">
+                                <ak-template><a href="javaScript:void(0)" click.trigger="detailNote($this)">${title} </a></ak-template>
+                            </ak-col>
+                            <ak-col k-title="时间" k-field="createTime"  k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+                        </ak-grid>
+                </div>
+                <!-- end-->
+            </div>
+        </div>
+    </div>
+</template>

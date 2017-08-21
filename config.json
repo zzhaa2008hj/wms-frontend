@@ -190,21 +190,9 @@
     },
     {
       "route": "/base/notifications",
-      "name": "read",
-      "title": "读取信息",
-      "moduleId":"./base/notifications/read"
-    },
-    {
-      "route": "/base/notifications",
-      "name": "unread",
-      "title": "未读信息",
-      "moduleId":"./base/notifications/unread"
-    },
-    {
-      "route": "/base/notifications",
-      "name": "readed",
-      "title": "已读信息",
-      "moduleId":"./base/notifications/readed"
+      "name": "notifications",
+      "title": "消息通知",
+      "moduleId":"./base/notifications/notifications-list"
     }
   ]
 }

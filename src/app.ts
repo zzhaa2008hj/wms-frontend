@@ -2,6 +2,7 @@ import { inject, computedFrom } from "aurelia-framework";
 import { Router, RouterConfiguration } from "aurelia-router";
 import { Notifier } from "@app/event-source";
 import { Notifier1 } from "@app/notification";
+import { NavBar } from "@app/navbar";
 kendo.culture('zh');
 
 export class App {
@@ -10,7 +11,8 @@ export class App {
 
   constructor( @inject('config') private config: any,
                @inject private notifier: Notifier,
-               @inject private notifier1:Notifier1) {
+               @inject private notifier1:Notifier1,
+               @inject private navBar: NavBar) {
 
   }
 
@@ -39,10 +41,10 @@ export class App {
   configureRouter(config: RouterConfiguration, router: Router) {
     // let auth = this.accountService.getMenu();
     // let auths = new Set(auth.map((a) => a.url));
-    // let routes = this.config.routes.filter((a) => auths.has(a.code)).map(route => Object.assign({}, route, { nav: true }));
+      // let routes = this.config.routes.filter((a) => auths.has(a.code)).map(route => Object.assign({}, route, { nav: true }));
 
-    // let group1 = {
-    //   title: "基础",
+      // let group1 = {
+      //   title: "基础",
     //   icon: "settings",
     //   expanded: false,
     // };
