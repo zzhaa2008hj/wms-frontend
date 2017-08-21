@@ -16,13 +16,6 @@ export class ChargeAuditListService {
   }
 
   /**
-   * 生成对账清单
-   */
-  async createChargeAuditList(chargeInfoId: string): Promise<void>{
-    await this.http.post(`/fee/charge-audit-list/${chargeInfoId}`, null).then(handleResult);
-  }
-
-  /**
    * 查询对账清单 - 分页
    */
   pageChargeAuditList(chargeAuditCriteria?: ChargeAuditCriteria): Query<ChargeAuditList> {
@@ -48,6 +41,21 @@ export class ChargeAuditListService {
    */
   async saveChargeInfoAndAuditList(chargeInfo: ChargeInfo): Promise<void> {
     await this.http.post(`/fee/charge-audit-list`, chargeInfo).then(handleResult);
+  }
+
+  /**
+   * 修改手动生成对账清单
+   */
+  async updateChargeInfoAndAuditList(chargeInfoId: String, chargeInfo: ChargeInfo): Promise<void> {
+    await this.http.put(`/fee/charge-audit-list/${chargeInfoId}`, chargeInfo).then(handleResult);
+  }
+
+  /**
+   * 获取手动生成对账信息
+   */
+  async getChargeAudit(chargeInfoId: String): Promise<ChargeInfo> {
+    let res = await this.http.get(`/fee/charge-audit-list/${chargeInfoId}/chargeAudit`);
+    return res.content;
   }
 }
 
