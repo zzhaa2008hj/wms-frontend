@@ -15,7 +15,8 @@ export class Charge {
       { route: '/new', name: 'new', moduleId: './new' },
       { route: '/new-audit', name: 'new-audit', moduleId: './new-audit' },
       { route: '/:id/view', name: 'view', moduleId: './view' },
-      { route: '/:id/edit', name: 'edit', moduleId: './edit' }
+      { route: '/:id/edit', name: 'edit', moduleId: './edit' },
+      { route: '/:id/edit-audit', name: 'edit-audit', moduleId: './edit-audit' }
     ]);
     this.router = router;
   }
