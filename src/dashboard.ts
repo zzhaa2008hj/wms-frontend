@@ -8,6 +8,7 @@ export class Dashboard {
 
   }
 
+  // 页面载入完成后执行
   attached() {
     let myChart = echarts.init(document.getElementById('main') as HTMLDivElement);
     // 指定图表的配置项和数据
