@@ -9,8 +9,8 @@ export class NoticeService {
   constructor(private http: RestClient) {
   }
 
-  queryNotices(param: { keywords: string }): Query<any> {
-    return this.http.query<Notice>(`/base/notice/page`, param).map(res => fixDate(res, 'createTime'));
+  queryNotices(param: { keywords?: string, visible?: string }): Query<any> {
+    return this.http.query<Notice>(`/base/notice/page`, param).map(log => fixDate(log, 'createTime'));
   }
 
   saveNotice(notice: Notice): Promise<void> {

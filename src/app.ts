@@ -2,6 +2,7 @@ import { computedFrom } from 'aurelia-framework';
 import { Router, RouterConfiguration } from "aurelia-router";
 import { Notifier } from "@app/event-source";
 import { Notifier1 } from "@app/notification";
+import { NavBar } from "@app/navbar";
 import { inject } from 'aurelia-dependency-injection';
 kendo.culture('zh');
 
@@ -11,7 +12,8 @@ export class App {
 
   constructor(@inject('config') private config: any,
               @inject private notifier: Notifier,
-              @inject private notifier1: Notifier1) {
+              @inject private notifier1: Notifier1,
+              @inject private navBar: NavBar) {
 
   }
 
