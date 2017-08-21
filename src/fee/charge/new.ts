@@ -67,7 +67,7 @@ export class NewChargeInfo {
   });
   cargoRateStepList: CargoRateStep[]; 
   units = [] as DictionaryData[];
-
+  customerGrid : kendo.ui.Grid;
   constructor(@inject private router: Router,
               @inject private cargoInfoService: CargoInfoService,
               @newInstance() private validationController: ValidationController,
@@ -175,8 +175,6 @@ export class NewChargeInfo {
             if (unit) {
               rate.stepUnitName = unit.dictDataName;
             }
-            // 临时加id，让组件修改时识别
-            rate.id = uuid();
           });
         }
         // 临时加id，让组件修改时识别
@@ -225,12 +223,7 @@ export class NewChargeInfo {
   async save() {
     // 去除临时id
     if (this.chargeItems) {
-      this.chargeItems.forEach(item => {
-        item.id = null;
-        if (item.cargoRateStepList) {
-          item.cargoRateStepList.forEach(rate => rate.id = null);
-        }
-      });
+      this.chargeItems.forEach(item => item.id = null);
     }
     this.chargeInfo.chargeItemList = this.chargeItems;
     let { valid } = await this.validationController.validate();
@@ -246,4 +239,53 @@ export class NewChargeInfo {
       this.disabled = false;
     }
   }
+
+  detailInit(e) {
+    let a = e.data;
+    let detailRow = e.detailRow;
+    detailRow.find('.rateSteps').kendoGrid({
+      dataSource: {
+        transport: {
+          read: (options) => {
+            options.success(e.data.cargoRateStepList);
+          },
+          update: (options) => {
+            options.success();
+          },
+          destroy: (options) => {
+            options.success();
+          }
+        },
+        schema: {
+          model: {
+            id: 'id',
+            fields: {
+              stepNum: { editable: false },
+              stepStart: { editable: false },
+              stepEnd: { editable: false },
+              stepPrice: { editable: false },
+              actualStepPrice: { editable: true, notify: true, type: 'number' },
+              stepUnit: { editable: false },
+              remark: { editable: false }
+            }
+          }
+        },
+      },
+      editable: true,
+      columns: [
+        { field: 'stepNum', title: '阶梯号' },
+        { field: 'stepStart', title: '开始值' },
+        { field: 'stepEnd', title: '结束值' },
+        { field: 'stepPrice', title: '阶梯价'},
+        { field: 'actualStepPrice', title: '实际阶梯价'},
+        { field: 'stepUnitStr', title: '单位' },
+        { field: 'remark', title: '备注' }
+      ],
+      save: (e) => {
+        e.sender.saveChanges();
+        this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
+      }
+    });
+  }
+
 }

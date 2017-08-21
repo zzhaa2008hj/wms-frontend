@@ -1,20 +1,22 @@
 import { observable} from "aurelia-framework";
-import { bindable, customElement } from "aurelia-templating";
+import { bindable } from "aurelia-templating";
 import { CargoRateStep } from '@app/base/models/cargo-info';
 
-@customElement('rate-steps')
-export class RateStepList {
+// @customElement('rate-steps')
+export class RateStepsCustomElement {
 
   @bindable
   @observable
   rateSteps: CargoRateStep[];
+  
   dataSource = new kendo.data.DataSource({
     transport: {
       read: (options) => {
         options.success(this.rateSteps);
       },
       update: (options) => {
-          options.success();
+        options.success();
+        console.log();
       },
       destroy: (options) => {
         options.success();
@@ -34,7 +36,6 @@ export class RateStepList {
           remark: { editable: false }
         }
       }
-    },
+    }
   });
-
 }
