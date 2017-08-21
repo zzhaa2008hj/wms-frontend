@@ -62,7 +62,8 @@ export class NewChargeInfo {
   });
   cargoRateStepList: CargoRateStep[]; 
   units = [] as DictionaryData[];
-
+  customerGrid : kendo.ui.Grid;
+  rowExpands = new Set();
   constructor(@inject private router: Router,
               @newInstance() private validationController: ValidationController,
               @inject private chargeInfoService: ChargeInfoService,
@@ -298,5 +299,23 @@ export class NewChargeInfo {
         this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
       }
     });
+  }
+  /**
+   * 展开
+   */
+  detailExpand(e) {
+    let uid = e.masterRow.data('uid');
+    this.rowExpands.add(uid);
+  }
+  /**
+   * 折叠
+   */
+  detailCollapse(e) {
+    let uid = e.masterRow.data('uid');
+    this.rowExpands.delete(uid);
+  }
+
+  dataBound(e) {
+    this.rowExpands.forEach(uid => this.customerGrid.expandRow($('tr[data-uid=' + uid + ']')));
   }
 }
