@@ -1,6 +1,7 @@
 import { customElement, containerless } from "aurelia-templating";
 import { autoinject } from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
+import { UserSession } from "@app/user";
 import { MessageService } from "@app/base/services/message";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 
@@ -15,7 +16,8 @@ export class NavBar {
 
     constructor(private events: EventAggregator,
                 private router: Router,
-                private messageService: MessageService) {
+                private messageService: MessageService,
+                private user: UserSession) {
 
 
     }
@@ -54,8 +56,9 @@ export class NavBar {
     unbind(){
         this.subScription.dispose();
     }
-    logout() {
-        // this.user.logout();
-    }
+
+  logout() {
+    this.user.logout();
+  }
 
 }

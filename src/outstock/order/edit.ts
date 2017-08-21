@@ -53,14 +53,14 @@ export class EditOrder {
   validationController: ValidationController;
 
   constructor(private router: Router,
-              private orderService: OrderService,
-              private dictionaryDataService: DictionaryDataService,
-              private messageDialogService: MessageDialogService,
-              private attachmentService: AttachmentService,
-              private uploader: Uploader,
-              private dialogService: DialogService,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+    private orderService: OrderService,
+    private dictionaryDataService: DictionaryDataService,
+    private messageDialogService: MessageDialogService,
+    private attachmentService: AttachmentService,
+    private uploader: Uploader,
+    private dialogService: DialogService,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
