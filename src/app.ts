@@ -315,9 +315,9 @@ export class App {
     let dashboard = {
       route: ['', 'main'], name: 'dashboard', title: "首页", moduleId: './dashboard', nav: true, icon: "home"
     };
-    let dev = { route: '/dev', name: 'dev', title: "开发", moduleId: './dev/index', nav: true };
+    //let dev = { route: '/dev', name: 'dev', title: "开发", moduleId: './dev/index', nav: true };
 
-    config.map([dashboard, ...routes, dev]);
+    config.map([dashboard, ...routes]);
     this.router = router;
   }
 }

@@ -22,6 +22,7 @@
     "uuid": "registry:npm/uuid#3.0.1+20161206160008"
   },
   "globalDependencies": {
+    "echarts": "registry:dt/echarts#0.0.0+20161005184000",
     "jquery": "registry:dt/jquery#1.10.0+20170310222111",
     "moment": "registry:dt/moment#2.11.1+20161010105546",
     "nprogress": "registry:dt/nprogress#0.0.0+20161119044246"

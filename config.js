@@ -37,6 +37,7 @@ System.config({
     "aurelia-validation": "npm:aurelia-validation@1.1.1",
     "bootstrap": "github:twbs/bootstrap@3.3.7",
     "bootstrap-datepicker": "npm:bootstrap-datepicker@1.6.4",
+    "echarts": "npm:echarts@3.6.2",
     "font-awesome": "npm:font-awesome@4.7.0",
     "jquery": "npm:jquery@3.2.1",
     "moment": "npm:moment@2.18.1",
@@ -46,7 +47,7 @@ System.config({
       "assert": "npm:assert@1.4.1"
     },
     "github:jspm/nodelibs-buffer@0.1.1": {
-      "buffer": "npm:buffer@5.0.6"
+      "buffer": "npm:buffer@5.0.7"
     },
     "github:jspm/nodelibs-constants@0.1.0": {
       "constants-browserify": "npm:constants-browserify@0.0.1"
@@ -292,7 +293,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:buffer@5.0.6": {
+    "npm:buffer@5.0.7": {
       "base64-js": "npm:base64-js@1.2.1",
       "ieee754": "npm:ieee754@1.1.8"
     },
@@ -357,6 +358,10 @@ System.config({
       "miller-rabin": "npm:miller-rabin@4.0.0",
       "randombytes": "npm:randombytes@2.0.5",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:echarts@3.6.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "zrender": "npm:zrender@3.5.2"
     },
     "npm:elliptic@6.4.0": {
       "bn.js": "npm:bn.js@4.11.7",
@@ -482,6 +487,9 @@ System.config({
     },
     "npm:vm-browserify@0.0.4": {
       "indexof": "npm:indexof@0.0.1"
+    },
+    "npm:zrender@3.5.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     }
   }
 });
