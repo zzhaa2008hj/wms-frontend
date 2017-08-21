@@ -3,7 +3,7 @@
     "baseUrl": "http://localhost:8090"
   },
   "notification":{
-    "baseUrl":"http://localhost:3344/wms"
+    "baseUrl":"http://192.168.133.118:3344/wms"
   },
   "upload": {
     "baseUrl": "http://192.168.133.118:5555",

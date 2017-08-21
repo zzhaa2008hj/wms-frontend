@@ -312,6 +312,12 @@ export class App {
       "moduleId": "./report/daily-inventory/index",
       group: group5,
       nav: true
+    },
+    {
+      "route": "/base/notifications",
+      "name": "notifications",
+      "title": "消息通知",
+      "moduleId": "./base/notifications/notifications-list"
     }];
 
     let dashboard = {
