@@ -15,8 +15,6 @@ export class Notifier1 {
 
         events.subscribe('event-source:message', event => {
             let { title, body, requireInteraction, tag, type } = event;
-
-            console.log(tag);
             let notification = new Notification(title, {
                 body: body,
                 title: title,
