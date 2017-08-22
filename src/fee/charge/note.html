@@ -62,7 +62,6 @@
             </tr>
             <div>
               <tr if.bind="chargeAuditList.chargeAuditItems.length > 0">
-                <td align="center">&nbsp;&nbsp;</td>
                 <td align="center">费用类型</td>
                 <td align="center">费用类别</td>
                 <td align="center">货名</td>
@@ -78,12 +77,10 @@
                 <td align="center">箱量</td>
                 <td align="center">堆存天数</td>
                 <td align="center">堆存费率</td>
-                <td align="center">备注</td>
-                <td align="center">&nbsp;</td>
+                <td align="center" colspan="3" >备注</td>
               </tr>
               <template repeat.for="chargeAuditItem of chargeAuditList.chargeAuditItems">
                 <tr>
-                  <td align="center"></td>
                   <td align="center">${chargeAuditItem.rateTypeName}</td>
                   <td align="center">${chargeAuditItem.chargeCategoryName}</td>
                   <td align="center">${chargeAuditItem.cargoName}</td>
@@ -99,8 +96,7 @@
                   <td align="center">${chargeAuditItem.containerQuantity}</td>
                   <td align="center">${chargeAuditItem.storageDay}</td>
                   <td align="center">${chargeAuditItem.storageRate}</td>
-                  <td align="center">${chargeAuditItem.remark}</td>
-                  <td align="center"></td>
+                  <td align="center" colspan="3">${chargeAuditItem.remark}</td>
                 </tr>
               </template>
             </div>
