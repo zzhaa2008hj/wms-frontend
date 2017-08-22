@@ -3,9 +3,6 @@ import { Router, RouterConfiguration } from "aurelia-router";
 import { UserSession } from "@app/user";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 import { DialogService } from "ui";
-import { Notifier } from "@app/event-source";
-import { Notifier1 } from "@app/notification";
-import { NavBar } from "@app/navbar";
 import { inject } from 'aurelia-dependency-injection';
 kendo.culture('zh');
 
@@ -14,13 +11,11 @@ export class App {
   private subscriptions: Subscription[];
   router: Router;
 
-  constructor(@inject('config') private config: any,
-              @inject private notifier: Notifier,
-              @inject private notifier1: Notifier1,
-              @inject private navBar: NavBar,
-              @inject private user: UserSession,
-              @inject private events: EventAggregator,
-              @inject private dialogService: DialogService) {}
+  constructor( @inject('config') private config: any,
+    @inject private user: UserSession,
+    @inject private events: EventAggregator,
+    @inject private dialogService: DialogService) {
+  }
 
   async activate() {
     await this.user.loginVerdict();
@@ -28,6 +23,10 @@ export class App {
   }
 
   configureRouter(config: RouterConfiguration, router: Router) {
+    let dashboard = { route: '', name: 'dashboard', title: "控制面板", moduleId: './dashboard', nav: true };
+    let dev = { route: '/dev', name: 'dev', title: "开发", moduleId: './dev/index', nav: true };
+    let changePassword = { route: '/change-password', name: 'changePassword', title: "修改密码", moduleId: './change-password', nav: false };
+    config.map([dashboard, dev, changePassword]);
     if (this.user.loggedIn) {
       config.options.root = document.querySelector('base').getAttribute('href');
       config.options.pushState = true;
@@ -35,19 +34,13 @@ export class App {
       let auths = new Set(auth.map((a) => a.url));
       let routes = this.config.routes
         .filter(a => auths.has(a.name))
-        .map(route => Object.assign({}, route, { nav: true }));
-      let dashboard = { route: '', name: 'dashboard', title: "控制面板", moduleId: './dashboard', nav: true };
-      let dev = { route: '/dev', name: 'dev', title: "开发", moduleId: './dev/index', nav: true };
-      config.map([dashboard, ...routes, dev]);
-      this.router = router;
-    } else {
-      let dashboard = { route: '', name: 'dashboard', title: "控制面板", moduleId: './dashboard', nav: true };
-      let dev = { route: '/dev', name: 'dev', title: "开发", moduleId: './dev/index', nav: true };
-      config.map([dashboard, dev]);
-      this.router = router;
+        .map(route => {
+          if (!route["group"]) return Object.assign({}, route, { nav: true });
+          return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
+        });
+      config.map([...routes]);
     }
-
-
+    this.router = router;
   }
 
   @computedFrom('router')

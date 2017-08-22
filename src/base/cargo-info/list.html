@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <div class="col-md-2">
-      <a class="btn btn-sm btn-small btn-success" route-href="route: new">新增入库指令</a>
-      <a class="btn btn-sm btn-small btn-success" route-href="route: additional-recording">补录入库指令</a>
+      <a class="btn btn-sm btn-small btn-success" route-href="route: new" required-permissions="C000002" >新增入库指令</a>
+      <a class="btn btn-sm btn-small btn-success" route-href="route: additional-recording" >补录入库指令</a>
     </div>
     <div class="col-md-6">
       <button class="btn btn-small btn-primary" click.delegate="createOutstockInventory()">生成出库清单</button>
