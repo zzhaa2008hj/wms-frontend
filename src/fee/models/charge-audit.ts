@@ -1,5 +1,5 @@
 import { ValidationRules } from "aurelia-validation";
-
+import { CargoRateStep } from '@app/base/models/cargo-info';
 export interface ChargeAuditList {
   id: string;
   chargeInfoId: string;
@@ -67,6 +67,18 @@ export interface ChargeAuditItem {
   amount: number;
   // 作业日期
   workDate: Date;
+
+  cargoItemId: string;
+  cargoRateId: string;
+  actualPrice: number;
+  pricingMode: number;
+  price: number;
+  cargoRateStepList: CargoRateStep[];
+  // 业务主键
+  businessId: string;
+  // 作业区域主键
+  workOrderAreaId: string;
+
 }
 
 export const chargeAuditListValidationRules = ValidationRules 
