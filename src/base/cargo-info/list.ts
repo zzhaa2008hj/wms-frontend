@@ -6,6 +6,8 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
 import { Router } from 'aurelia-router';
+import { UserSession } from '@app/user';
+import { UserInfo } from '@app/user';
 
 @autoinject
 export class CargoInfoList {
@@ -21,16 +23,19 @@ export class CargoInfoList {
   batchNumber: string;
   infoId: string;
 
+  userInfo : UserInfo;
   constructor(private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
               private dataSourceFactory: DataSourceFactory,
               private router: Router,
-              private outstockInventoryService: OutstockInventoryService) {
+              private outstockInventoryService: OutstockInventoryService,
+              private user: UserSession) {
 
   }
 
   async activate() {
+    this.userInfo = this.user.userInfo;
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.cargoInfoService.queryCargoInfo(this.cargoInfoCriteria).map(res => {

@@ -1,11 +1,12 @@
 import { customAttribute } from "aurelia-templating";
-
+import { UserSession } from '@app/user';
 @customAttribute('required-permissions')
 export class RequiredPermissionsAttribute {
 
   private element: HTMLElement;
 
-  constructor(element: Element) {
+  constructor(element: Element,
+              private user: UserSession) {
     this.element = element as HTMLElement;
   }
 
@@ -18,7 +19,9 @@ export class RequiredPermissionsAttribute {
   }
 
   hasPermissions(permissions: string[]): boolean | Promise<boolean> {
-    return permissions.length == 0;
+    let aa = new Set(this.user.userInfo.menuVoList.map(x => x.code));
+    return  !permissions.every(a => !aa.has(a));
+    //return permissions.length == 0;
   }
 
 }

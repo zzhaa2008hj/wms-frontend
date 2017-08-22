@@ -5,9 +5,11 @@ import { ChargeInfoService, ChargeInfoCriteria } from "@app/fee/services/charge"
 import { DataSourceFactory } from '@app/utils';
 import { ConstantValues } from "@app/common/models/constant-values";
 import * as moment from 'moment';
+import { ChargeAuditListService } from "@app/fee/services/charge-audit";
 import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
 import { VerifyRecordCriteria } from "@app/common/services/verify-record";
 import { Audit } from "@app/fee/charge/audit";
+import { Router } from "aurelia-router";
 
 @autoinject
 export class ChargeInfoList {
@@ -23,10 +25,13 @@ export class ChargeInfoList {
     pageSizes: true,
     buttonCount: 10
   };
+
   constructor(private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
               private chargeInfoService: ChargeInfoService,
-              private dataSourceFactory: DataSourceFactory) {
+              private router: Router,
+              private dataSourceFactory: DataSourceFactory,
+              private chargeAuditListService: ChargeAuditListService) {
 
   }
 
@@ -52,6 +57,19 @@ export class ChargeInfoList {
     let selectedRow = grid.select();
     let dataItem = grid.dataItem(selectedRow);
     this.id = dataItem.id;
+  }
+
+  /**
+   * 生成收费单
+   */
+  async createChargeDemandNote(id: string) {
+    try {
+      await this.chargeInfoService.createChargeDemandNote(id);
+      await this.messageDialogService.alert({ title: "提示", message: '生成收费单成功', icon: "error" });
+      this.router.navigateToRoute("note", { id: id });
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
   }
 
   /**
@@ -164,6 +182,19 @@ export class ChargeInfoList {
   reset() {
     this.chargeInfoCriteria = {} as ChargeInfoCriteria;
     this.dataSource.read();
+  }
+
+  /**
+   * 生成对账清单
+   */
+  async createChargeAuditList(id: string) {
+    try {
+      await this.chargeAuditListService.createChargeAuditList(id);
+      await this.dialogService.alert({ title: "提示", message: "生成对账清单成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
   }
 
 }

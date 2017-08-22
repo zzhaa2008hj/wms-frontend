@@ -1,6 +1,7 @@
 import { customElement, containerless } from "aurelia-templating";
 import { autoinject } from "aurelia-dependency-injection";
 import { Router } from "aurelia-router";
+import { UserSession } from "@app/user";
 import { MessageService } from "@app/base/services/message";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 
@@ -9,53 +10,54 @@ import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 @autoinject
 export class NavBar {
 
-    unreadNum;
+  unreadNum;
 
-    subScription : Subscription ;
+  subScription: Subscription;
 
-    constructor(private events: EventAggregator,
-                private router: Router,
-                private messageService: MessageService) {
+  constructor(private events: EventAggregator,
+    private router: Router,
+    private messageService: MessageService,
+    private user: UserSession) {
 
 
+  }
+
+  toggleSidebar() {
+    // this.user.settings.sidebar.condensed = !this.user.settings.sidebar.condensed;
+  }
+
+  changePassword() {
+    this.router.navigateToRoute('changePassword');
+  }
+
+  showInfo() {
+    this.router.navigateToRoute('notifications')
+  }
+
+  async updateUnreadNum() {
+    let num = parseInt(await this.messageService.getUnreadNum());
+    if (num <= 99) {
+      this.unreadNum = num;
     }
-
-    toggleSidebar() {
-        // this.user.settings.sidebar.condensed = !this.user.settings.sidebar.condensed;
+    else {
+      this.unreadNum = `99+`;
     }
+    console.log(this.unreadNum);
+  }
 
-    changePassword() {
-        this.router.navigateToRoute('changePassword');
-    }
+  bind() {
+    this.subScription = this.events.subscribe('user:authenticate', () => {
+      this.updateUnreadNum();
+    });
 
-    showInfo() {
-        this.router.navigateToRoute('notifications')
-    }
+  }
 
-    async updateUnreadNum() {
-        let num   =  parseInt(await this.messageService.getUnreadNum());
-        if (num <= 99) {
-            this.unreadNum = num;
-        }
-        else {
-            this.unreadNum = `99+` ;
-        }
-        console.log(this.unreadNum);
-    }
+  unbind() {
+    this.subScription.dispose();
+  }
 
-
-    bind(){
-       this.subScription=  this.events.subscribe('user:authenticate', () => {
-            this.updateUnreadNum();
-        });
-
-    }
-
-    unbind(){
-        this.subScription.dispose();
-    }
-    logout() {
-        // this.user.logout();
-    }
+  logout() {
+    this.user.logout();
+  }
 
 }
