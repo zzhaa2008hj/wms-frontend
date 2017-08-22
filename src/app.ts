@@ -4,6 +4,8 @@ import { UserSession } from "@app/user";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 import { DialogService } from "ui";
 import { inject } from 'aurelia-dependency-injection';
+import { Notifier } from '@app/event-source';
+import { Notifier1 } from '@app/notification';
 kendo.culture('zh');
 
 export class App {
@@ -12,6 +14,8 @@ export class App {
   private subscriptions: Subscription[];
 
   constructor(@inject('config') private config: any,
+              @inject private n: Notifier,
+              @inject private n1: Notifier1,
               @inject private user: UserSession,
               @inject private events: EventAggregator,
               @inject private dialogService: DialogService) {
