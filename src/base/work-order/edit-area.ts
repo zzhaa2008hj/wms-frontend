@@ -331,12 +331,24 @@ const workOrderAreaRules = ValidationRules
   .ensure((workOrderArea: WorkOrderArea) => workOrderArea.quantity)
   .displayName("货物数量")
   .required().withMessage(`\${$displayName}不能为空`)
-  .satisfies(x => x <= 1000000000000000 && x >= 0)
+  .satisfies((x: number, area: WorkOrderArea) => {
+    if (area.number == null || area.number == 0) {
+      return x <= 1000000000000000 && x > 0;
+    } else {
+      return x <= 1000000000000000 && x >= 0;
+    } 
+  })
   .withMessage(`\${$displayName} 为无效值`)
 
   .ensure((workOrderArea: WorkOrderArea) => workOrderArea.number)
   .displayName("货物件数")
   .required().withMessage(`\${$displayName}不能为空`)
-  .satisfies(x => x <= 1000000000000000 && x >= 0)
+  .satisfies((x: number, area: WorkOrderArea) => {
+    if (area.quantity == null || area.quantity == 0) {
+      return x <= 1000000000000000 && x > 0;
+    } else {
+      return x <= 1000000000000000 && x >= 0;
+    } 
+  })
   .withMessage(`\${$displayName} 为无效值`)
   .rules;  

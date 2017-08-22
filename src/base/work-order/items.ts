@@ -130,7 +130,7 @@ const workOrderItemRules = ValidationRules
   .ensure((workOrderIem: WorkOrderItem) => workOrderIem.workNumber)
   .displayName("作业数量")
   .required().withMessage(`\${$displayName}不能为空`)
-  .satisfies(x => x <= 1000000000000000 && x >= 0)
+  .satisfies(x => x <= 1000000000000000 && x > 0)
   .withMessage(`\${$displayName} 为无效值`)
 
   .rules;
