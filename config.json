@@ -36,12 +36,7 @@
         "expanded": false
       }
     },
-  "routes": [{
-    "route": "/report",
-    "name": "report",
-    "title": "报表",
-    "moduleId": "./report/index"
-  },
+  "routes": [
   {
     "route": "/base/attachments",
     "name": "attachments",
@@ -248,11 +243,5 @@
     "title": "出入库明细",
     "moduleId": "./report/daily-inventory/index",
     "group": "group5"
-  },
-  {
-    "route": "/base/notifications",
-    "name": "notifications",
-    "title": "消息通知",
-    "moduleId": "./base/notifications/notifications-list"
   }]
 }

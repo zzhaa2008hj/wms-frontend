@@ -8,13 +8,13 @@ kendo.culture('zh');
 
 export class App {
 
+  router: Router;  
   private subscriptions: Subscription[];
-  router: Router;
 
-  constructor( @inject('config') private config: any,
-    @inject private user: UserSession,
-    @inject private events: EventAggregator,
-    @inject private dialogService: DialogService) {
+  constructor(@inject('config') private config: any,
+              @inject private user: UserSession,
+              @inject private events: EventAggregator,
+              @inject private dialogService: DialogService) {
   }
 
   async activate() {
@@ -23,17 +23,19 @@ export class App {
   }
 
   configureRouter(config: RouterConfiguration, router: Router) {
-    let dashboard = { route: '', name: 'dashboard', title: "控制面板", moduleId: './dashboard', nav: true };
-    let dev = { route: '/dev', name: 'dev', title: "开发", moduleId: './dev/index', nav: true };
-    let changePassword = { route: '/change-password', name: 'changePassword', title: "修改密码", moduleId: './change-password', nav: false };
-    config.map([dashboard, dev, changePassword]);
+    let dashboard = { route: '', name: 'dashboard', title: "首页", moduleId: './dashboard', nav: true, icon: 'home' };
+    let notice = { route: "/base/notifications", name: "notifications", title: "消息通知", 
+      moduleId: "./base/notifications/notifications-list" };
+    let changePassword = { route: '/change-password', name: 'changePassword', title: "修改密码", 
+      moduleId: './change-password', nav: false };
+    config.map([dashboard, notice, changePassword]);
     if (this.user.loggedIn) {
       config.options.root = document.querySelector('base').getAttribute('href');
       config.options.pushState = true;
-      let auth = this.user.userInfo.menuVoList;
-      let auths = new Set(auth.map((a) => a.url));
+      //let auth = this.user.userInfo.menuVoList;
+      //let auths = new Set(auth.map((a) => a.url));
       let routes = this.config.routes
-        .filter(a => auths.has(a.name))
+        //.filter(a => auths.has(a.name))
         .map(route => {
           if (!route["group"]) return Object.assign({}, route, { nav: true });
           return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
