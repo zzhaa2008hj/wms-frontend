@@ -9,239 +9,245 @@
     "baseUrl": "http://192.168.133.118:5555",
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
+  "loginParam": {
+    "loginUrl": "http://localhost:3000/#/loginRpc",
+    "appKey": "151cd73d16c94c6da3d022fcea9057a0",
+    "appType": "web"
+  },
   "group": {
-      "group1": {
-        "title": "基础",
-        "icon": "settings",
-        "expanded": false
-      },
-      "group2": {
-        "title": "入库",
-        "icon": "format_indent_increase",
-        "expanded": false
-      },
-      "group3": {
-        "title": "出库",
-        "icon": "format_indent_decrease",
-        "expanded": false
-      },
-      "group4": {
-        "title": "费用",
-        "icon": "payment",
-        "expanded": false
-      },
-      "group5": {
-        "title": "报表",
-        "icon": "assessment",
-        "expanded": false
-      }
+    "group1": {
+      "title": "基础",
+      "icon": "settings",
+      "expanded": false
     },
+    "group2": {
+      "title": "入库",
+      "icon": "format_indent_increase",
+      "expanded": false
+    },
+    "group3": {
+      "title": "出库",
+      "icon": "format_indent_decrease",
+      "expanded": false
+    },
+    "group4": {
+      "title": "费用",
+      "icon": "payment",
+      "expanded": false
+    },
+    "group5": {
+      "title": "报表",
+      "icon": "assessment",
+      "expanded": false
+    }
+  },
   "routes": [
-  {
-    "route": "/base/attachments",
-    "name": "attachments",
-    "title": "附件",
-    "moduleId": "./common/attachment/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/cargo-category",
-    "name": "cargoCategory",
-    "title": "货物种类",
-    "moduleId": "./base/cargo-category/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/contract",
-    "name": "contract",
-    "title": "合同",
-    "moduleId": "./base/contract/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/handling-customer",
-    "name": "handling-customer",
-    "title": "装卸单位",
-    "moduleId": "./base/customer/handling-customer/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/warehouse-customer",
-    "name": "warehouse-customer",
-    "title": "仓储客户",
-    "moduleId": "./base/customer/warehouse-customer/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/dictionary",
-    "name": "dictionary",
-    "title": "数据字典",
-    "moduleId": "./base/dictionary/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/employee",
-    "name": "employee",
-    "title": "用户",
-    "moduleId": "./base/employee/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/message",
-    "name": "message",
-    "title": "站内信",
-    "moduleId": "./base/message/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/notice",
-    "name": "notice",
-    "title": "公告",
-    "moduleId": "./base/notice/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/operation-logs",
-    "name": "operation-log",
-    "title": "操作日志",
-    "moduleId": "./base/operation-logs/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/organization-roles",
-    "name": "organization-roles",
-    "title": "角色管理",
-    "moduleId": "./base/organization-role/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/rate",
-    "name": "rate",
-    "title": "基础费率",
-    "moduleId": "./base/rate/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/warehouse",
-    "name": "warehouse",
-    "title": "仓库库区",
-    "moduleId": "./base/warehouse/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/work-info",
-    "name": "workInfo",
-    "title": "作业内容",
-    "moduleId": "./base/work-info/index",
-    "group": "group1"
-  },
-  {
-    "route": "/base/verify-records",
-    "name": "verifyRecord",
-    "title": "审核审批",
-    "moduleId": "./common/verify-records/index",
-    "group": "group1"
-  },
-  {
-    "route": "/instock/cargo-infos",
-    "name": "cargoInfo",
-    "title": "客户入库指令",
-    "moduleId": "./base/cargo-info/index",
-    "group": "group2"
-  },
-  {
-    "route": "/instock/:infoId?/cargo-flows",
-    "href": "/instock/cargo-flows",
-    "name": "cargoFlow",
-    "title": "入库流水",
-    "moduleId": "./instock/cargo-flow/index",
-    "group": "group2"
-  },
-  {
-    "route": "/instock/:infoId?/instock-orders",
-    "href": "/instock/instock-orders",
-    "name": "instockOrder",
-    "title": "入库单",
-    "moduleId": "./instock/order/index",
-    "group": "group2"
-  },
-  {
-    "route": "/instock/:infoId?/order-items",
-    "href": "/instock/order-items",
-    "name": "orderItem",
-    "title": "理货报告",
-    "moduleId": "./instock/order-item/index",
-    "group": "group2"
-  },
-  {
-    "route": "/instock/work-statistics",
-    "name": "workStatistics",
-    "title": "作业统计",
-    "moduleId": "./instock/work-statistics/index",
-    "group": "group2"
-  },
-  {
-    "route": "/base/storage",
-    "name": "storage",
-    "title": "库存",
-    "moduleId": "./base/storage/index",
-    "group": "group2"
-  },
-  {
-    "route": "/base/storage-history",
-    "name": "storage-history",
-    "title": "库存流水",
-    "moduleId": "./base/storage-history/index",
-    "group": "group2"
-  },
-  {
-    "route": "/outstock/:infoId?/outstock-orders",
-    "href": "/outstock/outstock-orders",
-    "name": "outstockOrder",
-    "title": "出库指令",
-    "moduleId": "./outstock/order/index",
-    "group": "group3"
-  },
-  {
-    "route": "/outstock/cargo-distrain",
-    "name": "cargo-distrain",
-    "title": "费收扣量",
-    "moduleId": "./outstock/cargo-distrain/index",
-    "group": "group3"
-  },
-  {
-    "route": "/outstock/order/item",
-    "name": "outstock-orderItem",
-    "title": "出库单",
-    "moduleId": "./outstock/order/item/index",
-    "group": "group3"
-  },
-  {
-    "route": "/outstock/inventory",
-    "name": "inventory",
-    "title": "出库清单",
-    "moduleId": "./outstock/inventory/index",
-    "group": "group3"
-  },
-  {
-    "route": "/fee/charge",
-    "name": "charge",
-    "title": "收费",
-    "moduleId": "./fee/charge/index",
-    "group": "group4"
-  },
-  {
-    "route": "/fee/pay",
-    "name": "pay",
-    "title": "装卸结算",
-    "moduleId": "./fee/pay/index",
-    "group": "group4"
-  },
-  {
-    "route": "/report/daily-inventory",
-    "name": "daily-inventory",
-    "title": "出入库明细",
-    "moduleId": "./report/daily-inventory/index",
-    "group": "group5"
-  }]
+    {
+      "route": "/base/attachments",
+      "name": "attachments",
+      "title": "附件",
+      "moduleId": "./common/attachment/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/cargo-category",
+      "name": "cargoCategory",
+      "title": "货物种类",
+      "moduleId": "./base/cargo-category/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/contract",
+      "name": "contract",
+      "title": "合同",
+      "moduleId": "./base/contract/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/handling-customer",
+      "name": "handling-customer",
+      "title": "装卸单位",
+      "moduleId": "./base/customer/handling-customer/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/warehouse-customer",
+      "name": "warehouse-customer",
+      "title": "仓储客户",
+      "moduleId": "./base/customer/warehouse-customer/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/dictionary",
+      "name": "dictionary",
+      "title": "数据字典",
+      "moduleId": "./base/dictionary/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/employee",
+      "name": "employee",
+      "title": "用户",
+      "moduleId": "./base/employee/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/message",
+      "name": "message",
+      "title": "站内信",
+      "moduleId": "./base/message/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/notice",
+      "name": "notice",
+      "title": "公告",
+      "moduleId": "./base/notice/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/operation-logs",
+      "name": "operation-log",
+      "title": "操作日志",
+      "moduleId": "./base/operation-logs/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/organization-roles",
+      "name": "organization-roles",
+      "title": "角色管理",
+      "moduleId": "./base/organization-role/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/rate",
+      "name": "rate",
+      "title": "基础费率",
+      "moduleId": "./base/rate/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/warehouse",
+      "name": "warehouse",
+      "title": "仓库库区",
+      "moduleId": "./base/warehouse/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/work-info",
+      "name": "workInfo",
+      "title": "作业内容",
+      "moduleId": "./base/work-info/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/verify-records",
+      "name": "verifyRecord",
+      "title": "审核审批",
+      "moduleId": "./common/verify-records/index",
+      "group": "group1"
+    },
+    {
+      "route": "/instock/cargo-infos",
+      "name": "cargoInfo",
+      "title": "客户入库指令",
+      "moduleId": "./base/cargo-info/index",
+      "group": "group2"
+    },
+    {
+      "route": "/instock/:infoId?/cargo-flows",
+      "href": "/instock/cargo-flows",
+      "name": "cargoFlow",
+      "title": "入库流水",
+      "moduleId": "./instock/cargo-flow/index",
+      "group": "group2"
+    },
+    {
+      "route": "/instock/:infoId?/instock-orders",
+      "href": "/instock/instock-orders",
+      "name": "instockOrder",
+      "title": "入库单",
+      "moduleId": "./instock/order/index",
+      "group": "group2"
+    },
+    {
+      "route": "/instock/:infoId?/order-items",
+      "href": "/instock/order-items",
+      "name": "orderItem",
+      "title": "理货报告",
+      "moduleId": "./instock/order-item/index",
+      "group": "group2"
+    },
+    {
+      "route": "/instock/work-statistics",
+      "name": "workStatistics",
+      "title": "作业统计",
+      "moduleId": "./instock/work-statistics/index",
+      "group": "group2"
+    },
+    {
+      "route": "/base/storage",
+      "name": "storage",
+      "title": "库存",
+      "moduleId": "./base/storage/index",
+      "group": "group2"
+    },
+    {
+      "route": "/base/storage-history",
+      "name": "storage-history",
+      "title": "库存流水",
+      "moduleId": "./base/storage-history/index",
+      "group": "group2"
+    },
+    {
+      "route": "/outstock/:infoId?/outstock-orders",
+      "href": "/outstock/outstock-orders",
+      "name": "outstockOrder",
+      "title": "出库指令",
+      "moduleId": "./outstock/order/index",
+      "group": "group3"
+    },
+    {
+      "route": "/outstock/cargo-distrain",
+      "name": "cargo-distrain",
+      "title": "费收扣量",
+      "moduleId": "./outstock/cargo-distrain/index",
+      "group": "group3"
+    },
+    {
+      "route": "/outstock/order/item",
+      "name": "outstock-orderItem",
+      "title": "出库单",
+      "moduleId": "./outstock/order/item/index",
+      "group": "group3"
+    },
+    {
+      "route": "/outstock/inventory",
+      "name": "inventory",
+      "title": "出库清单",
+      "moduleId": "./outstock/inventory/index",
+      "group": "group3"
+    },
+    {
+      "route": "/fee/charge",
+      "name": "charge",
+      "title": "收费",
+      "moduleId": "./fee/charge/index",
+      "group": "group4"
+    },
+    {
+      "route": "/fee/pay",
+      "name": "pay",
+      "title": "装卸结算",
+      "moduleId": "./fee/pay/index",
+      "group": "group4"
+    },
+    {
+      "route": "/report/daily-inventory",
+      "name": "daily-inventory",
+      "title": "出入库明细",
+      "moduleId": "./report/daily-inventory/index",
+      "group": "group5"
+    }
+  ]
 }
