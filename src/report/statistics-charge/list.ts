@@ -1,12 +1,12 @@
 import { autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory } from '@app/utils';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 import { FeeStatisticsCriteria } from "@app/report/models/fee-statistics-criteria";
 import { StatisticsChargeService } from "@app/report/services/statistics-charge";
-import { CargoInfo } from "@app/base/models/cargo-info";
+// import { CargoInfo } from "@app/base/models/cargo-info";
 import { CargoInfoService } from "@app/base/services/cargo-info";
-import { CargoCategoryService } from "@app/base/services/cargo-category";
-import DataSource = kendo.data.DataSource;
+// import { CargoCategoryService } from "@app/base/services/cargo-category";
+// import DataSource = kendo.data.DataSource;
 
 @autoinject
 export class StatisticsChargeList {
@@ -128,7 +128,7 @@ export class StatisticsChargeList {
 
   constructor(private statisticsChargeService: StatisticsChargeService,
               private cargoInfoService: CargoInfoService,
-              private cargoCategoryService: CargoCategoryService,
+              // private cargoCategoryService: CargoCategoryService,
               private dataSourceFactory: DataSourceFactory) {
     // this.cargoCategoryTree = new kendo.data.TreeListDataSource({
     //   transport: {
@@ -146,8 +146,8 @@ export class StatisticsChargeList {
     //     }
     //   }
     // });
-    this.cargoCategoryTree = $("#treeView").kendoDropDownList();
-    console.log(this.cargoCategoryTree)
+    // this.cargoCategoryTree = $("#treeView").kendoDropDownList();
+    // console.log(this.cargoCategoryTree)
   }
 
   async activate() {
