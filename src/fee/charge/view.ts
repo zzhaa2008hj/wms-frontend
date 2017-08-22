@@ -12,7 +12,7 @@ export class ViewChargeInfo {
   chargeItemDataSource = new kendo.data.DataSource({
     transport: {
       read: (options) => {
-        options.success(this.chargeInfo.chargeItemList);
+        options.success(this.chargeInfo.chargeAuditItemList);
       }
     }
   });
@@ -27,11 +27,13 @@ export class ViewChargeInfo {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
     this.chargeInfo = await this.chargeInfoService.getChargeInfoAndItems(id);
-    if (this.chargeInfo && this.chargeInfo.chargeItemList && this.chargeInfo.chargeItemList.length > 0) {
-      this.chargeInfo.chargeItemList.map(item => {
+    if (this.chargeInfo && this.chargeInfo.chargeAuditItemList && this.chargeInfo.chargeAuditItemList.length > 0) {
+      this.chargeInfo.chargeAuditItemList.map(item => {
+        item.startDate = new Date(item.startDate);
+        item.endDate = new Date(item.endDate);
         let unit = this.units.find(r => r.dictDataCode == item.unit);
         if (unit) {
-          item.unitName = unit.dictDataName;
+          item.unitStr = unit.dictDataName;
         }
         let rateType = ConstantValues.WorkInfoCategory.find(r => r.value == item.rateType);
         if (rateType) {

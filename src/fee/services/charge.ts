@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
-import { ChargeInfo, ChargeItem } from "@app/fee/models/charge";
-import { ChargeAuditList } from "@app/fee/models/charge-audit";
+import { ChargeInfo } from "@app/fee/models/charge";
+import { ChargeAuditList, ChargeAuditItem } from "@app/fee/models/charge-audit";
 import { Attachment } from "@app/common/models/attachment";
 /**
  * Created by Hui on 2017/8/2.
@@ -56,7 +56,7 @@ export class ChargeInfoService {
   /**
    * 获取相关结算申请明细
    */
-  async getItems(batchNumber: string, chargeCategory: number, rateType?: number): Promise<ChargeItem[]> {
+  async getItems(batchNumber: string, chargeCategory: number, rateType?: number): Promise<ChargeAuditItem[]> {
     let res = await this.http.get(`/fee/charge-info/item?batchNumber=${batchNumber}&chargeCategory=${chargeCategory}&rateType=${rateType}`);
     return res.content;
   }
