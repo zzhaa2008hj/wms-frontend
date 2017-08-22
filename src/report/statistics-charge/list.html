@@ -1,0 +1,66 @@
+<template>
+  <div class="page-title">
+    <h3>收费统计</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-6">
+      <div class="input-group left">
+        <ak-drop-down-list k-value.two-way="criteria.dateType" k-data-text-field="text" k-data-value-field="value"
+                           k-data-source.bind="dateType">
+        </ak-drop-down-list>
+      </div>
+      <div class="input-group left">
+        <ak-drop-down-list k-value.two-way="criteria.customerName" k-option-label="请选择客户" k-data-text-field="value"
+                           k-data-value-field="value" k-data-source.bind="customers">
+        </ak-drop-down-list>
+      </div>
+      <div class="input-group left">
+        <!--<ak-drop-down-list k-value.two-way="criteria.type" k-data-text-field="text" k-data-value-field="text"-->
+                           <!--k-data-source.bind="tree">-->
+        <!--</ak-drop-down-list>-->
+        <!--<div>-->
+          <!--<ak-treeview-->
+              <!--k-data-source.bind="tree"-->
+              <!--k-drag-and-drop.bind="true"-->
+              <!--k-widget.bind="widget" id="treeView">-->
+            <!--<ak-template>-->
+              <!--<div>-->
+                <!--${text}-->
+              <!--</div>-->
+            <!--</ak-template>-->
+          <!--</ak-treeview>-->
+        <!--</div>-->
+        <!--&gt;-->
+        <!--<drop-down-tree-view k-value.two-way="criteria.cargoCategoryName" k-option-label="请选择"  k-data-source.bind="cargoCategoryTree">-->
+        <!--</drop-down-tree-view>-->
+        <!--<select class="easyui-combotree" url="data/city_data.json" />-->
+      </div>
+      <div class="input-group left">
+        <ak-drop-down-list k-value.two-way="criteria.billingType" k-data-text-field="text" k-data-value-field="value"
+                           k-option-label="请选择开票状态...(默认全部)"
+                           k-data-source.bind="billingType">
+        </ak-drop-down-list>
+      </div>
+      <div class="input-group left m-l-5">
+        <input type="text" value.bind="criteria.cargoCategoryName" placeholder="请输入货类">
+      </div>
+      <div class="input-group left">
+        <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
+        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+           k-pageable.bind="pageable">
+    <ak-col k-field="date" k-title="日期" k-format='{0:yyyy-MM-dd}'></ak-col>
+    <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+    <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
+    <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
+    <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
+    <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+  </ak-grid>
+
+</template>

@@ -1,15 +1,14 @@
 import { autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory } from '@app/utils';
-import * as moment from 'moment';
-import { ChargePaymentCriteria, PaymentPaymentCriteria } from "@app/report/models/charge-payment-criteria";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DailyPaymentService } from "@app/report/services/daily-payment";
+import { FeeStatisticsCriteria } from "@app/report/models/fee-statistics-criteria";
 
 @autoinject
 export class DailyPaymentList {
 
-  criteria: ChargePaymentCriteria = {};
+  criteria: FeeStatisticsCriteria = {};
   dataSource: kendo.data.DataSource;
   units: DictionaryData[] = [] as DictionaryData[];
 
