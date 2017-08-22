@@ -10,9 +10,9 @@ export class UserSession {
     loggedIn = false;
 
     token = '';
-    loginUrl = 'http://localhost:3000/#/loginRpc';
-    appKey = '151cd73d16c94c6da3d022fcea9057a0';
-    appType = 'web';
+    loginUrl = '';
+    appKey = '';
+    appType = '';
 
     userInfo: UserInfo;
 

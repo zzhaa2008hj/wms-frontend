@@ -15,6 +15,9 @@ export class App {
     @inject private user: UserSession,
     @inject private events: EventAggregator,
     @inject private dialogService: DialogService) {
+      this.user.loginUrl = config.loginParma.loginUrl;
+      this.user.appKey = config.loginParma.appKey;
+      this.user.appType = config.loginParma.appType;
   }
 
   async activate() {
@@ -33,7 +36,7 @@ export class App {
       let auth = this.user.userInfo.menuVoList;
       let auths = new Set(auth.map((a) => a.url));
       let routes = this.config.routes
-        .filter(a => auths.has(a.name))
+       .filter(a => auths.has(a.name))
         .map(route => {
           if (!route["group"]) return Object.assign({}, route, { nav: true });
           return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
