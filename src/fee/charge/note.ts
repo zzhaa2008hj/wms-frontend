@@ -77,7 +77,8 @@ export class Note {
     let title = "付费单";
     let strHTML = $("#note").html();
     strHTML = addHeader(strHTML);
-    print(title, strHTML, true);
+    print(title, strHTML, true, 2);
+
   }
 
 }

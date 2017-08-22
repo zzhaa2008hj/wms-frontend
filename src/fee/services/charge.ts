@@ -3,12 +3,21 @@ import { handleResult, Query, RestClient } from "@app/utils";
 import { ChargeInfo, ChargeItem } from "@app/fee/models/charge";
 import { ChargeAuditList } from "@app/fee/models/charge-audit";
 import { Attachment } from "@app/common/models/attachment";
+
 /**
  * Created by Hui on 2017/8/2.
  */
 @autoinject
 export class ChargeInfoService {
   constructor(private http: RestClient) {
+  }
+
+  /**
+   * 生成收费单
+   * @returns {Promise<void>}
+   */
+  createChargeDemandNote(chargeInfoId: string): Promise<void> {
+    return this.http.put(`/fee/charge-info/${chargeInfoId}/payDemandNote`, null).then(handleResult);
   }
 
   customerConfirm(chargeInfoId: string, stage: number, list: Attachment[]): Promise<void> {
@@ -33,6 +42,7 @@ export class ChargeInfoService {
   auditCancel(id: string): Promise<void> {
     return this.http.put(`/fee/charge-info/chargeAuditCancel/${id}`, null).then(handleResult);
   }
+
   /**
    * 查询结算需求 - 分页
    */
@@ -45,6 +55,7 @@ export class ChargeInfoService {
       return info;
     });
   }
+
   /**
    * 根据客户货物批次号
    */
@@ -83,8 +94,9 @@ export class ChargeInfoService {
     await this.http.put(`/fee/charge-info/${id}`, chargeInfo).then(handleResult);
   }
 }
+
 export interface ChargeInfoCriteria {
-    keywords?: string;
-    beginDate?: string;
-    endDate?: string;
+  keywords?: string;
+  beginDate?: string;
+  endDate?: string;
 }

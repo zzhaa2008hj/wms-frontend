@@ -1,13 +1,12 @@
 import { autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory } from '@app/utils';
-import * as moment from 'moment';
 import { MonthlyPaymentService } from "@app/report/services/monthly-payment";
-import { ChargePaymentCriteria } from "@app/report/models/charge-payment-criteria";
+import { FeeStatisticsCriteria } from "@app/report/models/fee-statistics-criteria";
 
 @autoinject
 export class MonthlyPaymentList {
 
-  criteria: ChargePaymentCriteria = {};
+  criteria: FeeStatisticsCriteria = {};
   dataSource: kendo.data.DataSource;
 
   pageable = {
