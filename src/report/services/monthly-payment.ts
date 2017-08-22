@@ -1,7 +1,7 @@
 import { RestClient, Query } from '@app/utils';
 import { autoinject } from 'aurelia-dependency-injection';
 import { MonthlyPayment } from "@app/report/models/monthly-payment";
-import { ChargePaymentCriteria } from "@app/report/models/charge-payment-criteria";
+import { FeeStatisticsCriteria } from "@app/report/models/fee-statistics-criteria";
 
 
 @autoinject
@@ -9,7 +9,7 @@ export class MonthlyPaymentService {
   constructor(private http: RestClient) {
   }
 
-  page(criteria?: ChargePaymentCriteria): Query<MonthlyPayment> {
+  page(criteria?: FeeStatisticsCriteria): Query<MonthlyPayment> {
     return this.http.query<MonthlyPayment>(`/report/monthly-payment/page`, criteria);
   }
 
