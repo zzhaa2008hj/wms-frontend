@@ -48,6 +48,9 @@ export class NavBar {
        this.subScription=  this.events.subscribe('user:authenticate', () => {
             this.updateUnreadNum();
         });
+        this.subScription=  this.events.subscribe('event-source:message', () => {
+            this.updateUnreadNum();
+        });
 
     }
 
