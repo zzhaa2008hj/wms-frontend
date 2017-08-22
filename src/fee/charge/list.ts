@@ -9,6 +9,8 @@ import { ChargeAuditListService } from "@app/fee/services/charge-audit";
 import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
 import { VerifyRecordCriteria } from "@app/common/services/verify-record";
 import { Audit } from "@app/fee/charge/audit";
+import { Router } from "aurelia-router";
+
 @autoinject
 export class ChargeInfoList {
   dataSource: kendo.data.DataSource;
@@ -23,9 +25,11 @@ export class ChargeInfoList {
     pageSizes: true,
     buttonCount: 10
   };
+
   constructor(private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
               private chargeInfoService: ChargeInfoService,
+              private router: Router,
               private dataSourceFactory: DataSourceFactory,
               private chargeAuditListService: ChargeAuditListService) {
 
@@ -53,6 +57,19 @@ export class ChargeInfoList {
     let selectedRow = grid.select();
     let dataItem = grid.dataItem(selectedRow);
     this.id = dataItem.id;
+  }
+
+  /**
+   * 生成收费单
+   */
+  async createChargeDemandNote(id: string) {
+    try {
+      await this.chargeInfoService.createChargeDemandNote(id);
+      await this.messageDialogService.alert({ title: "提示", message: '生成收费单成功', icon: "error" });
+      this.router.navigateToRoute("note", { id: id });
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
   }
 
   /**
