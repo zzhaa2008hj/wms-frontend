@@ -2,7 +2,7 @@ import { Router } from "aurelia-router";
 import { inject, newInstance } from 'aurelia-dependency-injection';
 import { ValidationController } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
-import { ChargeInfo, ChargeItem, chargeInfoValidationRules } from '@app/fee/models/charge';
+import { ChargeInfo, chargeInfoValidationRules } from '@app/fee/models/charge';
 import { ChargeInfoService } from "@app/fee/services/charge";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { DialogService } from "ui";
@@ -10,6 +10,7 @@ import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { CargoRateStep } from '@app/base/models/cargo-info';
 import { uuid } from '@app/utils';
+import { ChargeAuditItem } from '@app/fee/models/charge-audit';
 
 export class NewChargeInfo {
   disabled: boolean = false;
@@ -25,7 +26,7 @@ export class NewChargeInfo {
   chargeCategory: number;
   rateType: number = -1;
 
-  chargeItems: ChargeItem[] = [];
+  chargeItems: ChargeAuditItem[] = [];
   chargeItemDataSource = new kendo.data.DataSource({
     transport: {
       read: (options) => {
@@ -76,11 +77,11 @@ export class NewChargeInfo {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
     this.chargeInfo = await this.chargeInfoService.getChargeInfoAndItems(id);
-    if (this.chargeInfo && this.chargeInfo.chargeItemList && this.chargeInfo.chargeItemList.length > 0) {
-      this.chargeInfo.chargeItemList.map(item => {
+    if (this.chargeInfo && this.chargeInfo.chargeAuditItemList && this.chargeInfo.chargeAuditItemList.length > 0) {
+      this.chargeInfo.chargeAuditItemList.map(item => {
         let unit = this.units.find(r => r.dictDataCode == item.unit);
         if (unit) {
-          item.unitName = unit.dictDataName;
+          item.unitStr = unit.dictDataName;
         }
         let rateType = ConstantValues.WorkInfoCategory.find(r => r.value == item.rateType);
         if (rateType) {
@@ -100,7 +101,7 @@ export class NewChargeInfo {
         }
       });
     }
-    this.chargeItems = this.chargeInfo.chargeItemList;
+    this.chargeItems = this.chargeInfo.chargeAuditItemList;
 
     this.customerChanged();
   }
@@ -169,7 +170,7 @@ export class NewChargeInfo {
       items.map(item => {
         let unit = this.units.find(r => r.dictDataCode == item.unit);
         if (unit) {
-          item.unitName = unit.dictDataName;
+          item.unitStr = unit.dictDataName;
         }
         let rateType = this.workInfoCategorys.find(r => r.value == item.rateType);
         if (rateType) {
@@ -238,7 +239,7 @@ export class NewChargeInfo {
       });
     }
     this.validationController.addObject(this.chargeInfo, chargeInfoValidationRules);
-    this.chargeInfo.chargeItemList = this.chargeItems;
+    this.chargeInfo.chargeAuditItemList = this.chargeItems;
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
@@ -315,7 +316,7 @@ export class NewChargeInfo {
     this.rowExpands.delete(uid);
   }
 
-  dataBound(e) {
+  dataBound() {
     this.rowExpands.forEach(uid => this.customerGrid.expandRow($('tr[data-uid=' + uid + ']')));
   }
 }

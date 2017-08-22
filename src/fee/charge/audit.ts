@@ -92,8 +92,6 @@ export class Audit {
           }
         }
       },
-      scrollable: false,
-      sortable: true,
       columns: [
         { field: 'chargeCategoryName', title: '费用类别' },
         { field: 'rateTypeName', title: '费用类型' },
@@ -110,6 +108,8 @@ export class Audit {
         { field: 'containerQuantity', title: '箱量' },
         { field: 'storageDay', title: '堆存天数' },
         { field: 'storageRate', title: '堆存费率' },
+        { field: 'amount', title: '堆存费用' },
+        { field: 'workInfoName', title: '作业内容' },
         { field: 'remark', title: '备注' },
       ]
     });
