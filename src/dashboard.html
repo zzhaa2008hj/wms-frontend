@@ -1,5 +1,12 @@
 <template>
-  Dashboard
-  <button click.delegate="publish()">推送监听</button>
-  <div id="main" style="width: 600px;height:400px;"></div>
+  <div class="grid simple">
+    <div class="grid-title no-border">
+      <div>
+        <span class="notice">网站公告<em class="fa fa-volume-up m-l-5"></em></span>
+        <span class="m-l-50">【${notice.createTimeStr}】</span>
+        <span class="m-l-20"><a class="pointer" click.delegate="detail()">${notice.title}</a></span>
+      </div>
+    </div>
+  </div>
+  <div id="main" style="width: 400px;height:300px;"></div>
 </template>

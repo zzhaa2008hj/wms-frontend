@@ -1,11 +1,32 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { EventAggregator } from "aurelia-event-aggregator";
 import * as echarts from 'echarts';
+import * as moment from 'moment';
+import { NoticeService } from '@app/base/services/notice';
+import { Notice } from '@app/base/models/notice';
+import { DialogService } from 'ui';
+import { ReadNotification } from '@app/base/notifications/read';
 
 @autoinject
 export class Dashboard {
-  constructor(private events: EventAggregator) {
 
+  notices: Notice[];
+  notice: Notice;
+
+  constructor(private dialogService: DialogService,
+              private noticeService: NoticeService) {
+
+  }
+
+  async activate() {
+    this.notices = await this.noticeService.getNotices();
+    this.notice = this.notices[0];
+    this.notice.createTimeStr = moment(this.notice.createTime).format("YYYY-MM-DD");
+  }
+
+  async detail() {
+    await this.dialogService
+      .open({ viewModel: ReadNotification, model: { body: this.notice.content, title: this.notice.title }, lock: true })
+      .whenClosed();
   }
 
   // 页面载入完成后执行
@@ -32,15 +53,5 @@ export class Dashboard {
     };
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
-  }
-
-  publish() {
-    this.events.publish(
-      'user:authenticate',
-      {
-        orgId: "6bef5d9d82b44e80833884619b3d1cb2",
-        userId: "83731b46959547f8a1b5109966044c7f"
-      }
-    );
   }
 }

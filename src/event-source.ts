@@ -1,6 +1,4 @@
-import { autoinject } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { MessageResultService } from "@app/base/services/message";
 import { inject } from "aurelia-dependency-injection";
 
 export class Notifier {

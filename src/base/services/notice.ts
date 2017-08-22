@@ -21,4 +21,8 @@ export class NoticeService {
     return this.http.put(`/base/notice/${id}`, null).then(handleResult);
   }
 
+  async getNotices(): Promise<Notice[]> {
+    let res = await this.http.get(`base/notice/list`);
+    return res.content;
+  }
 }

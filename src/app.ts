@@ -8,16 +8,16 @@ kendo.culture('zh');
 
 export class App {
 
-  router: Router;  
+  router: Router;
   private subscriptions: Subscription[];
 
   constructor(@inject('config') private config: any,
               @inject private user: UserSession,
               @inject private events: EventAggregator,
               @inject private dialogService: DialogService) {
-      this.user.loginUrl = config.loginParma.loginUrl;
-      this.user.appKey = config.loginParma.appKey;
-      this.user.appType = config.loginParma.appType;
+    this.user.loginUrl = this.config.loginParam.loginUrl;
+    this.user.appKey = this.config.loginParam.appKey;
+    this.user.appType = this.config.loginParam.appType;
   }
 
   async activate() {
@@ -27,10 +27,14 @@ export class App {
 
   configureRouter(config: RouterConfiguration, router: Router) {
     let dashboard = { route: '', name: 'dashboard', title: "首页", moduleId: './dashboard', nav: true, icon: 'home' };
-    let notice = { route: "/base/notifications", name: "notifications", title: "消息通知", 
-      moduleId: "./base/notifications/notifications-list" };
-    let changePassword = { route: '/change-password', name: 'changePassword', title: "修改密码", 
-      moduleId: './change-password', nav: false };
+    let notice = {
+      route: "/base/notifications", name: "notifications", title: "消息通知", 
+      moduleId: "./base/notifications/notifications-list"
+    };
+    let changePassword = {
+      route: '/change-password', name: 'changePassword', title: "修改密码",
+      moduleId: './change-password', nav: false
+    };
     config.map([dashboard, notice, changePassword]);
     if (this.user.loggedIn) {
       config.options.root = document.querySelector('base').getAttribute('href');
@@ -44,6 +48,15 @@ export class App {
           return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
         });
       config.map([...routes]);
+
+      // 开启消息推送监听
+      this.events.publish(
+        'user:authenticate',
+        {
+          orgId: this.user.userInfo.organizationId,
+          userId: this.user.userInfo.userId
+        }
+      );
     }
     this.router = router;
   }

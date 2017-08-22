@@ -35,7 +35,8 @@ export class UserSession {
             //没有token ==> 跳转到登录界面
             //有token 把token参数放入session中 ，去掉token参数，重定向页面
             let param = this.getRequest();
-            let url = this.loginUrl + "?appKey=" + this.appKey + "&appType=" + this.appType + "&returnUrl=" + encodeURIComponent(window.location.href);
+            let url = this.loginUrl + "?appKey=" + this.appKey + "&appType=" + this.appType + "&returnUrl=" 
+              + encodeURIComponent(window.location.href);
             if (param["token"]) {
                 sessionStorage.setItem(USER_TOKEN, param['token']);
                 url = window.location.href.split('?')[0];
@@ -59,8 +60,8 @@ export class UserSession {
     }
 
     getRequest() {
-        var url = window.location.href; //获取url中"?"符后的字串
-        var theRequest = new Object();
+        let url = window.location.href; //获取url中"?"符后的字串
+        let theRequest = new Object();
         if (url.indexOf("?") != -1) {
             //let str = url.substr(1);
             let str = url.split("?")[1];
