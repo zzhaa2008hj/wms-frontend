@@ -8,12 +8,14 @@ import { DialogService } from "ui";
 export class Notifier1 {
 
     private es: EventSource;
+    Notification.requestPermission();
 
     constructor(private events: EventAggregator,
                 private dialogService: DialogService,
                 private messageResultService: MessageResultService) {
 
         events.subscribe('event-source:message', event => {
+
             let { title, body, requireInteraction, tag, type } = event;
             let notification = new Notification(title, {
                 body: body,

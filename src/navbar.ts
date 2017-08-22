@@ -15,11 +15,9 @@ export class NavBar {
   subScription: Subscription;
 
   constructor(private events: EventAggregator,
-    private router: Router,
-    private messageService: MessageService,
-    private user: UserSession) {
-
-
+              private router: Router,
+              private messageService: MessageService,
+              private user: UserSession) {
   }
 
   toggleSidebar() {
@@ -45,11 +43,14 @@ export class NavBar {
     console.log(this.unreadNum);
   }
 
+
   bind() {
     this.subScription = this.events.subscribe('user:authenticate', () => {
       this.updateUnreadNum();
     });
-
+    this.subScription = this.events.subscribe('event-source:message', () => {
+      this.updateUnreadNum();
+    });
   }
 
   unbind() {
