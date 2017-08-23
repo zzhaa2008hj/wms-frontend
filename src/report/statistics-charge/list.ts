@@ -10,9 +10,10 @@ import { CargoInfoService } from "@app/base/services/cargo-info";
 
 @autoinject
 export class StatisticsChargeList {
-
   criteria: FeeStatisticsCriteria = {};
   dataSource: kendo.data.DataSource;
+  yearStatistic: Date;
+  monthStatistic: Date;
 
   pageable = {
     refresh: true,
@@ -168,6 +169,17 @@ export class StatisticsChargeList {
   }
 
   select() {
+   let yearMonth = '';
+    if (this.yearStatistic) {
+      let year = this.yearStatistic.getFullYear();
+       yearMonth += year.toString();
+    }
+    if (this.monthStatistic) {
+      let month = this.monthStatistic.getMonth() + 1;
+      yearMonth += "-" + month;
+    }
+    this.criteria.yearMonth = yearMonth;
+
     this.dataSource.read();
   }
 
