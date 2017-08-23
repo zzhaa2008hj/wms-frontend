@@ -1,5 +1,4 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { DialogController } from "ui";
 
 @autoinject
 export  class ReadNotification{
@@ -13,6 +12,4 @@ export  class ReadNotification{
         this.body = body ;
         this.title = title ;
     }
-
-
 }

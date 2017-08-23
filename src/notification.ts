@@ -7,45 +7,43 @@ import { DialogService } from "ui";
 @autoinject
 export class Notifier1 {
 
-    constructor(private events: EventAggregator,
-                private dialogService: DialogService,
-                private messageResultService: MessageResultService) {
-        doNo(this.events, this.dialogService, this.messageResultService);
-    }
+  constructor(private events: EventAggregator,
+    private dialogService: DialogService,
+    private messageResultService: MessageResultService) {
+    doNo(this.events, this.dialogService, this.messageResultService);
+  }
 }
 
 async function doNo(events: EventAggregator,
                     dialogService: DialogService,
                     messageResultService: MessageResultService) {
 
-    let result = await   Notification.requestPermission();
-    if (result != 'granted') {
-        console.log('没有被允许');
-        return;
-    }
+  let result = await Notification.requestPermission();
+  if (result != 'granted') {
+    console.log('没有被允许');
+    return;
+  }
 
-    events.subscribe('event-source:message', event => {
+  events.subscribe('event-source:message', event => {
 
-        let { title, body, requireInteraction, tag, type } = event;
-        let notification = new Notification(title, {
-            body: body,
-            title: title,
-            requireInteraction: requireInteraction,
-            icon: '/assets/images/note.png'
-        });
-        notification.onclick = async click => {
-            if (type == 1) {
-                messageResultService.updateMessage(tag);
-            }
-            await dialogService.open({
-                viewModel: ReadNotification,
-                model: { title, body },
-                lock: true
-            }).whenClosed();
-        }
-    });
-
-
+    let { title, body, requireInteraction, tag, type } = event;
+    let options = {
+      body: body,
+      requireInteraction: requireInteraction,
+      icon: '/assets/images/note.png'
+    };
+    let notification = new Notification(title, options);
+    notification.onclick = async () => {
+      if (type == 1) {
+        messageResultService.updateMessage(tag);
+      }
+      await dialogService.open({
+        viewModel: ReadNotification,
+        model: { title, body },
+        lock: true
+      }).whenClosed();
+    };
+  });
 }
 
 

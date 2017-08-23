@@ -5,7 +5,6 @@ import { ChargeInfoService, ChargeInfoCriteria } from "@app/fee/services/charge"
 import { DataSourceFactory } from '@app/utils';
 import { ConstantValues } from "@app/common/models/constant-values";
 import * as moment from 'moment';
-import { ChargeAuditListService } from "@app/fee/services/charge-audit";
 import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
 import { VerifyRecordCriteria } from "@app/common/services/verify-record";
 import { Audit } from "@app/fee/charge/audit";
@@ -30,8 +29,7 @@ export class ChargeInfoList {
               private messageDialogService: MessageDialogService,
               private chargeInfoService: ChargeInfoService,
               private router: Router,
-              private dataSourceFactory: DataSourceFactory,
-              private chargeAuditListService: ChargeAuditListService) {
+              private dataSourceFactory: DataSourceFactory) {
 
   }
 
@@ -183,18 +181,4 @@ export class ChargeInfoList {
     this.chargeInfoCriteria = {} as ChargeInfoCriteria;
     this.dataSource.read();
   }
-
-  /**
-   * 生成对账清单
-   */
-  async createChargeAuditList(id: string) {
-    try {
-      await this.chargeAuditListService.createChargeAuditList(id);
-      await this.dialogService.alert({ title: "提示", message: "生成对账清单成功！" });
-      this.dataSource.read();
-    } catch (err) {
-      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
-    }
-  }
-
 }

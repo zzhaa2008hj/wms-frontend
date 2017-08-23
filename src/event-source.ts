@@ -3,8 +3,6 @@ import { inject } from "aurelia-dependency-injection";
 
 export class Notifier {
 
-    private es: EventSource;
-
     constructor(@inject private events: EventAggregator,
                 @inject('config') config: any) {
 
@@ -21,7 +19,6 @@ export class Notifier {
             es1.onopen = e => console.log(e);
             es1.onerror = e => console.log(e);
             es1.onmessage = e => {
-                console.log(e);
                 events.publish('event-source:message', JSON.parse(e.data));
             };
         });

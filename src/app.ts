@@ -25,6 +25,8 @@ export class App {
   }
 
   async activate() {
+    console.debug(this.n);
+    console.debug(this.n1);
     await this.user.loginVerdict();
     if (!this.user.loggedIn) return;
   }
