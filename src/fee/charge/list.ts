@@ -184,17 +184,4 @@ export class ChargeInfoList {
     this.dataSource.read();
   }
 
-  /**
-   * 生成对账清单
-   */
-  async createChargeAuditList(id: string) {
-    try {
-      await this.chargeAuditListService.createChargeAuditList(id);
-      await this.dialogService.alert({ title: "提示", message: "生成对账清单成功！" });
-      this.dataSource.read();
-    } catch (err) {
-      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
-    }
-  }
-
 }
