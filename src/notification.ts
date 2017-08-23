@@ -7,37 +7,46 @@ import { DialogService } from "ui";
 @autoinject
 export class Notifier1 {
 
-    private es: EventSource;
-    Notification.requestPermission();
-
     constructor(private events: EventAggregator,
                 private dialogService: DialogService,
                 private messageResultService: MessageResultService) {
+        doNo(this.events, this.dialogService, this.messageResultService);
+    }
+}
 
-        events.subscribe('event-source:message', event => {
+async function doNo(events: EventAggregator,
+                    dialogService: DialogService,
+                    messageResultService: MessageResultService) {
 
-            let { title, body, requireInteraction, tag, type } = event;
-            let notification = new Notification(title, {
-                body: body,
-                title: title,
-                requireInteraction: requireInteraction,
-                icon: '/assets/images/note.png'
-            });
-            notification.onclick = async click => {
-                if (type == 1) {
-                    this.messageResultService.updateMessage(tag);
-                }
-                await this.dialogService.open({
-                    viewModel: ReadNotification,
-                    model: { title, body },
-                    lock: true
-                }).whenClosed();
-            }
+    let result = await   Notification.requestPermission();
+    if (result != 'granted') {
+        console.log('没有被允许');
+        return;
+    }
+
+    events.subscribe('event-source:message', event => {
+
+        let { title, body, requireInteraction, tag, type } = event;
+        let notification = new Notification(title, {
+            body: body,
+            title: title,
+            requireInteraction: requireInteraction,
+            icon: '/assets/images/note.png'
         });
-    }
+        notification.onclick = async click => {
+            if (type == 1) {
+                messageResultService.updateMessage(tag);
+            }
+            await dialogService.open({
+                viewModel: ReadNotification,
+                model: { title, body },
+                lock: true
+            }).whenClosed();
+        }
+    });
 
-    subscribe(listener: (msg: any) => void, event: string = "message") {
-        this.events.subscribe(`notification:${event}`, listener);
-    }
 
 }
+
+
+
