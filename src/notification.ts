@@ -28,11 +28,11 @@ async function doNo(events: EventAggregator,
 
     let { title, body, requireInteraction, tag, type } = event;
     let options = {
-      body: body,
+      body: title,
       requireInteraction: requireInteraction,
       icon: '/assets/images/note.png'
     };
-    let notification = new Notification(title, options);
+    let notification = new Notification('您有一条新消息', options);
     notification.onclick = async () => {
       if (type == 1) {
         messageResultService.updateMessage(tag);

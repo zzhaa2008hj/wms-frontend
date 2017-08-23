@@ -32,8 +32,6 @@ export class MsgInfo {
       query: () => this.messageService.getMsgInfo({ read: "0" }),
       pageSize: 15
     });
-
-
     this.noteDataSource = this.dataSourceFactory.create({
       query: () => this.noticeService.queryNotices({ visible: "1" }),
       pageSize: 15

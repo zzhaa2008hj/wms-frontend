@@ -10,7 +10,7 @@
         <!-- 未读消息-->
         <div>
           <div>
-            <button class="btn btn-primary" click.trigger="setRead()">标记全部为已读</button>
+            <button class="btn btn-small btn-primary" click.trigger="setRead()">标记全部为已读</button>
             <ak-grid k-data-source.bind="unreadDataSource" k-pageable.bind="pageable">
               <ak-col k-title="标题" k-field="title">
                 <ak-template><a href="javaScript:void(0)" click.trigger="detail($this)">${title} </a></ak-template>
