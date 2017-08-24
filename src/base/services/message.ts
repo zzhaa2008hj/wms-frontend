@@ -33,8 +33,8 @@ export class MessageService {
      * @param {{read: string}} param 1:未读 ； 0：全部
      * @returns {Query<any>}
      */
-    getMsgInfo(param?: { read: string }): Query<any> {
-        return this.http.query(`/base/message/getMsg`, param).map(log => fixDate(log, 'sendDate'));
+    getMsgInfo(param?: { read: string }): Query<Message> {
+        return this.http.query<Message>(`/base/message/getMsg`, param).map(log => fixDate(log, 'sendDate'));
     }
 
     /**
