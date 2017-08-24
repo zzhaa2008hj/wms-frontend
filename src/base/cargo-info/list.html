@@ -62,11 +62,10 @@
       <ak-template>
         <a class="btn btn-small" if.bind="cargoFlowSize == 0" route-href="route: edit; params.bind: { id: id }">编辑</a>
         <a class="btn btn-danger btn-small" if.bind="cargoFlowSize == 0" click.delegate="delete(id)" if.bind="status !=1 ">删除</a>
-        <a class="btn btn-small" href="/#/instock/${id}/cargo-flows">入库信息</a>
-        <!-- <a class="btn btn-small" href="/#/instock/${id}/order-items">理货报告</a>
-        <a class="btn btn-small" href="/#/instock/${id}/instock-orders">入库单</a> -->
-        <!--<a class="btn btn-small" href="/#/outstock/${id}/outstock-orders">出库信息</a>-->
-        <a class="btn btn-small" click.delegate="goOutstockOrders(id,instockStatus)">出库信息</a>
+        <a class="btn btn-small" href="/instock/${id}/cargo-flows">入库信息</a>
+        <!-- <a class="btn btn-small" href="/instock/${id}/order-items">理货报告</a>
+        <a class="btn btn-small" href="/instock/${id}/instock-orders">入库单</a> -->
+        <a class="btn btn-small" href="/outstock/${id}/outstock-orders">出库信息</a>
       </ak-template>
     </ak-col>
   </ak-grid>

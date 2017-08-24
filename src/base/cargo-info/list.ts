@@ -87,14 +87,8 @@ export class CargoInfoList {
     }
     try {
       await this.outstockInventoryService.createOutstockInventory(this.batchNumber);
-      let res = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库清单" });
-      if (!res) {
-        this.dataSource.read();
-        return;
-      }
-      let inventory = await this.outstockInventoryService.getOutstockInventoryByBatchNumber(this.batchNumber);
-      // 跳转 到出库清单页面
-      window.location.href = '#/outstock/inventory/' + inventory.id + '/view';
+      await this.messageDialogService.confirm({ title: "提示", message: "生成成功！" });
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
@@ -106,13 +100,5 @@ export class CargoInfoList {
       return;
     }
     this.router.navigateToRoute('changeHistory', { id: this.infoId });
-  }
-
-  async goOutstockOrders(id: string, instockStatus: number) {
-    if (instockStatus != 1) {
-      await this.messageDialogService.alert({ title: "失败", message: "该批次货物未有入库货物，无法进行出库操作", icon: 'error' });
-      return;
-    }
-    window.location.href = `/#/outstock/${id}/outstock-orders`;
   }
 }

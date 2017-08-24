@@ -225,12 +225,15 @@ export class OrderList {
         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部出完，无法新增出库", icon: 'error' });
         return;
       }
+      if (cargoInfo.instockStatus != 1) {
+        await this.messageDialogService.alert({ title: "失败", message: "该批次货物未有入库货物，无法进行出库操作", icon: 'error' });
+        return;
+      }
       this.router.navigateToRoute("new");
     } else {
       this.router.navigateToRoute("new");
     }
   }
-
 
   /**
    * 审核记录
