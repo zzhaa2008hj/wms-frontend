@@ -181,4 +181,5 @@ export class ChargeInfoList {
     this.chargeInfoCriteria = {} as ChargeInfoCriteria;
     this.dataSource.read();
   }
+
 }

@@ -20,8 +20,10 @@ export class Dashboard {
   async activate() {
     // todo 公告向上滚动
     this.notices = await this.noticeService.getNotices();
-    this.notice = this.notices[0];
-    this.notice.createTimeStr = moment(this.notice.createTime).format("YYYY-MM-DD");
+    if (this.notices && this.notices.length > 0) {
+      this.notice = this.notices[0];
+      this.notice.createTimeStr = this.notice.createTime ? moment(this.notice.createTime).format("YYYY-MM-DD") : '';
+    }
   }
 
   async detail() {
