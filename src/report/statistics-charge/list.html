@@ -19,27 +19,8 @@
         </ak-drop-down-list>
       </div>
       <div class="input-group left">
-        <!--<ak-drop-down-list k-value.two-way="criteria.type" k-data-text-field="text" k-data-value-field="text"-->
-                           <!--k-data-source.bind="tree">-->
-        <!--</ak-drop-down-list>-->
-        <!--<div>-->
-          <!--<ak-treeview-->
-              <!--k-data-source.bind="tree"-->
-              <!--k-drag-and-drop.bind="true"-->
-              <!--k-widget.bind="widget" id="treeView">-->
-            <!--<ak-template>-->
-              <!--<div>-->
-                <!--${text}-->
-              <!--</div>-->
-            <!--</ak-template>-->
-          <!--</ak-treeview>-->
-        <!--</div>-->
-        <!--&gt;-->
-        <!--<drop-down-tree-view k-value.two-way="criteria.cargoCategoryName" k-option-label="请选择"  k-data-source.bind="cargoCategoryTree">-->
-        <!--</drop-down-tree-view>-->
-        <!--<select class="easyui-combotree" url="data/city_data.json" />-->
       </div>
-      <div class="input-group left">
+      <div class="input-group left" if.bind="type == 2">
         <ak-drop-down-list k-value.two-way="criteria.billingType" k-data-text-field="text" k-data-value-field="value"
                            k-option-label="请选择开票状态...(默认全部)"
                            k-data-source.bind="billingType">

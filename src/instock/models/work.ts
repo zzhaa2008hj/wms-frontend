@@ -69,6 +69,9 @@ export class WorkOrderItem{
   remark: string ;
 
   orgId: string ;
+
+  unit: string;
+  unitStr: string;
 }
 
 export class WorkOrderDetail{
