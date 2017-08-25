@@ -7,5 +7,6 @@ export interface FeeStatisticsCriteria {
   cargoCategoryName?: string;
 
   yearMonth?: string;
+  billingType?: number;
 }
 
