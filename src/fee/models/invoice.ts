@@ -1,7 +1,7 @@
 /**
- * Created by Hui on 2017/8/2.
+ * Created by Hui on 2017/8/7.
  */
-export interface Invoice {
+export interface Invoice{
   invoiceType: number;
   invoiceNumber: string;
 }

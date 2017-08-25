@@ -5,17 +5,17 @@
         </ux-dialog-header>
         <ux-dialog-body>
             <div class="form-group">
-                <label class="form-label">阶梯号*</label>
+                <label class="form-label">阶梯号</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.stepNum & validate">
+                    <input type="text" class="form-control" value.bind="rateStep.stepNum" readonly>
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">开始值*</label>
+                <label class="form-label">开始值</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.stepStart & validate">
+                    <input type="text" class="form-control" value.bind="rateStep.stepStart" readonly>
                 </div>
             </div>
             <div class="form-group">
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">阶梯价</label>
+                <label class="form-label">阶梯价*</label>
                 <span class="help"></span>
                 <div class="controls">
                     <input type="text" class="form-control" value.bind="rateStep.stepPrice & validate">
@@ -37,16 +37,16 @@
                 <span class="help"></span>
                 <ak-drop-down-list k-value.two-way="rateStep.stepUnit"
                                    k-option-label="请选择..."
-                                   k-data-text-field="text"
-                                   k-data-value-field="value"
-                                   k-data-source.bind="stepUnit">
+                                   k-data-text-field="dictDataName"
+                                   k-data-value-field="dictDataCode"
+                                   k-data-source.bind="stepUnits">
                 </ak-drop-down-list>
             </div>
             <div class="form-group">
                 <label class="form-label">备注</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.remark & validate">
+                    <input type="text" class="form-control" value.bind="rateStep.remark">
                 </div>
             </div>
 

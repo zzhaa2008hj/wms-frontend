@@ -27,7 +27,8 @@ export class WorkStatisticsService {
   }
 
   getOutstockStatistics(outstockOrderId: string): Promise<WorkStatistics>{
-    return this.http.get(`/base/warehouseWorkOrderStatistics/outstockStatistics/${outstockOrderId}`).then(res => res.content);
+    return this.http.get(`/base/warehouseWorkOrderStatistics/outstockStatistics/${outstockOrderId}`)
+      .then(res => res.content);
   }
 
   saveStatistics(workStatistics: WorkStatistics): Promise<void> {

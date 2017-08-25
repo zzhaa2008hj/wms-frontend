@@ -1,22 +1,49 @@
 <template>
   <div class="row m-b-5">
     <div class="col-md-3">
+      <a class="btn btn-small btn-success" route-href="route: new">新增结算申请</a>
+      <a class="btn btn-small btn-success" route-href="route: new-audit">手动录入账单</a>
       <button class="btn btn-small" click.delegate="verifyHistory()">审核记录</button>
     </div>
+    <div class="col-md-9">
+      <div class="input-group left">
+        <input type="text" style="width: 220px;" value.bind="chargeInfoCriteria.keywords" placeholder="输入代理商或客户名称">
+      </div>
+      <div class="input-group left m-l-15">
+        <input class="form-control" ak-datepicker="k-value.two-way: chargeInfoCriteria.beginDate; k-widget.two-way: startDatePicker"
+          k-on-change.delegate="startChange()" placeholder="请输入开始时间">
+      </div>
+      <div class="input-group left m-l-15">
+        <input class="form-control" ak-datepicker="k-value.two-way: chargeInfoCriteria.endDate; k-widget.two-way: endDatePicker"
+          k-on-change.delegate="endChange()" placeholder="请输入结束时间" />
+      </div>
+      <div class="input-group left m-l-5">
+        <div class="input-group-addon search" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></div>
+        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
+      </div>
+    </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row"
-           k-on-change.delegate="rowSelected($event.detail)">
-    <ak-col k-field="agentName" k-title="代理商名称" k-width.bind="100"></ak-col>
-    <ak-col k-field="customerName" k-title="客户名称" k-width.bind="100"></ak-col>
-    <ak-col k-field="lastStage" k-title="上阶段" k-width.bind="150"></ak-col>
-    <ak-col k-field="stage" k-title="当前阶段" k-width.bind="150"></ak-col>
-    <ak-col k-title="操作">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
+    <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
+    <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+    <ak-col k-field="paymentUnit" k-title="付款单位"></ak-col>    
+    <ak-col k-field="chargeStartDate" k-title="申请开始日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="chargeEndDate" k-title="申请结束日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="status == 1 ? '完成':'未完成'" k-title="状态"></ak-col>
+    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
+    <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
+    <ak-col k-field="type == 1 ? '自动': '手动'" k-title="结算类型"></ak-col>
+    <ak-col k-title="操作" k-width="300px">
       <ak-template>
-        <a class="btn btn-small" route-href="route: customerConfirm; params.bind: { id: id }">客户确认</a>
-        <button class="btn btn-small btn-primary" click.delegate="auditSecondFee(id)">费收审核</button>
-        <a class="btn btn-small" route-href="route: note; params.bind: { id: id }">查看收费单</a>
-        <button class="btn btn-small btn-primary" click.delegate="invoiceEntry(id)">发票录入</button>
-        <button class="btn btn-small btn-primary" click.delegate="auditCancel(id)">核销</button>
+        <a class="btn btn-small" if.bind="stage == 1" route-href="route: confirm; params.bind: { id: id }">客户确认</a>
+        <button class="btn btn-small btn-primary" if.bind="stage == 3" click.delegate="auditSecondFee($this)">费收审核</button>
+        <a class="btn btn-small" if.bind="stage >= 6" route-href="route: note; params.bind: { id: id }">查看收费单</a>
+        <a class="btn btn-small" if.bind="stage == 5" click.delegate="createChargeDemandNote(id)">生成收费单</a>
+        <button class="btn btn-small btn-primary" if.bind="stage == 6"  click.delegate="invoiceEntry(id)">发票录入</button>
+        <button class="btn btn-small btn-primary" if.bind="stage == 7"  click.delegate="auditCancel(id)">核销</button>
+        <a class="btn btn-small btn-primary" route-href="route: view; params.bind: { id: id }">查看结算申请</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 0 && type == 1" route-href="route: edit; params.bind: { id: id }">修改结算申请</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 0 && type == 2" route-href="route: edit-audit; params.bind: { id: id }">修改结算申请</a>
       </ak-template>
     </ak-col>
   </ak-grid>

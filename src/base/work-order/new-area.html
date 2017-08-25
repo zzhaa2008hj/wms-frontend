@@ -22,12 +22,12 @@
                 </ak-drop-down-list>
             </ak-template>
         </ak-col>
-        <ak-col k-field="quantity" k-title="作业数量">
+        <ak-col k-field="quantity" k-title="货物数量">
             <ak-template>
                 <input type="number" value.bind="quantity & toFloat & validate" disabled.bind="disabled">
             </ak-template>
         </ak-col>
-        <ak-col k-field="number" k-title="作业件数">
+        <ak-col k-field="number" k-title="货物件数">
             <ak-template>
                 <input type="number" value.bind="number & toInt & validate" disabled.bind="disabled">
             </ak-template>

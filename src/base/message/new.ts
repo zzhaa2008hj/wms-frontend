@@ -71,7 +71,7 @@ export class NewMessage {
       receivers = [...this.id].map(res => {
         let r = this.dataSourceReceiver.get(res) as any;
         let msgRes = {} as MessageResult;
-        msgRes.receiverId = r.id;
+        msgRes.receiverId = r.accountId;
         msgRes.receiverName = r.name;
         return msgRes;
       });

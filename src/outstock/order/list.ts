@@ -17,6 +17,8 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { RouterParams } from '@app/common/models/router-params';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
+import { UploadInfo } from "./upload-info";
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -29,17 +31,19 @@ export class OrderList {
     pageSizes: true,
     buttonCount: 10
   };
+  existEntering = false;
   outstockStages: any[] = ConstantValues.OutstockStages;
 
-  constructor(@inject private orderService: OrderService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private dataSourceFactory: DataSourceFactory,
-              @inject private dialogService: DialogService,
-              @inject private customhouseService: CustomhouseClearanceService,
-              @inject private cargoInfoService: CargoInfoService,
-              @inject private router: Router,
-              @inject('routerParams') private routerParams: RouterParams,
-              @inject private verifyRecordService: VerifyRecordService) {
+  constructor( @inject private orderService: OrderService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private dataSourceFactory: DataSourceFactory,
+    @inject private dialogService: DialogService,
+    @inject private customhouseService: CustomhouseClearanceService,
+    @inject private cargoInfoService: CargoInfoService,
+    @inject private router: Router,
+    @inject('routerParams') private routerParams: RouterParams,
+    @inject private verifyRecordService: VerifyRecordService,
+    @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -60,6 +64,13 @@ export class OrderList {
         }),
       pageSize: 10
     });
+    if (this.routerParams.infoId) {
+      //查询该入库单的信息 判断是否是补录的入库单
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.enteringMode && cargoInfo.enteringMode == 2) {
+        this.existEntering = true;
+      }
+    }
   }
 
   async delete(id) {
@@ -201,7 +212,7 @@ export class OrderList {
         return;
       }
       // 跳转 到出库单页面
-      this.router.navigateToRoute('outstock-orderItem');
+      window.location.href = `#/outstock/order/item/${id}/view`;
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
@@ -211,15 +222,18 @@ export class OrderList {
     if (this.routerParams.infoId) {
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
       if (cargoInfo.outstockStatus == 1) {
-         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部出完，无法新增出库", icon: 'error' });
-         return;
+        await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部出完，无法新增出库", icon: 'error' });
+        return;
+      }
+      if (cargoInfo.instockStatus != 1) {
+        await this.messageDialogService.alert({ title: "失败", message: "该批次货物未有入库货物，无法进行出库操作", icon: 'error' });
+        return;
       }
       this.router.navigateToRoute("new");
     } else {
       this.router.navigateToRoute("new");
     }
   }
-
 
   /**
    * 审核记录
@@ -228,7 +242,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    } 
+    }
     let criteria: VerifyRecordCriteria = {};
     criteria.businessId = this.id;
     criteria.businessType = 2;
@@ -243,13 +257,27 @@ export class OrderList {
   async changeStage(params) {
     let mess1 = "确认开始作业？";
     let mess2 = "开始作业！";
+    let checkConfirmed: boolean;
     if (params.stage == 14) {
       mess1 = "确认完成作业？";
       mess2 = "完成作业！";
+      let arr = await this.workOrderItemService.getOutstockWorkDetails(params.id);
+      if (arr == null || arr.length == 0) {
+        await this.dialogService.alert({ title: "提示", message: "没有作业过程信息" });
+        return;
+      }
+      try {
+        await this.workOrderItemService.checkHasWorkItem(params.id, 2);
+      } catch (err) {
+        checkConfirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
+        if (!checkConfirmed) return;
+      }
     }
     try {
-      let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
-      if (!confirmed) return;
+      if (!checkConfirmed) {
+        let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
+        if (!confirmed) return;
+      }
       await this.orderService.updateStage(params.id, params.stage);
       await this.messageDialogService.alert({ title: "提示", message: mess2 });
       this.dataSource.read();
@@ -258,10 +286,18 @@ export class OrderList {
     }
   }
 
-  async uploadInfo(id) {
-    await this.orderService.updateStage(id, 9);
+  async uploadInfo(id, cargoInfoId) {
+    let result = await this.dialogService.open({
+      viewModel: UploadInfo,
+      model: cargoInfoId,
+      lock: true
+    }).whenClosed();
+    if (result.wasCancelled) return;
+    // await this.orderService.updateStage(id, 9);
+    await this.orderService.uploadInfo(id, 9, result.output);
     this.dataSource.read();
   }
+
   /**
    * 撤回
    */
@@ -301,7 +337,7 @@ export class OrderList {
     if (!this.id) {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
-    } 
-    this.router.navigateToRoute("changeHistory", {id: this.id});
+    }
+    this.router.navigateToRoute("changeHistory", { id: this.id });
   }
 }

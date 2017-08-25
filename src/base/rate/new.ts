@@ -1,8 +1,8 @@
 import { Router } from "aurelia-router";
 import { DialogService, MessageDialogService } from "ui";
 import { autoinject, Container } from "aurelia-dependency-injection";
-import { Rate, rateValidationRules } from '@app/base/models/rate';
-import { RateService } from "@app/base/services/rate";
+import { Rate, RateStep, rateValidationRules } from '@app/base/models/rate';
+import { RateService, RateStepService } from '@app/base/services/rate';
 import { NewRateStep } from "@app/base/rate/step/new";
 import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
@@ -19,7 +19,7 @@ import { observable } from 'aurelia-framework';
 export class NewRate {
   @observable disabled: boolean = false;
   rate = {} as Rate;
-  rateStep = new Array;
+  rateSteps = [] as RateStep[];
 
   chargeCategory = ConstantValues.ChargeCategory;
   customerCategory = ConstantValues.CustomerCategory;
@@ -35,22 +35,42 @@ export class NewRate {
     data: []
   });
   validationController: ValidationController;
+  private stepIndex: number = 1;
+  private stepStart: number = 0;
 
   constructor(private router: Router,
               private rateService: RateService,
+              private rateStepService: RateStepService,
               private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+              validationControllerFactory: ValidationControllerFactory, 
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
   }
 
-  async activate() {
+  async activate(params) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
+
+    if (params.id) {
+      this.rate = await this.rateService.getRate(params.id);
+      this.rate.id = null;
+      this.rateSteps = await this.rateStepService.listRateStepByRateId(params.id);
+      if (this.rateSteps.length > 0) {
+        this.stepIndex = this.rateSteps.length;
+        this.stepStart = this.rateSteps[this.stepIndex - 1].stepEnd;
+        this.rateSteps.forEach(rs => {
+          rs.id = null;
+          rs.rateId = null;
+          rs.stepUnitStr = this.unit.find(u => u.dictDataCode == rs.stepUnit).dictDataName;
+        });
+        this.dataSourceRateStep.data(this.rateSteps);
+      }
+    } 
   }
 
   async selectWorkInfo() {
@@ -61,7 +81,7 @@ export class NewRate {
     this.rate.workName = workInfo.name;
     this.rate.workId = workInfo.id;
   }
-  
+
   async selectCargoCategory() {
     let result = await this.dialogService
       .open({ viewModel: CargoCategoryTree, model: this.rate.cargoCategoryId, lock: true })
@@ -81,12 +101,21 @@ export class NewRate {
   }
 
   async addNewRate() {
-    if (this.rateStep) {
-      Object.assign(this.rate, { rateStep: this.rateStep });
+    if (this.rateSteps) {
+      Object.assign(this.rate, { rateStep: this.rateSteps });
+    }
+    if (this.rate.pricingMode == 2) {
+      this.rate.price = null;
+      this.rate.unit = '';
     }
     this.validationController.addObject(this.rate, rateValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+
+    if (this.rate.pricingMode == 2 && this.rate.rateStep.length == 0) {
+      await this.messageDialogService.alert({ title: "新增失败", message: '请设置阶梯费率', icon: 'error' });
+      return;
+    }
 
     this.disabled = true;
     try {
@@ -100,25 +129,31 @@ export class NewRate {
   }
 
   async addStep() {
-    let result = await this.dialogService.open({ viewModel: NewRateStep, model: {}, lock: true })
+    let rateStep = {} as RateStep;
+    rateStep.stepNum = this.stepIndex;
+    rateStep.stepStart = this.stepStart;
+    let result = await this.dialogService.open({ viewModel: NewRateStep, model: rateStep, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
-    let r = [0, 1, 2, 3].sort(() => Math.random() - 0.5).toString();
-    let ob = {};
-    Object.assign(ob, result.output);
-    Object.assign(ob, { sign: r });
-    this.rateStep.push(ob);
-    this.dataSourceRateStep.data(this.rateStep);
+    this.rateSteps.push(result.output);
+    this.stepIndex++;
+    this.stepStart = result.output.stepEnd;
+    this.dataSourceRateStep.data(this.rateSteps);
   }
 
   deleteStep(e) {
-    for (let o of this.rateStep) {
-      if (e.sign == o.sign) {
-        let index = this.rateStep.indexOf(o);
-        this.rateStep.splice(index, 1);
-      }
+    let deletedStep = this.rateSteps.find(rs => rs.stepNum == e.stepNum);
+    let index = this.rateSteps.indexOf(deletedStep);
+    if (index < this.rateSteps.length - 1) {
+      let steps: RateStep[] = this.rateSteps.filter(rs => rs.stepNum > e.stepNum);
+      steps.map(s => s.stepNum -= 1);
+      this.rateSteps[index + 1].stepStart = this.rateSteps[index].stepStart;
+    } else {
+      this.stepStart = e.stepStart;
     }
-    this.dataSourceRateStep.data(this.rateStep);
+    this.rateSteps.splice(index, 1);
+    this.stepIndex--;
+    this.dataSourceRateStep.data(this.rateSteps);
   }
 
   cancel() {

@@ -42,7 +42,7 @@ export class PaymentInfoService {
 
   /**
    * 获取对账清单
-   * @param paymentInfoId 
+   * @param paymentInfoId
    */
   getPaymentAuditList(paymentInfoId: string): Promise<PaymentAuditListVo> {
     return this.http.get(`/fee/paymentInfo/${paymentInfoId}/getPaymentAuditList`)
@@ -57,7 +57,7 @@ export class PaymentInfoService {
 
   /**
    * 获取对账清单的费用合计
-   * @param paymentInfoId 
+   * @param paymentInfoId
    */
   getPaymentAuditFee(paymentInfoId: string): Promise<PaymentAuditList> {
     return this.http.get(`/fee/paymentInfo/${paymentInfoId}/getPaymentAuditFee`).then(res => res.content);

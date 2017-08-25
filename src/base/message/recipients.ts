@@ -23,7 +23,7 @@ export class MessageRecipients {
       });
   }
   
-  idChanged() {
+  messageIdChanged() {
     console.log('id changed', this.messageId);
   }
 

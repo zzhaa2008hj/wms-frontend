@@ -9,4 +9,7 @@ export interface Notice {
   content: string;
 
   visible: number;
+
+  createTime: Date;
+  createTimeStr: string;
 }

@@ -6,7 +6,7 @@ import { DialogController } from 'ui';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { Rate } from '@app/base/models/rate';
-
+import { ConstantValues } from '@app/common/models/constant-values';
 @autoinject
 export class ChangeHistoryDetail {
 
@@ -16,6 +16,7 @@ export class ChangeHistoryDetail {
   unit = [] as DictionaryData[];
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
+  contractTypes = ConstantValues.ContractTypes;
 
   constructor(private dialogController: DialogController,
     private dictionaryDataService: DictionaryDataService) {
@@ -30,6 +31,10 @@ export class ChangeHistoryDetail {
 
     this.oldContractVo = changeHistory.oldObj;
     this.newContractVo = changeHistory.newObj;
+
+    this.newContractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.newContractVo.contract.contractType).name;
+    this.oldContractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.oldContractVo.contract.contractType).name;
+    
     this.oldContractVo.contract.startTimeStr = moment(this.oldContractVo.contract.startTime)
       .format("YYYY-MM-DD");
     this.oldContractVo.contract.endTimeStr = moment(this.oldContractVo.contract.endTime)

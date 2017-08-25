@@ -6,83 +6,89 @@
     </div>
   </div>
   <div class="grid simple">
-    <div class="grid-body">
-      <div class="page-title text-center">
+    <div class="grid-body" id="orderItem">
+      <div class="page-title text-center" align="center">
         <h3>${organization.name}</h3>
       </div>
-      <div class="page-title text-center">
+      <div class="page-title text-center" align="center">
         <h4><b>${orderItem.cargoName}入库理货报告</b></h4>
       </div>
-      <div class="col-md-12">
-        <div class="form-group col-md-offset-2 col-md-4">
-          <label class="form-label">代理商名称：</label>
-          <label class="form-label">${orderItem.agentName}</label>
-        </div>
-        <div class="form-group col-md-offset-2 col-md-4">
-          <label class="form-label">客户名称：</label>
-          <label class="form-label">${orderItem.customerName}</label>
-        </div>
-        <div class="form-group col-md-offset-2 col-md-4">
-          <label class="form-label">货名：</label>
-          <label class="form-label">${orderItem.cargoName}</label>
-        </div>
-        <div class="form-group col-md-offset-2 col-md-4">
-          <label class="form-label">批次号：</label>
-          <label class="form-label">${orderItem.batchNumber}</label>
-        </div>
-        <div class="col-md-8 col-md-offset-2">
-          <table border="1" style="width:100%;">
-            <thead>
+      <div class="col-md-8 col-md-offset-2">
+        <table style="width:100%;">
+          <tr>
+            <td align="left">
+              <h5>代理商名称:${orderItem.agentName}</h5>
+            </td>
+            <td align="center" colspan="3"></td>
+            <td align="right">
+              <h5>客户名称：${orderItem.customerName}</h5>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <h5>货名:${orderItem.cargoName}</h5>
+            </td>
+            <td colspan="3"></td>
+            <td align="right">
+              <h5>批次号：${orderItem.batchNumber}</h5>
+            </td>
+          </tr>
+        </table>
+        <tr>&nbsp;</tr>
+        <table border="1" style="width:100%;">
+          <thead>
+            <tr>
+              <td align="center">序号</td>
+              <td align="center">入库时间</td>
+              <!-- <td align="center">品牌</td> -->
+              <td align="center">理货件数</td>
+              <td align="center">理货数量</td>
+              <td align="center">散/破包</td>
+            </tr>
+          </thead>
+          <tbody>
+            <template repeat.for="info of tallyItems">
               <tr>
-                <td align="center">序号</td>
-                <td align="center">入库时间</td>
-                <!-- <td align="center">品牌</td> -->
-                <td align="center">理货件数</td>
-                <td align="center">理货数量</td>
-                <td align="center">散/破包</td>
+                <td align="center">
+                  ${info.index}
+                </td>
+                <td align="center">
+                  ${info.instockDate}
+                </td>
+                <!-- <td align="center">
+                ${info.cargoSubCategoryName}
+              </td> -->
+                <td align="center">
+                  ${info.tallyNumber}
+                </td>
+                <td align="center">
+                  ${info.tallyQuantity}
+                </td>
+                <td align="center">
+                  ${info.remark}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <template repeat.for="info of tallyItems">
-                <tr>
-                  <td align="center">
-                    ${info.index}
-                  </td>
-                  <td align="center">
-                    ${info.instockDate}
-                  </td>
-                  <!-- <td align="center">
-                    ${info.cargoSubCategoryName}
-                  </td> -->
-                  <td align="center">
-                    ${info.tallyNumber}
-                  </td>
-                  <td align="center">
-                    ${info.tallyQuantity}
-                  </td>
-                  <td align="center">
-                    ${info.remark}
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
-        <div class="form-group col-md-10 col-md-offset-2">
-          <label class="form-label">说明：</label>
-          <label class="form-label">理货报告仅作为仓库收到存货人上述货物证明，不作仓单使用，不作货权证明</label>
-        </div>
-        <div class="form-group col-md-offset-2 col-md-4">
-          <label class="form-label">理货人：</label>
-          <label class="form-label">${orderItem.createAccount}</label>
-        </div>
-        <div class="form-group col-md-offset-2 col-md-4">
-          <label class="form-label">仓库盖章：</label>
-        </div>
-        <div class="form-group col-md-offset-8 col-md-4">
-          <label class="form-label">制单日期：</label>
-          <label class="form-label">${orderItem.createTimeStr}</label>
-        </div>
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group col-md-10 col-md-offset-2">
+        <table style="width:100%;">
+          <tr>
+            <td align="left">说明：</td>
+            <td colspan="3">理货报告仅作为仓库收到存货人上述货物证明，不作仓单使用，不作货权证明</td>
+          </tr>
+          <tr>
+            <td align="left">理货人：</td>
+            <td>${orderItem.createAccount}</td>
+            <td align="right">仓库盖章：</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="3" align="right">制单日期：</td>
+            <td>${orderItem.createTimeStr}</td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>

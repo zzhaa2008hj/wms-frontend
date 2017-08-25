@@ -10,4 +10,10 @@ export class CodeService {
     let res = await this.http.get(`/base/code/generate?type=${type}&batchNumber=${batchNumber}`);
     return res.content;
   }
+
+  async generateCodeByDate(type: string, date: number, batchNumber?: string): Promise<any> {
+    let res = await this.http.get(`/base/code/generateCodeByDate?type=${type}&batchNumber=${batchNumber}&date=${date}`);
+    return res.content;
+  }
+
 }

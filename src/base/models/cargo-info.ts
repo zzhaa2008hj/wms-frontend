@@ -60,6 +60,11 @@ export interface CargoInfo {
 
   remark: string;
 
+  /**
+   * 录入方式  1/null:正常录入 2：补录
+   */
+  enteringMode: number;
+
   cargoItems: CargoItem[];
 }
 
@@ -154,7 +159,9 @@ export interface CargoRate {
 export interface CargoRateStep {
   id: string;
 
-  cargoRateId: String;
+ // cargoRateId: String;
+
+  customerRateId: String;
 
   stepNum: number;
 
@@ -165,4 +172,10 @@ export interface CargoRateStep {
   stepPrice: number;
 
   stepUnit: string;
+
+  stepUnitName: string;
+
+  stepUnitStr: string;
+
+  actualStepPrice: number;
 }

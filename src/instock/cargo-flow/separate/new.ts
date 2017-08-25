@@ -13,6 +13,8 @@ import { formValidationRenderer } from "@app/validation/support";
 import { observable } from 'aurelia-framework';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
+import { CodeService } from "@app/common/services/code";
+import { InstockVehicle } from "@app/instock/models/instock-vehicle";
 /**
  * Created by Hui on 2017/6/30.
  */
@@ -30,7 +32,7 @@ export class NewSeparate {
   dataSourceSeparateCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  vehicles = [];
+  vehicles = [] as InstockVehicle[];
   dataSourceVehicle = new kendo.data.HierarchicalDataSource({
     data: []
   });
@@ -44,9 +46,10 @@ export class NewSeparate {
               private cargoFlowSeparateService: CargoFlowSeparateService,
               private messageDialogService: MessageDialogService,
               private cargoItemService: CargoItemService,
+              private codeService: CodeService,
               private vehicleService: InstockVehicleService,
               private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, 
+              validationControllerFactory: ValidationControllerFactory,
               container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -56,7 +59,11 @@ export class NewSeparate {
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(params.id);
-    //this.cargoFlow.instockStageName = this.instockStages[this.cargoFlow.stage + 1];
+
+    this.cargoFlow.oldInstockFlowNumber = this.cargoFlow.instockFlowNumber;
+    let res = await this.codeService.generateCode("5");
+    this.cargoFlow.instockFlowNumber = res.content;
+
     let cargoItems = await this.cargoItemService.getCargoItemsByFlowId(params.id);
     if (cargoItems) {
       for (let ci of cargoItems) {
@@ -66,8 +73,9 @@ export class NewSeparate {
         let cargoItem = await this.cargoItemService.getBaseCargoItemById(ci.cargoItemId);
         Object.assign(ci, { cargoSubCatergoryName: cargoItem.cargoSubCatergoryName, freeDays: cargoItem.freeDays });
         let vehicles = await this.vehicleService.listInstockVehicles(ci.id);
+
         vehicles.forEach(v => {
-          Object.assign(v, { cargoName: ci.cargoName });
+          v.cargoName = ci.cargoName;
           this.vehicles.push(v);
         });
       }
@@ -111,22 +119,15 @@ export class NewSeparate {
 
 
   async addCargoFlowSeparate() {
-    let vehicles = [];
-    Object.assign(vehicles, this.dataSourceVehicle.data());
     let cargoItems = [];
     Object.assign(cargoItems, this.dataSourceCargoItem.data());
     let orderQuantity = 0;
     let orderNumber = 0;
-    if (vehicles || cargoItems) {
+    if (cargoItems) {
       cargoItems.forEach(ci => {
         orderQuantity += ci.orderQuantity;
         orderNumber += ci.orderNumber;
-        let vs = [];
-        vehicles.forEach(v => {
-          if (ci.sign == v.sign) {
-            vs.push(v);
-          }
-        });
+        let vs= this.vehicles.filter(v => ci.id == v.instockGoodsId);
         Object.assign(ci, { vehicles: vs });
       });
       Object.assign(this.cargoFlow, { cargoItems: cargoItems });

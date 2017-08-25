@@ -29,4 +29,7 @@ export interface Attachment {
 export interface AttachmentMap {
   uuidName: string;
   realName: string;
+  //0：删除 1：新增 2：不变
+  status?: number;
+  path?: string;
 }

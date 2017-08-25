@@ -4,6 +4,7 @@ import { Order } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
+
 @autoinject
 export class OrderView {
   units = [] as DictionaryData[];

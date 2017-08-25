@@ -1,3 +1,4 @@
+import { Router } from 'aurelia-router';
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from 'ui';
 import { RateService } from "@app/base/services/rate";
@@ -12,6 +13,7 @@ import { Rate } from '@app/base/models/rate';
 export class List {
   searchName: string;
   rate = {} as Rate;
+  selectedItemId: string;
 
   pageable = {
     refresh: true,
@@ -32,14 +34,15 @@ export class List {
               private dataSourceFactory: DataSourceFactory,
               private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService,
-              private messageDialogService: MessageDialogService) {  
-    
+              private router: Router,
+              private messageDialogService: MessageDialogService) {
+
   }
 
   async activate() {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
-    this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");       
+    this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.rateService.queryRates(this.rate).map(res => {
@@ -48,7 +51,7 @@ export class List {
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
         let rateType = this.rateTypes.find(d => res.rateType == d.value);
         if (unit) {
-          res.unit = unit.dictDataName;          
+          res.unit = unit.dictDataName;
         }
         if (warehouseType) {
           res.warehouseType = warehouseType.dictDataName;
@@ -62,7 +65,7 @@ export class List {
         return res;
       }),
       pageSize: 10
-    });   
+    });
   }
 
   async selectCargoCategory() {
@@ -82,6 +85,23 @@ export class List {
   reset() {
     this.rate = {} as Rate;
     this.dataSource.read();
+  }
+
+  async copyRate() {
+    if (!this.selectedItemId) {
+      await this.messageDialogService.alert({ title: "提示", message: "请选择费率!" });
+      return;
+    }
+    this.router.navigateToRoute('new', { id: this.selectedItemId });
+  }
+
+  /**
+   * 单选数据
+   */
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    this.selectedItemId = grid.dataItem(selectedRow).id;
   }
 
   async changeState(id) {

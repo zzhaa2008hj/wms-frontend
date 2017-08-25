@@ -10,6 +10,7 @@ import { Uploader } from "@app/upload";
 export async function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
+    .globalResources('access-control')
     .plugin('webarch')
     .plugin('aurelia-dialog')
     .plugin('aurelia-validation')

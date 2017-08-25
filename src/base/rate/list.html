@@ -1,10 +1,14 @@
 <template>
+  <require from="./recipients"></require>
   <div class="page-title">
     <h3>基础费率管理</h3>
   </div>
   <div class="row">
-    <div class="col-md-1"><a class="btn btn-small btn-success" route-href="route: new">新增费率</a></div>
-    <div class="col-md-11">
+    <div class="col-md-2">
+      <a class="btn btn-small btn-success" route-href="route: new">新增</a>
+      <button class="btn btn-small btn-success" click.delegate="copyRate()">复制</button>
+    </div>
+    <div class="col-md-10">
       <ak-drop-down-list k-value.two-way="rate.chargeCategory" k-option-label="请选择费用类别" k-data-text-field="text"
         k-data-value-field="value" style="width:130px;" k-data-source.bind="chargeCategories">
       </ak-drop-down-list>
@@ -29,7 +33,8 @@
       <a class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></a>
     </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable"
+    k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
     <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
     <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
     <ak-col k-field="customerCategory == 1 ? '仓储客户': '装卸单位' " k-title="客户类别"></ak-col>
@@ -43,6 +48,10 @@
     <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
     <ak-col k-field="pricingMode== 1 ? '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
+    <ak-template for="detailTemplate">
+      <rate-recipients if.bind="pricingMode == 2" rate-id.bind="$this.id"></rate-recipients>
+      <h4 if.bind="pricingMode == 1" style="text-align: center">无阶梯费率</h4>
+    </ak-template>
     <ak-col k-title="操作" k-width.bind="200">
       <ak-template>
         <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }">编辑</a>

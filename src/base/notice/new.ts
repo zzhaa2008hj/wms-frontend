@@ -15,6 +15,41 @@ export class NewNotice {
   notice: Notice = {} as Notice;
   validationController: ValidationController;
 
+  tools = [
+    'bold',
+    'italic',
+    'underline',
+    'strikethrough',
+    'justifyLeft',
+    'justifyCenter',
+    'justifyRight',
+    'justifyFull',
+    'insertUnorderedList',
+    'insertOrderedList',
+    'indent',
+    'outdent',
+    'createLink',
+    'unlink',
+    'insertImage',
+    'subscript',
+    'superscript',
+    'createTable',
+    'addRowAbove',
+    'addRowBelow',
+    'addColumnLeft',
+    'addColumnRight',
+    'deleteRow',
+    'deleteColumn',
+    'formatting',
+  ];
+
+  resizable = {
+    content: true,
+    toolbar: true
+  };
+
+  @observable editor: any;
+
   constructor(private router: Router,
               private noticeService: NoticeService,
               private messageDialogService: MessageDialogService,
@@ -26,6 +61,8 @@ export class NewNotice {
   }
 
   async addNewNotice() {
+    this.notice.content = this.editor.value();
+
     this.validationController.addObject(this.notice, validationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
@@ -55,5 +92,5 @@ const validationRules = ValidationRules
   .ensure((notice: Notice) => notice.content)
   .displayName('内容')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .maxLength(200).withMessage(`\${$displayName} 长度不能大于200`)
+  .maxLength(2000).withMessage(`\${$displayName} 长度不能大于2000`)
   .rules;

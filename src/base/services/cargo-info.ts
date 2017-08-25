@@ -19,6 +19,7 @@ export interface CargoInfoCriteria {
   instockStatus?: number;
   outstockStatus?: number;
   finished?: number;
+  enteringMode?: number;
 }
 
 @autoinject
@@ -53,8 +54,7 @@ export class CargoInfoService {
    * @param wareHouseType
    */
   async getContractCargoRates(contractId: string, warehouseType: string): Promise<CargoRate[]> {
-    let res = await this.http.
-      get(`base/contract/contractRateList?contractId=${contractId}&warehouseType=${warehouseType}`);
+    let res = await this.http.get(`base/contract/contractRateList?contractId=${contractId}&warehouseType=${warehouseType}`);
     return res.content;
   }
 
@@ -64,6 +64,15 @@ export class CargoInfoService {
    */
   async getContractCargoRateSteps(contractId: string): Promise<CargoRateStep[]> {
     let res = await this.http.get(`base/contract/contractRateStepList?contractId=${contractId}`);
+    return res.content;
+  }
+
+  /**
+   * 判断批次号是否已存在
+   * @param batchNumber
+   */
+  async existBatchNumber(batchNumber: string): Promise<any> {
+    let res = await this.http.get(`base/cargoInfo/existBatchNumber?batchNumber=${batchNumber}`);
     return res.content;
   }
 
@@ -81,6 +90,14 @@ export class CargoInfoService {
    */
   async getBatchNumber(): Promise<any> {
     let res = await this.http.get(`/base/code/generate?type=0`);
+    return res.content;
+  }
+
+  /**
+   *  根据时间获取批次号
+   */
+  async getBatchNumberByDate(date: number): Promise<any> {
+    let res = await this.http.get(`/base/code/generateCodeByDate?type=0&date=${date}`);
     return res.content;
   }
 
@@ -103,7 +120,7 @@ export class CargoInfoService {
 
   /**
    * 查询货物明细
-   * @param id 
+   * @param id
    */
   async getCargoItems(id: string): Promise<CargoItem[]> {
     let res = await this.http.get(`base/cargoInfo/cargoItem/${id}`);
@@ -120,7 +137,7 @@ export class CargoInfoService {
 
   /**
    * 删除入库指令
-   * @param id 
+   * @param id
    */
   delete(id: string): Promise<void> {
     return this.http.delete(`base/cargoInfo/${id}`).then(handleResult);
@@ -151,9 +168,10 @@ export class CargoInfoService {
     let res = await this.http.createRequest(`/base/cargoInfo/list`).withParams(criteria).asGet().send();
     return res.content;
   }
+
   /**
    * 根据货物明细ID 获取费率和费率
-   * @param cargoItemId 
+   * @param cargoItemId
    */
   async getCargoRatesByCargoItemId(cargoItemId: string): Promise<CargoRate[]> {
     let res = await this.http.get(`/base/cargoInfo/cargoItem/${cargoItemId}/cargoRate`);
@@ -162,7 +180,7 @@ export class CargoInfoService {
 
   /**
    * 根据货物信息id获取 入库信息
-   * @param cargoInfoId 
+   * @param cargoInfoId
    */
   async getInstockOrder(cargoInfoId: string): Promise<InstockOrder[]> {
     let res = await this.http.get(`/base/cargoInfo/${cargoInfoId}/instockOrder`);
@@ -171,7 +189,7 @@ export class CargoInfoService {
 
   /**
    * 根据货物信息id获取 出库信息
-   * @param cargoInfoId 
+   * @param cargoInfoId
    */
   async getOutstockInventories(cargoInfoId: string): Promise<OutstockInventory[]> {
     let res = await this.http.get(`/base/cargoInfo/${cargoInfoId}/outstockInfo`);
@@ -180,5 +198,19 @@ export class CargoInfoService {
 
   async getOutstockOrders(cargoInfoId: string): Promise<Array<Order>> {
     return this.http.get(`/outstock/order/list?cargoInfoId=${cargoInfoId}`).then(res => res.content);
+  }
+
+  async getListByBatchValidation(enteringMode?: number): Promise<Array<CargoInfo>> {
+    let res = await this.http.createRequest(`/base/cargoInfo/batchValidation`)
+      .withParams({ enteringMode: enteringMode }).asGet().send();
+    return res.content
+  }
+
+  /**
+   * 根据批次获取客户货物信息
+   */
+  async getByBatchNumber(batchNumber: string): Promise<CargoInfo> {
+    let res = await this.http.get(`/base/cargoInfo/batchNumber/${batchNumber}`);
+    return res.content;
   }
 }

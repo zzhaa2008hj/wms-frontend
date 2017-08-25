@@ -1,4 +1,4 @@
-<template xmlns:c="http://www.w3.org/1999/html">
+<template>
   <div class="grid simple">
     <div class="grid-body">
       <div class="page-title">
@@ -7,11 +7,11 @@
       <div class="row">
         <div class="col-md-11"></div>
         <div class="input-group col-md-1">
-          <button class="btn btn-small" click.delegate="print()">打印</button>
+          <button class="btn btn-small" click.delegate="printOrderWork()">打印</button>
         </div>
       </div>
-      <div class="col-md-9 col-md-offset-2">
-        <table border="1">
+      <div class="col-md-9 col-md-offset-2" id="orderWork">
+        <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
           <tr>
             <td align="center" colspan="9">
               <h4>${organization.name}出库指令单</h4>
@@ -24,15 +24,15 @@
           </tr>
           <tr>
             <td align="center">代理商名称:</td>
-            <td colspan="4"><input type="text" style="border: none" value.bind="outstockOrder.agentName"></td>
+            <td colspan="4">${outstockOrder.agentName}</td>
             <td align="center" colspan="2">客户名称:</td>
-            <td colspan="2"><input type="text" style="border: none" value.bind="outstockOrder.customerName"></td>
+            <td colspan="2">${outstockOrder.customerName}</td>
           </tr>
           <tr>
             <td align="center">批次号:</td>
-            <td colspan="4"><input type="text" style="border: none" value.bind="outstockOrder.batchNumber"></td>
+            <td colspan="4">${outstockOrder.batchNumber}</td>
             <td align="center" colspan="2">出库日期:</td>
-            <td colspan="2"><input type="text" style="border: none" value.bind="outstockOrder.outstockDateStr"></td>
+            <td colspan="2">${outstockOrder.outstockDateStr}</td>
           </tr>
           <tr>
             <td align="center">序号</td>
@@ -42,7 +42,7 @@
             <td align="center">箱号</td>
             <td align="center">库区</td>
             <td align="center">说明</td>
-            <td align="center">出库数量</td>            
+            <td align="center">出库数量</td>
             <td align="center">出库件数</td>
           </tr>
           <template repeat.for="item of cargoItems">
@@ -54,24 +54,18 @@
               <td align="center">${item.containerNumber}</td>
               <td align="center">${item.warehouseName}</td>
               <td align="center">${item.remark}</td>
-              <td align="center">${item.outstockQuantity}</td>              
+              <td align="center">${item.outstockQuantity}</td>
               <td align="center">${item.outstockNumber}</td>
             </tr>
           </template>
           <tr>
             <td align="center">备注</td>
-            <td colspan="8">
-              <input type="text" style="border: none" value.bind="outstockOrder.remark">
-            </td>
+            <td colspan="8">${outstockOrder.remark}</td>
           </tr>
           <tr>
             <td colspan="7" align="right">合计:</td>
-            <td>
-              <input type="text" style="border: none" value.bind="outstockOrder.quantitySum">
-            </td>
-            <td>
-              <input type="text" style="border: none" value.bind="outstockOrder.numberSum">
-            </td>
+            <td align="center">${outstockOrder.quantitySum}</td>
+            <td align="center">${outstockOrder.numberSum}</td>
           </tr>
           <tr>
             <td align="right">制单人&nbsp;&nbsp;</td>

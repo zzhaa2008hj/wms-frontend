@@ -19,8 +19,10 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
+import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { CargoFlow } from "@app/instock/models/cargo-flow";
 
-export class CargoFlow {
+export class CargoFlowList {
   selectedItem: any;
   searchName: string;
   pageable = {
@@ -30,6 +32,7 @@ export class CargoFlow {
   };
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
+  existEntering = false;  
   private dataSource: kendo.data.DataSource;
 
   constructor(@inject private cargoFlowService: CargoFlowService,
@@ -43,7 +46,8 @@ export class CargoFlow {
               @inject private instockOrderService: InstockOrderService,
               @inject private router: Router,
               @inject private dictionaryDataService: DictionaryDataService,
-              @inject private orderItemService: OrderItemService) {
+              @inject private orderItemService: OrderItemService,
+              @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -68,6 +72,12 @@ export class CargoFlow {
           }),
         pageSize: 10
       });
+      //查询该入库单的信息 判断是否是补录的入库单
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.enteringMode && cargoInfo.enteringMode == 2) {
+        this.existEntering = true;
+      }
+
     } else {
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
@@ -122,6 +132,15 @@ export class CargoFlow {
       if (cargoInfo.instockStatus == 1) {
         await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
         return;
+      }
+      //验证理货报告生成状态
+      let cargoFlows: CargoFlow[] = await this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
+      if (cargoFlows && cargoFlows.length > 0) {
+        let cfs = cargoFlows.filter(cf => cf.stage < 9);
+        if (cfs.length == 0) {
+          await this.messageDialogService.alert({ title: "失败", message: "该批次货物已生成理货报告，无法新增入库", icon: 'error' });
+          return;
+        }
       }
       this.router.navigateToRoute("new");
     } else {
@@ -257,13 +276,27 @@ export class CargoFlow {
   async changeStage(params) {
     let mess1 = "确认开始作业？";
     let mess2 = "开始作业！";
+    let checkConfirmed: boolean;
     if (params.stage == 6) {
       mess1 = "确认完成作业？";
       mess2 = "完成作业！";
+      let arr = await this.workOrderItemService.getWorkDetails(params.id);
+      if (arr == null || arr.length == 0) {
+        await this.dialogService.alert({ title: "提示", message: "没有作业过程信息" });
+        return;
+      }
+      try {
+        await this.workOrderItemService.checkHasWorkItem(params.id, 1);
+      } catch (err) {
+        checkConfirmed = await this.dialogService.confirm({ title: "提示", message: err.message });
+        if (!checkConfirmed) return;
+      }
     }
     try {
-      let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
-      if (!confirmed) return;
+      if (!checkConfirmed) {
+        let confirmed = await this.messageDialogService.confirm({ title: "提示", message: mess1 });
+        if (!confirmed) return;
+      }
       await this.cargoFlowService.updateFlowStage(params.id, params.stage);
       await this.messageDialogService.alert({ title: "提示", message: mess2 });
       this.dataSource.read();

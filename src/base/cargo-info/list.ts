@@ -6,6 +6,8 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
 import { Router } from 'aurelia-router';
+import { UserSession } from '@app/user';
+import { UserInfo } from '@app/user';
 
 @autoinject
 export class CargoInfoList {
@@ -21,16 +23,19 @@ export class CargoInfoList {
   batchNumber: string;
   infoId: string;
 
+  userInfo : UserInfo;
   constructor(private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
               private dataSourceFactory: DataSourceFactory,
               private router: Router,
-              private outstockInventoryService: OutstockInventoryService) {
+              private outstockInventoryService: OutstockInventoryService,
+              private user: UserSession) {
 
   }
 
   async activate() {
+    this.userInfo = this.user.userInfo;
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.cargoInfoService.queryCargoInfo(this.cargoInfoCriteria).map(res => {
@@ -60,6 +65,7 @@ export class CargoInfoList {
   select() {
     this.dataSource.read();
   }
+
   /**
    * 单选数据
    */
@@ -70,6 +76,7 @@ export class CargoInfoList {
     this.infoId = dataItem.id;
     this.batchNumber = dataItem.batchNumber;
   }
+
   /**
    * 生成出库清单
    */
@@ -80,14 +87,8 @@ export class CargoInfoList {
     }
     try {
       await this.outstockInventoryService.createOutstockInventory(this.batchNumber);
-      let res = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库清单" });
-      if (!res) {
-        this.dataSource.read();
-        return;
-      }
-      let inventory = await this.outstockInventoryService.getOutstockInventoryByBatchNumber(this.batchNumber);
-      // 跳转 到出库清单页面
-      window.location.href = '#/outstock/inventory/' + inventory.id + '/view';
+      await this.messageDialogService.confirm({ title: "提示", message: "生成成功！" });
+      this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
@@ -98,6 +99,6 @@ export class CargoInfoList {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
     }
-    this.router.navigateToRoute('changeHistory', {id: this.infoId});
+    this.router.navigateToRoute('changeHistory', { id: this.infoId });
   }
 }

@@ -1,4 +1,5 @@
 import { ValidationRules } from 'aurelia-validation';
+import { AttachmentMap } from '@app/common/models/attachment';
 export interface Order {
   id: string;
   cargoInfoId: string;
@@ -46,6 +47,8 @@ export interface Order {
   createTimeStr: string;
 
   outstockLastStageName: string;
+
+  attachments: AttachmentMap[];
 }
 
 export interface OrderItem {
@@ -110,6 +113,10 @@ export const orderValidationRules = ValidationRules
 
   .ensure((order: Order) => order.batchNumber)
   .required().withMessage(`请选择批次`)
+
+  .ensure((order: Order) => order.outstockOrderNumber)
+  .displayName('出库单号')
+  .required().withMessage(`\${$displayName} 不能为空`)
 
   .ensure((order: Order) => order.paymentUnit)
   .displayName('付款单位')

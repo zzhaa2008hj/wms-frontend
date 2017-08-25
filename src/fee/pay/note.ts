@@ -2,7 +2,9 @@ import { autoinject } from "aurelia-dependency-injection";
 import { PaymentInfo, PaymentAuditList, PaymentAuditItem } from "@app/fee/models/pay";
 import { PaymentInfoService, PaymentAuditListService, PaymentAuditItemService } from "@app/fee/services/pay";
 import * as moment from "moment";
-import { DialogService } from "ui";
+import { print, addHeader } from "@app/common/services/print-tool";
+import { DictionaryDataService } from "@app/base/services/dictionary";
+import { DictionaryData } from "@app/base/models/dictionary";
 
 @autoinject
 export class Note {
@@ -10,6 +12,7 @@ export class Note {
   paymentAuditList: PaymentAuditList;
   disabled: boolean = false;
   paymentAuditItems: PaymentAuditItem[];
+  units = [] as DictionaryData[];
 
   datasource: kendo.data.DataSource;
   pageable = {
@@ -21,14 +24,17 @@ export class Note {
   constructor(private paymentInfoService: PaymentInfoService,
               private paymentAuditListService: PaymentAuditListService,
               private paymentAuditItemService: PaymentAuditItemService,
-              private dialogService: DialogService) {
+              private dictionaryDataService: DictionaryDataService) {
 
   }
 
   async activate(params) {
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
+
     this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(params.id);
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
+    this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
     this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
 
     let index = 1;
@@ -36,6 +42,7 @@ export class Note {
       res => res.map(r => {
         r.workDateStr = moment(r.workDate).format("YYYY-MM-DD");
         r.index = index++;
+        r.unit = this.units.find(e => e.dictDataCode == r.unit).dictDataName;
         return r;
       })
     );
@@ -45,6 +52,9 @@ export class Note {
   }
 
   async print() {
-    await this.dialogService.alert({ title: "提示", message: "打印成功" });
+    let title = "付费单";
+    let strHTML = $("#note").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true);
   }
 }

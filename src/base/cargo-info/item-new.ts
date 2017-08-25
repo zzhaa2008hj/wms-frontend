@@ -29,11 +29,11 @@ export class NewCargoItem {
   rateTypes = ConstantValues.WorkInfoCategory;
 
   constructor(private cargoInfoService: CargoInfoService,
-              private dialogController: DialogController,
-              private dialogService: DialogService,
-              private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, 
-              container: Container) {
+    private dialogController: DialogController,
+    private dialogService: DialogService,
+    private dictionaryDataService: DictionaryDataService,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
 
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -100,7 +100,6 @@ export class NewCargoItem {
           }
           return true;
         });
-
         r.cargoRateSteps.forEach((steps) => {
           let id = steps.id;
           this.contractCargoRateSteps.every((contractRes, stepIndex, stepArr) => {
@@ -141,6 +140,11 @@ export class NewCargoItem {
       }
       return res;
     });
+    this.contractCargoRateSteps.map(res => {
+      let unit = this.unitDatasource.find(d => res.stepUnit == d.dictDataCode);
+        res.stepUnitStr = unit.dictDataName;
+      return res;
+    });
   }
 
   cargoCategoryChanged() {
@@ -167,20 +171,20 @@ export class NewCargoItem {
   }
   async save() {
     await this.cargoRateDataSource.sync();
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
+
     //let cargoRateList = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
     let cargoRateList = this.cargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
     cargoRateList.forEach(r => {
       let id = r.id;
-      let cargoRateStepList = this.contractCargoRateSteps.filter(x => x.cargoRateId = id);
+      let cargoRateStepList = this.contractCargoRateSteps.filter(x => x.customerRateId == id);
       r.cargoRateSteps = cargoRateStepList;
     });
     this.cargoItem.cargoRates = cargoRateList;
     this.cargoItem.unitStr = this.unitDatasource.find(d => this.cargoItem.unit == d.dictDataCode).dictDataName;
 
-    let { valid } = await this.validationController.validate();
-    if (!valid) return;
     await this.dialogController.ok(this.cargoItem);
-
   }
 
   async cancel() {
@@ -234,7 +238,7 @@ export class NewCargoItem {
           //template: '<input type="text" value.bind=" stepPrice & validate & notify">'
 
         },
-        { field: 'stepUnit', title: '单位' },
+        { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
       ],
       save: function (e) {

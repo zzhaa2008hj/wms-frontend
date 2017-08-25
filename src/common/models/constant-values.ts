@@ -103,6 +103,10 @@ export class ConstantValues {
     return [{ text: "仓储费", value: 1 }, { text: "装卸费", value: 2 }, { text: "其他费用", value: 3 }];
   }
 
+  static get ChargeCategoryVo() {
+    return [{ text: "仓储费", value: 1 }, { text: "作业费(装卸+其他)", value: 2 }];
+  }
+
   static get CustomerCategory() {
     return [{ text: "仓储客户", value: 1 }, { text: "装卸单位", value: 2 }];
   }
@@ -199,10 +203,10 @@ export class ConstantValues {
       title: "已生成对账清单"
     }, {
       stage: 2,
-      title: "装卸单位确认"
+      title: "装卸单位未确认"
     }, {
       stage: 3,
-      title: "装卸单位未确认"
+      title: "装卸单位确认"
     }, {
       stage: 4,
       title: "费收审核拒绝"
@@ -261,6 +265,37 @@ export class ConstantValues {
     }, {
       stage: 2,
       title: "增值税发票"
+    }];
+  }
+
+  static get ChargeStage() {
+    return [{
+      stage: 0,
+      title: "未结算"
+    }, {
+      stage: 1,
+      title: "已生成对账清单"
+    }, {
+      stage: 2,
+      title: "客户未确认"
+    }, {
+      stage: 3,
+      title: "客户确认"
+    }, {
+      stage: 4,
+      title: "费收审核拒绝"
+    }, {
+      stage: 5,
+      title: "费收审核通过"
+    }, {
+      stage: 6,
+      title: "已核对生成收费单"
+    }, {
+      stage: 7,
+      title: "已开票"
+    }, {
+      stage: 8,
+      title: "已收费核销"
     }];
   }
 }

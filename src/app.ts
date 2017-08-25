@@ -1,13 +1,70 @@
-import { inject, computedFrom } from "aurelia-framework";
+import { computedFrom } from 'aurelia-framework';
 import { Router, RouterConfiguration } from "aurelia-router";
+import { UserSession } from "@app/user";
+import { EventAggregator, Subscription } from "aurelia-event-aggregator";
+import { DialogService } from "ui";
+import { inject } from 'aurelia-dependency-injection';
+import { Notifier } from '@app/event-source';
+import { Notifier1 } from '@app/notification';
 kendo.culture('zh');
 
 export class App {
 
   router: Router;
+  private subscriptions: Subscription[];
 
-  constructor( @inject('config') private config: any) {
+  constructor(@inject('config') private config: any,
+              @inject private n: Notifier,
+              @inject private n1: Notifier1,
+              @inject private user: UserSession,
+              @inject private events: EventAggregator,
+              @inject private dialogService: DialogService) {
+    this.user.loginUrl = this.config.loginParam.loginUrl;
+    this.user.appKey = this.config.loginParam.appKey;
+    this.user.appType = this.config.loginParam.appType;
+  }
 
+  async activate() {
+    console.debug(this.n);
+    console.debug(this.n1);
+    await this.user.loginVerdict();
+    if (!this.user.loggedIn) return;
+  }
+
+  configureRouter(config: RouterConfiguration, router: Router) {
+    let dashboard = { route: '', name: 'dashboard', title: "首页", moduleId: './dashboard', nav: true, icon: 'home' };
+    let notice = {
+      route: "/base/notifications", name: "notifications", title: "消息通知", 
+      moduleId: "./base/notifications/notifications-list"
+    };
+    let changePassword = {
+      route: '/change-password', name: 'changePassword', title: "修改密码",
+      moduleId: './change-password', nav: false
+    };
+    config.map([dashboard, notice, changePassword]);
+    if (this.user.loggedIn) {
+      config.options.root = document.querySelector('base').getAttribute('href');
+      config.options.pushState = true;
+      //let auth = this.user.userInfo.menuVoList;
+      //let auths = new Set(auth.map((a) => a.url));
+      let routes = this.config.routes
+        //.filter(a => auths.has(a.name))
+        .map(route => {
+          if (!route["group"]) return Object.assign({}, route, { nav: true });
+          return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
+        });
+      config.map([...routes]);
+
+      // 开启消息推送监听
+      this.events.publish(
+        'user:authenticate',
+        {
+          orgId: this.user.userInfo.organizationId,
+          userId: this.user.userInfo.userId
+        }
+      );
+    }
+    this.router = router;
   }
 
   @computedFrom('router')
@@ -32,243 +89,16 @@ export class App {
       }, []);
   }
 
-  configureRouter(config: RouterConfiguration, router: Router) {
-    // let auth = this.accountService.getMenu();
-    // let auths = new Set(auth.map((a) => a.url));
-    // let routes = this.config.routes.filter((a) => auths.has(a.code)).map(route => Object.assign({}, route, { nav: true }));
+  bind() {
+    this.subscriptions = [
+      this.events.subscribe('user:logout', () => this.user.loginVerdict()),
+      this.events.subscribe('error', err => this.dialogService.alert(
+        { title: "发生错误", message: err.message, icon: 'error' }))
+    ];
+  }
 
-    // let group1 = {
-    //   title: "基础",
-    //   icon: "settings",
-    //   expanded: false,
-    // };
-    // let group2 = {
-    //   title: "入库",
-    //   icon: "format_indent_increase",
-    //   expanded: false,
-    // };
-    // let group3 = {
-    //   title: "出库",
-    //   icon: "format_indent_decrease",
-    //   expanded: false,
-    // };
-
-    let routes = this.config.routes.map(route => Object.assign({}, route, { nav: true }));
-    // let routes = [{
-    //   "route": "/report",
-    //   "name": "report",
-    //   "title": "报表",
-    //   "moduleId": "./report/index"
-    // },
-    // {
-    //   "route": "/base/cargo-category",
-    //   "name": "cargoCategory",
-    //   "title": "货物种类",
-    //   "moduleId": "./base/cargo-category/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/contract",
-    //   "name": "contract",
-    //   "title": "合同",
-    //   "moduleId": "./base/contract/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/handling-customer",
-    //   "name": "handling-customer",
-    //   "title": "装卸单位",
-    //   "moduleId": "./base/customer/handling-customer/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/warehouse-customer",
-    //   "name": "warehouse-customer",
-    //   "title": "仓储客户",
-    //   "moduleId": "./base/customer/warehouse-customer/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/dictionary",
-    //   "name": "dictionary",
-    //   "title": "数据字典",
-    //   "moduleId": "./base/dictionary/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/employee",
-    //   "name": "employee",
-    //   "title": "用户",
-    //   "moduleId": "./base/employee/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/message",
-    //   "name": "message",
-    //   "title": "站内信",
-    //   "moduleId": "./base/message/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/notice",
-    //   "name": "notice",
-    //   "title": "公告",
-    //   "moduleId": "./base/notice/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/operation-logs",
-    //   "name": "operation-log",
-    //   "title": "操作日志",
-    //   "moduleId": "./base/operation-logs/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/organization-roles",
-    //   "name": "organization-roles",
-    //   "title": "角色管理",
-    //   "moduleId": "./base/organization-role/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/rate",
-    //   "name": "rate",
-    //   "title": "基础费率",
-    //   "moduleId": "./base/rate/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/warehouse",
-    //   "name": "warehouse",
-    //   "title": "仓库库区",
-    //   "moduleId": "./base/warehouse/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/work-info",
-    //   "name": "workInfo",
-    //   "title": "作业内容",
-    //   "moduleId": "./base/work-info/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/verify-records",
-    //   "name": "verifyRecord",
-    //   "title": "审核审批",
-    //   "moduleId": "./common/verify-records/index",
-    //   group: group1,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/instock/cargo-infos",
-    //   "name": "cargoInfo",
-    //   "title": "客户入库指令",
-    //   "moduleId": "./base/cargo-info/index",
-    //   group: group2,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/instock/:infoId?/cargo-flows",
-    //   "href": "/instock/cargo-flows",
-    //   "name": "cargoFlow",
-    //   "title": "入库流水",
-    //   "moduleId": "./instock/cargo-flow/index",
-    //   group: group2,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/instock/:infoId?/instock-orders",
-    //   "href": "/instock/instock-orders",
-    //   "name": "instockOrder",
-    //   "title": "入库单",
-    //   "moduleId": "./instock/order/index",
-    //   group: group2,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/instock/:infoId?/order-items",
-    //   "href": "/instock/order-items",
-    //   "name": "orderItem",
-    //   "title": "理货报告",
-    //   "moduleId": "./instock/order-item/index",
-    //   group: group2,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/instock/work-statistics",
-    //   "name": "workStatistics",
-    //   "title": "作业统计",
-    //   "moduleId": "./instock/work-statistics/index",
-    //   group: group2,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/storage",
-    //   "name": "storage",
-    //   "title": "库存",
-    //   "moduleId": "./base/storage/index",
-    //   group: group2,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/base/storage-history",
-    //   "name": "storage-history",
-    //   "title": "库存流水",
-    //   "moduleId": "./base/storage-history/index",
-    //   group: group2,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/outstock/:infoId?/outstock-orders",
-    //   "href": "/outstock/outstock-orders",
-    //   "name": "outstockOrder",
-    //   "title": "出库指令",
-    //   "moduleId": "./outstock/order/index",
-    //   group: group3,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/outstock/cargo-distrain",
-    //   "name": "cargo-distrain",
-    //   "title": "费收扣量",
-    //   "moduleId": "./outstock/cargo-distrain/index",
-    //   group: group3,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/outstock/order/item",
-    //   "name": "outstock-orderItem",
-    //   "title": "出库单",
-    //   "moduleId": "./outstock/order/item/index",
-    //   group: group3,
-    //   nav: true
-    // },
-    // {
-    //   "route": "/outstock/inventory",
-    //   "name": "inventory",
-    //   "title": "出库清单",
-    //   "moduleId": "./outstock/inventory/index",
-    //   group: group3,
-    //   nav: true
-    // }];
-
-    let dashboard = { route: '', name: 'dashboard', title: "控制面板", moduleId: './dashboard', nav: true };
-    let dev = { route: '/dev', name: 'dev', title: "开发", moduleId: './dev/index', nav: true };
-
-    config.map([dashboard, ...routes, dev]);
-    this.router = router;
+  unbind() {
+    this.subscriptions.forEach(s => s.dispose());
+    this.subscriptions = null;
   }
 }

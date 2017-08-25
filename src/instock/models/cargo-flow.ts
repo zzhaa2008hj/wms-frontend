@@ -1,5 +1,6 @@
 import { ValidationRules } from 'aurelia-validation';
 import { AttachmentMap } from '@app/common/models/attachment';
+import { InstockVehicle } from "@app/instock/models/instock-vehicle";
 /**
  * Created by Hui on 2017/6/19.
  */
@@ -41,6 +42,14 @@ export interface CargoFlow {
   instockLastStageName: string;
 
   attachments: AttachmentMap[];
+
+  oldInstockFlowNumber: string;
+
+  /**
+   * 录入方式  1/null:正常录入 2：补录
+   */
+  enteringMode: number;
+
 }
 export interface InstockCargoItem {
   //唯一性标识
@@ -68,31 +77,31 @@ export interface InstockCargoItem {
   freeDays: number;
 
   //车辆信息
-  vehicles: Vehicle[];
+  vehicles: InstockVehicle[];
 
   // 下标
   index: number;
-}
-
-export interface Vehicle {
-  //唯一性标识
-  sign?: string;
-
-  id: string;
-  instockGoodsId: string;
-  plateNumber: string;
-  driverName: string;
-  driverIdentityNumber: string;
-  phoneNumber: string;
-  remark: string;
-  orgId: string;
-  cargoName: string;
 }
 
 export const cargoFlowValidationRules = ValidationRules
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactPerson)
   .displayName('联系人')
   .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.instockFlowNumber)
+  .displayName('入库流水单号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((cargoFlow: CargoFlow) => cargoFlow.instockDate)
+  .displayName('入库流水时间')
+  .satisfies((instockDate, cargoFlow) => {
+    if (cargoFlow.enteringMode == 2 && instockDate) {
+      return false;
+    } else {
+      return true;
+    }
+  })
+  .withMessage(`\${$displayName} 不能为空`)
 
   .ensure((cargoFlow: CargoFlow) => cargoFlow.contactNumber)
   .displayName('联系电话')

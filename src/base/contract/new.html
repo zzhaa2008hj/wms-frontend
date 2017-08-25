@@ -134,9 +134,9 @@
               <span class="help"></span>
               <div class="controls right">
                 <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-detail-init.delegate="detailInit($event.detail)">
-                  <ak-col k-field="chargeCategory" k-title="费用类别">
+                  <ak-col k-field="rateCategory" k-title="费用类别">
                     <ak-template>
-                      ${chargeCategory == 1 ? '仓储费' :chargeCategory == 2? '装卸费':'其他费用'}
+                      ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
                     </ak-template>
                   </ak-col>
                   <ak-col k-field="chargeType" k-title="收付费">

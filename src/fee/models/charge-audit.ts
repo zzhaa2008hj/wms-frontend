@@ -1,3 +1,5 @@
+import { ValidationRules } from "aurelia-validation";
+import { CargoRateStep } from '@app/base/models/cargo-info';
 export interface ChargeAuditList {
   id: string;
   chargeInfoId: string;
@@ -20,6 +22,10 @@ export interface ChargeAuditList {
   orgId: string;
 
   chargeAuditItems: ChargeAuditItem[];
+
+  index: number;
+
+  paymentDateStr: string;
 }
 export interface ChargeAuditItem {
   id: string;
@@ -37,7 +43,7 @@ export interface ChargeAuditItem {
   unit: string;
   startDate: Date;
   endDate: Date;
-  containerType: number;
+  containerType: string;
   container_quantity: number;
   storageDay: number;
   storageRate: number;
@@ -47,4 +53,46 @@ export interface ChargeAuditItem {
   startDateStr: string;
   endDateStr: string;
   unitStr: string;
+  containerTypeStr: string;
+  rateTypeName: string;
+  chargeCategoryName: string;
+
+  // 作业表主键
+  workOrderId: string;
+  // 作业过程主键
+  workOrderItemId: string;
+  // 作业内容名称
+  workInfoName: string;
+  // 费用
+  amount: number;
+  // 作业日期
+  workDate: Date;
+
+  cargoItemId: string;
+  cargoRateId: string;
+  actualPrice: number;
+  pricingMode: number;
+  price: number;
+  cargoRateStepList: CargoRateStep[];
+  // 业务主键
+  businessId: string;
+  // 作业区域主键
+  workOrderAreaId: string;
+
 }
+
+export const chargeAuditListValidationRules = ValidationRules 
+  .ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.invoiceNumber)
+  .displayName("发票号")
+  .required().withMessage(`\${$displayName}不能为空`)
+  .rules;
+
+export const auditListValidationRules = ValidationRules 
+.ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.batchNumber)
+.displayName("批次号")
+.required().withMessage(`\${$displayName}不能为空`)
+
+.ensure((chargeAuditList: ChargeAuditList) => chargeAuditList.billLadingNumber)
+.displayName("提单号")
+.required().withMessage(`\${$displayName}不能为空`)
+.rules;

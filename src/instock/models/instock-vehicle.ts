@@ -14,4 +14,9 @@ export interface InstockVehicle {
   remark: string ;
 
   orgId: string ;
+
+//唯一性标识
+  sign?: string;
+
+  cargoName: string;
 }

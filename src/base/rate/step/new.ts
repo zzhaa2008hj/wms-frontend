@@ -3,22 +3,30 @@ import { autoinject, Container } from "aurelia-dependency-injection";
 import { RateStep, rateStepValidationRules } from "@app/base/models/rate";
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
+import { DictionaryDataService } from "@app/base/services/dictionary";
+import { DictionaryData } from "@app/base/models/dictionary";
 /**
  * Created by Hui on 2017/6/14.
  */
 @autoinject
 export class NewRateStep {
   rateId: string;
-  rateStep: RateStep;
-  stepUnit = [{ text: "元/天", value: "元/天" }, { text: "元/吨", value: "元/吨" }];
+  rateStep = {} as RateStep;
   validationController: ValidationController;
+  stepUnits: DictionaryData[];
 
   constructor(private dialogController: DialogController,
+              private dictionaryDataService: DictionaryDataService,
               validationControllerFactory: ValidationControllerFactory, container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
+  }
 
+  async activate(rateStep: RateStep) {
+    this.rateStep = rateStep;
+
+    this.stepUnits = await this.dictionaryDataService.getDictionaryDatas("unit");
   }
 
   async save() {
@@ -26,6 +34,7 @@ export class NewRateStep {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
+    this.rateStep.stepUnitStr = this.stepUnits.find(su => su.dictDataCode == this.rateStep.stepUnit).dictDataName;
     await this.dialogController.ok(this.rateStep);
   }
 

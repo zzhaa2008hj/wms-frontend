@@ -7,10 +7,11 @@ export interface AttachmentCriteria {
   businessNumber?: string;
   baseId?: string;
   businessType?: number;
+  businessId?: string;
 }
 
 export class AttachmentService {
-  constructor( @inject private http: RestClient, @inject('config') private config: any) {
+  constructor(@inject private http: RestClient, @inject('config') private config: any) {
   }
 
   async getDirKey(dir: string): Promise<any> {
@@ -34,5 +35,18 @@ export class AttachmentService {
     let uploadHttp = new HttpClient();
     let uploadUrl = this.config.upload.baseUrl;
     await uploadHttp.delete(uploadUrl + '/' + data.url);
+  }
+
+  // listAttachments(businessType?: number, businessId?:string, businessNumber?: string): Promise<Attachment[]> {
+  //   return this.http
+  // .get(`/base/attachment
+  // /list?businessType=${businessType}&businessId=${businessId}&businessNumber=${businessNumber}`)
+  // .then(res => res.content);
+  // }
+
+  listAttachments(criteria?: AttachmentCriteria): Promise<Attachment[]> {
+    return this.http
+      .get(`/base/attachment/list?businessType=${criteria.businessType}&businessId=${criteria.businessId}`)
+      .then(res => res.content);
   }
 }

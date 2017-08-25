@@ -12,6 +12,11 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { observable } from 'aurelia-framework';
+import { uuid } from "@app/utils";
+import { AttachmentService } from "@app/common/services/attachment";
+import { AttachmentMap } from "@app/common/models/attachment";
+import { Uploader, Upload } from "@app/upload";
+import { AttachmentDetail } from "@app/common/attachment/detail";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -23,6 +28,13 @@ export class EditCargoFlow {
   cargoFlow = {} as CargoFlow;
   selectedCargoInfo: any;
   units = [] as DictionaryData[];
+
+  file: File;
+  files: File[];
+  dir: string = "";
+  currentUpload: Upload;
+  attachments = [] as AttachmentMap[];
+
   baseCargoInfo = {
     transport: {
       read: async options => {
@@ -51,7 +63,10 @@ export class EditCargoFlow {
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, container: Container) {
+              private attachmentService: AttachmentService,
+              private uploader: Uploader,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -79,9 +94,20 @@ export class EditCargoFlow {
         });
       }
     }
-    
+
     this.dataSourceCargoItem.data(this.cargoItems);
     this.dataSourceVehicle.data(this.vehicles);
+
+    let arr = await this.attachmentService.listAttachments({ businessType: 1, businessId: this.cargoFlow.id });
+    if (arr != null && arr.length > 0) {
+      arr.forEach(res => {
+        let attachment = {} as AttachmentMap;
+        attachment.realName = res.attachmentName;
+        attachment.uuidName = res.attachmentUrl;
+        attachment.status = 2;
+        this.attachments.push(attachment);
+      });
+    }
   }
 
   async addVehicle(cargoItem) {
@@ -101,7 +127,7 @@ export class EditCargoFlow {
     this.cargoItems.forEach(ci => {
       if (e.id == ci.id) {
         let index = this.cargoItems.indexOf(ci);
-       this.cargoItems.splice(index, 1);
+        this.cargoItems.splice(index, 1);
         //同时删除车辆信息
         this.vehicles.forEach(v => {
           if (v.instockGoodsId == ci.id) {
@@ -160,6 +186,7 @@ export class EditCargoFlow {
 
     this.disabled = true;
     try {
+      this.cargoFlow.attachments = this.attachments;
       await this.cargoFlowService.updateCargoFlow(this.cargoFlow);
       await this.messageDialogService.alert({ title: "修改成功" });
       this.router.navigateToRoute("list");
@@ -171,5 +198,60 @@ export class EditCargoFlow {
 
   cancel() {
     this.router.navigateToRoute("list");
+  }
+
+  async chooseFiles() {
+    let fileArr = await this.dialogService.chooseFiles();
+    this.files = fileArr;
+    this.files.forEach(res => {
+      this.dir += res.name + ";";
+    });
+  }
+
+  async upload() {
+    let keyRes = await this.attachmentService.getDirKey(this.cargoFlow.cargoInfoId);
+    console.log("this.order.cargoInfoId", this.cargoFlow.cargoInfoId);
+    let index = 0;
+    for (let file of this.files) {
+      let fileName = uuid();
+      let suffix = file.name.split(".")[1];
+      let uuidName = fileName + "." + suffix;
+      let path = '/' + keyRes.key + '/' + uuidName;
+      this.currentUpload = this.uploader.upload(file, { path: path });
+      let result = await this.currentUpload.result;
+      if (result.status == 'success') {
+        this.attachments.push({ uuidName: uuidName, realName: file.name, status: 1 });
+        index++;
+      }
+    }
+    this.currentUpload = null;
+    this.dir = '';
+    await this.dialogService.alert({ title: "上传完成", message: "上传完成，成功上传" + index + "条数据" });
+    return;
+  }
+
+  async showDetail(data) {
+    let item: AttachmentMap = data.item;
+    let path = '/' + this.cargoFlow.cargoInfoId + '/' + item.uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    let result = await this.dialogService
+      .open({ viewModel: AttachmentDetail, model: attachmentUrl, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+  }
+
+  delete(data) {
+    // let item: AttachmentMap = data.item;
+    // let res = await this.attachmentService.getDirKey(this.order.cargoInfoId);
+    // let path = '/'+ res.key+'/'+item.uuidName;
+    // try{
+    //   await this.attachmentService
+    //   .deleteAttachments({baseId: this.order.cargoInfoId, url: path, uuidName: item.uuidName});
+    //   this.attachments = this.attachments.filter(res => res.uuidName != item.uuidName);
+    // }catch(err){
+    //   await this.dialogService.alert({title: "删除失败", message: err.message, icon: "error"});
+    // }
+    let item: AttachmentMap = data.item;
+    item.status = 0;
   }
 }

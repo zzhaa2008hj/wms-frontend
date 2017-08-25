@@ -6,13 +6,18 @@ import { formValidationRenderer } from "@app/validation/support";
 import { CodeService } from '@app/common/services/code';
 import { Order, OrderItem, orderValidationRules, vehicleValidationRules } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
-import { MessageDialogService } from "ui";
+import { MessageDialogService, DialogService } from "ui";
 import { CargoInfoService } from '@app/base/services/cargo-info';
 import { observable } from 'aurelia-framework';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
-import { copy } from "@app/utils";
+import { copy, uuid } from "@app/utils";
 import { RouterParams } from '@app/common/models/router-params';
+import { AttachmentService } from "@app/common/services/attachment";
+import { AttachmentMap } from "@app/common/models/attachment";
+import { Uploader, Upload } from "@app/upload";
+import { AttachmentDetail } from "@app/common/attachment/detail";
+import { OrganizationService } from "@app/base/services/organization";
 
 /**
  * Created by Hui on 2017/6/23.
@@ -41,6 +46,12 @@ export class NewOrder {
   });
   vehicles = new kendo.data.DataSource();
 
+  file: File;
+  files: File[];
+  dir: string = "";
+  currentUpload: Upload;
+  attachments = [] as AttachmentMap[];
+
   validationController: ValidationController;
   private dropDownListCargoItem: any;
 
@@ -49,10 +60,14 @@ export class NewOrder {
               @inject private messageDialogService: MessageDialogService,
               @inject private cargoInfoService: CargoInfoService,
               @inject private codeService: CodeService,
+              @inject private organizationService: OrganizationService,
               @inject('routerParams') private routerParams: RouterParams,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject validationControllerFactory: ValidationControllerFactory,
-              @inject container: Container) {
+              @inject container: Container,
+              @inject private dialogService: DialogService,
+              @inject private attachmentService: AttachmentService,
+              @inject private uploader: Uploader) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -78,6 +93,9 @@ export class NewOrder {
   }
 
   async onSelectCargoInfo(e) {
+    if (this.order) {
+      this.validationController.removeObject(this.order);
+    }
 
     this.order = {} as Order;
     this.outstockOrderItems = [] as OrderItem[];
@@ -94,7 +112,7 @@ export class NewOrder {
     }
   }
 
-  setOrderInfo(dataItem: CargoInfo) {
+  async setOrderInfo(dataItem: CargoInfo) {
     this.order.agentId = dataItem.agentId;
     this.order.agentName = dataItem.agentName;
     this.order.customerId = dataItem.customerId;
@@ -104,7 +122,14 @@ export class NewOrder {
     this.order.cargoInfoId = dataItem.id;
     this.order.id = null;
     this.order.lastBatch = 0;
-    this.order.paymentUnit = dataItem.customerName;
+    this.order.outstockDate = new Date();
+
+    let customer = await this.organizationService.getOrganization(dataItem.customerId);
+    if (customer) {
+      this.order.paymentUnit = customer.name;
+      this.order.contactPerson = customer.contactPerson;
+      this.order.contactNumber = customer.contactMobile;
+    }
   }
 
   async getBaseCargoItems() {
@@ -212,6 +237,7 @@ export class NewOrder {
 
     this.disabled = true;
     try {
+      this.order.attachments = this.attachments;
       await this.orderService.saveOrder(this.order);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
@@ -223,6 +249,58 @@ export class NewOrder {
 
   cancel() {
     this.router.navigateToRoute("list");
+  }
+
+  async chooseFiles() {
+    let fileArr = await this.dialogService.chooseFiles();
+    this.files = fileArr;
+    this.files.forEach(res => {
+      this.dir += res.name + ";";
+    });
+  }
+
+  async upload() {
+    let keyRes = await this.attachmentService.getDirKey(this.order.cargoInfoId);
+    let index = 0;
+    for (let file of this.files) {
+      let fileName = uuid();
+      let suffix = file.name.split(".")[1];
+      let uuidName = fileName + "." + suffix;
+      let path = '/' + keyRes.key + '/' + uuidName;
+      this.currentUpload = this.uploader.upload(file, { path: path });
+      let result = await this.currentUpload.result;
+      if (result.status == 'success') {
+        this.attachments.push({ uuidName: uuidName, realName: file.name });
+        index++;
+      }
+    }
+    this.currentUpload = null;
+    this.dir = '';
+    await this.dialogService.alert({ title: "上传完成", message: "上传完成，成功上传" + index + "条数据" });
+    return;
+  }
+
+  async showDetail(data) {
+    let item: AttachmentMap = data.item;
+    let path = '/' + this.order.cargoInfoId + '/' + item.uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    let result = await this.dialogService
+      .open({ viewModel: AttachmentDetail, model: attachmentUrl, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+  }
+
+  async deleted(data) {
+    let item: AttachmentMap = data.item;
+    let res = await this.attachmentService.getDirKey(this.order.cargoInfoId);
+    let path = '/' + res.key + '/' + item.uuidName;
+    try {
+      await this.attachmentService
+        .deleteAttachments({ baseId: this.order.cargoInfoId, url: path, uuidName: item.uuidName });
+      this.attachments = this.attachments.filter(res => res.uuidName != item.uuidName);
+    } catch (err) {
+      await this.dialogService.alert({ title: "删除失败", message: err.message, icon: "error" });
+    }
   }
 
 }
