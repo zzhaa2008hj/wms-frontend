@@ -5,6 +5,10 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-6">
       <div class="input-group left">
+        <input ak-datepicker="k-value.two-way: yearStatistic; k-start.bind:'decade'; k-depth.bind: 'decade';k-format.bind:'yyyy';"/>
+        <input ak-datepicker="k-value.two-way: monthStatistic; k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM';"/>
+      </div>
+      <div class="input-group left">
         <ak-drop-down-list k-value.two-way="criteria.dateType" k-data-text-field="text" k-data-value-field="value"
                            k-data-source.bind="dateType">
         </ak-drop-down-list>

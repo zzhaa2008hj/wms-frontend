@@ -9,6 +9,9 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { MessageDialogService } from "ui";
 import { datagridValidationRenderer } from "./new-area";
 import { WorkOrderService } from '@app/instock/services/work-order';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
+import { Rate } from '@app/base/models/rate';
 
 @customElement('area-items')
 export class NewWorkItem {
@@ -47,7 +50,7 @@ export class NewWorkItem {
     }
   });
   //this.instockCargoItemId, this.type
-
+  unit = [] as DictionaryData[];
   //private resBind: Subscription;
   constructor(@inject private workInfoService: WorkInfoService,
               @inject private newWorkArea: NewWorArea,
@@ -55,15 +58,17 @@ export class NewWorkItem {
               @inject('routerParams') private routerParams: RouterParams,
               @newInstance() private validationController: ValidationController,
               @inject private eventAggregator: EventAggregator,
-              @inject private messageDialogService: MessageDialogService) {
+              @inject private messageDialogService: MessageDialogService,
+              @inject private dictionaryDataService: DictionaryDataService,) {
     this.validationController.addRenderer(datagridValidationRenderer);
 
   }
 
-  bind() {
+  async bind() {
     //this.newWorkArea.onItemAdd(this);
     this.dataSource = this.newWorkArea.getNewDataSourceByUid(this.parentUid);
     this.eventAggregator.publish("item:bind", this);
+    this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
   }
 
   unbind() {
@@ -115,6 +120,19 @@ export class NewWorkItem {
 
   validateWorkOrderItem(obj, propertyName: string) {
     this.validationController.validate({ object: obj, propertyName });
+    // 显示计价单位
+    let rateData = this.worksSource.data();
+    if (rateData && rateData.length > 0) {
+      let rates: Rate[] = [];
+      Object.assign(rates, rateData);
+      let rate = rates.find(rate => rate.id == obj.workId);
+      if (rate) {
+        let unit = this.unit.find(d => rate.unit == d.dictDataCode);
+        if (unit) {
+          obj.unitStr = unit.dictDataName;
+        }
+      }
+    }
   }
 }
 
