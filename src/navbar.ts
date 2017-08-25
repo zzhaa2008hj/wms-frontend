@@ -29,7 +29,7 @@ export class NavBar {
   }
 
   showInfo() {
-    this.router.navigateToRoute('notifications')
+    this.router.navigateToRoute('notifications');
   }
 
   async updateUnreadNum() {
