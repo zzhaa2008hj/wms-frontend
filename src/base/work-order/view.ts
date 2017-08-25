@@ -39,15 +39,27 @@ export class VeiwWorkItem {
     detailRow.find('.workItem').kendoGrid({
       dataSource: {
         transport: {
-          read: options => {
-            this.workOrderItemService.getWorkOrderItems(e.data.id)
-              .then(options.success)
-              .catch(err => options.error("", "", err));
+          read: async options => {
+            try {
+              let items = await this.workOrderItemService.getWorkOrderItems(e.data.id);
+              if (items) {
+                items.forEach(item => {
+                  let unit = this.unit.find(r => r.dictDataCode == item.unit);
+                  if (unit) {
+                    item.unitStr = unit.dictDataName;
+                  }
+                });
+              }
+              options.success(items);
+            }catch (err) {
+              options.error("", "", err);
+            }
           }
         }
       },
       columns: [
         { field: 'workName', title: '作业内容' },
+        { field: 'unitStr', title: '计价单位' },
         { field: 'workNumber', title: '作业数量' },
         { field: 'customerName', title: '作业单位' },
         { field: 'remark', title: '备注' }
