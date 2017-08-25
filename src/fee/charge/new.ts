@@ -57,11 +57,13 @@ export class NewChargeInfo {
           warehouseName: { editable: false },
           quantity: { editable: false },
           number: { editable: false },
-          unitName: { editable: false },
+          unitStr: { editable: false },
           pricingMode: { editable: false },
           price: { editable: false },
           actualPrice: { editable: true, type: 'number', validation: { required: false, min: 0, max: 10000000 }},
-          workName: {editable: false}
+          workInfoName: {editable: false},
+          startDate: {editable: false},
+          endDate: {editable: false},
         }
       }
     }
@@ -159,8 +161,12 @@ export class NewChargeInfo {
     
     if (items) {
       items.map(item => {
-        item.startDate = new Date(item.startDate);
-        item.endDate = new Date(item.endDate);
+        if (item.startDate) {
+          item.startDate = new Date(item.startDate);
+        }
+        if (item.endDate) {
+          item.endDate = new Date(item.endDate);
+        }
         let unit = this.units.find(r => r.dictDataCode == item.unit);
         if (unit) {
           item.unitStr = unit.dictDataName;
