@@ -130,7 +130,7 @@ export class NewRate {
 
   async addStep() {
     let rateStep = {} as RateStep;
-    rateStep.stepNum = this.stepIndex + 1;
+    rateStep.stepNum = this.stepIndex;
     rateStep.stepStart = this.stepStart;
     let result = await this.dialogService.open({ viewModel: NewRateStep, model: rateStep, lock: true })
       .whenClosed();

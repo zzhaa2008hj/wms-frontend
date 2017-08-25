@@ -56,7 +56,9 @@ export class NewChargeInfo {
           pricingMode: { editable: false },
           price: { editable: false },
           actualPrice: { editable: true, type: 'number', validation: { required: false, min: 0, max: 10000000 }},
-          workName: {editable: false}
+          workInfoName: {editable: false},
+          startDate: {editable: false},
+          endDate: {editable: false},
         }
       }
     }
@@ -79,6 +81,12 @@ export class NewChargeInfo {
     this.chargeInfo = await this.chargeInfoService.getChargeInfoAndItems(id);
     if (this.chargeInfo && this.chargeInfo.chargeAuditItemList && this.chargeInfo.chargeAuditItemList.length > 0) {
       this.chargeInfo.chargeAuditItemList.map(item => {
+        if (item.startDate) {
+          item.startDate = new Date(item.startDate);
+        }
+        if (item.endDate) {
+          item.endDate = new Date(item.endDate);
+        }
         let unit = this.units.find(r => r.dictDataCode == item.unit);
         if (unit) {
           item.unitStr = unit.dictDataName;
@@ -168,6 +176,12 @@ export class NewChargeInfo {
     }
     if (items) {
       items.map(item => {
+        if (item.startDate) {
+          item.startDate = new Date(item.startDate);
+        }
+        if (item.endDate) {
+          item.endDate = new Date(item.endDate);
+        }
         let unit = this.units.find(r => r.dictDataCode == item.unit);
         if (unit) {
           item.unitStr = unit.dictDataName;
