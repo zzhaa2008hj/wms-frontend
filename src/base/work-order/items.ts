@@ -11,7 +11,7 @@ import { datagridValidationRenderer } from "./new-area";
 import { WorkOrderService } from '@app/instock/services/work-order';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
-import { Rate } from '@app/base/models/rate';
+import { CargoRate } from '@app/base/models/cargo-info';
 
 @customElement('area-items')
 export class NewWorkItem {
@@ -123,7 +123,7 @@ export class NewWorkItem {
     // 显示计价单位
     let rateData = this.worksSource.data();
     if (rateData && rateData.length > 0) {
-      let rates: Rate[] = [];
+      let rates: CargoRate[] = [];
       Object.assign(rates, rateData);
       let rate = rates.find(rate => rate.id == obj.workId);
       if (rate) {
