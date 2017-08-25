@@ -29,8 +29,12 @@ export class ViewChargeInfo {
     this.chargeInfo = await this.chargeInfoService.getChargeInfoAndItems(id);
     if (this.chargeInfo && this.chargeInfo.chargeAuditItemList && this.chargeInfo.chargeAuditItemList.length > 0) {
       this.chargeInfo.chargeAuditItemList.map(item => {
-        item.startDate = new Date(item.startDate);
-        item.endDate = new Date(item.endDate);
+        if (item.startDate) {
+          item.startDate = new Date(item.startDate);
+        }
+        if (item.endDate) {
+          item.endDate = new Date(item.endDate);
+        }
         let unit = this.units.find(r => r.dictDataCode == item.unit);
         if (unit) {
           item.unitStr = unit.dictDataName;

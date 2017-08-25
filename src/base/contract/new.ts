@@ -82,6 +82,7 @@ export class NewContract {
               editable: true,
               nullable: false
             },
+            rateCategory: { editable: false },
             chargeCategory: { editable: false },
             chargeType: { editable: false },
             unitStr: { editable: false },
