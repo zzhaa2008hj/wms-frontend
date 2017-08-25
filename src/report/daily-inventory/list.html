@@ -1,0 +1,97 @@
+<template>
+  <div class="page-title">
+    <h3>每日出入库明细</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-6">
+      <div class="input-group left">
+        <input type="text" value.bind="criteria.customerName" placeholder="请输入客户名称">
+      </div>
+      <div class="input-group left m-l-5">
+        <input ak-datepicker="k-value.two-way: criteria.makeDate" placeholder="请选择制单时间" type="text" class="form-control">
+      </div>
+      <div class="input-group left m-l-5">
+        <input type="text" value.bind="criteria.batchNumber" placeholder="请输入批次号">
+      </div>
+      <div class="input-group left">
+        <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
+        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
+      </div>
+      <div class="input-group left m-l-5">
+         <button class="btn btn-small" click.delegate="getItems()">打印</button>
+      </div>
+    </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+    <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+    <ak-col k-field="cargoName" k-title="货名"></ak-col>
+    <ak-col k-field="instockQuantity" k-title="入库数量"></ak-col>
+    <ak-col k-field="instockNumber" k-title="入库件数"></ak-col>
+    <ak-col k-field="outstockQuantity" k-title="出库数量"></ak-col>
+    <ak-col k-field="outstockNumber" k-title="出库件数"></ak-col>
+    <ak-col k-field="unit" k-title="单位"></ak-col>
+    <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
+    <ak-col k-field="warehouseName" k-title="库区"></ak-col>
+    <ak-col k-field="dataTime" k-title="出入库日期" k-format='{0:yyyy-MM-dd}'></ak-col>
+  </ak-grid>
+
+  <div class="col-md-9 col-md-offset-2" style="display: none;" id="dailyInventory">
+    <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+      <tr>
+        <td align="center" colspan="13">
+          <h4>每日出入库明细</h4>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">序号</td>
+        <td align="center">客户名称</td>
+        <td align="center">批次号</td>
+        <td align="center">货类</td>
+        <td align="center">货名</td>
+        <td align="center">入库数量</td>
+        <td align="center">入库件数</td>
+        <td align="center">出库数量</td>
+        <td align="center">出库件数</td>
+        <td align="center">单位</td>
+        <td align="center">箱号</td>
+        <td align="center">库区</td>
+        <td align="center">出入库日期</td>
+      </tr>
+      <template repeat.for="item of inventoryVo.data">
+        <tr>
+          <td align="center">${item.index}</td>
+          <td align="center">${item.customerName}</td>
+          <td align="center">${item.batchNumber}</td>
+          <td align="center">${item.cargoCategoryName}</td>          
+          <td align="center">${item.cargoName}</td>
+          <td align="center">${item.instockQuantity}</td>
+          <td align="center">${item.instockNumber}</td>
+          <td align="center">${item.outstockQuantity}</td>
+          <td align="center">${item.outstockNumber}</td>
+          <td align="center">${item.unit}</td>
+          <td align="center">${item.containerNumber}</td>
+          <td align="center">${item.warehouseName}</td>
+          <td align="center">${item.dataTimeStr}</td>
+        </tr>
+      </template>
+      <tr>
+        <td align="right" colspan="5">合计：</td>
+        <td align="center">${inventoryVo.totalInstockQuantity}</td>
+        <td align="center">${inventoryVo.totalInstockNumber}</td>
+        <td align="center">${inventoryVo.totalOutstockQuantity}</td>
+        <td align="center">${inventoryVo.totalOutstockNumber}</td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td align="right" colspan="12">
+          统计日期：
+        </td>
+        <td align="center">
+          ${criteria.makeDate}
+        </td>
+      </tr>
+    </table>
+  </div>
+</template>

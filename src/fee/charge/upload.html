@@ -1,0 +1,30 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 上传
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="form-group">
+        <label class="form-label">指令上传</label>
+        <div class="controls">
+          <input style="width: 300px;" type="text" value.bind="dir" multiple/>
+          <button class="btn btn-small" click.trigger="chooseFiles()">选择文件</button>
+          <button class="btn btn-small btn-primary" click.trigger="upload()">上传</button>
+          <wa-progress width="200px" height="5px" if.bind="currentUpload" value.bind="currentUpload.progress.loaded"
+                       total.bind="currentUpload.progress.total" label="正在上传...">${percent}%</wa-progress>
+          <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消</button>
+        </div>
+        <div class="controls">
+          <label repeat.for="item of attachments">
+            <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a>
+            <a class="pointer m-l-10" click.delegate="delete($this)">删除</a>
+          </label>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="save()">完成</button>
+      <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

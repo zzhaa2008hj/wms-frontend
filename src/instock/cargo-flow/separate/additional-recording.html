@@ -1,0 +1,115 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-body no-border"><br>
+      <form submit.delegate="addCargoFlowSeparate()">
+        <div class="form-group">
+          <label class="form-label">批次号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.batchNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">拆单前入库流水单号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="beforeSeparateInstockFlowNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group input-group">
+          <span class="help"></span>
+          <label class="form-label">入库流水拆单时间</label>
+          <input ak-datepicker=" k-widget.two-way: cargoFlowDatePicker ;k-max.bind:maxDate;k-value.two-way:cargoFlow.instockDate & validate" k-on-change.delegate="createInstockFlowNumber()"
+            type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">拆单后入库流水单号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.instockFlowNumber & validate" placeholder="选择入库流水拆单时间后自定生成" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">是否为最后一批*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="radio" class="form-label" model.bind="1" checked.bind="cargoFlow.lastBatch" name="lastBatch">是
+            <input type="radio" class="form-label" model.bind="0" checked.bind="cargoFlow.lastBatch" name="lastBatch">否
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">联系人*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.contactPerson & validate" disabled.bind="disabled">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">联系电话*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.contactNumber & validate" disabled.bind="disabled">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">备注</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.remark & validate" disabled.bind="disabled">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">拆单货物*</label>
+          <span class="help"></span>
+          <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">
+            <ak-col k-field="cargoName" k-title="货物名称">
+              <ak-template>
+                <input style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
+              </ak-template>
+            </ak-col>
+            <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+            <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+            <ak-col k-title="计量单位">
+              <ak-template>
+                <input style="border: none;background-color:transparent;" value.bind="unitStr" readonly/>
+              </ak-template>
+            </ak-col>
+            <ak-col k-title="集装箱号">
+              <ak-template>
+                <input style="border: none;background-color:transparent;" value.bind="containerNumber" readonly/>
+              </ak-template>
+            </ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+            <ak-col k-title="操作">
+              <ak-template>
+                <button class="btn btn-danger btn-small" click.delegate="deleteCargoItem($this)">删除
+                </button>
+              </ak-template>
+            </ak-col>
+          </ak-grid>
+          <ak-grid k-data-source.bind="dataSourceVehicle">
+            <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+            <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
+            <ak-col k-field="driverName" k-title="司机名称"></ak-col>
+            <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
+            <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+            <ak-col k-title="操作">
+              <ak-template>
+                <button class="btn btn-danger btn-small" click.delegate="deleteVehicle($this)">删除</button>
+              </ak-template>
+            </ak-col>
+          </ak-grid>
+        </div>
+
+        <div class="form-actions">
+          <div class="pull-right">
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i> 保存</button>
+            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
+</template>

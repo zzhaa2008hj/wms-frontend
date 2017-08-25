@@ -1,0 +1,159 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-body no-border"><br>
+      <form submit.delegate="addNewCargoFlow()">
+        <div class="form-group">
+          <label class="form-label">批次号*</label>
+          <span class="help"></span>
+          <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-filter="contains"
+            k-data-text-field="batchNumberStr" k-data-value-field="id" k-data-source.bind="baseCargoInfo" k-on-change.delegate="onSelectCargoInfo($event.detail)"
+            if.bind="!hasInfoId">
+          </ak-drop-down-list>
+          <div class="controls" if.bind="hasInfoId">
+            <input type="text" class="form-control" value.bind="cargoFlow.batchNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group input-group">
+          <span class="help"></span>
+          <label class="form-label">入库流水时间</label>
+          <input ak-datepicker=" k-widget.two-way: cargoFlowDatePicker ;k-max.bind:maxDate;k-enabled.two-way:hasInfoId;k-value.two-way:cargoFlow.instockDate  & validate"
+            k-on-change.delegate="createInstockFlowNumber()" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">入库流水单号*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.instockFlowNumber & validate" placeholder="选择入库流水时间后自动生成" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">是否为最后一批*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="radio" class="form-label" model.bind="1" checked.bind="cargoFlow.lastBatch" name="lastBatch">是
+            <input type="radio" class="form-label" model.bind="0" checked.bind="cargoFlow.lastBatch" name="lastBatch">否
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">联系人*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.contactPerson & validate" disabled.bind="disabled">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">联系电话*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.contactNumber & validate" disabled.bind="disabled">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">备注</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoFlow.remark & validate" disabled.bind="disabled">
+          </div>
+        </div>
+        <div class="form-group" if.bind="cargoFlow.batchNumber != null">
+          <label class="form-label">指令上传</label>
+          <div class="controls">
+            <input style="width: 300px;" type="text" value.bind="dir" multiple/>
+            <button class="btn btn-small" click.trigger="chooseFiles()">选择文件</button>
+            <button class="btn btn-small btn-primary" click.trigger="upload()">上传</button>
+            <wa-progress width="200px" height="5px" if.bind="currentUpload" value.bind="currentUpload.progress.loaded" total.bind="currentUpload.progress.total"
+              label="正在上传...">${percent}%</wa-progress>
+            <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消</button>
+          </div>
+          <div class="controls">
+            <label repeat.for="item of attachments">
+              <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a><a class="pointer m-l-10" click.delegate="delete($this)">删除</a>
+            </label>
+          </div>
+          <div class="form-group">
+            <ak-drop-down-list k-widget.bind="dropDownListCargoItem" k-option-label="请选择--新增货物" k-data-text-field="cargoName" k-data-source.bind="dataSourceBaseCargoItem"
+              k-on-select.delegate="onSelect($event.detail)">
+            </ak-drop-down-list>
+            <ak-grid k-data-source.bind="dataSourceCargoItem" k-editable.bind="true">
+              <ak-col k-field="cargoName" k-title="货物名称">
+                <ak-template>
+                  <input type="text" style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
+                </ak-template>
+              </ak-col>
+              <ak-col k-field="cargoCategoryName" k-title="货物类别">
+                <ak-template>
+                  <input type="text" style="border: none;background-color:transparent;" value.bind="cargoCategoryName" readonly/>
+                </ak-template>
+              </ak-col>
+              <ak-col k-field="unitStr" k-title="计量单位">
+                <ak-template>
+                  <input type="text" style="border: none;background-color:transparent;" value.bind="unitStr" readonly/>
+                </ak-template>
+              </ak-col>
+              <ak-col k-title="指令数量">
+                <ak-template>
+                  <input type="number" value.bind="orderQuantity & toFloat" step="0.01" />
+                </ak-template>
+              </ak-col>
+              <ak-col k-title="指令件数">
+                <ak-template>
+                  <input type="number" value.bind="orderNumber & toInt" />
+                </ak-template>
+              </ak-col>
+              <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+              <ak-col k-field="remark" k-title="备注"></ak-col>
+              <ak-col k-title="操作">
+                <ak-template>
+                  <button class="btn btn-success btn-small" click.delegate="addVehicle($this)">添加车辆
+                </button>
+                  <button class="btn btn-danger btn-small" click.delegate="deleteCargoItem($this)">删除
+                </button>
+                </ak-template>
+              </ak-col>
+            </ak-grid>
+          </div>
+
+          <ak-grid k-data-source.bind="dataSourceVehicle" k-editable.bind="true">
+            <ak-col k-title="货物名称">
+              <ak-template>
+                <input style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
+              </ak-template>
+            </ak-col>
+            <ak-col k-title="车牌号">
+              <ak-template>
+                <input type="text" value.bind="plateNumber  & validate" />
+              </ak-template>
+            </ak-col>
+            <ak-col k-title="司机名称">
+              <ak-template>
+                <input type="text" value.bind="driverName  & validate" />
+              </ak-template>
+            </ak-col>
+            <ak-col k-title="身份证号">
+              <ak-template>
+                <input type="text" value.bind="driverIdentityNumber  & validate" />
+              </ak-template>
+            </ak-col>
+            <ak-col k-title="电话">
+              <ak-template>
+                <input type="text" value.bind="phoneNumber  & validate" />
+              </ak-template>
+            </ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+            <ak-col k-title="操作">
+              <ak-template>
+                <button class="btn btn-danger btn-small" click.delegate="deleteVehicle($this)">删除</button>
+              </ak-template>
+            </ak-col>
+          </ak-grid>
+          <div class="form-actions">
+            <div class="pull-right">
+              <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i> 保存</button>
+              <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
+            </div>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</template>

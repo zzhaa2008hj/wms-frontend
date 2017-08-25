@@ -1,0 +1,41 @@
+<template>
+  <div class="page-title">
+    <h3>对账清单管理</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="input-group">
+        <input class="form-control" type="text" value.bind="chargeAuditCriteria.batchNumber" placeholder="请输入批次号">
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="input-group">
+        <input class="form-control" type="text" value.bind="chargeAuditCriteria.billLadingNumber" placeholder="请输入提单号">
+        <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+      </div>
+    </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="pageable">
+    <ak-col k-field="batchNumber" k-title="批次号" k-width="110px"></ak-col>
+    <ak-col k-field="billLadingNumber" k-title="提单号"></ak-col>
+    <ak-col k-field="containerQuantity" k-title="箱量"></ak-col>
+    <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
+    <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
+    <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
+    <ak-col k-field="sumAmount" k-title="合计"></ak-col>
+    <ak-col k-field="invoiceType" k-title="票据类型"></ak-col>
+    <ak-col k-field="invoiceStatus == 1 ? '已开票':'未开票'" k-title="开票状态"></ak-col>
+    <ak-col k-field="invoiceNumber" k-title="票据编号"></ak-col>
+    <ak-col k-field="paymentUnit" k-title="付款单位"></ak-col>
+    <ak-col k-field="paymentDate == null ? '' : paymentDate" k-title="付款日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="paymentStatus == 1 ? '已付款':'未付款'" k-title="付款状态"></ak-col>
+    <ak-col k-field="receivableAmount" k-title="应收金额"></ak-col>
+    <ak-col k-field="receivedAmount" k-title="已收金额"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+    <ak-col k-title="操作">
+      <ak-template>
+        <a class="btn btn-small" route-href="route: view; params.bind: { id: id }">查看</a>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
+</template>

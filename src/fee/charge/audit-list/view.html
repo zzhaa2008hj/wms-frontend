@@ -1,0 +1,189 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-body">
+      <form>
+        <div class="row column-seperation">
+          <h4>基本信息</h4>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">批次号*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.batchNumber" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">提单号*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.billLadingNumber" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">箱量*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.containerQuantity" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">仓储费*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.warehousingAmount" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">装卸费*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.loadingAmount" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">其他费用*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.otherAmount" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">合计*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.sumAmount" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">票据类型*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.invoiceType" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">开票状态*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.invoiceStatus" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">票据编号*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.invoiceNumber" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">付款单位*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.paymentUnit" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">付款日期*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.paymentDateStr" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">付款状态*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.paymentStatus" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">应收金额*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.receivableAmount" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">已收金额*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="chargeAuditList.receivedAmount" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-label">备注</label>
+              <span class="help"></span>
+              <div class="controls">
+                <textarea type="text" class="form-control" value.bind="chargeAuditList.remark" readonly>
+                  </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row column-seperation">
+          <h4>费收明细</h4>
+          <div class="col-md-12">
+            <span class="help"></span>
+            <div class="controls right">
+              <ak-grid k-data-source.bind="dataSourceChargeAuditItem">
+                <ak-col k-field="batchNumber" k-title="批次号" k-width="110px"></ak-col>
+                <ak-col k-field="chargeCategoryName" k-title="费用类别"></ak-col>
+                <ak-col k-field="rateTypeName" k-title="费用类型"></ak-col>
+                <ak-col k-field="cargoName" k-title="货名"></ak-col>
+                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col>
+                <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+                <ak-col k-field="number" k-title="件数"></ak-col>
+                <ak-col k-field="quantity" k-title="重量"></ak-col>
+                <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+                <ak-col k-field="startDate" k-title="开始日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+                <ak-col k-field="endDate" k-title="结束日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+                <ak-col k-field="containerTypeStr" k-title="箱型" ></ak-col>
+                <ak-col k-field="containerQuantity" k-title="箱量"></ak-col>
+                <ak-col k-field="storageDay" k-title="堆存天数"></ak-col>
+                <ak-col k-field="storageRate" k-title="堆存费率"></ak-col>
+                <ak-col k-field="workInfoName" k-title="作业内容"></ak-col>
+                <ak-col k-field="amount" k-title="费用"></ak-col>
+              </ak-grid>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <div class="pull-right">
+            <button class="btn" click.delegate="cancel()">返回</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
