@@ -47,7 +47,7 @@ export class StatisticsChargeList {
       this.customers.push({ value: item });
     }
 
-    this.type = 3;
+    this.type = 1;
   }
 
   select() {
