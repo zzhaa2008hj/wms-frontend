@@ -4,6 +4,7 @@ import { DataSourceFactory } from "@app/utils";
 import { NoticeService } from "@app/base/services/notice";
 import { ReadNotification } from "@app/base/notifications/read";
 import { DialogService, MessageDialogService } from "ui";
+import { EventAggregator } from "aurelia-event-aggregator";
 
 @autoinject
 export class MsgInfo {
@@ -22,7 +23,8 @@ export class MsgInfo {
               private messageResultService: MessageResultService,
               private noticeService: NoticeService,
               private dialogService: DialogService,
-              private messageDialogService: MessageDialogService) {
+              private messageDialogService: MessageDialogService,
+              private events: EventAggregator) {
 
     this.unreadDataSource = this.dataSourceFactory.create({
       query: () => this.messageService.getMsgInfo({ read: "1" }),
@@ -43,12 +45,18 @@ export class MsgInfo {
     await this.dialogService
       .open({ viewModel: ReadNotification, model: { body: obj.content, title: obj.title }, lock: true })
       .whenClosed();
+    this.allDataSource.read();
+    this.unreadDataSource.read();
+    this.events.publish('event-source:read');
+
   }
 
   async detailNote(obj) {
     await this.dialogService
       .open({ viewModel: ReadNotification, model: { body: obj.content, title: obj.title }, lock: true })
       .whenClosed();
+    this.noteDataSource.read();
+
   }
 
   async setRead() {

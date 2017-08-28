@@ -42,6 +42,7 @@ async function doNo(events: EventAggregator,
         model: { title, body },
         lock: true
       }).whenClosed();
+        events.publish('event-source:read');
     };
   });
 }
