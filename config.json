@@ -10,7 +10,7 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://localhost:3002/#/loginRpc",
+    "loginUrl": "http://localhost:3000/#/loginRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
@@ -41,8 +41,7 @@
       "expanded": false
     }
   },
-  "routes": [
-    {
+  "routes": [{
       "route": "/base/attachments",
       "name": "attachments",
       "title": "附件",
@@ -243,10 +242,52 @@
       "group": "group4"
     },
     {
+      "route": "/report/ledger-account",
+      "name": "ledger-account",
+      "title": "台账流水账",
+      "moduleId": "./report/ledger-account/index",
+      "group": "group5"
+    },
+    {
       "route": "/report/daily-inventory",
       "name": "daily-inventory",
-      "title": "出入库明细",
+      "title": "每日出入库",
       "moduleId": "./report/daily-inventory/index",
+      "group": "group5"
+    },
+    {
+      "route": "/report/monthly-inventory",
+      "name": "monthly-inventory",
+      "title": "每月出入库",
+      "moduleId": "./report/monthly-inventory/index",
+      "group": "group5"
+    },
+    {
+      "route": "/report/storage-statistics",
+      "name": "storage-statistics",
+      "title": "库存统计",
+      "moduleId": "./report/storage-statistics/index",
+      "group": "group5"
+    },
+    {
+      "route": "/report/daily-payment",
+      "name": "daily-payment",
+      "title": "每日付费统计",
+      "moduleId": "./report/daily-payment/index",
+      "group": "group5"
+    },
+    {
+      "route": "/report/monthly-payment",
+      "name": "monthly-payment",
+      "title": "每月付费统计",
+      "moduleId": "./report/monthly-payment/index",
+      "group": "group5"
+    },
+    {
+      "route": "/report/statistics-charge",
+      "name": "statistics-charge",
+      "title": "每月收费统计",
+      "moduleId": "./report/statistics-charge/index",
       "group": "group5"
     }
   ]
