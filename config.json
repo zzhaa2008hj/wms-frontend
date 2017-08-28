@@ -10,7 +10,9 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://localhost:3000/#/loginRpc",
+    "loginUrl": "http://localhost:3000/loginRpc",
+    "loginOutUrl":"http://localhost:8080/rpc/login/logOut",
+    "changePasswordUrl":"http://localhost:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },

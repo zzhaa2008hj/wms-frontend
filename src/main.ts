@@ -21,7 +21,7 @@ export async function configure(aurelia: Aurelia) {
   let config = await loadConfig();
   aurelia.container.registerInstance('config', config);
   let apiBaseUrlOverride = localStorage.getItem('api.baseUrl');
-  await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container);
+  await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container, config);
 
   aurelia.container.registerInstance(Uploader, new Uploader({ baseUrl: config.upload.baseUrl, method: 'PUT' }));
 
@@ -41,10 +41,9 @@ async function loadConfig() {
  *
  * @param container DI容器
  */
-async function configureRestClient(baseUrl: string, container: Container) {
+async function configureRestClient(baseUrl: string, container: Container, config: any) {
   let eventAggregator: EventAggregator = container.get(EventAggregator);
-  let http: HttpClient = new class extends RestClient {};
-
+  let http: HttpClient = new class extends RestClient { };
   eventAggregator.subscribe('user:login', user => {
     console.log('user:login', user);
     http.configure(b => {
@@ -57,7 +56,7 @@ async function configureRestClient(baseUrl: string, container: Container) {
       b.withHeader("x-eupwood-session-token", null);
     });
   });
-  
+
 
   http.configure(builder => {
     builder
@@ -65,6 +64,11 @@ async function configureRestClient(baseUrl: string, container: Container) {
       .withHeader('accept', 'application/json')
       .withInterceptor({
         responseError: res => {
+          if (res.statusCode == 401) {
+            let url = config.loginParam.loginUrl + "?appKey=" + config.loginParam.appKey + "&appType=" + config.loginParam.appType + "&returnUrl=" + encodeURIComponent(window.location.href);
+            window.location.href = url;
+            return null;
+          }
           if (res.statusCode >= 500) {
             if (res.mimeType == 'application/json') {
               console.error(res.content.message);

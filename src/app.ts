@@ -15,9 +15,11 @@ export class App {
     @inject private user: UserSession,
     @inject private events: EventAggregator,
     @inject private dialogService: DialogService) {
-      this.user.loginUrl = config.loginParma.loginUrl;
-      this.user.appKey = config.loginParma.appKey;
-      this.user.appType = config.loginParma.appType;
+      this.user.loginUrl = config.loginParam.loginUrl;
+      this.user.loginOutUrl = config.loginParam.loginOutUrl;
+      this.user.changePasswordUrl = config.loginParam.changePasswordUrl;
+      this.user.appKey = config.loginParam.appKey;
+      this.user.appType = config.loginParam.appType;
   }
 
   async activate() {
