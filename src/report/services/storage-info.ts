@@ -16,8 +16,8 @@ export class StorageInfoService {
     return this.http.query<StorageInfoVo>(`/report/storage-info/page`, criteria);
   }
 
-  list(criteria?: Criteria): Promise<StorageInfoVo> {
-     return this.http.createRequest('/report/storage-info/list')
-       .withParams(criteria).asGet().send().then(res => res.content);
+  list(criteria?: Criteria): Promise<StorageInfoVo[]> {
+    return this.http.createRequest('/report/storage-info/list')
+      .withParams(criteria).asGet().send().then(res => res.content);
   }
 }
