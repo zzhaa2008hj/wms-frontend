@@ -79,7 +79,7 @@
         <ak-col k-field="thisMonthNumber" k-title="本月月结存件数"></ak-col>
         <ak-col k-field="thisMonthQuantity" k-title="本月结存数量"></ak-col>
     </ak-grid>
-    <div class="col-md-9 col-md-offset-2" id="monthlyInventory">
+    <div class="col-md-9 col-md-offset-2" id="monthlyInventory" style="display: none">
         <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
             <tr>
                 <td align="center" colspan="13">
@@ -178,7 +178,15 @@
         </table>
         <div>
             <p class="col-md-11" style="width:99%;max-width:900px;">
-                说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字</p>
+                <template repeat.for="item of storageInfoVoes">
+                    ${item.warehouseName}：数量${item.storageQuantity}，件数${item.storageNumber}
+                    <span if.bind="item.list.length != 0">(</span>
+                    <template repeat.for="data of item.list">
+                        <span>${data.warehouseName}：数量${data.storageQuantity}，件数${data.storageNumber}</span>
+                    </template>
+                    <span if.bind="item.list.length != 0">)</span>；
+                </template>
+            </p>
         </div>
         <br/>
         <div class="col-md-12">

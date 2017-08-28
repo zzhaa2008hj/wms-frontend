@@ -6,6 +6,8 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { MonthlyInventoryService } from '@app/report/services/monthly-inventory';
 import { addHeader, print } from '@app/common/services/print-tool';
 import { MonthlyInventoryVo, MonthlyInventory, MonthsInventoryVo } from '@app/report/models/monthly-inventory';
+import { StorageInfoVo } from '@app/report/models/storage-info';
+import { StorageInfoService } from '@app/report/services/storage-info';
 
 export class StorageHistoryList {
   maxDate;
@@ -22,6 +24,7 @@ export class StorageHistoryList {
   arr = [] as MonthlyInventoryVo[];
   totalMonthlyInventory: MonthlyInventory;
   monthsInventoryVo: MonthsInventoryVo;
+  storageInfoVoes: StorageInfoVo[];
   units: DictionaryData[] = [] as DictionaryData[];
 
   pageable = {
@@ -32,7 +35,8 @@ export class StorageHistoryList {
 
   constructor(@inject private dataSourceFactory: DataSourceFactory,
               @inject private dictionaryDataService: DictionaryDataService,
-              @inject private monthlyInventoryService: MonthlyInventoryService) {
+              @inject private monthlyInventoryService: MonthlyInventoryService,
+              @inject private storageInfoService: StorageInfoService) {
   }
 
   async activate() {
@@ -77,6 +81,14 @@ export class StorageHistoryList {
 
   async getItems() {
     this.select();
+    this.storageInfoVoes = await this.storageInfoService.list({ searchDate: this.search.searchDate, type: 2 });
+    this.storageInfoVoes
+      .map(re => {
+        re.list = re.list.filter(r => {
+          return r.warehouseName != re.warehouseName;
+        });
+        return re;
+      });
     this.titleDate = this.search.searchDate ? moment(this.search.searchDate).format("YYYY-MM") : '';
     this.arr = await this.monthlyInventoryService.list(this.search);
     await this.arr.map(ar => {
@@ -88,6 +100,8 @@ export class StorageHistoryList {
     });
     this.totalMonthlyInventory = await this.monthlyInventoryService.getTotalByMonth(this.search.searchDate);
     this.monthsInventoryVo = await this.monthlyInventoryService.getTotalByMonths(this.search.searchDate);
+    // this.storageInfoVoes = await this.storageInfoService.list({searchDate: this.search.searchDate, type: 2});
+
     this.print();
   }
 
