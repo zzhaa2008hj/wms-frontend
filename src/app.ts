@@ -34,7 +34,7 @@ export class App {
   configureRouter(config: RouterConfiguration, router: Router) {
     let dashboard = { route: '', name: 'dashboard', title: "首页", moduleId: './dashboard', nav: true, icon: 'home' };
     let notice = {
-      route: "/base/notifications", name: "notifications", title: "消息通知", 
+      route: "/base/notifications", name: "notifications", title: "消息通知",
       moduleId: "./base/notifications/notifications-list"
     };
     let changePassword = {
@@ -54,15 +54,6 @@ export class App {
           return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
         });
       config.map([...routes]);
-
-      // 开启消息推送监听
-      this.events.publish(
-        'user:authenticate',
-        {
-          orgId: this.user.userInfo.organizationId,
-          userId: this.user.userInfo.userId
-        }
-      );
     }
     this.router = router;
   }
