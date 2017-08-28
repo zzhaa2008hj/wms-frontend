@@ -26,7 +26,8 @@ export class NavBar {
   }
 
   changePassword() {
-    this.router.navigateToRoute('changePassword');
+    //this.router.navigateToRoute('changePassword');
+    window.location.href = `${this.user.changePasswordUrl}?appKey=${this.user.appKey}&appType=${this.user.appType}&returnUrl=${encodeURIComponent(window.location.href)}`;
   }
 
   showInfo() {

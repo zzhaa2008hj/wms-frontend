@@ -11,15 +11,16 @@ export class UserSession {
 
     token = '';
     loginUrl = '';
+    loginOutUrl = '';
+    changePasswordUrl = '';
     appKey = '';
     appType = '';
 
     userInfo: UserInfo;
 
     constructor(private http: RestClient,
-                private events: EventAggregator) {
-        this.token = sessionStorage.getItem(USER_TOKEN);
-        if (!this.token) this.token = localStorage.getItem(USER_TOKEN);
+        private events: EventAggregator) {
+        this.token = this.getCookie(USER_TOKEN);
         this.http.configure(b => {
             if (this.token) b.withHeader("x-eupwood-session-token", this.token);
         });
@@ -31,16 +32,7 @@ export class UserSession {
      */
     async loginVerdict() {
         if (!this.loggedIn) {
-            //未登录判断url中是否带有token参数
-            //没有token ==> 跳转到登录界面
-            //有token 把token参数放入session中 ，去掉token参数，重定向页面
-            let param = this.getRequest();
-            let url = this.loginUrl + "?appKey=" + this.appKey + "&appType=" + this.appType + "&returnUrl=" 
-              + encodeURIComponent(window.location.href);
-            if (param["token"]) {
-                sessionStorage.setItem(USER_TOKEN, param['token']);
-                url = window.location.href.split('?')[0];
-            }
+            let url = `${this.loginUrl}?appKey=${this.appKey}&appType=${this.appType}&returnUrl=${encodeURIComponent(window.location.href)}`;
             window.location.href = url;
         } else {
             let res = await this.http.get('/rest/account/getAccountByToken');
@@ -59,29 +51,37 @@ export class UserSession {
         return res.content;
     }
 
-    getRequest() {
-        let url = window.location.href; //获取url中"?"符后的字串
-        let theRequest = new Object();
-        if (url.indexOf("?") != -1) {
-            //let str = url.substr(1);
-            let str = url.split("?")[1];
-            let strs = str.split("&");
-            strs.forEach(x => theRequest[x.split("=")[0]] = (x.split("=")[1]))
-        }
-        return theRequest;
+
+
+    getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return decodeURI(arr[2]);
+        else
+            return null;
     }
 
-    logout() {
+    delCookie(name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = this.getCookie(name);
+        if (cval != null)
+            document.cookie = name + "=" + cval + ";expires=" + exp.toUTCString();
+    }
+
+    async logout() {
+        let token = encodeURIComponent(this.token);
+        await this.http.delete(`${this.loginOutUrl}?token=${token}`);
         this.loggedIn = false;
         this.token = '';
-        localStorage.removeItem(USER_TOKEN);
-        sessionStorage.removeItem(USER_TOKEN);
+        this.delCookie(USER_TOKEN)
         this.events.publish('user:logout');
     }
 
     async changePassword(originalPassword: string, newPassword: string): Promise<void> {
         let url = `/rest/account//change-password/?originalPassword=${originalPassword}&newPassword=${newPassword}`;
         await this.http.put(url, {}).then(handleResult);
+
     }
 }
 

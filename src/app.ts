@@ -20,6 +20,8 @@ export class App {
               @inject private events: EventAggregator,
               @inject private dialogService: DialogService) {
     this.user.loginUrl = this.config.loginParam.loginUrl;
+    this.user.loginOutUrl = this.config.loginParam.loginOutUrl;
+    this.user.changePasswordUrl = this.config.loginParam.changePasswordUrl;
     this.user.appKey = this.config.loginParam.appKey;
     this.user.appType = this.config.loginParam.appType;
   }
