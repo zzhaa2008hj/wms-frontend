@@ -69,7 +69,7 @@
   <div if.bind="type == 3">
     <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
              k-pageable.bind="pageable"  >
-      <ak-col k-field="year" k-title="日期" ></ak-col>
+      <ak-col k-field="month" k-title="日期" ></ak-col>
       <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
       <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
       <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
@@ -83,4 +83,206 @@
     </ak-grid>
   </div>
 
+  <div>
+    <div class="col-md-12 col-md-offset-2" id="week">
+      <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+        <tr>
+          <td align="center" colspan="8">
+            <!--客户 货类-->
+            <h4>本周收费统计</h4>
+            <!--<h4>${}${}本周收费统计</h4>-->
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" colspan="8">收费统计明细</td>
+        </tr>
+        <tr>
+          <td align="center">日期</td>
+          <td align="center">客户名称</td>
+          <td align="center">货类</td>
+          <td align="center">仓储费</td>
+          <td align="center">装卸费</td>
+          <td align="center">其他费用</td>
+          <td align="center">合计</td>
+          <td align="center">备注</td>
+        </tr>
+        <template repeat.for="chargeAuditList of chargeAuditLists">
+          <tr>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.loadingAmount}</td>
+            <td align="center">${chargeAuditList.otherAmount}</td>
+            <td align="center">${chargeAuditList.sumAmount}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+          </tr>
+        </template>
+        <tr>
+          <td align="center">总计金额</td>
+          <td colspan="7">${chargeInfo.totalAmount}</td>
+        </tr>
+        <tr>
+          <td align="center">备注</td>
+          <td colspan="7">${chargeInfo.remark}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-md-12 col-md-offset-2" id="month">
+      <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+        <tr>
+          <td align="center" colspan="6">
+            <!--客户 货类 月份-->
+            <h4>收费统计</h4>
+            <!--<h4>${}${}${}本周收费统计</h4>-->
+          </td>
+        </tr>
+        <tr>
+          <td align="center">当月仓储费:</td>
+          <td >${chargeInfo.agentName}</td>
+          <td align="center">当月装卸费:</td>
+          <td >${chargeInfo.customerName}</td>
+          <td align="center">当月其他费用:</td>
+          <td >${chargeInfo.customerName}</td>
+        </tr>
+        <tr>
+          <td align="center">当月费用合计:</td>
+          <td >${chargeInfo.agentName}</td>
+          <td align="center">当月收费:</td>
+          <td >${chargeInfo.customerName}</td>
+          <td align="center">当月欠费:</td>
+          <td >${chargeInfo.customerName}</td>
+        </tr>
+        <tr>
+          <td align="center" colspan="6">收费统计明细</td>
+        </tr>
+        <tr>
+          <td align="center">客户名称</td>
+          <td align="center">货类</td>
+          <td align="center">仓储费</td>
+          <td align="center">开票状态</td>
+          <td align="center">备注</td>
+        </tr>
+        <template repeat.for="chargeAuditList of chargeAuditLists">
+          <tr>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.loadingAmount}</td>
+            <td align="center">${chargeAuditList.otherAmount}</td>
+            <td align="center">${chargeAuditList.sumAmount}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+          </tr>
+        </template>
+        <tr>
+          <td align="center">客户名称</td>
+          <td align="center">货类</td>
+          <td align="center">装卸费</td>
+          <td align="center">开票状态</td>
+          <td align="center">备注</td>
+        </tr>
+        <template repeat.for="chargeAuditList of chargeAuditLists">
+          <tr>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.loadingAmount}</td>
+            <td align="center">${chargeAuditList.otherAmount}</td>
+            <td align="center">${chargeAuditList.sumAmount}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+          </tr>
+        </template>
+        <tr>
+          <td align="center">客户名称</td>
+          <td align="center">货类</td>
+          <td align="center">其他费用</td>
+          <td align="center">开票状态</td>
+          <td align="center">备注</td>
+        </tr>
+        <template repeat.for="chargeAuditList of chargeAuditLists">
+          <tr>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.loadingAmount}</td>
+            <td align="center">${chargeAuditList.otherAmount}</td>
+            <td align="center">${chargeAuditList.sumAmount}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+          </tr>
+        </template>
+        <tr>
+          <td align="center">备注</td>
+          <td colspan="5">${chargeInfo.remark}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-md-12 col-md-offset-2" id="year">
+      <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+        <tr>
+          <td align="center" colspan="13">
+            <!--客户 货类 年-->
+            <h4>年收费统计</h4>
+            <!--<h4>${}${}${}收费统计</h4>-->
+          </td>
+        </tr>
+        <tr>
+          <td align="center">当年仓储费:</td>
+          <td >${chargeInfo.agentName}</td>
+          <td align="center">当年装卸费:</td>
+          <td >${chargeInfo.customerName}</td>
+          <td align="center">当年其他费用:</td>
+          <td >${chargeInfo.customerName}</td>
+          <td align="center">当年收费:</td>
+          <td >${chargeInfo.agentName}</td>
+          <td align="center">当年欠费:</td>
+          <td >${chargeInfo.customerName}</td>
+          <td align="center">当年费用合计:</td>
+          <td colspan="2">${chargeInfo.customerName}</td>
+        </tr>
+        <tr>
+          <td align="center">收费累计:</td>
+          <td >${chargeInfo.agentName}</td>
+          <td align="center">欠费累计:</td>
+          <td >${chargeInfo.customerName}</td>
+          <td align="center">费用累计:</td>
+          <td colspan="8">${chargeInfo.customerName}</td>
+        </tr>
+        <tr>
+          <td align="center">备注</td>
+          <td colspan="12">${chargeInfo.remark}</td>
+        </tr>
+        <tr>
+          <td align="center" colspan="13">收费统计明细</td>
+        </tr>
+        <tr>
+          <td align="center">月份</td>
+          <td align="center">客户名称</td>
+          <td align="center">货类</td>
+          <td align="center">仓储费</td>
+          <td align="center">装卸费</td>
+          <td align="center">其他费用</td>
+          <td align="center">费用合计</td>
+          <td align="center">本月收费</td>
+          <td align="center">本月欠费</td>
+          <td align="center">收费累计</td>
+          <td align="center">欠费累计</td>
+          <td align="center">费用累计</td>
+          <td align="center">备注</td>
+        </tr>
+        <template repeat.for="chargeAuditList of chargeAuditLists">
+          <tr>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.warehousingAmount}</td>
+            <td align="center">${chargeAuditList.loadingAmount}</td>
+            <td align="center">${chargeAuditList.otherAmount}</td>
+            <td align="center">${chargeAuditList.sumAmount}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+            <td align="center">${chargeAuditList.remark}</td>
+          </tr>
+        </template>
+      </table>
+    </div>
+  </div>
 </template>

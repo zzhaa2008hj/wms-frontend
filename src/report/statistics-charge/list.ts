@@ -46,8 +46,7 @@ export class StatisticsChargeList {
     for (let item of s.values()) {
       this.customers.push({ value: item });
     }
-
-    this.type = 1;
+    this.type = 2;
   }
 
   select() {
