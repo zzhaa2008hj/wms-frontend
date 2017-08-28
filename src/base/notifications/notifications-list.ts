@@ -65,6 +65,7 @@ export class MsgInfo {
       await this.messageDialogService.alert({ title: "设置成功" });
       this.unreadDataSource.read();
       this.allDataSource.read();
+      this.events.publish('event-source:read');
     } catch (err) {
       await this.messageDialogService.alert({ title: "发生错误", message: err.message, icon: 'error' });
     }
