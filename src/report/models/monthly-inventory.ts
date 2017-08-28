@@ -34,4 +34,48 @@ export interface MonthlyInventory{
     createTime: Date;
     
     createTimeStr: string;
+
+    warehouseName: string;
+}
+
+export interface MonthlyInventoryVo{
+    categoryLastMonthNumber: number;
+
+    categoryLastMonthQuantity: number;
+
+    categoryMonthInstockNumber: number;
+
+    categoryMonthInstockQuantity: number;
+
+    categoryMonthOutstockNumber: number;
+
+    categoryMonthOutstockQuantity: number;
+
+    categoryThisMonthNumber: number;
+
+    categoryThisMonthQuantity: number;
+
+    categoryMonthsInstockNumber: number;
+
+    categoryMonthsInstockQuantity: number;
+
+    categoryMonthsOutstockNumber: number;
+
+    categoryMonthsOutstockQuantity: number;
+
+    month: string;
+
+    cargoCategoryName: string;
+
+    list: MonthlyInventory[];
+}
+
+export interface MonthsInventoryVo{
+    monthsInstockNumber: number;
+
+    monthsInstockQuantity: number;
+
+    monthsOutstockNumber: number;
+
+    monthsOutstockQuantity: number;
 }

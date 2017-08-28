@@ -14,18 +14,18 @@ export class StatisticsChargeList {
   dataSource: kendo.data.DataSource;
   yearStatistic: Date;
   monthStatistic: Date;
+  customers = [];
+  cargoCategories;
+  cargoCategoryTree = [];
+  type: number;
+
+  billingType = [{ text: "已开票", value: 1 }, { text: "未开票", value: 0 }];
 
   pageable = {
     refresh: true,
     pageSizes: true,
     buttonCount: 10
   };
-
-  dateType = [{ text: "本周", value: 1 }, { text: "本月", value: 2 }, { text: "本年", value: 3 }, { text: "全部", value: 4 }];
-  billingType = [{ text: "已开票", value: 1 }, { text: "未开票", value: 2 }];
-  customers = [];
-  cargoCategories;
-  cargoCategoryTree = [];
 
   constructor(private statisticsChargeService: StatisticsChargeService,
               private cargoInfoService: CargoInfoService,
@@ -36,36 +36,54 @@ export class StatisticsChargeList {
   async activate() {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.statisticsChargeService.page(this.criteria),
-      pageSize: 10
+      pageSize: 12
     });
 
+    console.log(this.dataSource.data());
     let cargoInfos = await this.cargoInfoService.listBaseCargoInfos();
     let s = new Set();
     cargoInfos.forEach(ci => s.add(ci.customerName));
     for (let item of s.values()) {
       this.customers.push({ value: item });
     }
-    console.log(this.customers);
 
-
+    this.type = 1;
   }
 
   select() {
-   let yearMonth = '';
+    let yearMonth = '';
     if (this.yearStatistic) {
       let year = this.yearStatistic.getFullYear();
-       yearMonth += year.toString();
+      yearMonth += year.toString();
+      this.type = 3;
     }
     if (this.monthStatistic) {
       let month = this.monthStatistic.getMonth() + 1;
-      yearMonth += "-" + month;
+      let date = new Date;
+      if (month < 10) {
+        if (yearMonth == '') {
+          yearMonth += date.getFullYear() + "-0" + month;
+        } else {
+          yearMonth += "-0" + month;
+        }
+      } else {
+        if (yearMonth == '') {
+          yearMonth += date.getFullYear() + "-" + month;
+        } else {
+          yearMonth += "-" + month;
+        }
+      }
+      this.type = 2;
     }
     this.criteria.yearMonth = yearMonth;
-
+    if (yearMonth == '') {
+      this.type = 1;
+    }
     this.dataSource.read();
   }
 
   reset() {
+    this.type = 1;
     this.criteria = {};
     this.dataSource.read();
   }

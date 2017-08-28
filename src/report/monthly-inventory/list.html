@@ -26,23 +26,15 @@
                        if.bind="search.type==2">
             </div>
             <div class="input-group left m-l-15">
-                <!--<input class="form-control" type="text" ak-datepicker="k-value.two-way : search.beginDate; k-widget.two-way: startDatePicker; k-format.bind:'yyyy-MM-dd'"
-                  k-on-change.delegate="startChange()" placeholder="请输入开始时间">-->
                 <input class="form-control"
-                       ak-datepicker=" k-value.two-way : search.beginDate;k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM yyyy';k-widget.two-way: startDatePicker;"
-                       style="width: 100%"
-                       k-on-change.delegate="startChange()" placeholder="请输入开始时间"/>
-            </div>
-            <div class="input-group left m-l-15">
-                <!--<input class="form-control" type="text" ak-datepicker="k-value.two-way : search.endDate; k-widget.two-way: endDatePicker; k-format.bind:'yyyy-MM-dd'"
-                  k-on-change.delegate="endChange()" placeholder="请输入结束时间">-->
-                <input class="form-control"
-                       ak-datepicker=" k-value.two-way : search.endDate; k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM yyyy';k-widget.two-way: endDatePicker;"
-                       style="width: 100%"
-                       k-on-change.delegate="endChange()" placeholder="请输入开始时间"/>
+                       ak-datepicker=" k-value.two-way : search.searchDate;k-max.bind:maxDate; k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM yyyy';k-widget.two-way: searchDatePicker;"
+                       style="width: 100%" placeholder="请输入月份"/>
             </div>
             <div class="input-group left">
                 <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
+            </div>
+            <div class="input-group left m-l-5">
+                <button class="btn btn-small" click.delegate="getItems()">打印</button>
             </div>
         </div>
     </div>
@@ -87,4 +79,124 @@
         <ak-col k-field="thisMonthNumber" k-title="本月月结存件数"></ak-col>
         <ak-col k-field="thisMonthQuantity" k-title="本月结存数量"></ak-col>
     </ak-grid>
+    <div class="col-md-9 col-md-offset-2" id="monthlyInventory" style="display: none">
+        <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+            <tr>
+                <td align="center" colspan="13">
+                    <h4>${titleDate}出入库明细</h4>
+                </td>
+            </tr>
+            <template repeat.for="item of arr">
+                <tr>
+                    <td align="center" rowspan="2">存货单位</td>
+                    <td align="center" rowspan="2">货物名称</td>
+                    <td align="center" colspan="2">上月结存</td>
+                    <td align="center" colspan="2">本月入库</td>
+                    <td align="center" colspan="2">本月出库</td>
+                    <td align="center" colspan="2">本月结存</td>
+                    <td align="center" rowspan="2">库位</td>
+                    <td align="center" rowspan="2">单位</td>
+                </tr>
+                <tr>
+                    <td align="center">数量</td>
+                    <td align="center">件数</td>
+                    <td align="center">数量</td>
+                    <td align="center">件数</td>
+                    <td align="center">数量</td>
+                    <td align="center">件数</td>
+                    <td align="center">数量</td>
+                    <td align="center">件数</td>
+                </tr>
+                <template repeat.for="data of item.list">
+                    <tr>
+                        <td align="center">${data.customerName}${data.batchNumber}</td>
+                        <td align="center">${data.cargoName}</td>
+                        <td align="center">${data.lastMonthQuantity}</td>
+                        <td align="center">${data.lastMonthNumber}</td>
+                        <td align="center">${data.monthInstockQuantity}</td>
+                        <td align="center">${data.monthInstockNumber}</td>
+                        <td align="center">${data.monthOutstockQuantity}</td>
+                        <td align="center">${data.monthOutstockNumber}</td>
+                        <td align="center">${data.thisMonthQuantity}</td>
+                        <td align="center">${data.thisMonthNumber}</td>
+                        <td align="center">${data.warehouseName}</td>
+                        <td align="center">${data.unit}</td>
+                    </tr>
+                </template>
+                <tr>
+                    <td align="center" colspan="2">${item.cargoCategoryName}月合计：</td>
+                    <td align="center">${item.categoryLastMonthQuantity}</td>
+                    <td align="center">${item.categoryLastMonthNumber}</td>
+                    <td align="center">${item.categoryMonthInstockQuantity}</td>
+                    <td align="center">${item.categoryMonthInstockNumber}</td>
+                    <td align="center">${item.categoryMonthOutstockQuantity}</td>
+                    <td align="center">${item.categoryMonthOutstockNumber}</td>
+                    <td align="center">${item.categoryThisMonthQuantity}</td>
+                    <td align="center">${item.list.length}</td>
+                    <td align="center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">${item.cargoCategoryName}1-3月出入库量：</td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center">${item.categoryMonthsInstockQuantity}</td>
+                    <td align="center">${item.categoryMonthsInstockNumber}</td>
+                    <td align="center">${item.categoryMonthsOutstockQuantity}</td>
+                    <td align="center">${item.categoryMonthsOutstockNumber}</td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center" colspan="2"></td>
+                </tr>
+            </template>
+            <tr>
+                <td colspan="12">&nbsp</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2">月总计：</td>
+                <td align="center">${totalMonthlyInventory.lastMonthQuantity}</td>
+                <td align="center">${totalMonthlyInventory.lastMonthNumber}</td>
+                <td align="center">${totalMonthlyInventory.monthInstockQuantity}</td>
+                <td align="center">${totalMonthlyInventory.monthInstockNumber}</td>
+                <td align="center">${totalMonthlyInventory.monthOutstockQuantity}</td>
+                <td align="center">${totalMonthlyInventory.monthOutstockNumber}</td>
+                <td align="center">${totalMonthlyInventory.thisMonthQuantity}</td>
+                <td align="center">${totalMonthlyInventory.thisMonthNumber}</td>
+                <td align="center" colspan="2"></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2">1-3月总出入库量：</td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center">${monthsInventoryVo.monthsInstockQuantity}</td>
+                <td align="center">${monthsInventoryVo.monthsInstockNumber}</td>
+                <td align="center">${monthsInventoryVo.monthsOutstockQuantity}</td>
+                <td align="center">${monthsInventoryVo.monthsOutstockNumber}</td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center" colspan="2">${criteria.makeDate}</td>
+            </tr>
+        </table>
+        <div>
+            <p class="col-md-11" style="width:99%;max-width:900px;">
+                <template repeat.for="item of storageInfoVoes">
+                    ${item.warehouseName}：数量${item.storageQuantity}，件数${item.storageNumber}
+                    <span if.bind="item.list.length != 0">(</span>
+                    <template repeat.for="data of item.list">
+                        <span>${data.warehouseName}：数量${data.storageQuantity}，件数${data.storageNumber}</span>
+                    </template>
+                    <span if.bind="item.list.length != 0">)</span>；
+                </template>
+            </p>
+        </div>
+        <br/>
+        <div class="col-md-12">
+            <span>&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;</span>
+            <span class="col-md-3">部门经理：</span>
+            <span>&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;</span>
+            <span class="col-md-3">制表人：</span>
+            <span>&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;</span>
+            <span class="col-md-3">日期：</span>
+        </div>
+
+    </div>
 </template>
