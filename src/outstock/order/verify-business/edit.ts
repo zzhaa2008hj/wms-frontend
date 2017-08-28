@@ -95,4 +95,7 @@ export class VerifyBusinessDialogEdit {
     if (result.wasCancelled) return;
   }
 
+  goBack() {
+    this.router.navigateToRoute("outstockOrder");
+  }
 }
