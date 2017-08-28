@@ -1,4 +1,5 @@
 export interface StatisticsCharge {
+  type: number;
   customerName: string;
   cargoCategoryName: string;
   warehousingAmount: number;
@@ -9,12 +10,16 @@ export interface StatisticsCharge {
   //周
   date: Date;
 
-  //月
-  type: number;
+  //年月
+  year: string;
   month: string;
   monthCharge: number;
   monthArrears: number;
   grandTotalCharge: number;
   grandTotalArrears: number;
   grandTotalAmount: number;
+  billingType: number;
+
+  dateStr: string;
+  billingTypeStr: string;
 }

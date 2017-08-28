@@ -13,4 +13,8 @@ export class StatisticsChargeService {
       .map(res => fixDate(res, 'date'));
   }
 
+  async getList(criteria: FeeStatisticsCriteria): Promise<StatisticsCharge[]> {
+    let res = await this.http.createRequest(`/report/statistics-charge/list`).withParams(criteria).asGet().send();
+    return res.content;
+  }
 }
