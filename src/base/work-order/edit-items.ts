@@ -73,7 +73,7 @@ export class EditItems {
     let rateData = this.worksSource.data();
     let data = (this.dataSource.data() as any) as WorkOrderItem[];
     if (rateData && rateData.length > 0 && data && data.length > 0) {
-      let rates: Rate[] = [];
+      let rates: CargoRate[] = [];
       Object.assign(rates, rateData);
       data.forEach(obj => {
         let rate = rates.find(rate => rate.id == obj.workId);
@@ -151,7 +151,7 @@ export class EditItems {
     // 显示计价单位
     let rateData = this.worksSource.data();
     if (rateData && rateData.length > 0) {
-      let rates: Rate[] = [];
+      let rates: CargoRate[] = [];
       Object.assign(rates, rateData);
       let rate = rates.find(rate => rate.id == obj.workId);
       if (rate) {

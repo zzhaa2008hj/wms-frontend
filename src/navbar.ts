@@ -14,11 +14,12 @@ export class NavBar {
 
   subScription: Subscription;
 
-  constructor(private events: EventAggregator,
-              private router: Router,
-              private messageService: MessageService,
-              private user: UserSession) {
-  }
+    constructor(private events: EventAggregator,
+                private router: Router,
+                private messageService: MessageService,
+                private user: UserSession) {
+        this.unreadNum = this.updateUnreadNum();
+    }
 
   toggleSidebar() {
     // this.user.settings.sidebar.condensed = !this.user.settings.sidebar.condensed;
@@ -29,29 +30,29 @@ export class NavBar {
   }
 
   showInfo() {
-    this.router.navigateToRoute('notifications')
+    this.router.navigateToRoute('notifications');
   }
 
-  async updateUnreadNum() {
-    let num = parseInt(await this.messageService.getUnreadNum());
-    if (num <= 99) {
-      this.unreadNum = num;
+    async updateUnreadNum() {
+
+        let num = parseInt(await this.messageService.getUnreadNum());
+        if (num <= 99) {
+            this.unreadNum = num;
+        }
+        else {
+            this.unreadNum = `99+`;
+        }
     }
-    else {
-      this.unreadNum = `99+`;
+
+
+    bind() {
+        this.subScription = this.events.subscribe('event-source:message', () => {
+            this.updateUnreadNum();
+        });
+        this.subScription = this.events.subscribe('event-source:read', () => {
+            this.updateUnreadNum();
+        });
     }
-    console.log(this.unreadNum);
-  }
-
-
-  bind() {
-    this.subScription = this.events.subscribe('user:authenticate', () => {
-      this.updateUnreadNum();
-    });
-    this.subScription = this.events.subscribe('event-source:message', () => {
-      this.updateUnreadNum();
-    });
-  }
 
   unbind() {
     this.subScription.dispose();
