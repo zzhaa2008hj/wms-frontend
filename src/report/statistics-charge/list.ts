@@ -1,17 +1,17 @@
 import { autoinject } from 'aurelia-dependency-injection';
-import { DataSourceFactory } from '@app/utils';
+import { DataSourceFactory, treeHelper, TreeHelper } from '@app/utils';
 import * as moment from 'moment';
 import { FeeStatisticsCriteria } from "@app/report/models/fee-statistics-criteria";
 import { StatisticsChargeService } from "@app/report/services/statistics-charge";
-// import { CargoInfo } from "@app/base/models/cargo-info";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { StatisticsCharge } from "@app/report/models/statistics-charge";
 import { addHeader, print } from "@app/common/services/print-tool";
-// import { CargoCategoryService } from "@app/base/services/cargo-category";
-// import DataSource = kendo.data.DataSource;
+import { CargoCategoryService } from "@app/base/services/cargo-category";
+import { CargoCategory } from "@app/base/models/cargo-category";
 
 @autoinject
 export class StatisticsChargeList {
+  helper: TreeHelper<{}>;
   otherStatistics: StatisticsCharge[];
   loadingStatistics: StatisticsCharge[];
   warehouseStatistics: StatisticsCharge[];
@@ -27,6 +27,18 @@ export class StatisticsChargeList {
   cargoCategories;
   cargoCategoryTree = [];
   type: number;
+  widget: kendo.ui.TreeView;
+
+  tree = new kendo.data.HierarchicalDataSource({
+    data: [],
+    schema: {
+      model: {
+        id: 'id',
+        children: 'submenu',
+        hasChildren: item => item.submenu && item.submenu.length > 0
+      }
+    }
+  });
 
   billingType = [{ text: "已开票", value: 1 }, { text: "未开票", value: 0 }];
 
@@ -38,7 +50,7 @@ export class StatisticsChargeList {
 
   constructor(private statisticsChargeService: StatisticsChargeService,
               private cargoInfoService: CargoInfoService,
-              // private cargoCategoryService: CargoCategoryService,
+              private cargoCategoryService: CargoCategoryService,
               private dataSourceFactory: DataSourceFactory) {
   }
 
@@ -50,14 +62,29 @@ export class StatisticsChargeList {
       pageSize: 12
     });
 
-    let cargoInfos = await this.cargoInfoService.listBaseCargoInfos();
+    let cargoInfos = await
+      this.cargoInfoService.listBaseCargoInfos();
     let s = new Set();
     cargoInfos.forEach(ci => s.add(ci.customerName));
     for (let item of s.values()) {
       this.customers.push({ value: item });
     }
-
     this.type = 1;
+
+    let items = await this.cargoCategoryService.listCargoCategory();
+    this.helper = treeHelper(items, { childrenKey: 'submenu' });
+    let rootItems = this.helper.toTree();
+    this.tree.data(rootItems);
+  }
+
+  onSelectionChange() {
+    let node = this.widget.select()[0];
+    console.log(node);
+    if (!node) return;
+    let selectedItem = {} as CargoCategory;
+    Object.assign(selectedItem, this.widget.dataItem(node));
+    this.criteria.cargoCategoryName = selectedItem.categoryName;
+    $('#treeview').hide();
   }
 
   print() {

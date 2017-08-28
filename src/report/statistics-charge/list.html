@@ -3,42 +3,65 @@
     <h3>收费统计</h3>
   </div>
   <div class="row">
-    <div class="col-md-6 col-md-offset-6">
-      <div class="input-group left">
+    <div class="col-md-18 col-md-offset-2">
+      <div class="input-group left m-l-15">
         <input
             ak-datepicker="k-value.two-way: yearStatistic; k-start.bind:'decade'; k-depth.bind: 'decade';k-format.bind:'yyyy';"/>
         <input
             ak-datepicker="k-value.two-way: monthStatistic; k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM';"/>
       </div>
-      <div class="input-group left">
-        <ak-drop-down-list k-value.two-way="criteria.dateType" k-data-text-field="text" k-data-value-field="value"
-                           k-data-source.bind="dateType">
-        </ak-drop-down-list>
-      </div>
-      <div class="input-group left">
+      <div class="input-group left m-l-15">
         <ak-drop-down-list k-value.two-way="criteria.customerName" k-option-label="请选择客户" k-data-text-field="value"
                            k-data-value-field="value" k-data-source.bind="customers">
         </ak-drop-down-list>
       </div>
-      <div class="input-group left">
-      </div>
-      <div class="input-group left" if.bind="type == 2">
-        <ak-drop-down-list k-value.two-way="criteria.billingTypeStr" k-data-text-field="text"
-                           k-data-value-field="value"
-                           k-option-label="请选择开票状态...(默认全部)"
-                           k-data-source.bind="billingTypeStr">
-        </ak-drop-down-list>
-      </div>
-      <div class="input-group left m-l-5">
-        <input type="text" value.bind="criteria.cargoCategoryName" placeholder="请输入货类">
-      </div>
-      <div class="input-group left">
-        <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
-        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em>
-          <button class="btn btn-small" click.delegate="print()">打印</button>
-        </div>
+    </div>
+    <div class="input-group left m-l-15">
+      <input type="text" value.bind="criteria.cargoCategoryName" placeholder="请输入货类" onclick="$('#treeview').show()">
+      <!--<ak-drop-down-list k-value.two-way="criteria.cargoCategoryName" k-data-text-field="categoryName"-->
+                         <!--k-data-value-field="value"-->
+                         <!--k-on-open.delegate="onOpen()"-->
+                         <!--k-option-label="请选择货类...(默认全部)"-->
+                         <!--k-data-source.bind="cargoCategory">-->
+      <!--</ak-drop-down-list>-->
+      <!--<ak-drop-down-list k-value.two-way="criteria.cargoCategoryName">-->
+      <!--<select > </select>-->
+      <!--<ak-treeview k-data-source.bind="tree" k-drag-and-drop.bind="true">-->
+      <!--<ak-template>-->
+      <!--<div>-->
+      <!--${categoryName}-->
+      <!--</div>-->
+      <!--</ak-template>-->
+      <!--</ak-treeview>-->
+      <!--</ak-drop-down-list>-->
+      <!--<input type="text" id="txt_departmentname" name="txt_departmentname" class="form-control" value=""-->
+      <!--onclick="$('#treeview').show()" placeholder="分类名称">-->
+      <div id="treeview" hidden>
+        <ak-treeview k-data-source.bind="tree" k-drag-and-drop.bind="true" k-widget.bind="widget"
+                     k-on-change.trigger="onSelectionChange($event)">
+          <ak-template>
+            <div>
+              ${categoryName}
+            </div>
+          </ak-template>
+        </ak-treeview>
       </div>
     </div>
+
+    <div class="input-group left m-l-15">
+      <ak-drop-down-list k-value.two-way="criteria.billingType" k-data-text-field="text"
+                         k-data-value-field="value"
+                         k-option-label="请选择开票状态...(默认全部)"
+                         k-data-source.bind="billingType">
+      </ak-drop-down-list>
+    </div>
+    <div class="input-group left">
+      <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
+      <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em>
+        <button class="btn btn-small" click.delegate="print()">打印</button>
+      </div>
+    </div>
+  </div>
   </div>
   <div if.bind="type == 1">
     <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
@@ -136,7 +159,8 @@
         <tr>
           <td align="center" colspan="6">
             <!--客户 货类 月份-->
-            <h4>${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计</h4>
+            <h4>
+              ${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计</h4>
           </td>
         </tr>
         <tr>
@@ -212,7 +236,8 @@
         <tr>
           <td align="center" colspan="13">
             <!--客户 货类 年-->
-            <h4>${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计</h4>
+            <h4>
+              ${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计</h4>
           </td>
         </tr>
         <tr>
