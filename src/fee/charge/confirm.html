@@ -82,7 +82,8 @@
                 <td align="center">箱量</td>
                 <td align="center">堆存天数</td>
                 <td align="center">堆存费率</td>
-                <td align="center" colspan="3">备注</td>
+                <td align="center">合计</td>
+                <td align="center" colspan="2">备注</td>
               </tr>
               <template repeat.for="chargeAuditItem of chargeAuditList.chargeAuditItems">
                 <tr>
@@ -101,7 +102,8 @@
                   <td align="center">${chargeAuditItem.containerQuantity}</td>
                   <td align="center">${chargeAuditItem.storageDay}</td>
                   <td align="center">${chargeAuditItem.storageRate}</td>
-                  <td align="center" colspan="3">${chargeAuditItem.remark}</td>
+                  <td align="center">${chargeAuditItem.sumAmount}</td>
+                  <td align="center" colspan="2">${chargeAuditItem.remark}</td>
                 </tr>
               </template>
             </div>

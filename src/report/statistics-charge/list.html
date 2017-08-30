@@ -18,24 +18,6 @@
     </div>
     <div class="input-group left m-l-15">
       <input type="text" value.bind="criteria.cargoCategoryName" placeholder="请输入货类" onclick="$('#treeview').show()">
-      <!--<ak-drop-down-list k-value.two-way="criteria.cargoCategoryName" k-data-text-field="categoryName"-->
-                         <!--k-data-value-field="value"-->
-                         <!--k-on-open.delegate="onOpen()"-->
-                         <!--k-option-label="请选择货类...(默认全部)"-->
-                         <!--k-data-source.bind="cargoCategory">-->
-      <!--</ak-drop-down-list>-->
-      <!--<ak-drop-down-list k-value.two-way="criteria.cargoCategoryName">-->
-      <!--<select > </select>-->
-      <!--<ak-treeview k-data-source.bind="tree" k-drag-and-drop.bind="true">-->
-      <!--<ak-template>-->
-      <!--<div>-->
-      <!--${categoryName}-->
-      <!--</div>-->
-      <!--</ak-template>-->
-      <!--</ak-treeview>-->
-      <!--</ak-drop-down-list>-->
-      <!--<input type="text" id="txt_departmentname" name="txt_departmentname" class="form-control" value=""-->
-      <!--onclick="$('#treeview').show()" placeholder="分类名称">-->
       <div id="treeview" hidden>
         <ak-treeview k-data-source.bind="tree" k-drag-and-drop.bind="true" k-widget.bind="widget"
                      k-on-change.trigger="onSelectionChange($event)">
@@ -47,7 +29,6 @@
         </ak-treeview>
       </div>
     </div>
-
     <div class="input-group left m-l-15">
       <ak-drop-down-list k-value.two-way="criteria.billingType" k-data-text-field="text"
                          k-data-value-field="value"
@@ -67,7 +48,6 @@
     <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
              k-pageable.bind="pageable">
       <ak-col k-field="date" k-title="日期" k-format='{0:yyyy-MM-dd}'></ak-col>
-      <ak-col k-field="type" k-title="type"></ak-col>
       <ak-col k-field="customerName" k-title="客户名称"></ak-col>
       <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
       <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
@@ -160,7 +140,8 @@
           <td align="center" colspan="6">
             <!--客户 货类 月份-->
             <h4>
-              ${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计</h4>
+              ${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计
+            </h4>
           </td>
         </tr>
         <tr>
@@ -237,7 +218,8 @@
           <td align="center" colspan="13">
             <!--客户 货类 年-->
             <h4>
-              ${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计</h4>
+              ${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.yearMonth}收费统计
+            </h4>
           </td>
         </tr>
         <tr>

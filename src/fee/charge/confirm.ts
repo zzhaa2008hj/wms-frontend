@@ -53,7 +53,8 @@ export class CustomerConfirm {
       Object.assign(this.chargeInfo, { totalAmount: totalAmount });
       for (let cal of this.chargeAuditLists) {
         cal.chargeAuditItems = await this.chargeAuditItemService.getListByChargeAuditId(cal.id);
-        if (cal.chargeAuditItems.length > 0) {
+        if (cal.chargeAuditItems.length <= 0) {
+        } else {
           cal.chargeAuditItems.map(cai => {
             let unit = this.units.find(r => r.dictDataCode == cai.unit);
             if (unit) {
@@ -74,6 +75,17 @@ export class CustomerConfirm {
             if (chargeCategory) {
               cai.chargeCategoryName = chargeCategory.text;
             }
+
+            if (cai.quantity && cai.quantity > 0) {
+              cai.sumAmount = cai.storageDay * cai.storageRate * cai.quantity;
+            } else if (cai.number && cai.number > 0) {
+              cai.sumAmount = cai.storageDay * cai.storageRate * cai.number;
+            }
+            if (cai.sumAmount) {
+              let m = Math.pow(10, 1);
+              cai.sumAmount = parseInt((cai.sumAmount * m).toString(), 10) / m;
+            }
+
           });
         }
       }
