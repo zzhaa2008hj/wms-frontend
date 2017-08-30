@@ -144,11 +144,3 @@ export class OrderItemService {
     return res.content;
   }
 }
-
-@autoinject
-export class VehicleService {
-  // constructor(private http: RestClient) {
-  // }
-
-
-}

@@ -107,7 +107,7 @@
           <ak-col k-field="remark" k-title="备注"></ak-col>
           <ak-col k-title="操作">
             <ak-template>
-              <button class="btn btn-small btn-primary" click.delegate="showRate(cargoItemId)">查看费率</button>
+              <button class="btn btn-small btn-primary" click.delegate="showRate(cargoItemId)" required-permissions="U000056">查看费率</button>
             </ak-template>
           </ak-col>
         </ak-grid>
@@ -122,7 +122,7 @@
           <ak-col k-field="remark" k-title="备注"></ak-col>
         </ak-grid>
       </div>
-      
+
       <div class="form-actions">
         <div class="pull-right">
           <button class="btn btn-primary" disabled.bind="disabled" click.delegate="verifyDeputyGeneral(1)">审核通过</button>
