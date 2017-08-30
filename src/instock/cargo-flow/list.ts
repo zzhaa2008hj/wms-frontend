@@ -1,5 +1,5 @@
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
-import { DataSourceFactory } from "@app/utils";
+import { DataSourceFactory,  requiredPermissionsAttributeResult } from "@app/utils";
 import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
 import { DialogService, MessageDialogService } from 'ui';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
@@ -21,6 +21,7 @@ import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
+import { UserSession } from '@app/user';
 
 export class CargoFlowList {
   selectedItem: any;
@@ -47,7 +48,8 @@ export class CargoFlowList {
               @inject private router: Router,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private orderItemService: OrderItemService,
-              @inject private workOrderItemService: WorkOrderItemService) {
+              @inject private workOrderItemService: WorkOrderItemService,
+              private user: UserSession) {
 
   }
 
@@ -79,6 +81,7 @@ export class CargoFlowList {
       }
 
     } else {
+      this.existEntering = true;
       this.dataSource = this.dataSourceFactory.create({
         query: () => this.cargoFlowService.queryCargoFlows({ keywords: this.searchName })
           .map(res => {
@@ -312,5 +315,9 @@ export class CargoFlowList {
     let grid = e.sender;
     let selectedRow = grid.select();
     this.selectedItem = grid.dataItem(selectedRow);
+  }
+  
+  requiredPermissions(sourceCode: string) {
+    return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
   }
 }

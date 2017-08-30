@@ -1,13 +1,12 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
-import { DataSourceFactory } from "@app/utils";
+import { DataSourceFactory, requiredPermissionsAttributeResult } from "@app/utils";
 import { CargoInfoService, CargoInfoCriteria } from "@app/base/services/cargo-info";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
 import { Router } from 'aurelia-router';
 import { UserSession } from '@app/user';
-import { UserInfo } from '@app/user';
 
 @autoinject
 export class CargoInfoList {
@@ -23,19 +22,17 @@ export class CargoInfoList {
   batchNumber: string;
   infoId: string;
 
-  userInfo : UserInfo;
   constructor(private cargoInfoService: CargoInfoService,
-              private messageDialogService: MessageDialogService,
-              private dictionaryDataService: DictionaryDataService,
-              private dataSourceFactory: DataSourceFactory,
-              private router: Router,
-              private outstockInventoryService: OutstockInventoryService,
-              private user: UserSession) {
+    private messageDialogService: MessageDialogService,
+    private dictionaryDataService: DictionaryDataService,
+    private dataSourceFactory: DataSourceFactory,
+    private router: Router,
+    private outstockInventoryService: OutstockInventoryService,
+    private user: UserSession) {
 
   }
 
   async activate() {
-    this.userInfo = this.user.userInfo;
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.cargoInfoService.queryCargoInfo(this.cargoInfoCriteria).map(res => {
@@ -101,4 +98,9 @@ export class CargoInfoList {
     }
     this.router.navigateToRoute('changeHistory', { id: this.infoId });
   }
+
+  requiredPermissions(sourceCode: string) {
+    return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
+  }
+
 }
