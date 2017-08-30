@@ -19,6 +19,15 @@ export class NavBar {
                 private messageService: MessageService,
                 private user: UserSession) {
         this.unreadNum = this.updateUnreadNum();
+
+        let w = window as any;
+        let lodop = w.CLODOP;
+        if (!lodop) {
+          let printAddress = this.user.userInfo.printAddress;
+          let e = document.createElement("script");
+          e.src = printAddress + '/CLodopfuncs.js';
+          document.head.appendChild(e);
+        }
     }
 
   toggleSidebar() {

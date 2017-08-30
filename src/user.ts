@@ -92,6 +92,7 @@ export class UserInfo {
     appKey: string;
     appType: number;
     organizationId: string;
+    printAddress: string;
     employeeId: string;
     appId: string;
     menuVoList: MenuAndModule[];
