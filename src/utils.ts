@@ -6,6 +6,7 @@ import { HttpClient, HttpResponseMessage, RequestBuilder } from "aurelia-http-cl
 import { autoinject } from "aurelia-dependency-injection";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { v4 } from 'uuid';
+import { MenuAndModule } from '@app/user';
 
 export function copy<T extends Object>(obj: T): T {
   return Object.assign({}, obj);
@@ -325,4 +326,14 @@ class QueryImpl<T> implements Query<T> {
       });
   }
 
+}
+
+/**
+ * 判断用户有没有sourceCode的权限 true：有  flase: 没有
+ * @param sourceCode 
+ * @param menuVoList 
+ */
+export function requiredPermissionsAttributeResult(sourceCode: string, menuVoList: MenuAndModule[]):boolean {
+  let aa = new Set(menuVoList.map(x => x.code));
+  return  aa.has(sourceCode);
 }

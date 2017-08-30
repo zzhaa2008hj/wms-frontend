@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-9"><a class="btn btn-small btn-success" click.delegate="add()">新增</a></div>
+    <div class="col-md-9"><a class="btn btn-small btn-success" click.delegate="add()" required-permissions="C000020">新增</a></div>
     <div class="input-group"><input class="form-control" type="text" value.bind="name" placeholder="请输入名称">
       <div class="input-group-addon" click.delegate="find()"><em class="fa fa-search"></em></div>
     </div>
@@ -10,9 +10,9 @@
     <ak-col k-field="remark" k-title="备注"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
-        <button class="btn btn-small" click.delegate="edit($this)">编辑</button>
-        <a class="btn btn-small" route-href="route: auth; params.bind: { id: id }">授权菜单</a>
-        <button class="btn btn-warning btn-small" click.delegate="delete(id)">删除</button>
+        <button class="btn btn-small" click.delegate="edit($this)" required-permissions="U000024">编辑</button>
+        <a class="btn btn-small" route-href="route: auth; params.bind: { id: id }" required-permissions="U000025">授权菜单</a>
+        <button class="btn btn-warning btn-small" click.delegate="delete(id)" required-permissions="D000010">删除</button>
       </ak-template>
     </ak-col>
   </ak-grid>

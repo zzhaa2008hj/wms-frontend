@@ -3,7 +3,7 @@
     <h3>数据字典管理</h3>
   </div>
   <div class="row">
-    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.delegate="add()">新增</a></div>
+    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" click.delegate="add()" required-permissions="C000016">新增</a></div>
 
     <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入字典名称">
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
@@ -15,11 +15,11 @@
     <ak-col k-field="remark" k-title="备注"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
-        <a class="btn btn-small" if.bind="status==true" click.delegate="edit($this)">编辑</a>
-        <a class="btn btn-small btn-success" if.bind="status==true" route-href="route: data; params.bind: { id: id }">字典数据</a>
-        <button class="btn btn-warning btn-small" if.bind="status==true" click.delegate="changeState(id)">禁用</button>
-        <button class="btn btn-primary btn-small" if.bind="status==false" click.delegate="changeState(id)">启用</button>
-        <button class="btn btn-warning btn-small" if.bind="status==false" click.delegate="delete(id)">删除</button>
+        <a class="btn btn-small" if.bind="status==true" click.delegate="edit($this)" required-permissions="U000012">编辑</a>
+        <a class="btn btn-small btn-success" if.bind="status==true" route-href="route: data; params.bind: { id: id }" required-permissions="R000025">字典数据</a>
+        <button class="btn btn-warning btn-small" if.bind="status==true" click.delegate="changeState(id)" required-permissions="U000013">禁用</button>
+        <button class="btn btn-primary btn-small" if.bind="status==false" click.delegate="changeState(id)" required-permissions="U000013">启用</button>
+        <button class="btn btn-warning btn-small" if.bind="status==false" click.delegate="delete(id)" required-permissions="D000014">删除</button>
       </ak-template>
     </ak-col>
   </ak-grid>

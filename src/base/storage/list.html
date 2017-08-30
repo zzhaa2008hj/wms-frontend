@@ -23,8 +23,8 @@
     <ak-col k-field="remark" k-title="备注"></ak-col>
     <ak-col k-title="操作" k-width.bind="180">
       <ak-template>
-        <a class="btn btn-small" route-href="route: items; params.bind: { id: id }">查看明细</a>
-        <button class="btn btn-small" click.delegate="balance(id)">溢短抹平</bu>
+        <a class="btn btn-small" route-href="route: items; params.bind: { id: id }" required-permissions="R000065">查看明细</a>
+        <button class="btn btn-small" click.delegate="balance(id)" required-permissions="U000061">溢短抹平</bu>
             </ak-template>
         </ak-col>
     </ak-grid>
