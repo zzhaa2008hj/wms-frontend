@@ -56,17 +56,17 @@ export class EditCargoFlow {
   private dropDownListCargoItem: any;
 
   constructor(private router: Router,
-              private cargoInfoService: CargoInfoService,
-              private cargoFlowService: CargoFlowService,
-              private cargoItemService: CargoItemService,
-              private vehicleService: InstockVehicleService,
-              private dialogService: DialogService,
-              private messageDialogService: MessageDialogService,
-              private dictionaryDataService: DictionaryDataService,
-              private attachmentService: AttachmentService,
-              private uploader: Uploader,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+    private cargoInfoService: CargoInfoService,
+    private cargoFlowService: CargoFlowService,
+    private cargoItemService: CargoItemService,
+    private vehicleService: InstockVehicleService,
+    private dialogService: DialogService,
+    private messageDialogService: MessageDialogService,
+    private dictionaryDataService: DictionaryDataService,
+    private attachmentService: AttachmentService,
+    private uploader: Uploader,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);

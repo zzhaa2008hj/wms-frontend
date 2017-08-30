@@ -22,7 +22,7 @@
     <ak-col k-field="remark" k-title="备注"></ak-col>
     <ak-col k-title="操作" k-width.bind="100">
       <ak-template>
-        <a class="btn btn-small btn-info" route-href="route: detail; params.bind: {id: id}">详情</button>
+        <a class="btn btn-small btn-info" route-href="route: detail; params.bind: {id: id}" required-permissions="R000063">详情</button>
             </ak-template>
         </ak-col>
     </ak-grid>
