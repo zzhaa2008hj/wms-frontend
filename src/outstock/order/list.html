@@ -2,7 +2,8 @@
   <div class="row m-b-5">
     <div class="col-md-4">
       <a class="btn btn-small btn-success" click.delegate="add()" required-permissions="C000010">新增出库指令</a>
-      <a class="btn btn-small btn-success" if.bind="existEntering" route-href="route:additional-recording" required-permissions="C000030">补录</a>
+      <a class="btn btn-small btn-success" if.bind="existEntering" route-href="route:additional-recording"
+         required-permissions="C000030">补录</a>
       <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="R000042">修改记录</a>
       <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="R000043">审核记录</button>
     </div>
@@ -11,23 +12,28 @@
         <input type="text" style="width: 220px;" value.bind="cargoInfoCriteria.searchName" placeholder="输入批次号、代理商或客户名称">
       </div>
       <div class="input-group left m-l-15">
-        <input class="form-control" ak-datepicker="k-value.two-way: orderCriteria.beginDate; k-widget.two-way: startDatePicker"
-          k-on-change.delegate="startChange()" placeholder="请输入开始时间">
+        <input class="form-control"
+               ak-datepicker="k-value.two-way: orderCriteria.beginDate; k-widget.two-way: startDatePicker"
+               k-on-change.delegate="startChange()" placeholder="请输入开始时间">
       </div>
       <div class="input-group left m-l-15">
-        <input class="form-control" ak-datepicker="k-value.two-way: orderCriteria.endDate; k-widget.two-way: endDatePicker" k-on-change.delegate="endChange()"
-          placeholder="请输入结束时间"/>
+        <input class="form-control"
+               ak-datepicker="k-value.two-way: orderCriteria.endDate; k-widget.two-way: endDatePicker"
+               k-on-change.delegate="endChange()"
+               placeholder="请输入结束时间"/>
       </div>
       <div class="input-group left m-l-5">
         <div class="input-group-addon search" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></div>
-        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
+        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em>
+        </div>
       </div>
     </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row"
+           k-on-change.delegate="rowSelected($event.detail)">
     <ak-col k-field="outstockOrderNumber" k-title="出库单号" k-width.bind="120">
       <ak-template>
-        <a route-href="route: detail; params.bind: { id: id }">${outstockOrderNumber}</a>
+        <a route-href="route: detail; params.bind: { id: id }" required-permissions="R000034">${outstockOrderNumber}</a>
       </ak-template>
     </ak-col>
     <ak-col k-field="batchNumber" k-title="批次号" k-width.bind="105"></ak-col>
@@ -49,30 +55,45 @@
     <ak-col k-title="操作" k-width.bind="280">
       <ak-template>
         <a class="btn btn-small" if.bind="stage == 0 || stage == 2" route-href="route: edit; params.bind: { id: id }"
-           required-permissions="U000006" >修改</a>
+           required-permissions="U000006">修改</a>
         <button class="btn btn-small btn-primary" if.bind="stage == 8 || stage == 10"
-                click.delegate="uploadInfo(id,cargoInfoId)" required-permissions="C000027">上传提货信息</button>
-        <a class="btn btn-danger btn-small" click.delegate="delete(id)" if.bind="stage == 2 || stage == 0" required-permissions="D000013">删除</a>
+                click.delegate="uploadInfo(id,cargoInfoId)" required-permissions="C000027">上传提货信息
+        </button>
+        <a class="btn btn-danger btn-small" click.delegate="delete(id)" if.bind="stage == 2 || stage == 0"
+           required-permissions="D000013">删除</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 1 || stage == 9"
            route-href="route: verify-business; params.bind: {id: id}" required-permissions="U000034">商务审核</a>
         <a class="btn btn-small btn-primary" if.bind="(stage == 5 || stage == 6) && clearanceStatus"
            route-href="route: verify-deputy-general; params.bind: {id: id}" required-permissions="U000056">副总审批</a>
-        <button class="btn btn-small btn-primary" if.bind="stage == 3 || stage == 4" click.delegate="verifyFee(id)" required-permissions="U000035">
-          费收审核</button>
-        <button class="btn btn-small btn-primary" if.bind="!clearanceStatus " click.delegate="verifyCustomhouse(id)"  required-permissions="U000036"
-        >单证审核</button>
-        <button class="btn btn-small" if.bind="stage == 12" click.delegate="changeStage({id:id,stage:13})" required-permissions="U000037">作业开始
+        <button class="btn btn-small btn-primary" if.bind="stage == 3 || stage == 4" click.delegate="verifyFee(id)"
+                required-permissions="U000035">费收审核
+        </button>
+        <button class="btn btn-small btn-primary" if.bind="!clearanceStatus " click.delegate="verifyCustomhouse(id)"
+                required-permissions="U000036">单证审核
+        </button>
+        <button class="btn btn-small" if.bind="stage == 12" click.delegate="changeStage({id:id,stage:13})"
+                required-permissions="U000037">作业开始
         </button>
         <a class="btn btn-sm btn-small" route-href="route: work-order; params.bind:{id:id, type:2}"
-           if.bind="stage == 13" required-permissions="U000037">添加作业信息</a>
-        <button class="btn btn-small" if.bind="stage == 13" click.delegate="changeStage({id:id,stage:14})">作业完成</button>
-        <a class="btn btn-small btn-primary" if.bind="stage == 14" route-href="route: verify-work; params.bind:{id}">库场审核</a>
-        <a class="btn btn-sm btn-small btn-primary" route-href="route: order-work; params.bind:{id}" if.bind="stage == 11">生成作业指令单</a>
-        <a class="btn btn-sm btn-small" route-href="route: order-work; params.bind:{id}" if.bind="stage > 11">查看作业指令单</a>
-        <button class="btn btn-small btn-primary" if.bind="stage == 7"  click.delegate="createOutstockOrder(id)">生成出库单</button>
+           if.bind="stage == 13" required-permissions="R000036">添加作业信息</a>
+        <button class="btn btn-small" if.bind="stage == 13" click.delegate="changeStage({id:id,stage:14})"
+                required-permissions="U000038">作业完成
+        </button>
+        <a class="btn btn-small btn-primary" if.bind="stage == 14" route-href="route: verify-work; params.bind:{id}"
+           required-permissions="U000039">库场审核</a>
+        <a class="btn btn-sm btn-small btn-primary" route-href="route: order-work; params.bind:{id}"
+           if.bind="stage == 11" required-permissions="C000028">生成作业指令单</a>
+        <a class="btn btn-sm btn-small" route-href="route: order-work; params.bind:{id}" if.bind="stage > 11"
+           required-permissions="R000038">查看作业指令单</a>
+        <button class="btn btn-small btn-primary" if.bind="stage == 7" click.delegate="createOutstockOrder(id)"
+                required-permissions="U000040">生成出库单
+        </button>
         <!-- <button class="btn btn-small" if.bind="stage >= 8"  click.delegate="goStockOut()">查看出库单</button> -->
-        <a class="btn btn-small btn-primary" if.bind="stage == 16" route-href="route: confirm-business; params.bind:{id}">商务确认</a>
-        <button class="btn btn-small" if.bind="stage >= 3 && stage < 8" click.delegate="rollBack($this)">撤回</button>
+        <a class="btn btn-small btn-primary" if.bind="stage == 16"
+           route-href="route: confirm-business; params.bind:{id}" required-permissions="U000041">商务确认</a>
+        <button class="btn btn-small" if.bind="stage >= 3 && stage < 8" click.delegate="rollBack($this)"
+                required-permissions="U000042">撤回
+        </button>
       </ak-template>
     </ak-col>
   </ak-grid>
