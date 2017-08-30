@@ -49,7 +49,7 @@ export class CargoFlowList {
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private orderItemService: OrderItemService,
               @inject private workOrderItemService: WorkOrderItemService,
-              private user: UserSession) {
+              @inject private user: UserSession) {
 
   }
 
