@@ -67,6 +67,7 @@ export class EditOrder {
   }
 
   async activate(params) {
+
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.order = await this.orderService.getOrderById(params.id).then(res => fixDate(res, "outstockDate"));
     let canDeliveries = await this.orderService.getValidOutstockNum(this.order.cargoInfoId);
@@ -81,6 +82,9 @@ export class EditOrder {
       this.orderItems.data(this.outstockOrderItems);
     }
     this.vehicles.data(this.order.outstockVehicles);
+
+    this.validationController.addObject(this.order, orderValidationRules);
+    this.validationController.addObject(this.order.outstockVehicles, vehicleValidationRules);
 
     let arr = await this.attachmentService.listAttachments({ businessType: 2, businessId: this.order.id });
     if (arr != null && arr.length > 0) {

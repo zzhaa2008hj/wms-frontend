@@ -15,6 +15,13 @@
                     </ak-drop-down-list>
                 </div>
                 <div class="form-group">
+                    <div class="form-label">出库日期</div>
+                    <div class="controls">
+                        <input ak-datepicker="k-value.two-way : order.outstockDate & validate"
+                               k-on-change.delegate="createOutstockOrderNumber()" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-label">出库单号*</label>
                     <span class="help"></span>
                     <div class="controls">
@@ -29,12 +36,6 @@
                                name="lastBatch">是
                         <input type="radio" class="form-label" model.bind="0" checked.bind="order.lastBatch"
                                name="lastBatch">否
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-label">出库日期</div>
-                    <div class="controls">
-                        <input ak-datepicker="k-value.two-way : order.outstockDate & validate" type="text">
                     </div>
                 </div>
                 <div class="form-group">

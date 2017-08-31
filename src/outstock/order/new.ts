@@ -54,6 +54,7 @@ export class NewOrder {
 
   validationController: ValidationController;
   private dropDownListCargoItem: any;
+  outstockOrderDatePicker: kendo.ui.DatePicker;
 
   constructor(@inject private router: Router,
               @inject private orderService: OrderService,
@@ -74,6 +75,8 @@ export class NewOrder {
   }
 
   async activate() {
+    this.validationController.addObject(this.order, orderValidationRules);
+
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -3, outstockStatus: 0 });
     this.baseCargoInfo.map(res => {
@@ -105,10 +108,28 @@ export class NewOrder {
 
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     if (dataItem.id) {
-      let res = await this.codeService.generateCode("3", dataItem.batchNumber);
-      this.order.outstockOrderNumber = res.content;
+      // let res = await this.codeService.generateCode("3", dataItem.batchNumber);
+      // this.order.outstockOrderNumber = res.content;
       this.setOrderInfo(dataItem);
       this.getBaseCargoItems();
+    }
+    this.validationController.addObject(this.order, orderValidationRules);
+  }
+
+  /**
+   * 根据出库单时间生成出库单号
+   */
+  async createOutstockOrderNumber() {
+    if (this.order.batchNumber) {
+      if (this.outstockOrderDatePicker.value()) {
+        let res = await this.codeService.generateCodeByDate("3", this.outstockOrderDatePicker.value().getTime(),
+          this.order.batchNumber);
+        this.order.outstockOrderNumber = res.content;
+      }
+    } else {
+      await this.messageDialogService.alert({ title: "错误", message: '没有批次号，无法生成出库单号！', icon: 'warning' });
+      this.outstockOrderDatePicker.value("");
+      return;
     }
   }
 
@@ -205,7 +226,6 @@ export class NewOrder {
           }
         }
       }
-
 
       let quantitySum = 0;
       let numberSum = 0;
