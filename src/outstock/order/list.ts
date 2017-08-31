@@ -1,6 +1,6 @@
 import { inject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
-import { DataSourceFactory } from "@app/utils";
+import { DataSourceFactory, requiredPermissionsAttributeResult } from '@app/utils';
 import { OrderCriteria, OrderService } from '@app/outstock/services/order';
 import * as moment from 'moment';
 import { VerifyFeeDialogNew } from '@app/outstock/order/verify-fee/new';
@@ -19,6 +19,7 @@ import { CargoInfoService } from '@app/base/services/cargo-info';
 import { CargoInfo } from '@app/base/models/cargo-info';
 import { UploadInfo } from "./upload-info";
 import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { UserSession } from '@app/user';
 
 export class OrderList {
   orderCriteria: OrderCriteria = {};
@@ -34,16 +35,17 @@ export class OrderList {
   existEntering = false;
   outstockStages: any[] = ConstantValues.OutstockStages;
 
-  constructor( @inject private orderService: OrderService,
-    @inject private messageDialogService: MessageDialogService,
-    @inject private dataSourceFactory: DataSourceFactory,
-    @inject private dialogService: DialogService,
-    @inject private customhouseService: CustomhouseClearanceService,
-    @inject private cargoInfoService: CargoInfoService,
-    @inject private router: Router,
-    @inject('routerParams') private routerParams: RouterParams,
-    @inject private verifyRecordService: VerifyRecordService,
-    @inject private workOrderItemService: WorkOrderItemService) {
+  constructor(@inject private orderService: OrderService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private dataSourceFactory: DataSourceFactory,
+              @inject private dialogService: DialogService,
+              @inject private customhouseService: CustomhouseClearanceService,
+              @inject private cargoInfoService: CargoInfoService,
+              @inject private router: Router,
+              @inject private user: UserSession,
+              @inject('routerParams') private routerParams: RouterParams,
+              @inject private verifyRecordService: VerifyRecordService,
+              @inject private workOrderItemService: WorkOrderItemService) {
 
   }
 
@@ -339,5 +341,9 @@ export class OrderList {
       return;
     }
     this.router.navigateToRoute("changeHistory", { id: this.id });
+  }
+
+  requiredPermissions(sourceCode: string) {
+    return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
   }
 }

@@ -23,12 +23,12 @@ export class CargoInfoList {
   infoId: string;
 
   constructor(private cargoInfoService: CargoInfoService,
-    private messageDialogService: MessageDialogService,
-    private dictionaryDataService: DictionaryDataService,
-    private dataSourceFactory: DataSourceFactory,
-    private router: Router,
-    private outstockInventoryService: OutstockInventoryService,
-    private user: UserSession) {
+              private messageDialogService: MessageDialogService,
+              private dictionaryDataService: DictionaryDataService,
+              private dataSourceFactory: DataSourceFactory,
+              private router: Router,
+              private outstockInventoryService: OutstockInventoryService,
+              private user: UserSession) {
 
   }
 

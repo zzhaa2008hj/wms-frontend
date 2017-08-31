@@ -47,10 +47,10 @@ export class App {
     if (this.user.loggedIn) {
       config.options.root = document.querySelector('base').getAttribute('href');
       config.options.pushState = true;
-      //let auth = this.user.userInfo.menuVoList;
-      //let auths = new Set(auth.map((a) => a.url));
+      let auth = this.user.userInfo.menuVoList;
+      let auths = new Set(auth.map((a) => a.url));
       let routes = this.config.routes
-        //.filter(a => auths.has(a.name))
+        .filter(a => auths.has(a.name))
         .map(route => {
           if (!route["group"]) return Object.assign({}, route, { nav: true });
           return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
