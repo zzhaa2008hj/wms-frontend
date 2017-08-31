@@ -1,16 +1,23 @@
 <template>
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
       <a class="btn btn-small btn-success" click.delegate = "add()" required-permissions="C000031">新增结算需求</a>
       <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="R000046">审核记录</button>
     </div>
-    <div class="input-group"><input class="form-control" type="text" value.bind="keyword" placeholder="请输入客户名称">
-      <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
+    <div class="col-md-4">
+      <input class="input-group left" type="text" value.bind="keyword" placeholder="请输入客户名称">
+      <div class="input-group left m-l-15">
+        <ak-drop-down-list k-option-label="请选择阶段" k-data-text-field="text" k-data-value-field="value" k-value.two-way="stage" k-data-source.bind="payStages">
+        </ak-drop-down-list>
+      </div>
+      <div class="input-group left m-l-5">
+          <div class="input-group-addon search" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></div>
+          <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
+        </div>
     </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row"
-           k-on-change.delegate="rowSelected($event.detail)">
-    <ak-col k-field="customerName" k-title="客户名称" >
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
+    <ak-col k-field="customerName" k-title="客户名称">
       <ak-template>
         <!-- <a route-href="route: view; params.bind: { id: id }">${customerName}</a> -->
         ${customerName}

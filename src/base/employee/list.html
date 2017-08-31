@@ -1,18 +1,18 @@
 <template>
   <div class="row">
     <div class="col-md-3">
-      <a class="btn btn-small btn-success" route-href="route: new">新增</a>
+      <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000013">新增</a>
       <div class="btn-group">
         <a class="btn btn-small btn-black dropdown-toggle" data-toggle="dropdown" href="#">更多操作<span class="caret"></span> </a>
         <ul class="dropdown-menu">
           <li if.bind="canEdit">
-            <a route-href="route: edit; params.bind: { id: selection[0].id }"><i class="fa fa-edit"></i> 编辑</a>
+            <a route-href="route: edit; params.bind: { id: selection[0].id }" required-permissions="U000011"><i class="fa fa-edit"></i> 编辑</a>
           </li>
-          <li if.bind="canAuthorize"><a href="#" click.trigger="authorize()"><i class="fa fa-check-square-o"></i> 授权</a></li>
-          <li if.bind="canAuthorize"><a href="#" click.trigger="resetPassword()"><i class="fa fa-check-square-o"></i> 重置密码</a></li>
-          <li if.bind="canEnable"><a href="#" click.trigger="enable()"><i class="fa fa-check"></i> 启用</a></li>
-          <li if.bind="canDisable"><a href="#" click.trigger="disable()"><i class="fa fa-ban"></i> 禁用</a></li>
-          <li if.bind="canDelete"><a href="#" click.trigger="delete()"><i class="fa fa-trash"></i> 删除</a></li>
+          <li if.bind="canAuthorize"><a href="#" click.trigger="authorize()" required-permissions="U000014"><i class="fa fa-check-square-o"></i> 授权</a></li>
+          <li if.bind="canAuthorize"><a href="#" click.trigger="resetPassword()" required-permissions="U000015"><i class="fa fa-check-square-o"></i> 重置密码</a></li>
+          <li if.bind="canEnable"><a href="#" click.trigger="enable()" required-permissions="U000016"><i class="fa fa-check"></i> 启用</a></li>
+          <li if.bind="canDisable"><a href="#" click.trigger="disable()" required-permissions="U000016"><i class="fa fa-ban"></i> 禁用</a></li>
+          <li if.bind="canDelete"><a href="#" click.trigger="delete()" required-permissions="D000007"><i class="fa fa-trash"></i> 删除</a></li>
         </ul>
       </div>
     </div>

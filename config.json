@@ -10,33 +10,35 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://localhost:3000/#/loginRpc",
+    "loginUrl": "http://localhost:3000/loginRpc",
+    "loginOutUrl":"http://localhost:8080/rpc/login/logOut",
+    "changePasswordUrl":"http://localhost:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
   "group": {
     "group1": {
-      "title": "基础",
+      "title": "基础设置",
       "icon": "settings",
       "expanded": false
     },
     "group2": {
-      "title": "入库",
+      "title": "入库业务",
       "icon": "format_indent_increase",
       "expanded": false
     },
     "group3": {
-      "title": "出库",
+      "title": "出库业务",
       "icon": "format_indent_decrease",
       "expanded": false
     },
     "group4": {
-      "title": "费用",
+      "title": "费用管理",
       "icon": "payment",
       "expanded": false
     },
     "group5": {
-      "title": "报表",
+      "title": "报表统计",
       "icon": "assessment",
       "expanded": false
     }
@@ -44,7 +46,7 @@
   "routes": [{
       "route": "/base/attachments",
       "name": "attachments",
-      "title": "附件",
+      "title": "附件管理",
       "moduleId": "./common/attachment/index",
       "group": "group1"
     },
@@ -58,7 +60,7 @@
     {
       "route": "/base/contract",
       "name": "contract",
-      "title": "合同",
+      "title": "合同管理",
       "moduleId": "./base/contract/index",
       "group": "group1"
     },
@@ -86,21 +88,21 @@
     {
       "route": "/base/employee",
       "name": "employee",
-      "title": "用户",
+      "title": "员工管理",
       "moduleId": "./base/employee/index",
       "group": "group1"
     },
     {
       "route": "/base/message",
       "name": "message",
-      "title": "站内信",
+      "title": "站内信管理",
       "moduleId": "./base/message/index",
       "group": "group1"
     },
     {
       "route": "/base/notice",
       "name": "notice",
-      "title": "公告",
+      "title": "公告管理",
       "moduleId": "./base/notice/index",
       "group": "group1"
     },
@@ -149,7 +151,7 @@
     {
       "route": "/instock/cargo-infos",
       "name": "cargoInfo",
-      "title": "客户入库指令",
+      "title": "入库指令",
       "moduleId": "./base/cargo-info/index",
       "group": "group2"
     },
@@ -187,7 +189,7 @@
     {
       "route": "/base/storage",
       "name": "storage",
-      "title": "库存",
+      "title": "库存管理",
       "moduleId": "./base/storage/index",
       "group": "group2"
     },
@@ -230,14 +232,14 @@
     {
       "route": "/fee/charge",
       "name": "charge",
-      "title": "收费",
+      "title": "收费管理",
       "moduleId": "./fee/charge/index",
       "group": "group4"
     },
     {
       "route": "/fee/pay",
       "name": "pay",
-      "title": "装卸结算",
+      "title": "付费管理",
       "moduleId": "./fee/pay/index",
       "group": "group4"
     },

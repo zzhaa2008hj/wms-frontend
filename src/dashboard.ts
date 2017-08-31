@@ -5,6 +5,7 @@ import { NoticeService } from '@app/base/services/notice';
 import { Notice } from '@app/base/models/notice';
 import { DialogService } from 'ui';
 import { ReadNotification } from '@app/base/notifications/read';
+import { print } from '@app/common/services/print-tool';
 
 @autoinject
 export class Dashboard {
@@ -56,5 +57,11 @@ export class Dashboard {
     };
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+  }
+
+  async printOrder() {
+    let title = "打印测试";
+    let strHTML = '打印测试';
+    print(title, strHTML, true);
   }
 }

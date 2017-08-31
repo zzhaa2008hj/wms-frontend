@@ -99,4 +99,5 @@ export interface ChargeInfoCriteria {
   keywords?: string;
   beginDate?: string;
   endDate?: string;
+  stage?: string;
 }

@@ -25,6 +25,10 @@ export class ChargeInfoList {
     buttonCount: 10
   };
 
+  // 未结算、已生成对账清单、已核对生成收费单、已开票、已收费核销
+  chargeStages = [{ text: "未结算", value: "0" }, { text: "已生成对账清单", value: "1" }, { text: "已核对生成收费单", value: "6" }, 
+    { text: "已开票", value: "7" }, { text: "已收费核销", value: "8" }];
+
   constructor(private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
               private chargeInfoService: ChargeInfoService,

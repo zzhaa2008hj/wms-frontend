@@ -19,9 +19,14 @@ export class PaymentInfoList {
     buttonCount: 10
   };
   keyword: string;
+  stage: string;
   payStage = ConstantValues.PayStage;
   paymentInfotype = ConstantValues.PaymentInfoType;
   id: string = "";
+
+  // 未结算、已生成对账清单、已核对生成付费单、已开票、已付费核销
+  payStages = [{ text: "未结算", value: "0" }, { text: "已生成对账清单", value: "1" }, { text: "已核对生成付费单", value: "6" },
+    { text: "已开票", value: "8" }, { text: "已付费核销", value: "9" }];
 
   constructor(private paymentInfoService: PaymentInfoService,
               private dataSourceFactory: DataSourceFactory,
@@ -32,7 +37,7 @@ export class PaymentInfoList {
 
   async activate() {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.paymentInfoService.queryPaymentInfo({ keyword: this.keyword }).map(res => {
+      query: () => this.paymentInfoService.queryPaymentInfo({ keyword: this.keyword, stage: this.stage }).map(res => {
         res.stageTitle = this.payStage.find(r => r.stage == res.stage).title;
         res.typeTitle = this.paymentInfotype.find(r => r.stage == res.type).title;
         return res;
@@ -65,6 +70,12 @@ export class PaymentInfoList {
   }
 
   select() {
+    this.dataSource.read();
+  }
+
+  reset() {
+    this.keyword = '';
+    this.stage = '';
     this.dataSource.read();
   }
 

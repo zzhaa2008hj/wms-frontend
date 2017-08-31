@@ -8,6 +8,7 @@ import { Attachment } from '@app/common/models/attachment';
 
 export interface PaymentInfoCriteria {
   keyword?: string;
+  stage?: string;
 }
 
 @autoinject
