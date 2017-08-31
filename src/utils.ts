@@ -333,7 +333,7 @@ class QueryImpl<T> implements Query<T> {
  * @param sourceCode 
  * @param menuVoList 
  */
-export function requiredPermissionsAttributeResult(sourceCode: string, menuVoList: MenuAndModule[]):boolean {
+export function requiredPermissionsAttributeResult(sourceCode: string, menuVoList: MenuAndModule[]): boolean {
   let aa = new Set(menuVoList.map(x => x.code));
-  return  aa.has(sourceCode);
+  return aa.has(sourceCode);
 }
