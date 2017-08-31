@@ -7,7 +7,7 @@
     <ak-col k-field="createTime" k-title="修改时间" k-width.bind="180" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
     <ak-col k-title="操作" k-width.bind="250">
       <ak-template>
-        <button class="btn btn-small" click.delegate="detail(id)">查看</button>
+        <button class="btn btn-small" click.delegate="detail(id)" required-permissions="R000042">查看</button>
       </ak-template>
     </ak-col>
   </ak-grid>
