@@ -110,30 +110,29 @@ export class StatisticsChargeList {
 
   async setTable() {
     this.statisticsCharges = await this.statisticsChargeService.getList(this.criteria);
-
-    this.statisticsCharges.forEach(sc => {
-      if (sc.date) {
-        sc.dateStr = moment(sc.date).format("YYYY-MM-DD");
+    if (this.statisticsCharges.length > 0) {
+      this.statisticsCharges.forEach(sc => {
+        if (sc.date) {
+          sc.dateStr = moment(sc.date).format("YYYY-MM-DD");
+        }
+        if (sc.billingType != null) {
+          sc.billingTypeStr = sc.billingType == 1 ? "已开票" : "未开票";
+        }
+      });
+      //年统计
+      this.termStatistics = this.statisticsCharges.find(sc => sc.type == 3);
+      if (this.termStatistics) {
+        this.statisticalDetails = this.statisticsCharges.filter(sc => sc.type != 3);
+      } else {
+        //月统计
+        this.monthlyStatistics = this.statisticsCharges.find(sc => sc.type == 2);
+        if (this.monthlyStatistics) {
+          this.statisticalDetails = this.statisticsCharges.filter(sc => sc.type != 2);
+        }
+        this.warehouseStatistics = this.statisticsCharges.filter(sc => sc.warehousingAmount > 0);
+        this.loadingStatistics = this.statisticsCharges.filter(sc => sc.loadingAmount > 0);
+        this.otherStatistics = this.statisticsCharges.filter(sc => sc.otherAmount > 0);
       }
-      if (sc.billingType != null) {
-        sc.billingTypeStr = sc.billingType == 1 ? "已开票" : "未开票";
-      }
-    });
-
-    //年统计
-    this.termStatistics = this.statisticsCharges.find(sc => sc.type == 3);
-    if (this.termStatistics) {
-      this.statisticalDetails = this.statisticsCharges.filter(sc => sc.type != 3);
-    } else {
-      //月统计
-      this.monthlyStatistics = this.statisticsCharges.find(sc => sc.type == 2);
-      if (this.monthlyStatistics) {
-        this.statisticalDetails = this.statisticsCharges.filter(sc => sc.type != 2);
-      }
-      this.warehouseStatistics = this.statisticsCharges.filter(sc => sc.warehousingAmount > 0);
-      this.loadingStatistics = this.statisticsCharges.filter(sc => sc.loadingAmount > 0);
-      this.otherStatistics = this.statisticsCharges.filter(sc => sc.otherAmount > 0);
-
     }
   }
 
