@@ -12,7 +12,7 @@
     <ak-tree-col k-field="remark" k-title="说明"></ak-tree-col>
     <ak-tree-col k-title="操作" k-width.bind="250" k-attributes.bind="{style: 'text-align: center'}">
       <ak-template>
-        <button class="btn btn-success btn-small" click.delegate="add($this)" required-permissions="C000033">新增</button>
+        <button class="btn btn-success btn-small" click.delegate="add($this)" required-permissions="C000023">新增</button>
         <button class="btn btn-primary btn-small" click.delegate="edit($this)" required-permissions="U000030">编辑</button>
         <button class="btn btn-warning btn-small" if.bind="status == false" click.delegate="changeState($this)" required-permissions="U000031">启用</button>
         <button class="btn btn-warning btn-small" if.bind="status == true" click.delegate="changeState($this)" required-permissions="U000031">禁用</button>
