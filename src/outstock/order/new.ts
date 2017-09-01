@@ -89,8 +89,6 @@ export class NewOrder {
       this.setOrderInfo(cargoInfo);
       this.getBaseCargoItems();
     }
-
-
   }
 
   async onSelectCargoInfo(e) {

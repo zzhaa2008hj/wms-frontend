@@ -84,7 +84,6 @@ export class EditOrder {
     this.vehicles.data(this.order.outstockVehicles);
 
     this.validationController.addObject(this.order, orderValidationRules);
-    this.validationController.addObject(this.order.outstockVehicles, vehicleValidationRules);
 
     let arr = await this.attachmentService.listAttachments({ businessType: 2, businessId: this.order.id });
     if (arr != null && arr.length > 0) {
@@ -99,10 +98,6 @@ export class EditOrder {
   }
 
   async editOrder() {
-    this.validationController.addObject(this.order, orderValidationRules);
-    let { valid } = await this.validationController.validate();
-    if (!valid) return;
-
     let orderItems = [];
     Object.assign(orderItems, this.orderItems.data());
     if (orderItems) {
