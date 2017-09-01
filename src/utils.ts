@@ -7,7 +7,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { v4 } from 'uuid';
 import { MenuAndModule } from '@app/user';
-
+import { DialogService, MessageDialogService } from "ui";
 export function copy<T extends Object>(obj: T): T {
   return Object.assign({}, obj);
 }
@@ -336,4 +336,8 @@ class QueryImpl<T> implements Query<T> {
 export function requiredPermissionsAttributeResult(sourceCode: string, menuVoList: MenuAndModule[]): boolean {
   let aa = new Set(menuVoList.map(x => x.code));
   return aa.has(sourceCode);
+}
+
+export function alertError(dialogService: DialogService | MessageDialogService, message: any): void {
+  dialogService.alert({ title: "发生错误", message: message, icon: 'error' });
 }

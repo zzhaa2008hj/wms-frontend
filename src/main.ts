@@ -69,6 +69,10 @@ async function configureRestClient(baseUrl: string, container: Container, config
             window.location.href = url;
             return null;
           }
+          if (res.statusCode == 403) {
+            eventAggregator.publish('error', new Error(res.content.message));
+            return Promise.reject(new Error(res.content.message));
+          }
           if (res.statusCode >= 500) {
             if (res.mimeType == 'application/json') {
               console.error(res.content.message);
