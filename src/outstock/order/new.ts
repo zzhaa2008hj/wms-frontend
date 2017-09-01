@@ -37,14 +37,9 @@ export class NewOrder {
   baseCargoItems = [] as CargoItem[];
   deletedBaseCargoItems = [] as CargoItem[];
   selectedCargoInfo: any;
-  orderItems = new kendo.data.DataSource({
-    transport: {
-      read: (options) => {
-        options.success(this.outstockOrderItems);
-      }
-    }
-  });
+
   vehicles = new kendo.data.DataSource();
+  orderItems = new kendo.data.DataSource();
 
   file: File;
   files: File[];
@@ -53,8 +48,9 @@ export class NewOrder {
   attachments = [] as AttachmentMap[];
 
   validationController: ValidationController;
-  private dropDownListCargoItem: any;
   outstockOrderDatePicker: kendo.ui.DatePicker;
+  private dropDownListCargoItem: any;
+
 
   constructor(@inject private router: Router,
               @inject private orderService: OrderService,
@@ -72,6 +68,8 @@ export class NewOrder {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
+
+
   }
 
   async activate() {
@@ -88,11 +86,11 @@ export class NewOrder {
       this.order.cargoInfoId = this.routerParams.infoId;
       this.order.batchNumber = cargoInfo.batchNumber;
 
-      let res = await this.codeService.generateCode("3", this.order.batchNumber);
-      this.order.outstockOrderNumber = res.content;
       this.setOrderInfo(cargoInfo);
       this.getBaseCargoItems();
     }
+
+
   }
 
   async onSelectCargoInfo(e) {
@@ -108,8 +106,6 @@ export class NewOrder {
 
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     if (dataItem.id) {
-      // let res = await this.codeService.generateCode("3", dataItem.batchNumber);
-      // this.order.outstockOrderNumber = res.content;
       this.setOrderInfo(dataItem);
       this.getBaseCargoItems();
     }
@@ -143,7 +139,6 @@ export class NewOrder {
     this.order.cargoInfoId = dataItem.id;
     this.order.id = null;
     this.order.lastBatch = 0;
-    this.order.outstockDate = new Date();
 
     let customer = await this.organizationService.getOrganization(dataItem.customerId);
     if (customer) {
@@ -177,7 +172,7 @@ export class NewOrder {
       dataItem.unitStr = this.units.find(r => r.dictDataCode == dataItem.unit).dictDataName;
 
       this.outstockOrderItems.splice(0, 0, dataItem);
-      this.orderItems.read();
+      this.orderItems.data(this.outstockOrderItems);
       this.outstockCargoItems.data(this.baseCargoItems);
     }
   }
