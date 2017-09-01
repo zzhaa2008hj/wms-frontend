@@ -4,14 +4,13 @@ import * as moment from 'moment';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { LedgerAccountService } from '@app/report/services/ledger-account';
 
-export class StorageHistoryList {
+export class LedgerList {
   search = {
     beginDate: '',
     endDate: '',
     type: 1
   };
   dataSource: kendo.data.DataSource;
-  types = [{ id: 1, name: '台账' }, { id: 2, name: '流水账' }];
 
   startDatePicker: any;
   endDatePicker: any;

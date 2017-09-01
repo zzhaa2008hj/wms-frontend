@@ -1,0 +1,60 @@
+<template>
+    <div class="page-title">
+        <h3>台账</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-2">
+            <div class="input-group left m-l-15">
+                <input class="form-control" type="text" value.bind="search.batchNumber" placeholder="请输入批次号">
+            </div>
+            <div class="input-group left m-l-15">
+                <input class="form-control" type="text" value.bind="search.customerName" placeholder="请输入客户名称">
+            </div>
+            <div class="input-group left m-l-15">
+                <input class="form-control" type="text" value.bind="search.cargoName" placeholder="请输入货物名称">
+            </div>
+            <div class="input-group left m-l-15">
+                <input class="form-control"
+                       ak-datepicker=" k-value.two-way : search.beginDate;k-format.bind:'yyyy-MM-dd';k-widget.two-way: startDatePicker;"
+                       style="width: 100%"
+                       k-on-change.delegate="startChange()" placeholder="请输入开始时间"/>
+            </div>
+            <div class="input-group left m-l-15">
+                <input class="form-control"
+                       ak-datepicker=" k-value.two-way : search.endDate;k-format.bind:'yyyy-MM-dd';k-widget.two-way: endDatePicker;"
+                       style="width: 100%"
+                       k-on-change.delegate="endChange()" placeholder="请输入结束时间"/>
+            </div>
+            <div class="input-group left">
+                <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
+            </div>
+        </div>
+    </div>
+    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+             k-pageable.bind="pageable" if.bind="search.type==1">
+        <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+        <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+        <ak-col k-field="date" k-title="日期"></ak-col>
+        <ak-col k-field="cargoName" k-title="货名"></ak-col>
+        <ak-col k-field="businessName" k-title="业务名称"></ak-col>
+        <ak-col k-field="quantity" k-title="数量"></ak-col>
+        <ak-col k-field="number" k-title="件数"></ak-col>
+        <ak-col k-field="unit" k-title="计量单位"></ak-col>
+        <ak-col k-field="warehouse" k-title="库区"></ak-col>
+        <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
+        <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+    </ak-grid>
+    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+             k-pageable.bind="pageable" if.bind="search.type==2">
+        <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+        <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+        <ak-col k-field="date" k-title="日期"></ak-col>
+        <ak-col k-field="cargoName" k-title="货名"></ak-col>
+        <ak-col k-field="businessName" k-title="业务名称"></ak-col>
+        <ak-col k-field="quantity" k-title="数量"></ak-col>
+        <ak-col k-field="number" k-title="件数"></ak-col>
+        <ak-col k-field="unit" k-title="计量单位"></ak-col>
+        <ak-col k-field="storageQuantity" k-title="库存数量"></ak-col>
+        <ak-col k-field="storageNumber" k-title="库存件数"></ak-col>
+    </ak-grid>
+</template>
