@@ -39,9 +39,7 @@ export class NewOrder {
   selectedCargoInfo: any;
   orderItems = new kendo.data.DataSource({
     transport: {
-      read: (options) => {
-        options.success(this.outstockOrderItems);
-      }
+      read: (options) => options.success(this.outstockOrderItems)
     }
   });
   vehicles = new kendo.data.DataSource();
@@ -53,8 +51,8 @@ export class NewOrder {
   attachments = [] as AttachmentMap[];
 
   validationController: ValidationController;
-  private dropDownListCargoItem: any;
   outstockOrderDatePicker: kendo.ui.DatePicker;
+  private dropDownListCargoItem: any;
 
   constructor(@inject private router: Router,
               @inject private orderService: OrderService,
@@ -88,8 +86,6 @@ export class NewOrder {
       this.order.cargoInfoId = this.routerParams.infoId;
       this.order.batchNumber = cargoInfo.batchNumber;
 
-      let res = await this.codeService.generateCode("3", this.order.batchNumber);
-      this.order.outstockOrderNumber = res.content;
       this.setOrderInfo(cargoInfo);
       this.getBaseCargoItems();
     }
@@ -143,7 +139,6 @@ export class NewOrder {
     this.order.cargoInfoId = dataItem.id;
     this.order.id = null;
     this.order.lastBatch = 0;
-    this.order.outstockDate = new Date();
 
     let customer = await this.organizationService.getOrganization(dataItem.customerId);
     if (customer) {
