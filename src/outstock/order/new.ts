@@ -37,12 +37,9 @@ export class NewOrder {
   baseCargoItems = [] as CargoItem[];
   deletedBaseCargoItems = [] as CargoItem[];
   selectedCargoInfo: any;
-  orderItems = new kendo.data.DataSource({
-    transport: {
-      read: (options) => options.success(this.outstockOrderItems)
-    }
-  });
+
   vehicles = new kendo.data.DataSource();
+  orderItems = new kendo.data.DataSource();
 
   file: File;
   files: File[];
@@ -53,6 +50,7 @@ export class NewOrder {
   validationController: ValidationController;
   outstockOrderDatePicker: kendo.ui.DatePicker;
   private dropDownListCargoItem: any;
+
 
   constructor(@inject private router: Router,
               @inject private orderService: OrderService,
@@ -70,6 +68,8 @@ export class NewOrder {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
+
+
   }
 
   async activate() {
@@ -89,6 +89,8 @@ export class NewOrder {
       this.setOrderInfo(cargoInfo);
       this.getBaseCargoItems();
     }
+
+
   }
 
   async onSelectCargoInfo(e) {
@@ -104,8 +106,6 @@ export class NewOrder {
 
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     if (dataItem.id) {
-      // let res = await this.codeService.generateCode("3", dataItem.batchNumber);
-      // this.order.outstockOrderNumber = res.content;
       this.setOrderInfo(dataItem);
       this.getBaseCargoItems();
     }
@@ -172,7 +172,7 @@ export class NewOrder {
       dataItem.unitStr = this.units.find(r => r.dictDataCode == dataItem.unit).dictDataName;
 
       this.outstockOrderItems.splice(0, 0, dataItem);
-      this.orderItems.read();
+      this.orderItems.data(this.outstockOrderItems);
       this.outstockCargoItems.data(this.baseCargoItems);
     }
   }
