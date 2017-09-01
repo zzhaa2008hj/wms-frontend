@@ -1,6 +1,6 @@
 import { Router, RouterConfiguration } from "aurelia-router";
 
-export class LedgerAccount {
+export class Ledger {
 
   router: Router;
 
