@@ -14,6 +14,7 @@ export class AuthMenu {
   menuItems: Menu[] = [];
   assignedMenuItems: Menu[] = [];
   orgRole: OrganizationRole;
+  menuTree: any;
   constructor(@inject private router: Router,
               @inject private organizationRoleService: OrganizationRoleService,
               @inject private dialogService: DialogService) {
@@ -28,13 +29,18 @@ export class AuthMenu {
     if (assignedMenus.length != 0) {
       // 选中效果需要node对象
       let assigned = new Set(assignedMenus.map(menu => menu.id));
-      this.assignedMenuItems = menus.filter(item => assigned.has(item.id));
+      let parentIdAll = new Set(this.menuItems.map(item => item.parentId));
+      this.assignedMenuItems = menus.filter(item => assigned.has(item.id) && !parentIdAll.has(item.id));
     }
   }
 
   async assignOrgRoleMenu() {
-    // 过滤父并取ids
-    let menuIds = this.assignedMenuItems.filter(menu => menu.parentId != null).map(menu => menu.id);
+    // 选中的
+    let checked = this.assignedMenuItems.filter(item => item.menuType != -1);
+    // 其中只要有一个选中的父
+    console.log(this.menuTree);
+    let indeterminated = this.menuTree.nodes.filter(node => node.indeterminate == true && node.model.type != -1).map(node => node.model);
+    let menuIds = checked.concat(indeterminated).map(item => item.id);
     this.disabled = true;
     try {
       await this.organizationRoleService.assignOrgRoleMenu(this.id, menuIds);
