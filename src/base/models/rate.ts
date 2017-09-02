@@ -135,7 +135,28 @@ export const rateStepValidationRules = ValidationRules
 
   .ensure((rateStep: RateStep) => rateStep.stepStart)
   .displayName('开始值')
-  .required().withMessage(`\${$displayName} 不能为空`)
+  .required().withMessage(`\${$displayName} 不能为空`)  
+  .satisfies((x: number) => {
+    if (x != undefined) {
+      return /^[0-9]*$/.test(x.toString());
+    }
+    return false;
+  }).withMessage(`请输入整数`)
+
+  .ensure((rateStep: RateStep) => rateStep.stepEnd)
+  .displayName('结束值')
+  .satisfies((x: number) => {
+    if (x != undefined) {
+      return /^[1-9]*[1-9][0-9]*$/.test(x.toString());
+    }
+    return true;
+  }).withMessage(`请输入正整数`)
+  .satisfies((x: number, rateStep: RateStep) => {
+    if (x != undefined && rateStep.stepStart >= x) {
+      return false;
+    }
+    return true;
+  }).withMessage(`结束值应大于开始值`)
 
   .ensure((rateStep: RateStep) => rateStep.stepPrice)
   .displayName('阶梯价')

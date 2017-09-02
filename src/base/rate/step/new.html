@@ -15,14 +15,14 @@
                 <label class="form-label">开始值</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.stepStart" readonly>
+                    <input type="number" step = "1" class="form-control" value.bind="rateStep.stepStart & validate" readonly>
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">结束值</label>
                 <span class="help"></span>
                 <div class="controls">
-                    <input type="text" class="form-control" value.bind="rateStep.stepEnd">
+                    <input type="number" step = "1" class="form-control" value.bind="rateStep.stepEnd & validate">
                 </div>
             </div>
             <div class="form-group">
