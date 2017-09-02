@@ -285,7 +285,7 @@ export class AdditionalRecordingCargoFlow {
       //录入状态设为 补录 2
       this.cargoFlow.enteringMode = 2;
       this.cargoFlow.attachments = this.attachments;
-      await this.cargoFlowService.saveCargoFlow(this.cargoFlow);
+      await this.cargoFlowService.cargoFlowAdditionRecording(this.cargoFlow);
       await this.messageDialogService.alert({ title: "补录成功" });
       this.router.navigateToRoute("list");
     } catch (err) {

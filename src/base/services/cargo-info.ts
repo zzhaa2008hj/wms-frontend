@@ -110,6 +110,14 @@ export class CargoInfoService {
   }
 
   /**
+   * 补录入库指令
+   * @param contractVo
+   */
+  additionalRecordingCargoInfo(cargoInfo: CargoInfo): Promise<void> {
+    return this.http.post(`base/cargoInfo/additionRecording`, cargoInfo).then(handleResult);
+  }
+
+  /**
    * 查询单个客户货物信息
    * @param cargoInfoId
    */
