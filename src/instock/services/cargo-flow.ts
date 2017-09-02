@@ -19,6 +19,14 @@ export class CargoFlowService {
     await this.http.post(`/instock/cargo-flow`, cargoFlow).then(handleResult);
   }
 
+  /**
+   * 入库流水补录
+   * @param cargoFlow 
+   */
+  async cargoFlowAdditionRecording(cargoFlow: CargoFlow) {
+    await this.http.post(`/instock/cargoFlowAdditionRecording`, cargoFlow).then(handleResult);
+  }
+
   async listBaseCargoItems(cargoInfoId: string): Promise<CargoItem[]> {
     let res = await this.http.get(`/instock/cargo-flow/${cargoInfoId}/baseCargoItemList`);
     return res.content;
