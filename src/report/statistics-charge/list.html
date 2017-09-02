@@ -5,22 +5,20 @@
   <div class="row">
     <div class="col-md-18 col-md-offset-2">
       <div class="input-group left m-l-15">
-        <input
-            ak-datepicker="k-value.two-way: yearStatistic; k-start.bind:'decade'; k-depth.bind: 'decade';k-format.bind:'yyyy';"/>
-        <input
-            ak-datepicker="k-value.two-way: monthStatistic; k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM';"/>
+        <input ak-datepicker="k-value.two-way: yearStatistic; k-start.bind:'decade'; k-depth.bind: 'decade';k-format.bind:'yyyy';"
+        />
+        <input ak-datepicker="k-value.two-way: monthStatistic; k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM';" />
       </div>
       <div class="input-group left m-l-15">
-        <ak-drop-down-list k-value.two-way="criteria.customerName" k-option-label="请选择客户" k-data-text-field="value"
-                           k-data-value-field="value" k-data-source.bind="customers">
+        <ak-drop-down-list k-value.two-way="criteria.customerName" k-option-label="请选择客户" k-data-text-field="value" k-data-value-field="value"
+          k-data-source.bind="customers">
         </ak-drop-down-list>
       </div>
     </div>
     <div class="input-group left m-l-15">
       <input type="text" value.bind="criteria.cargoCategoryName" placeholder="请输入货类" onclick="$('#treeview').show()">
       <div id="treeview" hidden>
-        <ak-treeview k-data-source.bind="tree" k-drag-and-drop.bind="true" k-widget.bind="widget"
-                     k-on-change.trigger="onSelectionChange($event)">
+        <ak-treeview k-data-source.bind="tree" k-drag-and-drop.bind="true" k-widget.bind="widget" k-on-change.trigger="onSelectionChange($event)">
           <ak-template>
             <div>
               ${categoryName}
@@ -30,10 +28,8 @@
       </div>
     </div>
     <div class="input-group left m-l-15">
-      <ak-drop-down-list k-value.two-way="criteria.billingType" k-data-text-field="text"
-                         k-data-value-field="value"
-                         k-option-label="请选择开票状态...(默认全部)"
-                         k-data-source.bind="billingType">
+      <ak-drop-down-list k-value.two-way="criteria.billingType" k-data-text-field="text" k-data-value-field="value" k-option-label="请选择开票状态"
+        k-data-source.bind="billingType">
       </ak-drop-down-list>
     </div>
     <div class="input-group left">
@@ -45,8 +41,7 @@
   </div>
   </div>
   <div if.bind="type == 1">
-    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
-             k-pageable.bind="pageable">
+    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
       <ak-col k-field="date" k-title="日期" k-format='{0:yyyy-MM-dd}'></ak-col>
       <ak-col k-field="customerName" k-title="客户名称"></ak-col>
       <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
@@ -58,8 +53,7 @@
     </ak-grid>
   </div>
   <div if.bind="type == 2">
-    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
-             k-pageable.bind="pageable">
+    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
       <ak-col k-field="month" k-title="日期"></ak-col>
       <ak-col k-field="type" k-title="type"></ak-col>
       <ak-col k-field="customerName" k-title="客户名称"></ak-col>
@@ -75,8 +69,7 @@
     </ak-grid>
   </div>
   <div if.bind="type == 3">
-    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
-             k-pageable.bind="pageable">
+    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
       <ak-col k-field="month" k-title="日期"></ak-col>
       <ak-col k-field="type" k-title="type"></ak-col>
       <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
