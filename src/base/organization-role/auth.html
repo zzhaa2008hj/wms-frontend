@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label class="form-label">授权菜单</label>
                 <div class="controls">
-                    <wa-tree checked-items.bind="assignedMenuItems">
+                    <wa-tree checked-items.bind="assignedMenuItems" view-model.ref="menuTree">
                         <wa-tree-node repeat.for="item of menuItems"
                             icon.bind="getIcon(item.menuType, item.parentId)"
                             label.bind="item.name" type="checkbox"
@@ -22,10 +22,10 @@
                             id.bind="item.id" parent-id.bind="item.parentId">
                         </wa-tree-node>
                     </wa-tree>
-                    <!--<div style="border: 1px solid #ccc; background: #1f1f1f; padding: 5px;">
+                    <!-- <div style="border: 1px solid #ccc; background: #1f1f1f; padding: 5px;">
                         已选择：
                         <p repeat.for="item of assignedMenuItems">${item.name}[${item.id}]</span>
-                    </div>-->
+                    </div> -->
                 </div>
             </div>
             <div class="form-actions">
