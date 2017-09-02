@@ -61,8 +61,8 @@ export class NewRate {
       this.rate.id = null;
       this.rateSteps = await this.rateStepService.listRateStepByRateId(params.id);
       if (this.rateSteps.length > 0) {
-        this.stepIndex = this.rateSteps.length;
-        this.stepStart = this.rateSteps[this.stepIndex - 1].stepEnd;
+        this.stepIndex = this.rateSteps.length + 1;                
+        this.stepStart = this.rateSteps[this.rateSteps.length - 1].stepEnd;
         this.rateSteps.forEach(rs => {
           rs.id = null;
           rs.rateId = null;

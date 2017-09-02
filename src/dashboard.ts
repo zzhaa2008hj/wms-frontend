@@ -11,7 +11,8 @@ import { print } from '@app/common/services/print-tool';
 export class Dashboard {
 
   notices: Notice[];
-  notice: Notice;
+  notice: Notice = {} as Notice;
+  show: boolean = false;
 
   constructor(private dialogService: DialogService,
               private noticeService: NoticeService) {
@@ -22,6 +23,7 @@ export class Dashboard {
     // todo 公告向上滚动
     this.notices = await this.noticeService.getNotices();
     if (this.notices && this.notices.length > 0) {
+      this.show = true;
       this.notice = this.notices[0];
       this.notice.createTimeStr = this.notice.createTime ? moment(this.notice.createTime).format("YYYY-MM-DD") : '';
     }
