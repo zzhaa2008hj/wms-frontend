@@ -138,19 +138,19 @@ export const rateStepValidationRules = ValidationRules
   .required().withMessage(`\${$displayName} 不能为空`)  
   .satisfies((x: number) => {
     if (x != undefined) {
-      return /^[0-9]*$/.test(x.toString());
+      return x >= 0;
     }
     return false;
-  }).withMessage(`请输入整数`)
+  }).withMessage(`请输入正数或0`)
 
   .ensure((rateStep: RateStep) => rateStep.stepEnd)
   .displayName('结束值')
   .satisfies((x: number) => {
     if (x != undefined) {
-      return /^[1-9]*[1-9][0-9]*$/.test(x.toString());
+      return x > 0;
     }
     return true;
-  }).withMessage(`请输入正整数`)
+  }).withMessage(`请输入正数`)
   .satisfies((x: number, rateStep: RateStep) => {
     if (x != undefined && rateStep.stepStart >= x) {
       return false;
