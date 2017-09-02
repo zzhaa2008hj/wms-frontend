@@ -114,7 +114,7 @@ export class CargoInfoService {
    * @param contractVo
    */
   additionalRecordingCargoInfo(cargoInfo: CargoInfo): Promise<void> {
-    return this.http.post(`base/cargoInfoAdditionRecording`, cargoInfo).then(handleResult);
+    return this.http.post(`base/cargoInfo/additionRecording`, cargoInfo).then(handleResult);
   }
 
   /**

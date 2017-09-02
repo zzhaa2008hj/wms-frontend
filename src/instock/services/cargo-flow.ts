@@ -24,7 +24,7 @@ export class CargoFlowService {
    * @param cargoFlow 
    */
   async cargoFlowAdditionRecording(cargoFlow: CargoFlow) {
-    await this.http.post(`/instock/cargoFlowAdditionRecording`, cargoFlow).then(handleResult);
+    await this.http.post(`/instock/cargo-flow/additionRecording`, cargoFlow).then(handleResult);
   }
 
   async listBaseCargoItems(cargoInfoId: string): Promise<CargoItem[]> {
