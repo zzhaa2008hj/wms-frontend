@@ -303,7 +303,7 @@ export class NewOrder {
     if (result.wasCancelled) return;
   }
 
-  async deleted(data) {
+  async delete(data) {
     let item: AttachmentMap = data.item;
     let res = await this.attachmentService.getDirKey(this.order.cargoInfoId);
     let path = '/' + res.key + '/' + item.uuidName;
