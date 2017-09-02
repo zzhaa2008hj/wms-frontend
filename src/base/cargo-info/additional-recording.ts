@@ -190,11 +190,11 @@ export class AdditionalRecordingCargoInfo {
     try {
       //录入状态设为 补录 2
       this.cargoInfo.enteringMode = 2;
-      await this.cargoInfoService.saveCargoInfo(this.cargoInfo);
-      await this.messageDialogService.alert({ title: "新增成功" });
+      await this.cargoInfoService.additionalRecordingCargoInfo(this.cargoInfo);
+      await this.messageDialogService.alert({ title: "补录成功" });
       this.router.navigateToRoute("list");
     } catch (err) {
-      await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: 'error' });
+      await this.messageDialogService.alert({ title: "补录失败", message: err.message, icon: 'error' });
     }
   }
 

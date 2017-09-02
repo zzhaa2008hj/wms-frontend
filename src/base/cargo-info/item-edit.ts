@@ -88,7 +88,6 @@ export class EditCargoItem {
       }
       return res;
     });
-    console.log(this.cargoRates)
   }
 
   async save() {
@@ -136,7 +135,7 @@ export class EditCargoItem {
               stepNum: { editable: false },
               stepStart: { editable: false },
               stepEnd: { editable: false },
-              stepPrice: { editable: true, notify: true },
+              stepUnitStr: { editable: true, notify: true },
               stepUnit: { editable: false },
               remark: { editable: false }
             }
