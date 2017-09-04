@@ -151,6 +151,26 @@ export class CargoFlowList {
     }
   }
 
+  async additionalRecording(){
+    if (this.routerParams.infoId) {
+      let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
+      if (cargoInfo.instockStatus == 1) {
+        await this.messageDialogService.alert({ title: "失败", message: "该批次货物已全部入完，无法新增入库", icon: 'error' });
+        return;
+      }
+      //验证理货报告生成状态
+      let cargoFlows: CargoFlow[] = await this.cargoFlowService.getListByCargoInfoId(this.routerParams.infoId);
+      if (cargoFlows && cargoFlows.length > 0) {
+        let cfs = cargoFlows.filter(cf => cf.stage < 9);
+        if (cfs.length == 0) {
+          await this.messageDialogService.alert({ title: "失败", message: "该批次货物已生成理货报告，无法新增入库", icon: 'error' });
+          return;
+        }
+      }
+    }
+    this.router.navigateToRoute("additional-recording");
+  }
+
   async verifyHistory() {
     if (!this.selectedItem) {
       await this.messageDialogService.alert({ title: "提示", message: "请选择流水!" });
