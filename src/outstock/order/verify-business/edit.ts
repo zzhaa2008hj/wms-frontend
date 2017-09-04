@@ -68,6 +68,9 @@ export class VerifyBusinessDialogEdit {
    * 商务审核
    */
   async verifyBusiness(verifyStatus: number) {
+    let status = verifyStatus == 1 ? '通过' : '不通过';
+    let confirm = await this.dialogService.confirm({ title: "提示", message: `确定${status}商务审核？` });
+    if (!confirm) return; 
     this.disabled = true;
     try {
       await this.orderService.auditBusiness(this.order.id, verifyStatus);

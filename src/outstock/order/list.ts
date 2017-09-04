@@ -206,6 +206,8 @@ export class OrderList {
    * @returns {Promise<void>}
    */
   async createOutstockOrder(id) {
+    let confirm = await this.dialogService.confirm({ title: "提示", message: "确定生成出库单？" });
+    if (!confirm) return;
     try {
       await this.orderService.createOutstockOrder(id);
       let skipConformed = await this.messageDialogService.confirm({ title: "提示", message: "生成成功！是否要查看出库单" });

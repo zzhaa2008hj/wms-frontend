@@ -63,14 +63,20 @@ export class VerifyWarehouse {
   }
 
   async check(status) {
-    // 生成作业统计 修改审核状态
+    let s = status == 1 ? '通过' : '不通过';
+    let confirm = await this.dialogService.confirm({ title: "提示", message: `确定${s}库场审核？` });
+    if (!confirm) return; 
     try {
-      
+      // 生成作业统计 修改审核状态
       await this.orderService.auditBusiness(this.outstockOrder.id, status, this.workStatistics);
       await this.dialogService.alert({ title: "提示", message: "操作成功！" });
       this.router.navigateBack();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
     }
+  }
+
+  goBack() {
+    this.router.navigateToRoute("outstockOrder");
   }
 }
