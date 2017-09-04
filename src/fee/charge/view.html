@@ -51,7 +51,7 @@
             </div>
           </div>
         </div>
-        <div class="row column-seperation">
+        <div class="row column-seperation" if.bind="type == 1">
           <h4>费用明细</h4>
           <div class="col-md-12">
             <span class="help"></span>
@@ -80,6 +80,23 @@
                   <rate-steps rate-steps.bind="cargoRateStepList" if.bind="pricingMode !=1 "></rate-steps>
                   <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
                 </ak-template>
+              </ak-grid>
+            </div>
+          </div>
+        </div>
+
+        <div class="row column-seperation" if.bind="type == 2">
+          <h4>费用明细</h4>
+          <div class="col-md-12">
+            <span class="help"></span>
+            <div class="controls right">
+              <ak-grid k-data-source.bind="chargeAuditListDataSource">
+                <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+                <ak-col k-field="billLadingNumber" k-title="提单"></ak-col>
+                <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
+                <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
+                <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
+                <ak-col k-field="sumAmount" k-title="合计"></ak-col>
               </ak-grid>
             </div>
           </div>
