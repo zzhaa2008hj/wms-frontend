@@ -60,8 +60,8 @@ export class CustomerConfirm {
             if (unit) {
               cai.unitStr = unit.dictDataName;
             }
-            cai.startDateStr = moment(cai.startDate).format("YYYY-MM-DD");
-            cai.endDateStr = moment(cai.endDate).format("YYYY-MM-DD");
+            cai.startDateStr = cai.startDate ? moment(cai.startDate).format("YYYY-MM-DD") : '';
+            cai.endDateStr = cai.startDate ? moment(cai.endDate).format("YYYY-MM-DD") : '';
 
             let containerType = containerTypes.find(r => r.dictDataCode == cai.containerType);
             if (containerType) {
