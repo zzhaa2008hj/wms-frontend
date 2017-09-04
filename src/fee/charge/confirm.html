@@ -71,7 +71,7 @@
                 <td align="center">费用类别</td>
                 <td align="center">货名</td>
                 <td align="center">货类</td>
-                <td align="center">品牌</td>
+                <!--<td align="center">品牌</td>-->
                 <td align="center">库区名称</td>
                 <td align="center">重量</td>
                 <td align="center">件数</td>
@@ -83,7 +83,7 @@
                 <td align="center">堆存天数</td>
                 <td align="center">堆存费率</td>
                 <td align="center">合计</td>
-                <td align="center" colspan="2">备注</td>
+                <td align="center" colspan="3">备注</td>
               </tr>
               <template repeat.for="chargeAuditItem of chargeAuditList.chargeAuditItems">
                 <tr>
@@ -91,7 +91,7 @@
                   <td align="center">${chargeAuditItem.chargeCategoryName}</td>
                   <td align="center">${chargeAuditItem.cargoName}</td>
                   <td align="center">${chargeAuditItem.cargoCategoryName}</td>
-                  <td align="center">${chargeAuditItem.cargoSubCategoryName}</td>
+                  <!--<td align="center">${chargeAuditItem.cargoSubCategoryName}</td>-->
                   <td align="center">${chargeAuditItem.warehouseName}</td>
                   <td align="center">${chargeAuditItem.quantity}</td>
                   <td align="center">${chargeAuditItem.number}</td>
@@ -103,7 +103,7 @@
                   <td align="center">${chargeAuditItem.storageDay}</td>
                   <td align="center">${chargeAuditItem.storageRate}</td>
                   <td align="center">${chargeAuditItem.sumAmount}</td>
-                  <td align="center" colspan="2">${chargeAuditItem.remark}</td>
+                  <td align="center" colspan="3">${chargeAuditItem.remark}</td>
                 </tr>
               </template>
             </div>
