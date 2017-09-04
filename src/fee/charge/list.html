@@ -50,7 +50,7 @@
         </button>
         <button class="btn btn-small btn-primary" if.bind="stage == 7" click.delegate="auditCancel(id)" required-permissions="U000047">核销
         </button>
-        <a class="btn btn-small btn-primary" route-href="route: view; params.bind: { id: id }" required-permissions="R000045">查看结算申请</a>
+        <a class="btn btn-small" route-href="route: view; params.bind: { id: id }" required-permissions="R000045">查看结算申请</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 0 && type == 1" route-href="route: edit; params.bind: { id: id }"
           required-permissions="U000048">修改结算申请</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 0 && type == 2" route-href="route: edit-audit; params.bind: { id: id }"

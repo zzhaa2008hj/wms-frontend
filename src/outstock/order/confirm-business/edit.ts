@@ -49,6 +49,8 @@ export class VerifyBusinessDialogEdit {
    * 商务确认
    */
   async businessConfirm() {
+    let confirm = await this.dialogService.confirm({ title: "提示", message: "确定执行商务确认？" });
+    if (!confirm) return;
     try {
       await this.orderService.businessConfirm(this.outstockOrder.id);
       await this.dialogService.alert({ title: "提示", message: "确认成功！" });
