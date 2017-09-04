@@ -17,7 +17,14 @@ export class ViewChargeInfo {
     }
   });
   units = [] as DictionaryData[];
-
+  type: number = 1; // 自动
+  chargeAuditListDataSource = new kendo.data.DataSource({
+    transport: {
+      read: (options) => {
+        options.success(this.chargeInfo.chargeAuditList);
+      }
+    }
+  });
   constructor(@inject private router: Router,
               @inject private chargeInfoService: ChargeInfoService,
               @inject private dictionaryDataService: DictionaryDataService) {
@@ -28,69 +35,78 @@ export class ViewChargeInfo {
 
     this.chargeInfo = await this.chargeInfoService.getChargeInfoAndItems(id);
     this.chargeInfo.feeTotal = 0;
-    if (this.chargeInfo && this.chargeInfo.chargeAuditItemList && this.chargeInfo.chargeAuditItemList.length > 0) {
-      this.chargeInfo.chargeAuditItemList.map(item => {
-        if (item.startDate) {
-          item.startDate = new Date(item.startDate);
-        }
-        if (item.endDate) {
-          item.endDate = new Date(item.endDate);
-        }
-        let unit = this.units.find(r => r.dictDataCode == item.unit);
-        if (unit) {
-          item.unitStr = unit.dictDataName;
-        }
-        let rateType = ConstantValues.WorkInfoCategory.find(r => r.value == item.rateType);
-        if (rateType) {
-          item.rateTypeName = rateType.text;
-        }
-        let chargeCategory = ConstantValues.ChargeCategory.find(r => r.value == item.chargeCategory);
-        if (chargeCategory) {
-          item.chargeCategoryName = chargeCategory.text;
-        }
-        if (item.cargoRateStepList && item.cargoRateStepList.length > 0) {
-          item.cargoRateStepList.map(rate => {
-            let unit = this.units.find(r => r.dictDataCode == rate.stepUnit);
-            if (unit) {
-              rate.stepUnitName = unit.dictDataName;
+    if (this.chargeInfo) {
+      this.type = this.chargeInfo.type;
+      if (this.chargeInfo.chargeAuditItemList && this.chargeInfo.chargeAuditItemList.length > 0) {
+        this.chargeInfo.chargeAuditItemList.map(item => {
+          if (item.startDate) {
+            item.startDate = new Date(item.startDate);
+          }
+          if (item.endDate) {
+            item.endDate = new Date(item.endDate);
+          }
+          let unit = this.units.find(r => r.dictDataCode == item.unit);
+          if (unit) {
+            item.unitStr = unit.dictDataName;
+          }
+          let rateType = ConstantValues.WorkInfoCategory.find(r => r.value == item.rateType);
+          if (rateType) {
+            item.rateTypeName = rateType.text;
+          }
+          let chargeCategory = ConstantValues.ChargeCategory.find(r => r.value == item.chargeCategory);
+          if (chargeCategory) {
+            item.chargeCategoryName = chargeCategory.text;
+          }
+          if (item.cargoRateStepList && item.cargoRateStepList.length > 0) {
+            item.cargoRateStepList.map(rate => {
+              let unit = this.units.find(r => r.dictDataCode == rate.stepUnit);
+              if (unit) {
+                rate.stepUnitName = unit.dictDataName;
+              }
+            });
+          }
+          if (chargeCategory.value == 1) {
+            if (item.quantity && item.quantity > 0) {
+              if (item.actualPrice) {
+                item.sumAmount = item.quantity * item.actualPrice * item.storageDay;
+              } else {
+                item.sumAmount = item.quantity * item.storageRate * item.storageDay;
+              }
+            } else if (item.number && item.number > 0) {
+              if (item.actualPrice) {
+                item.sumAmount = item.number * item.actualPrice * item.storageDay;
+              } else {
+                item.sumAmount = item.number * item.storageRate * item.storageDay;
+              }
             }
-          });
-        }
-        if (chargeCategory.value == 1) {
-          if (item.quantity && item.quantity > 0) {
-            if (item.actualPrice) {
-              item.sumAmount = item.quantity * item.actualPrice * item.storageDay;
-            } else {
-              item.sumAmount = item.quantity * item.storageRate * item.storageDay;
-            }
-          } else if (item.number && item.number > 0) {
-            if (item.actualPrice) {
-              item.sumAmount = item.number * item.actualPrice * item.storageDay;
-            } else {
-              item.sumAmount = item.number * item.storageRate * item.storageDay;
+          } else {
+            if (item.quantity && item.quantity > 0) {
+              if (item.actualPrice) {
+                item.sumAmount = item.quantity * item.actualPrice;
+              } else {
+                item.sumAmount = item.quantity * item.storageRate;
+              }
+            } else if (item.number && item.number > 0) {
+              if (item.actualPrice) {
+                item.sumAmount = item.number * item.actualPrice;
+              } else {
+                item.sumAmount = item.number * item.storageRate;
+              }
             }
           }
-        } else {
-          if (item.quantity && item.quantity > 0) {
-            if (item.actualPrice) {
-              item.sumAmount = item.quantity * item.actualPrice;
-            } else {
-              item.sumAmount = item.quantity * item.storageRate;
-            }
-          } else if (item.number && item.number > 0) {
-            if (item.actualPrice) {
-              item.sumAmount = item.number * item.actualPrice;
-            } else {
-              item.sumAmount = item.number * item.storageRate;
-            }
+          if (item.sumAmount) {
+            let m = Math.pow(10, 1);
+            item.sumAmount = parseInt((item.sumAmount * m).toString(), 10) / m;
+            this.chargeInfo.feeTotal += item.sumAmount;
           }
-        }
-        if (item.sumAmount) {
-          let m = Math.pow(10, 1);
-          item.sumAmount = parseInt((item.sumAmount * m).toString(), 10) / m;
-          this.chargeInfo.feeTotal += item.sumAmount;
-        }
-      });
+        });
+      }
+
+      if (this.chargeInfo.chargeAuditList && this.chargeInfo.chargeAuditList.length > 0) {
+        this.chargeInfo.chargeAuditList.forEach(item => {
+          this.chargeInfo.feeTotal += item.sumAmount ? item.sumAmount : 0;
+        });
+      }
     }
   }
 
