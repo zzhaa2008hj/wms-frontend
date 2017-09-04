@@ -27,6 +27,7 @@ export class List {
   customerCategories = ConstantValues.CustomerCategory;
   chargeCategories = ConstantValues.ChargeCategory;
   chargeTypes = ConstantValues.ChargeType;
+  chargeCategory = [{type: 1, name: '仓储费'},{type: 2, name: '装卸费'},{type: 3, name: '其他费用'}];
 
   private dataSource: kendo.data.DataSource;
 
@@ -50,6 +51,7 @@ export class List {
         let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
         let rateType = this.rateTypes.find(d => res.rateType == d.value);
+        let chargeCategory = this.chargeCategory.find(d => d.type == res.chargeCategory);
         if (unit) {
           res.unit = unit.dictDataName;
         }
@@ -61,6 +63,9 @@ export class List {
         }
         if (rateType) {
           res.rateTypeStr = rateType.text;
+        }
+        if (chargeCategory) {
+          res.chargeCategoryStr = chargeCategory.name;
         }
         return res;
       }),
