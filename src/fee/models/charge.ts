@@ -33,8 +33,11 @@ export interface ChargeInfo {
 
   createTime: Date;
   createTimeStr: string;
-  
+
   chargeAuditList: ChargeAuditList[];
+
+  //费用总计
+  feeTotal: number;
 }
 
 export const chargeInfoValidationRules = ValidationRules
