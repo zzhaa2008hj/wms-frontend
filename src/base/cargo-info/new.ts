@@ -158,8 +158,12 @@ export class NewCargoInfo {
       lock: true
     }).whenClosed();
     if (result.wasCancelled) return;
-    this.cargoItems = this.cargoItems.filter(x => x.batchNumber != batchNumber);
-    this.cargoItems.push(result.output);
+    this.cargoItems = this.cargoItems.map(x => {
+      if(x.batchNumber == batchNumber){
+        return result.output;
+      }
+      return x;
+    })
     this.datasource.read();
 
     this.orderNumChange();

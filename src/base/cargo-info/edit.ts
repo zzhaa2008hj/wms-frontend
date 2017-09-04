@@ -74,8 +74,13 @@ export class EditCargoInfo {
       lock: true
     }).whenClosed();
     if (result.wasCancelled) return;
-    this.cargoItems = this.cargoItems.filter(x => x.id != id);
-    this.cargoItems.push(result.output);
+    this.cargoItems = this.cargoItems.map(x => {
+      if(x.id == id){
+        return result.output;
+      }
+      return x;
+    })
+   
     this.datasource.read();
 
     this.orderNumChange();
