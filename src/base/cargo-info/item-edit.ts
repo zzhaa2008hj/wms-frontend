@@ -9,6 +9,7 @@ import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class EditCargoItem {
+
   cargoItem = {} as CargoItem;
 
   unitDatasource = [] as DictionaryData[];
@@ -21,6 +22,9 @@ export class EditCargoItem {
   cargoRates: CargoRate[];
   rateTypes = ConstantValues.WorkInfoCategory;
 
+  rowExpandState: any;
+  rowExpands = new Set();
+  customerGrid : kendo.ui.Grid;
   constructor(private dialogController: DialogController,
     private dictionaryDataService: DictionaryDataService,
     validationControllerFactory: ValidationControllerFactory,
@@ -44,7 +48,21 @@ export class EditCargoItem {
       },
       schema: {
         model: {
-          id: 'id'
+          id: 'id',
+          fields: {
+            price: { type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, editable: true },
+            rateCategory: { editable: false },
+            chargeType: { editable: false },
+            unitStr: { editable: false },
+            rateTypeStr: { editable: false },
+            pricingMode: { editable: false },
+            workName: { editable: false },
+            warehouseTypeStr: { editable: false },
+            cargoCategoryName: { editable: false },
+            cargoSubCategoryName: { editable: false },
+            warehouseCategoryStr: { editable: false },
+            remark: { editable: false }
+          }
         }
       }
     });
@@ -119,7 +137,7 @@ export class EditCargoItem {
       dataSource: {
         transport: {
           read: (options) => {
-            options.success(e.data.cargoRateSteps);
+            options.success(a.cargoRateSteps);
           },
           update: (options) => {
             options.success();
@@ -135,14 +153,14 @@ export class EditCargoItem {
               stepNum: { editable: false },
               stepStart: { editable: false },
               stepEnd: { editable: false },
-              stepUnitStr: { editable: true, notify: true },
+              stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, title: '阶梯价' },
+              stepUnitStr: { editable: false},
               stepUnit: { editable: false },
               remark: { editable: false }
             }
           }
         },
       },
-
       editable: true,
       columns: [
         { field: 'stepNum', title: '阶梯号' },
@@ -162,6 +180,25 @@ export class EditCargoItem {
     });
   }
 
+  /**
+  * 展开
+  */
+  detailExpand(e) {
+    let uid = e.masterRow.data('uid');
+    this.rowExpands.add(uid);
+  }
+  /**
+   * 折叠
+   */
+  detailCollapse(e) {
+    let uid = e.masterRow.data('uid');
+    this.rowExpands.delete(uid);
+  }
+
+  dataBound(e) {
+    console.log('dataBound execute :', e);
+    this.rowExpands.forEach(uid => this.customerGrid.expandRow($('tr[data-uid=' + uid + ']')));
+  }
 }
 const validationRules = ValidationRules
   .ensure((cargoItem: CargoItem) => cargoItem.cargoName)
@@ -176,9 +213,10 @@ const validationRules = ValidationRules
   .ensure((cargoItem: CargoItem) => cargoItem.orderQuantity)
   .displayName('指令数量')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => {
+  .satisfies((x, cargoItem) => {
+    if (cargoItem.orderNumber) return true;
     if (x) return (x <= 1000000000000000 && x > 0);
-    if (x === 0) {return false;}
+    if (x === 0) { return false; }
     return true;
   })
   .withMessage(`\${$displayName} 为无效值(过大或过小)`)
@@ -186,12 +224,14 @@ const validationRules = ValidationRules
   .ensure((cargoItem: CargoItem) => cargoItem.orderNumber)
   .displayName('指令件数')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => {
+  .satisfies((x, cargoItem) => {
+    if (cargoItem.orderQuantity) return true;
     if (x) return (x <= 2147483647 && x > 0);
     if (x === 0) return false;
     return true;
   })
-  
+  .withMessage(`\${$displayName} 为无效值(过大或过小)`)
+
   .ensure((cargoItem: CargoItem) => cargoItem.unit)
   .displayName('计量单位')
   .required().withMessage(`\${$displayName} 不能为空`)
