@@ -82,6 +82,8 @@ export class CargoInfoList {
       await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
       return;
     }
+    let confirm = await this.messageDialogService.confirm({ title: "提示", message: "生成出库清单？" });
+    if (!confirm) return;
     try {
       await this.outstockInventoryService.createOutstockInventory(this.batchNumber);
       await this.messageDialogService.confirm({ title: "提示", message: "生成成功！" });
