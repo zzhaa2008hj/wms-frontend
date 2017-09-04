@@ -25,7 +25,7 @@ export class Note {
     this.organization = await this.organizationService.getOrganization(this.chargeInfo.orgId);
 
     this.chargeInfo.chargeStartDateStr = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD");
-    this.chargeInfo.chargeEndDateStr = moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD");
+    this.chargeInfo.chargeEndDateStr = this.chargeInfo.chargeEndDate ? moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD") : '';
 
     if (this.chargeAuditLists) {
       let totalAmount = 0;

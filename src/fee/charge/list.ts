@@ -67,7 +67,7 @@ export class ChargeInfoList {
   async createChargeDemandNote(id: string) {
     try {
       await this.chargeInfoService.createChargeDemandNote(id);
-      await this.messageDialogService.alert({ title: "提示", message: '生成收费单成功', icon: "error" });
+      await this.messageDialogService.alert({ title: "提示", message: '生成收费单成功'});
       this.router.navigateToRoute("note", { id: id });
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
