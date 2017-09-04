@@ -65,40 +65,7 @@ export class ViewChargeInfo {
               }
             });
           }
-          if (chargeCategory.value == 1) {
-            if (item.quantity && item.quantity > 0) {
-              if (item.actualPrice) {
-                item.sumAmount = item.quantity * item.actualPrice * item.storageDay;
-              } else {
-                item.sumAmount = item.quantity * item.storageRate * item.storageDay;
-              }
-            } else if (item.number && item.number > 0) {
-              if (item.actualPrice) {
-                item.sumAmount = item.number * item.actualPrice * item.storageDay;
-              } else {
-                item.sumAmount = item.number * item.storageRate * item.storageDay;
-              }
-            }
-          } else {
-            if (item.quantity && item.quantity > 0) {
-              if (item.actualPrice) {
-                item.sumAmount = item.quantity * item.actualPrice;
-              } else {
-                item.sumAmount = item.quantity * item.storageRate;
-              }
-            } else if (item.number && item.number > 0) {
-              if (item.actualPrice) {
-                item.sumAmount = item.number * item.actualPrice;
-              } else {
-                item.sumAmount = item.number * item.storageRate;
-              }
-            }
-          }
-          if (item.sumAmount) {
-            let m = Math.pow(10, 1);
-            item.sumAmount = parseInt((item.sumAmount * m).toString(), 10) / m;
-            this.chargeInfo.feeTotal += item.sumAmount;
-          }
+          this.chargeInfo.feeTotal += item.sumAmount ? item.sumAmount : 0;
         });
       }
 
