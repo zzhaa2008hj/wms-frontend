@@ -75,23 +75,6 @@ export class CustomerConfirm {
             if (chargeCategory) {
               cai.chargeCategoryName = chargeCategory.text;
             }
-            if (cai.storageDay) {
-              if (cai.quantity && cai.quantity > 0) {
-                cai.sumAmount = cai.storageDay * cai.storageRate * cai.quantity;
-              } else if (cai.number && cai.number > 0) {
-                cai.sumAmount = cai.storageDay * cai.storageRate * cai.number;
-              }
-            } else {
-              if (cai.quantity && cai.quantity > 0) {
-                cai.sumAmount = cai.storageRate * cai.quantity;
-              } else if (cai.number && cai.number > 0) {
-                cai.sumAmount = cai.storageRate * cai.number;
-              }
-            }
-            if (cai.sumAmount) {
-              let m = Math.pow(10, 1);
-              cai.sumAmount = parseInt((cai.sumAmount * m).toString(), 10) / m;
-            }
 
           });
         }
