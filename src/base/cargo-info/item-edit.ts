@@ -1,5 +1,5 @@
 import { autoinject, Container } from 'aurelia-dependency-injection';
-import { CargoItem, CargoRate } from '@app/base/models/cargo-info';
+import { CargoItem, CargoRate,CargoRateStep } from '@app/base/models/cargo-info';
 import { DialogController } from 'ui';
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
@@ -20,11 +20,10 @@ export class EditCargoItem {
   validationController: ValidationController;
 
   cargoRates: CargoRate[];
+  cargoRateSteps = [] as CargoRateStep[];
+
   rateTypes = ConstantValues.WorkInfoCategory;
 
-  rowExpandState: any;
-  rowExpands = new Set();
-  customerGrid : kendo.ui.Grid;
   constructor(private dialogController: DialogController,
     private dictionaryDataService: DictionaryDataService,
     validationControllerFactory: ValidationControllerFactory,
@@ -75,6 +74,11 @@ export class EditCargoItem {
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.cargoItem = cargoItemInfo;
     this.cargoRates = cargoItemInfo.cargoRates;
+    this.cargoRates.forEach(x => {
+      if(x.cargoRateSteps){
+        this.cargoRateSteps =  this.cargoRateSteps.concat(x.cargoRateSteps);
+      }
+    })
     this.convertCargoRates();
     this.validationController.addObject(this.cargoItem, validationRules);
   }
@@ -131,13 +135,13 @@ export class EditCargoItem {
   }
 
   detailInit(e) {
-    let a = e.data;
     let detailRow = e.detailRow;
     detailRow.find('.rateSteps').kendoGrid({
       dataSource: {
         transport: {
           read: (options) => {
-            options.success(a.cargoRateSteps);
+            // options.success(a.cargoRateSteps);
+            options.success(this.cargoRateSteps);
           },
           update: (options) => {
             options.success();
@@ -160,6 +164,7 @@ export class EditCargoItem {
             }
           }
         },
+        filter: { field: 'cargoRateId', operator: 'eq', value: e.data.id }
       },
       editable: true,
       columns: [
@@ -175,31 +180,12 @@ export class EditCargoItem {
       ],
       save: (e) => {
         e.sender.saveChanges();
-        this.cargoRateDataSource.pushUpdate(a as CargoRate[]);
+        // this.cargoRateDataSource.pushUpdate(a as CargoRate[]);
       }
     });
   }
-
-  /**
-  * 展开
-  */
-  detailExpand(e) {
-    let uid = e.masterRow.data('uid');
-    this.rowExpands.add(uid);
-  }
-  /**
-   * 折叠
-   */
-  detailCollapse(e) {
-    let uid = e.masterRow.data('uid');
-    this.rowExpands.delete(uid);
-  }
-
-  dataBound(e) {
-    console.log('dataBound execute :', e);
-    this.rowExpands.forEach(uid => this.customerGrid.expandRow($('tr[data-uid=' + uid + ']')));
-  }
 }
+
 const validationRules = ValidationRules
   .ensure((cargoItem: CargoItem) => cargoItem.cargoName)
   .displayName('货物名称')
