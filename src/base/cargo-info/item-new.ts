@@ -219,7 +219,7 @@ export class NewCargoItem {
               stepStart: { editable: false },
               stepEnd: { editable: false },
               stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, title: '阶梯价' },
-              stepUnit: { editable: false },
+              stepUnitStr: { editable: false },
               remark: { editable: false }
             }
           }
