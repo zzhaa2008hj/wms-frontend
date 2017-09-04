@@ -23,10 +23,11 @@ export class ViewChargeInfo {
               @inject private dictionaryDataService: DictionaryDataService) {
   }
 
-  async activate({id}) {
+  async activate({ id }) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
     this.chargeInfo = await this.chargeInfoService.getChargeInfoAndItems(id);
+    this.chargeInfo.feeTotal = 0;
     if (this.chargeInfo && this.chargeInfo.chargeAuditItemList && this.chargeInfo.chargeAuditItemList.length > 0) {
       this.chargeInfo.chargeAuditItemList.map(item => {
         if (item.startDate) {
@@ -55,9 +56,42 @@ export class ViewChargeInfo {
             }
           });
         }
+        if (chargeCategory.value == 1) {
+          if (item.quantity > 0) {
+            if (item.actualPrice) {
+              item.sumAmount = item.quantity * item.actualPrice * item.storageDay;
+            } else {
+              item.sumAmount = item.quantity * item.storageRate * item.storageDay;
+            }
+          } else if (item.number > 0) {
+            if (item.actualPrice) {
+              item.sumAmount = item.number * item.actualPrice * item.storageDay;
+            } else {
+              item.sumAmount = item.number * item.storageRate * item.storageDay;
+            }
+          }
+        } else {
+          if (item.quantity > 0) {
+            if (item.actualPrice) {
+              item.sumAmount = item.quantity * item.actualPrice;
+            } else {
+              item.sumAmount = item.quantity * item.storageRate;
+            }
+          } else if (item.number > 0) {
+            if (item.actualPrice) {
+              item.sumAmount = item.number * item.actualPrice;
+            } else {
+              item.sumAmount = item.number * item.storageRate;
+            }
+          }
+        }
+        let m = Math.pow(10, 1);
+        item.sumAmount = parseInt((item.sumAmount * m).toString(), 10) / m;
+        this.chargeInfo.feeTotal += item.sumAmount;
       });
     }
   }
+
   cancel() {
     this.router.navigateToRoute("list");
   }
