@@ -261,9 +261,10 @@ const validationRules = ValidationRules
   .ensure((cargoItem: CargoItem) => cargoItem.orderQuantity)
   .displayName('指令数量')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => {
+  .satisfies((x, cargoItem) => {
+    if (cargoItem.orderNumber) return true;
     if (x) return (x <= 1000000000000000 && x > 0);
-    if (x === 0) {return false;}
+    if (x === 0) { return false; }
     return true;
   })
   .withMessage(`\${$displayName} 为无效值(过大或过小)`)
@@ -271,7 +272,8 @@ const validationRules = ValidationRules
   .ensure((cargoItem: CargoItem) => cargoItem.orderNumber)
   .displayName('指令件数')
   .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => {
+  .satisfies((x, cargoItem) => {
+    if (cargoItem.orderQuantity) return true;
     if (x) return (x <= 2147483647 && x > 0);
     if (x === 0) return false;
     return true;
