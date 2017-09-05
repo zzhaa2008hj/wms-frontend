@@ -10,7 +10,7 @@ import { ConstantValues } from "@app/common/models/constant-values";
 import { DialogService } from "ui";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
-import { CargoRateStep } from '@app/base/models/cargo-info';
+// import { CargoRateStep } from '@app/base/models/cargo-info';
 import { uuid } from '@app/utils';
 import { ChargeAuditItem } from '@app/fee/models/charge-audit';
 
@@ -68,10 +68,8 @@ export class NewChargeInfo {
       }
     }
   });
-  cargoRateStepList: CargoRateStep[]; 
+  cargoRateStepList = new Map(); 
   units = [] as DictionaryData[];
-  customerGrid : kendo.ui.Grid;
-  rowExpands = new Set();
   constructor(@inject private router: Router,
               @inject private cargoInfoService: CargoInfoService,
               @newInstance() private validationController: ValidationController,
@@ -185,17 +183,17 @@ export class NewChargeInfo {
             if (unit) {
               rate.stepUnitName = unit.dictDataName;
             }
+            this.cargoRateStepList.set(rate.id, rate);
           });
         }
+        
         // 临时加id，让组件修改时识别
         item.id = uuid();
       });
     }
     
-    
     this.chargeItems = this.chargeItems.concat(items);
     this.chargeItemDataSource.read();
-    
   }
 
   async deleteChargeItem() {
@@ -223,7 +221,6 @@ export class NewChargeInfo {
         );
       }
     }
-    
     this.chargeItemDataSource.read();
   }
 
@@ -251,13 +248,12 @@ export class NewChargeInfo {
   }
 
   detailInit(e) {
-    let a = e.data;
     let detailRow = e.detailRow;
     detailRow.find('.rateSteps').kendoGrid({
       dataSource: {
         transport: {
           read: (options) => {
-            options.success(e.data.cargoRateStepList);
+            options.success([...this.cargoRateStepList.values()]);
           },
           update: (options) => {
             options.success();
@@ -280,6 +276,7 @@ export class NewChargeInfo {
             }
           }
         },
+        filter: { field: 'cargoRateId', operator: 'eq', value: e.data.cargoRateId }
       },
       editable: true,
       columns: [
@@ -293,29 +290,10 @@ export class NewChargeInfo {
       ],
       save: (e) => {
         e.sender.saveChanges();
-        this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
+        // this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
       },
     
     });
-  }
-  /**
-   * 展开
-   */
-  detailExpand(e) {
-    let uid = e.masterRow.data('uid');
-    this.rowExpands.add(uid);
-  }
-  /**
-   * 折叠
-   */
-  detailCollapse(e) {
-    let uid = e.masterRow.data('uid');
-    this.rowExpands.delete(uid);
-  }
-
-  dataBound(e) {
-    console.log('dataBound execute :', e);
-    this.rowExpands.forEach(uid => this.customerGrid.expandRow($('tr[data-uid=' + uid + ']')));
   }
 
 }

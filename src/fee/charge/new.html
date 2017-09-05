@@ -94,7 +94,7 @@
               <a class="btn btn-primary" click.delegate="addChargeItem()">新增结算明细</a>
               <a class="btn btn-danger" click.delegate="deleteChargeItem()">删除结算明细</a>
               <ak-grid k-data-source.bind="chargeItemDataSource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-detail-init.delegate="detailInit($event.detail)"
-              k-on-detail-expand.delegate="detailExpand($event.detail)" k-on-detail-collapse.delegate="detailCollapse($event.detail)" k-on-data-bound.delegate="dataBound($event.detail)">
+              >
                 <ak-col k-field="batchNumber" k-title="批次号" k-width="110px"></ak-col>
                 <ak-col k-field="chargeCategoryName" k-title="费用类别"></ak-col>
                 <ak-col k-field="rateTypeName" k-title="费用类型"></ak-col>

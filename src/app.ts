@@ -86,8 +86,13 @@ export class App {
     this.subscriptions = [
       this.events.subscribe('user:logout', () => this.user.loginVerdict()),
       this.events.subscribe('error', err => this.dialogService.alert(
-        { title: "发生错误", message: err.message, icon: 'error' }))
+        { title: '发生错误', message: err.message, icon: 'error' })),
+      this.events.subscribe('error-403', async err => {
+        await this.dialogService.alert({ title: '发生错误', message: err.message, icon: 'error' });
+        window.location.href = window.location.protocol + '//' + window.location.host;
+      })
     ];
+    
   }
 
   unbind() {
