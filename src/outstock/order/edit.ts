@@ -53,14 +53,14 @@ export class EditOrder {
   validationController: ValidationController;
 
   constructor(private router: Router,
-    private orderService: OrderService,
-    private dictionaryDataService: DictionaryDataService,
-    private messageDialogService: MessageDialogService,
-    private attachmentService: AttachmentService,
-    private uploader: Uploader,
-    private dialogService: DialogService,
-    validationControllerFactory: ValidationControllerFactory,
-    container: Container) {
+              private orderService: OrderService,
+              private dictionaryDataService: DictionaryDataService,
+              private messageDialogService: MessageDialogService,
+              private attachmentService: AttachmentService,
+              private uploader: Uploader,
+              private dialogService: DialogService,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -76,8 +76,8 @@ export class EditOrder {
       this.outstockOrderItems.forEach(ooi => {
         ooi.unitStr = this.units.find(r => r.dictDataCode == ooi.unit).dictDataName;
         let canDelivery = canDeliveries.find(cd => cd.cargoItemId == ooi.cargoItemId);
-        ooi.canQuantity = canDelivery.quantity + ooi.orderQuantity;
-        ooi.canNumber = canDelivery.number + ooi.orderNumber;
+        ooi.canQuantity = ooi.orderQuantity + canDelivery.quantity ? canDelivery.quantity : 0;
+        ooi.canNumber = ooi.orderNumber + canDelivery.number ? canDelivery.number : 0;
       });
       this.orderItems.data(this.outstockOrderItems);
     }

@@ -143,8 +143,16 @@
                                     <input type="number" value.bind="orderNumber & toInt"/>
                                 </ak-template>
                             </ak-col>
-                            <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
-                            <ak-col k-field="remark" k-title="备注"></ak-col>
+                            <ak-col  k-title="箱号">
+                                <ak-template>
+                                    <input type="text" value.bind="containerNumber" />
+                                </ak-template>
+                            </ak-col>
+                            <ak-col  k-title="备注">
+                                <ak-template>
+                                    <input type="text" value.bind="remark" />
+                                </ak-template>
+                            </ak-col>
                         </ak-grid>
                     </div>
                     <div class="controls">
