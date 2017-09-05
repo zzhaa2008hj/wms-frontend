@@ -197,26 +197,26 @@ export class NewOrder {
       this.baseCargoItems.forEach(bci => {
         bcis.push(copy(bci));
       });
+
       for (let oi of orderItems) {
         let ci: CargoItem = bcis.find(bci => bci.id == oi.cargoItemId);
-        if (ci.canQuantity) {
+        if (ci.canQuantity && ci.canQuantity >= 0) {
           ci.canQuantity -= oi.orderQuantity;
-          if (ci.canQuantity < 0) {
-            return this.messageDialogService.alert({
-              title: "新增失败",
-              message: `货物:${ci.cargoName}    累计出库数量超出可出库数量,请检查后重新提交`,
-              icon: 'error'
-            });
-          }
         } else {
+          return this.messageDialogService.alert({
+            title: "新增失败",
+            message: `货物:${ci.cargoName}    累计出库数量超出可出库数量,请检查后重新提交`,
+            icon: 'error'
+          });
+        }
+        if (ci.canNumber && ci.canNumber >= 0) {
           ci.canNumber -= oi.orderNumber;
-          if (ci.canNumber < 0) {
-            return this.messageDialogService.alert({
-              title: "新增失败",
-              message: `货物:${ci.cargoName}    累计出库件数超出可出库件数,请检查后重新提交`,
-              icon: 'error'
-            });
-          }
+        } else {
+          return this.messageDialogService.alert({
+            title: "新增失败",
+            message: `货物:${ci.cargoName}    累计出库件数超出可出库件数,请检查后重新提交`,
+            icon: 'error'
+          });
         }
       }
 
