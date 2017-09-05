@@ -43,6 +43,7 @@ export class App {
       route: '/change-password', name: 'changePassword', title: "修改密码",
       moduleId: './change-password', nav: false
     };
+    config.mapUnknownRoutes('dashboard');
     config.map([dashboard, notice, changePassword]);
     if (this.user.loggedIn) {
       config.options.root = document.querySelector('base').getAttribute('href');
