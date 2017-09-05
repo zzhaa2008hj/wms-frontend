@@ -8,7 +8,6 @@ import { ConstantValues } from "@app/common/models/constant-values";
 import { DialogService } from "ui";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
-import { CargoRateStep } from '@app/base/models/cargo-info';
 import { uuid } from '@app/utils';
 import { ChargeAuditItem } from '@app/fee/models/charge-audit';
 
@@ -63,10 +62,9 @@ export class NewChargeInfo {
       }
     }
   });
-  cargoRateStepList: CargoRateStep[]; 
+  cargoRateStepList = new Map(); 
   units = [] as DictionaryData[];
   customerGrid : kendo.ui.Grid;
-  rowExpands = new Set();
   constructor(@inject private router: Router,
               @newInstance() private validationController: ValidationController,
               @inject private chargeInfoService: ChargeInfoService,
@@ -105,6 +103,7 @@ export class NewChargeInfo {
             if (unit) {
               rate.stepUnitName = unit.dictDataName;
             }
+            this.cargoRateStepList.set(rate.id, rate);
           });
         }
       });
@@ -269,13 +268,12 @@ export class NewChargeInfo {
   }
 
   detailInit(e) {
-    let a = e.data;
     let detailRow = e.detailRow;
     detailRow.find('.rateSteps').kendoGrid({
       dataSource: {
         transport: {
           read: (options) => {
-            options.success(e.data.cargoRateStepList);
+            options.success([...this.cargoRateStepList.values()]);
           },
           update: (options) => {
             options.success();
@@ -311,26 +309,8 @@ export class NewChargeInfo {
       ],
       save: (e) => {
         e.sender.saveChanges();
-        this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
+        // this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
       }
     });
-  }
-  /**
-   * 展开
-   */
-  detailExpand(e) {
-    let uid = e.masterRow.data('uid');
-    this.rowExpands.add(uid);
-  }
-  /**
-   * 折叠
-   */
-  detailCollapse(e) {
-    let uid = e.masterRow.data('uid');
-    this.rowExpands.delete(uid);
-  }
-
-  dataBound() {
-    this.rowExpands.forEach(uid => this.customerGrid.expandRow($('tr[data-uid=' + uid + ']')));
   }
 }
