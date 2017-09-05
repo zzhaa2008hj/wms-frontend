@@ -73,7 +73,6 @@ export class NewCargoFlow {
 
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.getListByBatchValidation();
-    console.log(this.baseCargoInfo);
     this.baseCargoInfo.forEach(bci => {
       let baseCargoInfos = this.baseCargoInfo.filter(b => b.batchNumber == bci.batchNumber);
       if (baseCargoInfos.length > 1) {
