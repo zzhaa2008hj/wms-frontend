@@ -51,18 +51,18 @@ export class NewCargoFlow {
   validationController: ValidationController;
   private dropDownListCargoItem: any;
 
-  constructor( @inject private router: Router,
-    @inject private cargoFlowService: CargoFlowService,
-    @inject private dialogService: DialogService,
-    @inject private cargoInfoService: CargoInfoService,
-    @inject private messageDialogService: MessageDialogService,
-    @inject private codeService: CodeService,
-    @inject private uploader: Uploader,
-    @inject private attachmentService: AttachmentService,
-    @inject private dictionaryDataService: DictionaryDataService,
-    @inject('routerParams') private routerParams: RouterParams,
-    validationControllerFactory: ValidationControllerFactory,
-    container: Container) {
+  constructor(@inject private router: Router,
+              @inject private cargoFlowService: CargoFlowService,
+              @inject private dialogService: DialogService,
+              @inject private cargoInfoService: CargoInfoService,
+              @inject private messageDialogService: MessageDialogService,
+              @inject private codeService: CodeService,
+              @inject private uploader: Uploader,
+              @inject private attachmentService: AttachmentService,
+              @inject private dictionaryDataService: DictionaryDataService,
+              @inject('routerParams') private routerParams: RouterParams,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -73,6 +73,13 @@ export class NewCargoFlow {
 
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.baseCargoInfo = await this.cargoInfoService.getListByBatchValidation();
+    console.log(this.baseCargoInfo);
+    this.baseCargoInfo.forEach(bci => {
+      let baseCargoInfos = this.baseCargoInfo.filter(b => b.batchNumber == bci.batchNumber);
+      if (baseCargoInfos.length > 1) {
+        this.baseCargoInfo.splice(this.baseCargoInfo.indexOf(bci), 1);
+      }
+    });
     this.baseCargoInfo.map(res => res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")");
     if (this.routerParams.infoId) {
       this.hasInfoId = true;
