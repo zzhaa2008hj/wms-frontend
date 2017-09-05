@@ -70,7 +70,7 @@ async function configureRestClient(baseUrl: string, container: Container, config
             return null;
           }
           if (res.statusCode == 403) {
-            eventAggregator.publish('error', new Error(res.content.message));
+            eventAggregator.publish('error-403', new Error(res.content.message));
             return Promise.reject(new Error(res.content.message));
           }
           if (res.statusCode >= 500) {
