@@ -70,6 +70,9 @@ export class NewChargeInfo {
   });
   cargoRateStepList = new Map(); 
   units = [] as DictionaryData[];
+  batchNumberWidget: any;
+  chargeCategoryWidget: any;
+  workInfoCategoryWidget: any;
   constructor(@inject private router: Router,
               @inject private cargoInfoService: CargoInfoService,
               @newInstance() private validationController: ValidationController,
@@ -105,6 +108,10 @@ export class NewChargeInfo {
         this.batchNumbers.data(bs);
       }
     }
+    this.batchNumberWidget.select(0);
+    this.chargeItems = [];
+    this.cargoRateStepList = new Map();
+    this.chargeItemDataSource.read();
   }
 
   validateProperty(propertyName: string) {
@@ -118,6 +125,9 @@ export class NewChargeInfo {
    * 列出申请明细
    */
   async addChargeItem() {
+    this.batchNumber = this.batchNumberWidget.value();
+    this.chargeCategory = this.chargeCategoryWidget.value();
+    this.rateType = this.workInfoCategoryWidget.value();
     if (!this.batchNumber || !this.chargeCategory) {
       return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类别", icon: 'error' });
     }
@@ -197,6 +207,9 @@ export class NewChargeInfo {
   }
 
   async deleteChargeItem() {
+    this.batchNumber = this.batchNumberWidget.value();
+    this.chargeCategory = this.chargeCategoryWidget.value();
+    this.rateType = this.workInfoCategoryWidget.value();
     if (!this.batchNumber || !this.chargeCategory) {
       return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类别", icon: 'error' });
     }

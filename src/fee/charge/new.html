@@ -61,10 +61,9 @@
              <div class="form-group"> 
               <label class="form-label">批次号*</label>
                <div class="controls"> 
-                <ak-drop-down-list k-value.two-way="batchNumber" k-data-text-field="value" k-data-value-field="key"
-                  k-data-source.bind="batchNumbers" k-enabled.two-way="!disabled">
+                <ak-drop-down-list k-data-text-field="value" k-data-value-field="key"
+                  k-data-source.bind="batchNumbers" k-widget.two-way="batchNumberWidget" k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="batchNumber & validate ">
                </div> 
              </div> 
           </div>
@@ -72,7 +71,7 @@
              <div class="form-group"> 
               <label class="form-label">费用类别*</label>
                <div class="controls"> 
-                <ak-drop-down-list k-value.two-way="chargeCategory"  k-option-label="请选择..." k-data-text-field="text"
+                <ak-drop-down-list k-option-label="请选择..." k-data-text-field="text" k-widget.two-way="chargeCategoryWidget"
                   k-data-value-field="value" k-data-source.bind="chargeCategoryVos" k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
                </div> 
@@ -82,7 +81,7 @@
             <div class="form-group"> 
               <label class="form-label">费用类型*</label>
                <div class="controls"> 
-                <ak-drop-down-list k-value.two-way="rateType"  k-option-label="请选择..." k-data-text-field="text"
+                <ak-drop-down-list k-option-label="请选择..." k-data-text-field="text" k-widget.two-way="workInfoCategoryWidget"
                   k-data-value-field="value" k-data-source.bind="workInfoCategorys" k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
                </div> 
