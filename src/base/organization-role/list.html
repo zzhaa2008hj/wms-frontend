@@ -1,7 +1,9 @@
 <template>
-  <div class="row">
-    <div class="col-md-9"><a class="btn btn-small btn-success" click.delegate="add()" required-permissions="C000020">新增</a></div>
-    <div class="input-group"><input class="form-control" type="text" value.bind="name" placeholder="请输入名称">
+  <div class="controlbar">
+    <a class="btn btn-small btn-success" click.delegate="add()" required-permissions="C000020">新增</a>
+    <div class="spacer"></div>
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" value.bind="name" placeholder="请输入名称">
       <div class="input-group-addon" click.delegate="find()"><em class="fa fa-search"></em></div>
     </div>
   </div>

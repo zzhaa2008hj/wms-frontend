@@ -1,5 +1,7 @@
 <template>
-    <button class="btn btn-success btn-small" click.delegate="add()" required-permissions="C000009">新增</button>
+    <div class="controlbar">
+        <button class="btn btn-success btn-small" click.delegate="add()" required-permissions="C000009">新增</button>
+    </div>
     <ak-tree-list k-data-source.bind="dataSource" k-editable.bind="true">
         <ak-tree-col k-field="categoryName" k-expandable.bind="true" k-title="种类/品牌名称" k-width.bind="280"></ak-tree-col>
         <ak-tree-col k-field="specs" k-title="规格" k-width.bind="150"></ak-tree-col>
