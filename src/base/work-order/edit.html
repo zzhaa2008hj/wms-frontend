@@ -1,137 +1,101 @@
 <template>
-    <require from="./edit-area"></require>
-    <h4>作业单</h4>
-    <div class="row column-seperation">
-        <div class="col-md-12">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-label">客户入库货物</div>
-                    <div class="controls">
-                        <ak-drop-down-list class="form-control"
-                                           k-option-label="请选择入库货物..."
-                                           k-data-text-field="cargoName"
-                                           k-data-value-field="id"
-                                           k-value.two-way="workOrder.businessId"
-                                           k-data-source.bind="cargoItemsSource"
-                                           k-on-change.delegate="changeCargo()"
-                                           k-on-close.delegate="validateWorkOrder('businessId')"
-                                           k-enabled.two-way="!disabled"
-                                           style="width: 60%">
-                        </ak-drop-down-list>
-                        <input class="form-control" type="hidden" value.bind="workOrder.businessId & validate ">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-label">作业单号</div>
-                    <div class="controls">
-                        <input type="text" class="form-control" style="width: 60%"
-                               value.bind="workOrder.workOrderNumber & validate" disabled.bind="disabled">
-                    </div>
-                </div>
-            </div>
+  <require from="./edit-area"></require>
+  <h4>作业单</h4>
+  <div class="row column-seperation">
+    <div class="col-md-12">
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="form-label">客户入库货物</div>
+          <div class="controls">
+            <ak-drop-down-list class="form-control" k-option-label="请选择入库货物..." k-data-text-field="cargoName" k-data-value-field="id"
+              k-value.two-way="workOrder.businessId" k-data-source.bind="cargoItemsSource" k-on-change.delegate="changeCargo()"
+              k-on-close.delegate="validateWorkOrder('businessId')" k-enabled.two-way="!disabled" style="width: 60%">
+            </ak-drop-down-list>
+            <input class="form-control" type="hidden" value.bind="workOrder.businessId & validate ">
+          </div>
         </div>
-        <div class="col-md-12">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-label">作业日期</div>
-                    <div class="controls">
-                        <input ak-datepicker="k-value.two-way : workOrder.workDate & validate" style="width: 60%"
-                               type="text"
-                               class="form-control">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-label">车牌号</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="plateNumber"
-                                     k-data-value-field="plateNumber"
-                                     k-value.two-way="workOrder.plateNumber"
-                                     k-widget.two-way="selectedVehicle"
-                                     k-data-source.bind="vehicleSource"
-                                     k-on-change.delegate="validateWorkOrder('plateNumber')"
-                                     k-on-close.delegate="onSelectPlateNumber($event.detail)"
-                                     k-enabled.two-way="!disabled"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                        <input class="form-control" type="hidden" value.bind="workOrder.plateNumber & validate">
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="form-label">作业单号</div>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 60%" value.bind="workOrder.workOrderNumber & validate" disabled.bind="disabled">
+          </div>
         </div>
-        <div class="col-md-12">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-label">司机名称</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="driverName"
-                                     k-data-value-field="driverName"
-                                     k-value.two-way="workOrder.driverName"
-                                     k-data-source.bind="vehicleSource"
-                                     k-on-change.delegate="validateWorkOrder('driverName')"
-                                     k-on-close.delegate="validateWorkOrder('driverName')"
-                                     k-enabled.two-way="!disabled"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                        <input class="form-control" type="hidden" value.bind="workOrder.driverName & validate">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-label">身份证号</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="driverIdentityNumber"
-                                     k-data-value-field="driverIdentityNumber"
-                                     k-value.two-way="workOrder.driverIdentityNumber"
-                                     k-data-source.bind="vehicleSource"
-                                     k-on-change.delegate="validateWorkOrder('driverIdentityNumber')"
-                                     k-on-close.delegate="validateWorkOrder('driverIdentityNumber')"
-                                     k-enabled.two-way="!disabled"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                        <input class="form-control" type="hidden"
-                               value.bind="workOrder.driverIdentityNumber & validate">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-label">电话</div>
-                    <div class="controls">
-                        <ak-combobox class="form-control"
-                                     k-placeholder="请选择/手动输入"
-                                     k-data-text-field="phoneNumber"
-                                     k-data-value-field="phoneNumber"
-                                     k-value.two-way="workOrder.phoneNumber"
-                                     k-data-source.bind="vehicleSource"
-                                     k-on-change.delegate="validateWorkOrder('phoneNumber')"
-                                     k-on-close.delegate="validateWorkOrder('phoneNumber')"
-                                     k-enabled.two-way="!disabled"
-                                     style="width: 60%;">
-                        </ak-combobox>
-                        <input class="form-control" type="hidden" value.bind="workOrder.phoneNumber & validate">
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <h4>作业过程</h4>
-    <div class="row column-seperation">
-        <work-area-edit work-order-id.bind="workOrder.id" business-id.bind="workOrder.businessId"
-                        disabled.bind="disabled" view-model.ref="editWorArea"></work-area-edit>
+    <div class="col-md-12">
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="form-label">作业日期</div>
+          <div class="controls">
+            <input ak-datepicker="k-value.two-way : workOrder.workDate & validate" style="width: 60%" type="text" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="form-label">车牌号</div>
+          <div class="controls">
+            <ak-combobox class="form-control" k-placeholder="请选择/手动输入" k-data-text-field="plateNumber" k-data-value-field="plateNumber"
+              k-value.two-way="workOrder.plateNumber" k-widget.two-way="selectedVehicle" k-data-source.bind="vehicleSource"
+              k-on-change.delegate="validateWorkOrder('plateNumber')" k-on-close.delegate="onSelectPlateNumber($event.detail)"
+              k-enabled.two-way="!disabled" style="width: 60%;">
+            </ak-combobox>
+            <input class="form-control" type="hidden" value.bind="workOrder.plateNumber & validate">
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="btn btn-primary" style="float: right" disabled.bind="disabled" click.trigger="save()">保存</button>
-    <button class="btn btn-white" style="float: right" disabled.bind="disabled" click.trigger="cancel()">取消</button>
+    <div class="col-md-12">
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="form-label">司机名称</div>
+          <div class="controls">
+            <ak-combobox class="form-control" k-placeholder="请选择/手动输入" k-data-text-field="driverName" k-data-value-field="driverName"
+              k-value.two-way="workOrder.driverName" k-data-source.bind="vehicleSource" k-on-change.delegate="validateWorkOrder('driverName')"
+              k-on-close.delegate="validateWorkOrder('driverName')" k-enabled.two-way="!disabled" style="width: 60%;">
+            </ak-combobox>
+            <input class="form-control" type="hidden" value.bind="workOrder.driverName & validate">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="form-label">身份证号</div>
+          <div class="controls">
+            <ak-combobox class="form-control" k-placeholder="请选择/手动输入" k-data-text-field="driverIdentityNumber" k-data-value-field="driverIdentityNumber"
+              k-value.two-way="workOrder.driverIdentityNumber" k-data-source.bind="vehicleSource" k-on-change.delegate="validateWorkOrder('driverIdentityNumber')"
+              k-on-close.delegate="validateWorkOrder('driverIdentityNumber')" k-enabled.two-way="!disabled" style="width: 60%;">
+            </ak-combobox>
+            <input class="form-control" type="hidden" value.bind="workOrder.driverIdentityNumber & validate">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="form-label">电话</div>
+          <div class="controls">
+            <ak-combobox class="form-control" k-placeholder="请选择/手动输入" k-data-text-field="phoneNumber" k-data-value-field="phoneNumber"
+              k-value.two-way="workOrder.phoneNumber" k-data-source.bind="vehicleSource" k-on-change.delegate="validateWorkOrder('phoneNumber')"
+              k-on-close.delegate="validateWorkOrder('phoneNumber')" k-enabled.two-way="!disabled" style="width: 60%;">
+            </ak-combobox>
+            <input class="form-control" type="hidden" value.bind="workOrder.phoneNumber & validate">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h4>作业过程</h4>
+  <div class="row column-seperation">
+    <div class="col-md-12">
+      <work-area-edit work-order-id.bind="workOrder.id" business-id.bind="workOrder.businessId" disabled.bind="disabled" view-model.ref="editWorArea"></work-area-edit>
+    </div>
+  </div>
+  <div class="pull-right">
+    <button class="btn btn-primary" disabled.bind="disabled" click.trigger="save()">保存</button>
+    <button class="btn btn-white" disabled.bind="disabled" click.trigger="cancel()">取消</button>
+  </div>
 </template>
