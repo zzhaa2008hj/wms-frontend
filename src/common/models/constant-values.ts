@@ -52,7 +52,7 @@ export class ConstantValues {
       title: "生效中"
     }, {
       stage: 5,
-      title: "已过期"
+      title: "已失效"
     }];
   }
 

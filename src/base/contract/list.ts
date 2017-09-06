@@ -8,6 +8,7 @@ import { VerifyRecordService, VerifyRecordCriteria } from '@app/common/services/
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { ConstantValues } from '@app/common/models/constant-values';
 import { Router } from 'aurelia-router';
+import { Contract } from '@app/base/models/contract';
 
 @autoinject
 export class ContractList {
@@ -103,5 +104,31 @@ export class ContractList {
     let selectedRow = grid.select();
     let dataItem = grid.dataItem(selectedRow);
     this.contractId = dataItem.id;
+  }
+
+  checkDate(dataItem) {
+    let contract = dataItem as Contract;
+    if (contract.startTime.getTime() <= new Date().getTime()) {
+      return true;
+    }
+    return false;
+  }
+
+  async changeStatus(id, status) {
+    let msg = "";
+    if (status == 4) {
+      msg = "确定使该合同生效吗？";
+    } else {
+      msg = "确定使该合同失效吗？";
+    }
+    let confirm = await this.messageDialogService.confirm({ title: "提示", message: msg });
+    if (confirm) {
+      try {
+        await this.contractService.changeStatus(id, status);
+        this.dataSource.read();
+      } catch (err) {
+        await this.messageDialogService.alert({ title: "错误:", message: err.message, icon: 'error' });
+      }
+    }
   }
 }

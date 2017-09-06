@@ -3,7 +3,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { fixDate, handleResult, Query, RestClient } from "@app/utils";
 import { ContractVo } from "@app/base/models/contractVo";
 import { WorkInfo } from "@app/base/models/work-info";
-import {Rate, RateStep} from "@app/base/models/rate";
+import { Rate, RateStep } from "@app/base/models/rate";
 import { Organization } from "@app/base/models/organization";
 import { ChangeHistory } from '@app/common/models/change-history';
 /**
@@ -107,14 +107,14 @@ export class ContractService {
     return this.http.post(`base/contract`, contractVo).then(handleResult);
   }
 
-    /**
-     * 编辑保存
-     * @param contractVo
-     * @returns {Promise<void>}
-     */
-    updateContract(contractVo: ContractVo): Promise<void> {
-        return this.http.put(`base/contract/${contractVo.contract.id}`, contractVo).then(handleResult);
-    }
+  /**
+   * 编辑保存
+   * @param contractVo
+   * @returns {Promise<void>}
+   */
+  updateContract(contractVo: ContractVo): Promise<void> {
+    return this.http.put(`base/contract/${contractVo.contract.id}`, contractVo).then(handleResult);
+  }
 
   /**
    * 删除合同
@@ -127,5 +127,11 @@ export class ContractService {
 
   audit(id: string, status: number): Promise<void> {
     return this.http.put(`base/contract/verifyContract/${id}?status=${status}`, '').then(handleResult);
+  }
+
+  changeStatus(id: string, status: number): Promise<void> {
+    return this.http
+      .createRequest(`base/contract/changeStatus/${id}`).withParams({status: status}).asPut().send()
+      .then(handleResult);
   }
 }
