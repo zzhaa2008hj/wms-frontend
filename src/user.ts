@@ -33,8 +33,7 @@ export class UserSession {
      */
     async loginVerdict() {
         if (!this.loggedIn) {
-            let url = `${this.loginUrl}?appKey=${this.appKey}&appType=${this.appType}&returnUrl=${encodeURIComponent(window.location.href)}`;
-            window.location.href = url;
+            this.login();
         } else {
             let res = await this.http.get('/rest/account/getAccountByToken');
             this.userInfo = res.content;
@@ -78,7 +77,10 @@ export class UserSession {
         this.delCookie(USER_TOKEN)
         this.events.publish('user:logout');
     }
-
+    async login(){
+        let url = `${this.loginUrl}?appKey=${this.appKey}&appType=${this.appType}&returnUrl=${encodeURIComponent(window.location.href)}`;
+        window.location.href = url;
+    }
     async changePassword(originalPassword: string, newPassword: string): Promise<void> {
         let url = `/rest/account//change-password/?originalPassword=${originalPassword}&newPassword=${newPassword}`;
         await this.http.put(url, {}).then(handleResult);
