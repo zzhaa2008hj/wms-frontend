@@ -1,7 +1,9 @@
 <template>
-  <div class="row">
-    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new" required-permissions="C000022">新增机构</a></div>
-    <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入机构名称/联系人/联系人手机">
+  <div class="controlbar">
+    <a class="btn btn-sm btn-small btn-success" route-href="route: new" required-permissions="C000022">新增机构</a>
+    <div class="spacer"></div>
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" value.bind="searchName" placeholder="请输入机构名称/联系人/联系人手机">
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
   </div>

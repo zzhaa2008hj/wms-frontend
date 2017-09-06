@@ -1,11 +1,8 @@
 <template>
-  <div class="page-title">
-    <h3>系统操作日志</h3>
-  </div>
-  <div class="row">
-    <div class="col-md-9"></div>
-    <div class="col-md-3">
-      <div class="input-group"><input class="form-control" type="text" value.bind="realName" placeholder="请输入操作人名称">
+  <div class="controlbar">
+    <div class="spacer"></div>
+    <div class="input-group col-md-3">
+        <input class="form-control" type="text" value.bind="realName" placeholder="请输入操作人名称">
         <div class="input-group-addon" click.delegate="search()"><em class="fa fa-search"></em></div>
       </div>
     </div>

@@ -1,32 +1,20 @@
 <template>
-  <div class="row m-b-5">
-    <div class="col-md-3">
-      <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000001">新增结算申请</a>
-      <a class="btn btn-small btn-success" route-href="route: new-audit" required-permissions="C000029">手动录入账单</a>
-      <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="R000041">审核记录</button>
-    </div>
-    <div class="col-md-9">
-      <div class="input-group left">
-        <input type="text" style="width: 220px;" value.bind="chargeInfoCriteria.keywords" placeholder="输入代理商或客户名称">
-      </div>
-      <div class="input-group left m-l-15">
-        <input class="form-control" ak-datepicker="k-value.two-way: chargeInfoCriteria.beginDate; k-widget.two-way: startDatePicker"
-          k-on-change.delegate="startChange()" placeholder="请输入开始时间">
-      </div>
-      <div class="input-group left m-l-15">
-        <input class="form-control" ak-datepicker="k-value.two-way: chargeInfoCriteria.endDate; k-widget.two-way: endDatePicker"
-          k-on-change.delegate="endChange()" placeholder="请输入结束时间" />
-      </div>
-      <div class="input-group left m-l-15">
-        <ak-drop-down-list k-option-label="请选择阶段" k-data-text-field="text" k-data-value-field="value" k-value.two-way="chargeInfoCriteria.stage"
-          k-data-source.bind="chargeStages">
-        </ak-drop-down-list>
-      </div>
-      <div class="input-group left m-l-5">
-        <div class="input-group-addon search" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></div>
-        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em>
-        </div>
-      </div>
+  <div class="controlbar">
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000001">新增结算申请</a>
+    <a class="btn btn-small btn-success" route-href="route: new-audit" required-permissions="C000029">手动录入账单</a>
+    <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="R000041">审核记录</button>
+    <div class="spacer"></div>
+    <div class="input-group">
+      <input type="text" style="width: 200px;" value.bind="chargeInfoCriteria.keywords" placeholder="输入代理商或客户名称">
+      <input class="form-control" style="width:200px;" ak-datepicker="k-value.two-way: chargeInfoCriteria.beginDate; k-widget.two-way: startDatePicker"
+        k-on-change.delegate="startChange()" placeholder="请输入开始时间">
+      <input class="form-control" style="width:200px;" ak-datepicker="k-value.two-way: chargeInfoCriteria.endDate; k-widget.two-way: endDatePicker"
+        k-on-change.delegate="endChange()" placeholder="请输入结束时间" />
+      <ak-drop-down-list class="m-l-5" style="width:150px;" k-option-label="请选择阶段" k-data-text-field="text" k-data-value-field="value"
+        k-value.two-way="chargeInfoCriteria.stage" k-data-source.bind="chargeStages">
+      </ak-drop-down-list>
+      <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+      <a class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></a>
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
