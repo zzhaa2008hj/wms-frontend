@@ -141,8 +141,6 @@ export class NewOrder {
     let customer = await this.organizationService.getOrganization(dataItem.customerId);
     if (customer) {
       this.order.paymentUnit = customer.name;
-      this.order.contactPerson = customer.contactPerson;
-      this.order.contactNumber = customer.contactMobile;
     }
   }
 
@@ -199,6 +197,13 @@ export class NewOrder {
       });
 
       for (let oi of orderItems) {
+        if(!oi.orderQuantity && !oi.orderNumber){
+          return this.messageDialogService.alert({
+            title: "新增失败",
+            message: `货物:${oi.cargoName}    请填写出库数量或件数,且不可都为0!`,
+            icon: 'error'
+          });
+        }
         let ci: CargoItem = bcis.find(bci => bci.id == oi.cargoItemId);
         if (ci.canQuantity >= 0) {
           ci.canQuantity -= oi.orderQuantity;
@@ -219,7 +224,6 @@ export class NewOrder {
             });
           }
         }
-
       }
 
       let quantitySum = 0;

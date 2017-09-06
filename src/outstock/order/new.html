@@ -190,7 +190,11 @@
                   <input type="text" value.bind="phoneNumber  & validate"/>
                 </ak-template>
               </ak-col>
-              <ak-col k-field="remark" k-title="备注"></ak-col>
+              <ak-col k-title="备注">
+                <ak-template>
+                  <input type="text" value.bind="remark  & validate"/>
+                </ak-template>
+              </ak-col>
               <ak-col k-title="操作" k-command.bind="['destroy']"></ak-col>
             </ak-grid>
           </div>
