@@ -76,8 +76,8 @@
                 required-permissions="U000037">作业开始
         </button>
         <a class="btn btn-sm btn-small" route-href="route: work-order; params.bind:{id:id, type:2}"
-           if.bind="stage == 13" required-permissions="R000036">添加作业信息</a>
-        <button class="btn btn-small" if.bind="stage == 13" click.delegate="changeStage({id:id,stage:14})"
+           if.bind="stage == 13 || stage == 15" required-permissions="R000036">添加作业信息</a>
+        <button class="btn btn-small" if.bind="stage == 13 || stage == 15" click.delegate="changeStage({id:id,stage:14})"
                 required-permissions="U000038">作业完成
         </button>
         <a class="btn btn-small btn-primary" if.bind="stage == 14" route-href="route: verify-work; params.bind:{id}"
