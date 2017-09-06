@@ -1,19 +1,14 @@
 <template>
-  <div class="page-title">
-    <h3>费收扣量</h3>
-  </div>
-  <div class="row">
-    <div class="col-md-1">
-      <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000011">新增</a>
-    </div>
-    <div class="col-md-2 input-group">
+  <div class="controlbar">
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000011">新增</a>
+    <div class="spacer"></div>
+    <div class="col-md-3 input-group">
       <input class="form-control" type="text" value.bind="batchNumber" placeholder="请输入批次号">
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
   </div>
 
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
-           k-pageable.bind="pageable">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
     <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
     <ak-col k-field="cargoName" k-title="货名"></ak-col>
     <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
@@ -29,14 +24,11 @@
     </ak-col>
     <ak-col k-title="操作">
       <ak-template>
-        <button class="btn btn-small btn btn-primary" click.delegate="editCargoDistrain($this)"
-                required-permissions="U000008">修改
+        <button class="btn btn-small btn btn-primary" click.delegate="editCargoDistrain($this)" required-permissions="U000008">修改
         </button>
-        <button class="btn btn-small btn-success" if.bind="status == 0" click.delegate="updateStatus(id, 1)"
-                required-permissions="U000010">启用
+        <button class="btn btn-small btn-success" if.bind="status == 0" click.delegate="updateStatus(id, 1)" required-permissions="U000010">启用
         </button>
-        <button class="btn btn-small btn-danger" if.bind="status == 1" click.delegate="updateStatus(id, 0)"
-                required-permissions="U000010">停用
+        <button class="btn btn-small btn-danger" if.bind="status == 1" click.delegate="updateStatus(id, 0)" required-permissions="U000010">停用
         </button>
       </ak-template>
     </ak-col>

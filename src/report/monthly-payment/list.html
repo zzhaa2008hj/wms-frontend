@@ -1,16 +1,10 @@
 <template>
-  <div class="page-title">
-    <h3>每月付费统计</h3>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-md-offset-6">
-      <div class="input-group left">
-        <input type="text" value.bind="criteria.customerName" placeholder="请输入装卸单位名称">
-      </div>
-      <div class="input-group left">
-        <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
-        <div class="input-group-addon search" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
-      </div>
+  <div class="controlbar">
+    <div class="spacer"></div>
+    <div class="input-group">
+      <input type="text" value.bind="criteria.customerName" placeholder="请输入装卸单位名称">
+      <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+      <a class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></a>
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">

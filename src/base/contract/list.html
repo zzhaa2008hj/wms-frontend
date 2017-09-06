@@ -1,11 +1,11 @@
 <template>
-  <div class="row">
-    <div class="col-md-9">
-      <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000018">新增合同</a>
-      <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="R000051">审核记录</button>
-      <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="R000052">修改记录</a>
-    </div>
-    <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入合同编号或客户名称">
+  <div class="controlbar">
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000018">新增合同</a>
+    <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="R000051">审核记录</button>
+    <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="R000052">修改记录</a>
+    <div class="spacer"></div>
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" value.bind="searchName" placeholder="请输入合同编号或客户名称">
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
   </div>
