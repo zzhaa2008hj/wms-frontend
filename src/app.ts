@@ -91,9 +91,15 @@ export class App {
       this.events.subscribe('error-403', async err => {
         await this.dialogService.alert({ title: '发生错误', message: err.message, icon: 'error' });
         window.location.href = window.location.protocol + '//' + window.location.host;
+      }),
+      this.events.subscribe('error-401', async err => {
+        await this.dialogService.alert({ title: '发生错误', message: err, icon: 'error' });
+        // let url = this.config.loginParam.loginUrl + "?appKey=" + this.config.loginParam.appKey + "&appType=" + this.config.loginParam.appType + "&returnUrl=" + encodeURIComponent(window.location.href);
+        // window.location.href = url;
+        this.user.login();
       })
     ];
-    
+
   }
 
   unbind() {
