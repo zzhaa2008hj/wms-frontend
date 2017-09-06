@@ -234,9 +234,11 @@ export function replaceAll(s: string, sv: string, rv: string): string {
 }
 
 export function getWeekDay(date?: Date) {
-  let weekDay = moment(new Date()).format('dddd');
+  let weekDay = "";
   if (date) {
     weekDay = moment(date).format('dddd');
+  } else {
+    weekDay = moment(new Date()).format('dddd');
   }
   switch (weekDay) {
     case 'Monday': weekDay = '星期一';
