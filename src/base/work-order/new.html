@@ -8,7 +8,7 @@
           <div class="form-label">客户入库货物</div>
           <div class="controls">
             <ak-drop-down-list class="form-control" k-option-label="请选择入库货物..." k-data-text-field="cargoName" k-data-value-field="id"
-              k-value.two-way="workOrder.businessId" k-data-source.bind="cargoItemsSource" k-on-change.delegate="changeCargo()"
+              k-value.two-way="workOrder.businessId" k-data-source.bind="cargoItemsSource" k-on-change.delegate="changeCargo()" k-widget.two-way = "selectedCargo"
               k-on-close.delegate="validateWorkOrder('businessId')" k-enabled.two-way="!disabled" style="width: 60%">
             </ak-drop-down-list>
             <input class="form-control" type="hidden" value.bind="workOrder.businessId & validate ">
@@ -91,7 +91,7 @@
   </div>
   <h4>作业过程</h4>
   <div class="row column-seperation">
-    <work-area instock-cargo-id.bind="workOrder.businessId" disabled.bind="disabled" view-model.ref="newWorkArea"></work-area>
+    <work-area instock-cargo-id.bind="workOrder.businessId" instock-cargo-unit.bind="cargoUnit" disabled.bind="disabled" view-model.ref="newWorkArea"></work-area>
   </div>
   <button class="btn btn-primary" style="float: right" disabled.bind="disabled" click.trigger="save()">保存</button>
   <button class="btn btn-white" style="float: right" disabled.bind="disabled" click.trigger="cancel()">取消</button>
