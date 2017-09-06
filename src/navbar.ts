@@ -4,6 +4,8 @@ import { Router } from "aurelia-router";
 import { UserSession } from "@app/user";
 import { MessageService } from "@app/base/services/message";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
+import * as moment from 'moment';
+import { getWeekDay } from '@app/utils';
 
 @customElement('ui-navbar')
 @containerless
@@ -11,7 +13,9 @@ import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 export class NavBar {
 
   unreadNum;
-
+  userName: string;
+  dateTime: string;
+  weekDay: string;
   subScription: Subscription;
 
     constructor(private events: EventAggregator,
@@ -19,6 +23,9 @@ export class NavBar {
                 private messageService: MessageService,
                 private user: UserSession) {
         this.unreadNum = this.updateUnreadNum();
+        this.userName = this.user.userInfo.employee.name;
+        this.dateTime = moment(new Date()).format("YYYY-MM-DD");
+        this.weekDay = getWeekDay();
 
         let w = window as any;
         let lodop = w.CLODOP;

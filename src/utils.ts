@@ -8,6 +8,8 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { v4 } from 'uuid';
 import { MenuAndModule } from '@app/user';
 import { DialogService, MessageDialogService } from "ui";
+import * as moment from 'moment';
+
 export function copy<T extends Object>(obj: T): T {
   return Object.assign({}, obj);
 }
@@ -229,6 +231,32 @@ export function replaceAll(s: string, sv: string, rv: string): string {
     s = replaceAll(s, sv, rv);
   }
   return s;
+}
+
+export function getWeekDay(date?: Date) {
+  let weekDay = moment(new Date()).format('dddd');
+  if (date) {
+    weekDay = moment(date).format('dddd');
+  }
+  switch (weekDay) {
+    case 'Monday': weekDay = '星期一';
+      break;
+    case 'Tuesday': weekDay = '星期二';
+      break;
+    case 'Wednesday': weekDay = '星期三';
+      break;
+    case 'Thursday': weekDay = '星期四';
+      break;
+    case 'Friday': weekDay = '星期五';
+      break;
+    case 'Saturday': weekDay = '星期六';
+      break;
+    case 'Sunday': weekDay = '星期日';
+      break;
+    default:
+      break;
+  }
+  return weekDay;
 }
 
 export interface TreeOptions {

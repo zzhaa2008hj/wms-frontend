@@ -1,6 +1,7 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { RestClient, handleResult } from "@app/utils";
 import { autoinject } from "aurelia-framework";
+import { Employee } from '@app/base/models/employee';
 
 const USER_TOKEN = 'user-token';
 
@@ -94,6 +95,7 @@ export class UserInfo {
     organizationId: string;
     printAddress: string;
     employeeId: string;
+    employee: Employee;
     appId: string;
     menuVoList: MenuAndModule[];
 }
