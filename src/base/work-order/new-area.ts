@@ -22,6 +22,10 @@ export class NewWorArea {
   @observable
   disabled: boolean;
 
+  @bindable
+  @observable
+  instockCargoUnit: string;
+
   newWorkItem: NewWorkItem;
 
   datasource: kendo.data.DataSource;
@@ -147,7 +151,8 @@ export class NewWorArea {
       await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" });
       return;
     }
-    let res = this.datasource.add({});
+    alert(this.instockCargoUnit);
+    let res = this.datasource.add({unit: this.instockCargoUnit});
 
     let itemDataSource = new kendo.data.DataSource({
       schema: {
