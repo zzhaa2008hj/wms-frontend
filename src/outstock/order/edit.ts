@@ -76,8 +76,8 @@ export class EditOrder {
       this.outstockOrderItems.forEach(ooi => {
         ooi.unitStr = this.units.find(r => r.dictDataCode == ooi.unit).dictDataName;
         let canDelivery = canDeliveries.find(cd => cd.cargoItemId == ooi.cargoItemId);
-        ooi.canQuantity = ooi.orderQuantity + canDelivery.quantity ? canDelivery.quantity : 0;
-        ooi.canNumber = ooi.orderNumber + canDelivery.number ? canDelivery.number : 0;
+        ooi.canQuantity = ooi.orderQuantity + canDelivery.quantity;
+        ooi.canNumber = ooi.orderNumber + canDelivery.number;
       });
       this.orderItems.data(this.outstockOrderItems);
     }
