@@ -1,31 +1,26 @@
 <template>
-    <div class="page-title">
-        <h3>作业统计列表</h3>
+  <div class="controlbar">
+    <div class="spacer"></div>
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" value.bind="searchName" placeholder="请输入批次号/流水号">
+      <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
-    <div class="row">
-        <div class="col-md-offset-9 col-md-3">
-            <div class="input-group">
-                <input class="form-control" type="text" value.bind="searchName" placeholder="请输入批次号/流水号">
-                <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-            </div>
-        </div>
-    </div>
-    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
-             k-pageable.bind="pageable">
-        <ak-col k-field="workOrderCategory" k-title="类别">
-            <ak-template>${formatCategory(workOrderCategory)}</ak-template>
-        </ak-col>
-        <!-- <ak-col k-field="businessId" k-title="流水号"></ak-col> -->
-        <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
-        <ak-col k-field="workOrderSum" k-title="作业单数"></ak-col>
-        <ak-col k-field="quantity" k-title="作业数量"></ak-col>
-        <ak-col k-field="number" k-title="作业件数"></ak-col>
-        <ak-col k-field="unit" k-title="单位"></ak-col>
-        <ak-col k-title="操作">
-            <ak-template>
-                <a class="btn btn-white btn-small"
-                   route-href="route: view; params.bind: {id: id,workOrderCategory: workOrderCategory, businessId: businessId}" required-permissions="R000064">详情</a>
-            </ak-template>
-        </ak-col>
-    </ak-grid>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="workOrderCategory" k-title="类别">
+      <ak-template>${formatCategory(workOrderCategory)}</ak-template>
+    </ak-col>
+    <!-- <ak-col k-field="businessId" k-title="流水号"></ak-col> -->
+    <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+    <ak-col k-field="workOrderSum" k-title="作业单数"></ak-col>
+    <ak-col k-field="quantity" k-title="作业数量"></ak-col>
+    <ak-col k-field="number" k-title="作业件数"></ak-col>
+    <ak-col k-field="unit" k-title="单位"></ak-col>
+    <ak-col k-title="操作">
+      <ak-template>
+        <a class="btn btn-white btn-small" route-href="route: view; params.bind: {id: id,workOrderCategory: workOrderCategory, businessId: businessId}"
+          required-permissions="R000064">详情</a>
+      </ak-template>
+    </ak-col>
+  </ak-grid>
 </template>

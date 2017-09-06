@@ -1,0 +1,46 @@
+.controlbar {
+  display: flex;
+  background-color: #f2f2f2;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid #c9c9c9;
+  border-bottom: 0;
+  align-items: center;
+  padding: 5px 10px;
+  height: 50px;
+}
+
+
+
+.controlbar .btn, .controlbar .btn-group {
+  margin-left: 10px;
+}
+
+.controlbar .btn.btn-white {
+  border-color: #c1c1c1;
+}
+
+.controlbar .btn.btn-white:hover {
+  border-color: #b3b3b3;
+}
+
+.controlbar .form-control[type="text"], 
+.controlbar .input-group-addon {
+    border-color: #c9c9c9;
+}
+
+.controlbar .form-control[type="text"]:focus {
+  background-color: #fdfdfd;
+}
+
+.controlbar .input-group-addon:hover {
+  background-color: #f1f1f1;
+}
+
+.controlbar :first-child {
+  margin-left: 0;
+}
+
+.controlbar .spacer {
+  flex: 1 auto;
+}

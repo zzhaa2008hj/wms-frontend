@@ -1,47 +1,29 @@
 <template>
-    <require from="./storage-info"></require>
-    <div class="page-title">
-        <h3>库存统计</h3>
+  <require from="./storage-info"></require>
+  <div class="controlbar">
+    <div class="spacer"></div>
+    <div class="input-group">
+      <ak-drop-down-list k-data-text-field="name" k-data-value-field="id" k-value.two-way="search.type" k-data-source.bind="types"
+        k-on-change.delegate="typeChange()">
+      </ak-drop-down-list>
+      <ak-drop-down-list k-data-text-field="name" k-data-value-field="id" k-value.two-way="search.warehouseId" k-data-source.bind="warehourseSource"
+        k-option-label="请选择库区">
+      </ak-drop-down-list>
+      <input class="form-control" type="text" style="width: 200px" value.bind="search.cargoCategoryName" placeholder="请输入货类名称">
+        <input if.bind="search.type==2" class="form-control" style="width: 200px" ak-datepicker=" k-value.two-way : search.searchDate;k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM yyyy';k-widget.two-way: startDatePicker;"
+          placeholder="请输入时间" />
+        <input if.bind="search.type==1" class="form-control" style="width: 200px" type="text" ak-datepicker="k-value.two-way : search.searchDate; k-widget.two-way: endDatePicker; k-format.bind:'yyyy-MM-dd'"
+          placeholder="请输入时间">
+      <div class="btn btn-small" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
-    <div class="row">
-        <div class="col-md-10 col-md-offset-2">
-            <div class="input-group left m-l-15">
-                <ak-drop-down-list k-data-text-field="name" k-data-value-field="id" k-value.two-way="search.type"
-                                   k-data-source.bind="types" k-on-change.delegate="typeChange()">
-                </ak-drop-down-list>
-            </div>
-            <div class="input-group left m-l-15">
-                <ak-drop-down-list k-data-text-field="name" k-data-value-field="id" k-value.two-way="search.warehouseId"
-                                   k-data-source.bind="warehourseSource" k-option-label="请选择库区">
-                </ak-drop-down-list>
-            </div>
-            <div class="input-group left m-l-15">
-                <input class="form-control" type="text" value.bind="search.cargoCategoryName" placeholder="请输入货类名称">
-            </div>
-            <div class="input-group left m-l-15" if.bind="search.type==2">
-                <input class="form-control"
-                       ak-datepicker=" k-value.two-way : search.searchDate;k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM yyyy';k-widget.two-way: startDatePicker;"
-                       style="width: 100%"
-                       placeholder="请输入时间"/>
-            </div>
-            <div class="input-group left m-l-15" if.bind="search.type==1">
-                <input class="form-control" type="text"
-                       ak-datepicker="k-value.two-way : search.searchDate; k-widget.two-way: endDatePicker; k-format.bind:'yyyy-MM-dd'"
-                       placeholder="请输入时间">
-            </div>
-            <div class="input-group left">
-                <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
-            </div>
-        </div>
-    </div>
-    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
-             k-pageable.bind="pageable">
-        <ak-col k-field="warehouseName" k-title="库存名称"></ak-col>
-        <ak-col k-field="storageNumber" k-title="库存数量"></ak-col>
-        <ak-col k-field="storageQuantity" k-title="库存件数"></ak-col>
-        <ak-col k-field="makeDate" k-title="统计日期"></ak-col>
-        <ak-template for="detailTemplate">
-            <storage-info parent-uid.bind="$this.uid"></storage-info>
-        </ak-template>
-    </ak-grid>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="warehouseName" k-title="库存名称"></ak-col>
+    <ak-col k-field="storageNumber" k-title="库存数量"></ak-col>
+    <ak-col k-field="storageQuantity" k-title="库存件数"></ak-col>
+    <ak-col k-field="makeDate" k-title="统计日期"></ak-col>
+    <ak-template for="detailTemplate">
+      <storage-info parent-uid.bind="$this.uid"></storage-info>
+    </ak-template>
+  </ak-grid>
 </template>
