@@ -44,6 +44,12 @@
     }
   },
   "routes": [{
+      "route": "/base/org-info",
+      "name": "organization-info",
+      "title": "机构信息",
+      "moduleId": "./base/org-infos/index",
+      "group": "group1"
+    },{
       "route": "/base/attachments",
       "name": "attachments",
       "title": "附件管理",
