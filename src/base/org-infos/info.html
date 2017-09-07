@@ -90,9 +90,9 @@
         </div>
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-primary" click.delegate="setPrintAddress()" if.bind="!edit">打印设置</button>
-            <button class="btn btn-warning" click.delegate="openEdit()" if.bind="!edit">修改</button>
-            <button class="btn btn-primary" type="submit" if.bind="edit">保存</button>
+            <button class="btn btn-primary" click.delegate="setPrintAddress()" required-permissions="U000063" if.bind="!edit">打印设置</button>
+            <button class="btn btn-warning" click.delegate="openEdit()" required-permissions="U000064" if.bind="!edit">修改</button>
+            <button class="btn btn-primary" type="submit" required-permissions="U000064" if.bind="edit">保存</button>
             <a class="btn" click.trigger="cancel()" if.bind="edit">取消</a>
           </div>
         </div>
