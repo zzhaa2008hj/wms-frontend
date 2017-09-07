@@ -21,7 +21,7 @@ export async function configure(aurelia: Aurelia) {
   let config = await loadConfig();
   aurelia.container.registerInstance('config', config);
   let apiBaseUrlOverride = localStorage.getItem('api.baseUrl');
-  await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container, config);
+  await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container);
 
   aurelia.container.registerInstance(Uploader, new Uploader({ baseUrl: config.upload.baseUrl, method: 'PUT' }));
 
