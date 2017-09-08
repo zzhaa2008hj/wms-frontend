@@ -11,7 +11,7 @@
           </li>
         </ul>
         <a route-href="route: dashboard">
-          <img src="/assets/images/logo.png" class="logo" alt="" width="106" height="21">
+          <img src="/assets/images/logo.png" class="logo" alt="" width="199" height="49">
         </a>
       </div>
       <!-- END RESPONSIVE MENU TOGGLER -->
@@ -30,7 +30,7 @@
           <ul class="nav quick-section">
             <li class="quicklinks m-r-5">
               <span class="dropdown-toggle pull-right" style="margin-top: 7px;">
-                今天是 ${dateTime} ${weekDay},  欢迎您: ${userName}
+                ${dateTime} ${weekDay}
               </span>
             </li>
             <li class="quicklinks m-r-5">
@@ -56,6 +56,11 @@
                   <a href="javascript:void(0)" click.trigger="logout()"><i class="material-icons">power_settings_new</i> 退出登录</a>
                 </li>
               </ul>
+            </li>
+            <li class="quicklinks m-r-5">
+              <span class="dropdown-toggle pull-right" style="margin-top: 7px;">
+                ${userName}
+              </span>
             </li>
           </ul>
         </div>
