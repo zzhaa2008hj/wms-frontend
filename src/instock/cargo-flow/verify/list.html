@@ -87,8 +87,8 @@
               <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
               <ak-col k-field="plateNumber" k-title="车牌号"></ak-col>
               <ak-col k-field="driverName" k-title="司机名称"></ak-col>
-              <ak-col k-field="driverIdentityNumber" k-title="身份证号"></ak-col>
-              <ak-col k-field="phoneNumber" k-title="电话"></ak-col>
+              <ak-col k-field="driverIdentityNumber" k-title="身份证号" k-width.bind="150"></ak-col>
+              <ak-col k-field="phoneNumber" k-title="电话" k-width.bind="100"></ak-col>
               <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
               <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
               <ak-col k-field="quantity" k-title="货物数量"></ak-col>
@@ -101,8 +101,9 @@
       </div>
       <div class="form-actions">
         <div class="pull-right">
-          <button class="btn btn-primary btn-small " click.delegate="check(1)">审核通过</button>
-          <button class="btn btn-danger btn-small" click.delegate="check(0)">审核不通过</button>
+          <button class="btn btn-primary" click.delegate="check(1)">审核通过</button>
+          <button class="btn btn-danger" click.delegate="check(0)">审核不通过</button>
+          <button class="btn" click.delegate="goBack()">返回</button>
         </div>
       </div>
     </div>

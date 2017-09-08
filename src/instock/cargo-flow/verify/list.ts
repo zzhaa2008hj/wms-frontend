@@ -68,4 +68,7 @@ export class VerifyWarehouse {
     this.router.navigateBack();
   }
 
+  goBack() {
+    this.router.navigateToRoute("cargoFlow");
+  }
 }
