@@ -66,6 +66,8 @@ export interface CargoInfo {
   enteringMode: number;
 
   cargoItems: CargoItem[];
+
+  cargoTypeStr: string;
 }
 
 /**

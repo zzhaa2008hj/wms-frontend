@@ -33,7 +33,7 @@ export class CargoFlowList {
   };
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
-  existEntering = false;  
+  existEntering = false;
   private dataSource: kendo.data.DataSource;
 
   constructor(@inject private cargoFlowService: CargoFlowService,
@@ -336,7 +336,7 @@ export class CargoFlowList {
     let selectedRow = grid.select();
     this.selectedItem = grid.dataItem(selectedRow);
   }
-  
+
   requiredPermissions(sourceCode: string) {
     return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
   }

@@ -4,7 +4,7 @@ import { CargoItem } from "@app/base/models/cargo-info";
 import { Order, OrderItem } from '@app/outstock/models/order';
 import { ValidVo } from "@app/outstock/models/validVo";
 import { WorkStatistics } from "@app/instock/models/work";
-import { AttachmentMap } from "@app/common/models/attachment";
+import { Attachment, AttachmentMap } from "@app/common/models/attachment";
 
 /**
  * 查询条件
@@ -123,6 +123,10 @@ export class OrderService {
   async getItemsAndWorkOrders(orderId: string): Promise<Order> {
     let res = await this.http.get(`/outstock/order/${orderId}/work-order`);
     return res.content;
+  }
+
+  customerConfirm(id: string,  list: Attachment[]): Promise<void> {
+    return this.http.put(`/outstock/order/${id}/customerConfirm`, list).then(handleResult);
   }
 }
 
