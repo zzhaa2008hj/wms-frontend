@@ -148,11 +148,14 @@ export class NewOrder {
     this.baseCargoItems = await this.orderService.listBaseCargoItems(this.order.cargoInfoId);
     //可出库数量和件数
     let canDeliveries = await this.orderService.getValidOutstockNum(this.order.cargoInfoId);
-    this.baseCargoItems.forEach(bci => {
+    this.baseCargoItems = this.baseCargoItems.filter(bci => {
       let canDelivery = canDeliveries.find(cd => cd.cargoItemId == bci.id);
+      if (canDelivery.quantity <= 0 && canDelivery.number <= 0) return false;
       bci.canQuantity = canDelivery.quantity;
       bci.canNumber = canDelivery.number;
+      return true;
     });
+    // this.baseCargoItems = this.baseCargoItems.filter(bci => bci.canQuantity > 0 || bci.canNumber > 0);
     this.outstockCargoItems.data(this.baseCargoItems);
   }
 
@@ -197,7 +200,7 @@ export class NewOrder {
       });
 
       for (let oi of orderItems) {
-        if(!oi.orderQuantity && !oi.orderNumber){
+        if (!oi.orderQuantity && !oi.orderNumber) {
           return this.messageDialogService.alert({
             title: "新增失败",
             message: `货物:${oi.cargoName}    请填写出库数量或件数,且不可都为0!`,

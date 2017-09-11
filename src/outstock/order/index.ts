@@ -28,7 +28,8 @@ export class Order {
         title: '副总审核' },
       { route: '/work-order/:id/:type', name: 'work-order', moduleId: '/dist/base/work-order/index', title: "作业列表" },
       { route: '/:id/confirm-business', name: 'confirm-business', moduleId: './confirm-business/index', title: '商务确认' },
-      { route: '/:id/orderItem/view', name: 'outstock-orderItem-view', moduleId: './item/view', title: '出库单详情' }
+      { route: '/:id/orderItem/view', name: 'outstock-orderItem-view', moduleId: './item/view', title: '出库单详情' },
+      { route: '/:id/confirm', name: 'customer-confirm', moduleId: './confirm', title: '客户确认' }
     ]);
     this.router = router;
   }

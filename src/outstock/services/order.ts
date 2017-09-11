@@ -124,6 +124,7 @@ export class OrderService {
     let res = await this.http.get(`/outstock/order/${orderId}/work-order`);
     return res.content;
   }
+
 }
 
 @autoinject

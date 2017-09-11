@@ -1,16 +1,16 @@
 import { DictionaryData } from '../../base/models/dictionary';
 import { DictionaryDataService } from '../../base/services/dictionary';
-
 import { autoinject } from "aurelia-dependency-injection";
 import { Organization } from '@app/base/models/organization';
 import { OrganizationService } from '@app/base/services/organization';
 import * as moment from 'moment';
-import { Order, OrderItem } from '@app/outstock/models/order';
+import { Order, OrderItem, Vehicle } from '@app/outstock/models/order';
 import { OrderService } from '@app/outstock/services/order';
 import { addHeader, print } from "@app/common/services/print-tool";
 
 @autoinject
 export class OrderWork {
+  vehicles: Vehicle[];
   outstockOrder: Order;
   organization: Organization;
   units = [] as DictionaryData[];
@@ -43,6 +43,9 @@ export class OrderWork {
     if (this.outstockOrder.stage == 11) {
       this.outstockOrderService.updateStage(params.id, 12);
     }
+
+    this.vehicles = this.outstockOrder.outstockVehicles;
+    this.vehicles.forEach(v => Object.assign(v, { index: this.vehicles.indexOf(v) + 1 }));
   }
 
   async printOrderWork() {
