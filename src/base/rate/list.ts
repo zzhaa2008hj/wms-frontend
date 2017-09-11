@@ -48,15 +48,11 @@ export class List {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.rateService.queryRates(this.rate).map(res => {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
-        let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
         let rateType = this.rateTypes.find(d => res.rateType == d.value);
         let chargeCategory = this.chargeCategory.find(d => d.type == res.chargeCategory);
         if (unit) {
           res.unit = unit.dictDataName;
-        }
-        if (warehouseType) {
-          res.warehouseType = warehouseType.dictDataName;
         }
         if (warehouseCategory) {
           res.warehouseCategory = warehouseCategory.dictDataName;

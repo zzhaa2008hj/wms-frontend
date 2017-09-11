@@ -16,9 +16,6 @@
     <ak-drop-down-list class="m-l-5" k-value.two-way="rate.rateType" k-option-label="请选择作业类别" k-data-text-field="text" k-data-value-field="value"
       k-data-source.bind="rateTypes" style="width:130px;">
     </ak-drop-down-list>
-    <ak-drop-down-list class="m-l-5" k-value.two-way="rate.warehouseType" k-option-label="请选择库位性质" k-data-text-field="dictDataName"
-      k-data-value-field="dictDataCode" k-data-source.bind="warehouseType" style="width:130px;">
-    </ak-drop-down-list>
     <ak-drop-down-list class="m-l-5" k-value.two-way="rate.warehouseCategory" k-option-label="请选择库位类别" k-data-text-field="dictDataName"
       k-data-value-field="dictDataCode" k-data-source.bind="warehouseCategory" style="width:130px;">
     </ak-drop-down-list>
@@ -36,7 +33,6 @@
     <ak-col k-field="unit" k-title="计量单位"></ak-col>
     <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
     <ak-col k-field="workName" k-title="作业内容" k-width.bind="180"></ak-col>
-    <ak-col k-field="warehouseType" k-title="库位性质"></ak-col>
     <ak-col k-field="cargoCategoryName" k-title="货类" k-width.bind="180"></ak-col>
     <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
     <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
