@@ -1,5 +1,4 @@
 import { ValidationRules } from 'aurelia-validation';
-
 export interface Organization {
   /**
    * 机构id
@@ -65,17 +64,16 @@ export interface Organization {
    * 备注
    */
   remark: string;
+    /**
+     * 开户行
+     */
+    bankInfo:string ;
+    /**
+     * 账户
+     */
+    bankNo : string ;
 
   printAddress: string;
-
-  /**
-   * 开户行
-   */
-  bankInfo: string ;
-  /**
-   * 账户
-   */
-  bankNo: string ;
 }
 
 export const orgValidationRules = ValidationRules
