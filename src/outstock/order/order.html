@@ -35,6 +35,12 @@
             <td colspan="2">${outstockOrder.outstockDateStr}</td>
           </tr>
           <tr>
+            <td align="center">车队联系人:</td>
+            <td colspan="4">${outstockOrder.contactPerson}</td>
+            <td align="center" colspan="2">车队联系人联系方式:</td>
+            <td colspan="2">${outstockOrder.contactNumber}</td>
+          </tr>
+          <tr>
             <td align="center">序号</td>
             <td align="center">货名</td>
             <td align="center">货类</td>
@@ -67,6 +73,27 @@
             <td align="center">${outstockOrder.quantitySum}</td>
             <td align="center">${outstockOrder.numberSum}</td>
           </tr>
+          <tr>
+            <td align="center" colspan="9">车辆信息</td>
+          </tr>
+          <tr>
+            <td align="center">序号</td>
+            <td align="center" colspan="2">车牌号</td>
+            <td align="center">司机名称</td>
+            <td align="center" colspan="2">身份证号</td>
+            <td align="center" colspan="2">电话</td>
+            <td align="center">备注</td>
+          </tr>
+          <template repeat.for="vehicle of vehicles">
+            <tr>
+              <td align="center">${vehicle.index}</td>
+              <td align="center" colspan="2">${vehicle.plateNumber}</td>
+              <td align="center">${vehicle.driverName}</td>
+              <td align="center" colspan="2">${vehicle.driverIdentityNumber}</td>
+              <td align="center" colspan="2">${vehicle.phoneNumber}</td>
+              <td align="center">${vehicle.remark}</td>
+            </tr>
+          </template>
           <tr>
             <td align="right">制单人&nbsp;&nbsp;</td>
             <td colspan="2" align="center">&nbsp;${outstockOrder.createAccount}&nbsp;</td>

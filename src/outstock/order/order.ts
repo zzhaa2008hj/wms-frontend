@@ -1,16 +1,16 @@
 import { DictionaryData } from '../../base/models/dictionary';
 import { DictionaryDataService } from '../../base/services/dictionary';
-
 import { autoinject } from "aurelia-dependency-injection";
 import { Organization } from '@app/base/models/organization';
 import { OrganizationService } from '@app/base/services/organization';
 import * as moment from 'moment';
-import { Order, OrderItem } from '@app/outstock/models/order';
+import { Order, OrderItem, Vehicle } from '@app/outstock/models/order';
 import { OrderService } from '@app/outstock/services/order';
 import { addHeader, print } from "@app/common/services/print-tool";
 
 @autoinject
 export class OrderWork {
+  vehicles: Vehicle[];
   outstockOrder: Order;
   organization: Organization;
   units = [] as DictionaryData[];
@@ -24,6 +24,7 @@ export class OrderWork {
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.outstockOrder = await this.outstockOrderService.viewWorkOrder(params.id);
+    // this.outstockOrder = await this.outstockOrderService.getOrderById(params.id);
     this.outstockOrder.outstockDateStr = moment(this.outstockOrder.outstockDate).format("YYYY-MM-DD");
     this.outstockOrder.createTimeStr = moment(this.outstockOrder.createTime).format("YYYY-MM-DD HH:mm:ss");
     this.organization = await this.organizationService.getOrganization(this.outstockOrder.orgId);
@@ -43,6 +44,9 @@ export class OrderWork {
     if (this.outstockOrder.stage == 11) {
       this.outstockOrderService.updateStage(params.id, 12);
     }
+
+    this.vehicles = this.outstockOrder.outstockVehicles;
+    this.vehicles.forEach(v => Object.assign(v, { index: this.vehicles.indexOf(v) + 1 }));
   }
 
   async printOrderWork() {
