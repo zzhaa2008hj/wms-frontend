@@ -8,6 +8,7 @@ import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { Order } from '@app/outstock/models/order';
+import { fixDate } from '@app/utils';
 
 @autoinject
 export class DetailsCargoInfo {
@@ -60,6 +61,8 @@ export class DetailsCargoInfo {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
+    this.cargoInfo.warehouseTypeStr = this.warehouseTypes
+      .find(d => d.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
     this.cargoItems.map(res => res.unitStr = this.units.find(d => d.dictDataCode == res.unit).dictDataName);
     //todo
@@ -78,6 +81,7 @@ export class DetailsCargoInfo {
       if (unit) {
         res.unit = unit.dictDataName;
       }
+      fixDate(res, "outstockDate");
     });
     //todo
     //货权转移、货位转移

@@ -1,12 +1,10 @@
 <template>
   <require from="./recipients"></require>
-  <div class="page-title">
-    <h3>站内信管理</h3>
-  </div>
-  <div class="row">
-    <div class="col-md-9"><a class="btn btn-sm btn-small btn-success" route-href="route: new" required-permissions="C000012">新增</a></div>
-
-    <div class="input-group"><input class="form-control" type="text" value.bind="searchName" placeholder="请输入标题">
+  <div class="controlbar">
+    <a class="btn btn-sm btn-small btn-success" route-href="route: new" required-permissions="C000012">新增</a>
+    <div class="spacer"></div>
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" value.bind="searchName" placeholder="请输入标题">
       <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
     </div>
   </div>

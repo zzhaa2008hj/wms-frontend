@@ -30,6 +30,8 @@ export class NewWorkOrder {
   cargoFlow = {} as CargoFlow;
   order = {} as Order;
   newWorkArea: NewWorArea;
+  selectedCargo: any;
+  cargoUnit: string;
 
   disabled: boolean = false;
 
@@ -187,6 +189,7 @@ export class NewWorkOrder {
   }
 
   changeCargo() {
+    this.cargoUnit = this.selectedCargo.dataItem().unit;
     this.vehicleSource.read();
   }
 

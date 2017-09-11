@@ -18,12 +18,16 @@ export class RoleList {
     pageSizes: true,
     buttonCount: 10
   };
+  roleTypes = [{value: "customize", text: "自定义角色"}, {value: "internal", text: "内建角色"}];
 
   constructor(@inject private roleService: OrganizationRoleService,
               @inject private dialogService: DialogService,
               @inject private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.roleService.queryRolePage(this.name),
+      query: () => this.roleService.queryRolePage(this.name).map(res => {
+        res.roleType = this.roleTypes.find(d => d.value == res.roleType).text;
+        return res;
+      }),
       pageSize: 10
     });
   }

@@ -29,6 +29,23 @@ export class App {
   async activate() {
     console.debug(this.n);
     console.debug(this.n1);
+
+    this.subscriptions = [
+      this.events.subscribe('user:logout', () => this.user.loginVerdict()),
+      this.events.subscribe('error', err => this.dialogService.alert(
+        { title: '发生错误', message: err.message, icon: 'error' })),
+      this.events.subscribe('error-403', async err => {
+        await this.dialogService.alert({ title: '发生错误', message: err.message, icon: 'error' });
+        window.location.href = window.location.protocol + '//' + window.location.host;
+      }),
+      this.events.subscribe('error-401', async err => {
+        await this.dialogService.alert({ title: '发生错误', message: err, icon: 'error' });
+        // let url = this.config.loginParam.loginUrl + "?appKey=" + this.config.loginParam.appKey + "&appType=" + this.config.loginParam.appType + "&returnUrl=" + encodeURIComponent(window.location.href);
+        // window.location.href = url;
+        this.user.login();
+      })
+    ];
+
     await this.user.loginVerdict();
     if (!this.user.loggedIn) return;
   }
@@ -83,20 +100,7 @@ export class App {
       }, []);
   }
 
-  bind() {
-    this.subscriptions = [
-      this.events.subscribe('user:logout', () => this.user.loginVerdict()),
-      this.events.subscribe('error', err => this.dialogService.alert(
-        { title: '发生错误', message: err.message, icon: 'error' })),
-      this.events.subscribe('error-403', async err => {
-        await this.dialogService.alert({ title: '发生错误', message: err.message, icon: 'error' });
-        window.location.href = window.location.protocol + '//' + window.location.host;
-      })
-    ];
-    
-  }
-
-  unbind() {
+  deactivate() {
     this.subscriptions.forEach(s => s.dispose());
     this.subscriptions = null;
   }

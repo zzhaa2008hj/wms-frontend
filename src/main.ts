@@ -21,7 +21,7 @@ export async function configure(aurelia: Aurelia) {
   let config = await loadConfig();
   aurelia.container.registerInstance('config', config);
   let apiBaseUrlOverride = localStorage.getItem('api.baseUrl');
-  await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container, config);
+  await configureRestClient(apiBaseUrlOverride || config.api.baseUrl, aurelia.container);
 
   aurelia.container.registerInstance(Uploader, new Uploader({ baseUrl: config.upload.baseUrl, method: 'PUT' }));
 
@@ -41,7 +41,7 @@ async function loadConfig() {
  *
  * @param container DI容器
  */
-async function configureRestClient(baseUrl: string, container: Container, config: any) {
+async function configureRestClient(baseUrl: string, container: Container) {
   let eventAggregator: EventAggregator = container.get(EventAggregator);
   let http: HttpClient = new class extends RestClient { };
   eventAggregator.subscribe('user:login', user => {
@@ -65,9 +65,8 @@ async function configureRestClient(baseUrl: string, container: Container, config
       .withInterceptor({
         responseError: res => {
           if (res.statusCode == 401) {
-            let url = config.loginParam.loginUrl + "?appKey=" + config.loginParam.appKey + "&appType=" + config.loginParam.appType + "&returnUrl=" + encodeURIComponent(window.location.href);
-            window.location.href = url;
-            return null;
+            eventAggregator.publish('error-401', new Error(res.content.message));
+            return Promise.reject(new Error(res.content.message));
           }
           if (res.statusCode == 403) {
             eventAggregator.publish('error-403', new Error(res.content.message));

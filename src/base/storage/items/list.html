@@ -1,24 +1,13 @@
 <template>
-  <div class="page-title">
-    <h3>${title}的库存明细</h3>
-  </div>
-  <div class="row">
-    <div class="col-md-1">
-      <div class="input-group">
-        <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000044">新增</a>
-      </div>
+  <div class="controlbar">
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000044">新增</a>
+    <div class="spacer"></div>
+    <div class="col-md-2">
+      <input type="text" class="form-control" value.bind="selectedWarehouseName" readonly placeholder="库区选择">
     </div>
-    <div class="col-md-offset-8 col-md-3">
-      <div class="input-group">
-        <input type="text" class="form-control" value.bind="selectedWarehouseName" readonly placeholder="库区选择">
-        <div class="input-group-btn">
-          <a class="btn" click.delegate="selected()">选择</a>
-        </div>
-        <div class="input-group-addon" click.delegate="select()"><em class="fa fa-search"></em></div>
-        <div class="input-group-addon" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
-      </div>
-
-    </div>
+      <a class="btn btn-small" type="button" click.delegate="selected()">选择</a>
+      <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+      <a class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></a>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
     <ak-col k-field="customerName" k-title="客户名称"></ak-col>

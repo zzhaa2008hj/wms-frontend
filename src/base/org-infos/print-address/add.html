@@ -1,0 +1,17 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-body>
+      <div class="form-group">
+        <label class="form-label">打印地址</label>
+        <span class="help"></span>
+        <div class="controls">
+          <input type="text" class="form-control" value.bind="organization.printAddress">
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="save()">保存</button>
+      <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
