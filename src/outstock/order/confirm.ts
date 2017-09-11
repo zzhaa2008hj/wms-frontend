@@ -7,7 +7,6 @@ import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo } from "@app/base/models/cargo-info";
 import * as moment from 'moment';
 import { addHeader, print } from "@app/common/services/print-tool";
-import { NewUpload } from "@app/fee/charge/upload";
 import { DialogService } from "ui";
 import { Router } from "aurelia-router";
 
@@ -56,11 +55,7 @@ export class Detail {
   async customerConfirm() {
     this.disabled = true;
     try {
-      //上传客户确认信息
-      let result = await this.dialogService.open({ viewModel: NewUpload, model: this.order.id, lock: true })
-        .whenClosed();
-      if (result.wasCancelled) return;
-      await this.orderService.customerConfirm(this.order.id, result.output);
+      await this.orderService.updateStage(this.order.id, 1);
       await this.dialogService.alert({ title: "提示", message: "操作成功！" });
       this.router.navigateToRoute('list');
     } catch (err) {
