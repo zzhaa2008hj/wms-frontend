@@ -7,6 +7,7 @@ import { ContractVo } from '@app/base/models/contractVo';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
+import * as moment from 'moment';
 
 @autoinject
 export class ViewContract {
@@ -23,6 +24,7 @@ export class ViewContract {
   warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
+  contractTypes = ConstantValues.ContractTypes;
 
   /**
    * 基础阶梯费率
@@ -30,8 +32,8 @@ export class ViewContract {
   baseRateStep: RateStep[];
 
   constructor(private router: Router,
-    private dictionaryDataService: DictionaryDataService,
-    private contractService: ContractService) {
+              private dictionaryDataService: DictionaryDataService,
+              private contractService: ContractService) {
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -55,6 +57,11 @@ export class ViewContract {
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.contractVo = await this.contractService.getContract(id);
+    this.contractVo.contract.contractTypeStr = this.contractTypes
+      .find(d => d.type == this.contractVo.contract.contractType).name;
+    this.contractVo.contract.startTimeStr = moment(this.contractVo.contract.startTime).format("YYYY-MM-DD HH:mm:ss");
+    this.contractVo.contract.endTimeStr = moment(this.contractVo.contract.endTime).format("YYYY-MM-DD HH:mm:ss");
+    this.contractVo.contract.signDateStr = moment(this.contractVo.contract.signDate).format("YYYY-MM-DD");
     if (this.contractVo.contract.contractType == 3) {
       //库区信息
       this.warehouses = await this.contractService.getWarehouses();
