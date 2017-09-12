@@ -37,8 +37,8 @@
             <td align="center" nowrap>提货司机</td>
             <td align="center" nowrap>车号</td>
             <td align="center" nowrap>提货日期</td>
+            <td align="center" nowrap>实出件数</td>            
             <td align="center" nowrap>实出重量</td>
-            <td align="center" nowrap>实出件数</td>
           </tr>
           <template repeat.for="item of outstockInventoryVo.outstockInventoryItems">
             <tr>
@@ -49,8 +49,8 @@
               <td align="center" nowrap>${item.driver}</td>
               <td align="center" nowrap>${item.plateNumber}</td>
               <td align="center" nowrap>${item.outstockDateStr}</td>
+              <td align="center" nowrap>${item.actualOutNumber}</td>              
               <td align="center" nowrap>${item.actualOutQuantity}</td>
-              <td align="center" nowrap>${item.actualOutNumber}</td>
             </tr>
           </template>
           <tr>

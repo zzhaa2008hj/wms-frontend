@@ -19,12 +19,12 @@
     <ak-col k-field="date" k-title="日期"></ak-col>
     <ak-col k-field="cargoName" k-title="货名"></ak-col>
     <ak-col k-field="businessName" k-title="业务名称"></ak-col>
+    <ak-col k-field="number" k-title="件数"></ak-col>    
     <ak-col k-field="quantity" k-title="数量"></ak-col>
-    <ak-col k-field="number" k-title="件数"></ak-col>
     <ak-col k-field="unit" k-title="计量单位"></ak-col>
     <ak-col k-field="warehouse" k-title="库区"></ak-col>
+    <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>    
     <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
-    <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
   </ak-grid>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable"
     if.bind="search.type==2">
@@ -33,10 +33,10 @@
     <ak-col k-field="date" k-title="日期"></ak-col>
     <ak-col k-field="cargoName" k-title="货名"></ak-col>
     <ak-col k-field="businessName" k-title="业务名称"></ak-col>
+    <ak-col k-field="number" k-title="件数"></ak-col>    
     <ak-col k-field="quantity" k-title="数量"></ak-col>
-    <ak-col k-field="number" k-title="件数"></ak-col>
     <ak-col k-field="unit" k-title="计量单位"></ak-col>
+    <ak-col k-field="storageNumber" k-title="库存件数"></ak-col>    
     <ak-col k-field="storageQuantity" k-title="库存数量"></ak-col>
-    <ak-col k-field="storageNumber" k-title="库存件数"></ak-col>
   </ak-grid>
 </template>

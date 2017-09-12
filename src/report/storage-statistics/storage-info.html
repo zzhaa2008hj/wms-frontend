@@ -1,10 +1,9 @@
 <template>
-    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
-             k-pageable.bind="pageable">
-        <ak-col k-field="warehouseName" k-title="库存名称"></ak-col>
-        <ak-col k-field="cargoCategoryName" k-title="货类名称"></ak-col>
-        <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
-        <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
-        <ak-col k-field="makeDate" k-title="统计日期"></ak-col>
-    </ak-grid>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="warehouseName" k-title="库存名称"></ak-col>
+    <ak-col k-field="cargoCategoryName" k-title="货类名称"></ak-col>
+    <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+    <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
+    <ak-col k-field="makeDate" k-title="统计日期"></ak-col>
+  </ak-grid>
 </template>
