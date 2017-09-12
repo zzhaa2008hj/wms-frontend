@@ -31,20 +31,20 @@
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="form-label">指令数量*</label>
-                    <span class="help"></span>
-                    <div class="form-controls">
-                      <input type="number" step="0.01" class="form-control" value.bind="cargoItem.orderQuantity & toFloat & validate">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
                     <label class="form-label">指令件数</label>
                     <span class="help"></span>
                     <div class="form-controls">
                       <input type="number" class="form-control" value.bind="cargoItem.orderNumber & toInt & validate">
                     </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">指令数量*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <input type="number" step="0.01" class="form-control" value.bind="cargoItem.orderQuantity & toFloat & validate">
                   </div>
                 </div>
               </div>

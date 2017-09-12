@@ -20,11 +20,11 @@
         
         <ak-grid k-data-source.bind="dataSourceCargoItem">
           <ak-col k-field="cargoItem.cargoName" k-title="货物名称"></ak-col>
-          <ak-col k-field="cargoItem.orderQuantity" k-title="指令数量"></ak-col>
           <ak-col k-field="cargoItem.orderNumber" k-title="指令件数"></ak-col>
+          <ak-col k-field="cargoItem.orderQuantity" k-title="指令数量"></ak-col>
           <ak-col k-field="cargoItem.unitStr" k-title="计量单位"></ak-col>
-          <ak-col k-field="storageInfo.inventoryQuantity" k-title="库存数量"></ak-col>
           <ak-col k-field="storageInfo.inventoryNumber" k-title="库存件数"></ak-col>
+          <ak-col k-field="storageInfo.inventoryQuantity" k-title="库存数量"></ak-col>
           <ak-col k-title="操作">
             <ak-template>
               <button class="btn btn-success btn-small" click.delegate="addCargoDistrain($this)">添加费收扣量</button>
@@ -39,8 +39,8 @@
               <input style="border: none;background-color:transparent;" value.bind="cargoName" readonly/>
             </ak-template>
           </ak-col>
-          <ak-col k-field="quantity" k-title="扣押数量"></ak-col>
           <ak-col k-field="number" k-title="扣押件数"></ak-col>
+          <ak-col k-field="quantity" k-title="扣押数量"></ak-col>
           <ak-col k-field="unitName" k-title="单位">
           </ak-col>
           <ak-col k-field="remark" k-title="备注"></ak-col>

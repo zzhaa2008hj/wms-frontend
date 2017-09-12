@@ -4,13 +4,7 @@
     </div>
     <div class="grid-body no-border"><br>
       <form submit.delegate="addNewRate()">
-        <div class="form-group">
-          <label class="form-label">费用类别*</label>
-          <span class="help"></span>
-          <ak-drop-down-list k-value.two-way="rate.chargeCategory & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
-            k-data-source.bind="chargeCategory" k-on-change.delegate="chargeCategoryChanged()">
-          </ak-drop-down-list>
-        </div>
+
         <div class="form-group">
           <label class="form-label">收付费*</label>
           <span class="help"></span>
@@ -33,13 +27,13 @@
             <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择...</a>
           </div>
         </div>
-        <!-- <div class="form-group">
-          <label class="form-label">品牌</label>
+        <div class="form-group">
+          <label class="form-label">费用类别*</label>
           <span class="help"></span>
-          <div class="controls">
-            <input type="text" class="form-control" value.bind="rate.cargoSubCategoryName">
-          </div>
-        </div> -->
+          <ak-drop-down-list k-value.two-way="rate.chargeCategory & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                             k-data-source.bind="chargeCategory" k-on-change.delegate="chargeCategoryChanged()">
+          </ak-drop-down-list>
+        </div>
         <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3">
           <div class="form-group">
             <label class="form-label">作业类别*</label>
