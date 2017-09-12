@@ -31,15 +31,6 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label">合计数量*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control" value.bind="instockOrderVo.order.sumQuantity" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
                             <label class="form-label">合计件数*</label>
                             <span class="help"></span>
                             <div class="controls">
@@ -47,6 +38,15 @@
                             </div>
                         </div>
                     </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-label">合计数量*</label>
+                      <span class="help"></span>
+                      <div class="controls">
+                        <input type="text" class="form-control" value.bind="instockOrderVo.order.sumQuantity" readonly>
+                      </div>
+                    </div>
+                  </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="form-label">计量单位*</label>
@@ -76,9 +76,9 @@
                                 <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
                                 <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
                                 <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
-                                <ak-col k-field="instockQuantity" k-title="数量"></ak-col>
                                 <ak-col k-field="instockNumber" k-title="件数"></ak-col>
-                                <ak-col k-field="unit" k-title="单位"></ak-col>
+                              <ak-col k-field="instockQuantity" k-title="数量"></ak-col>
+                              <ak-col k-field="unit" k-title="单位"></ak-col>
                             </ak-grid>
                         </div>
                     </div>
