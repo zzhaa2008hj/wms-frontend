@@ -18,6 +18,8 @@
                             <input type="text" class="form-control" value.bind="org.shortName & validate">
                         </div>
                     </div>
+
+
                 </div>
                 <div class="col-md-4">
                     <h4>联系人信息</h4>
@@ -54,60 +56,70 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">统一社会信用代码（18位）*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="org.organizationCode & validate">
+                <div class="col-md-12">
+                    <h4>详情信息</h4>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="form-label">法人</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input type="text" class="form-control" value.bind="org.legalPerson & validate">
+                                </div>
+                            </div>
+                            <label class="form-label">注册代码</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="org.registerCode & validate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">统一社会信用代码（18位）*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="org.organizationCode & validate">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">传真号码</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="org.faxNumber & validate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">机构邮箱</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="org.email & validate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">地址</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="org.address & validate">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">机构邮箱</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="org.email & validate">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-label">机构描述</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="org.description & validate">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">地址</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="org.address & validate">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">机构描述</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="org.description & validate">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">注册代码</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="org.registerCode & validate">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">法人</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="org.legalPerson & validate">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">传真号码</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="org.faxNumber & validate">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">备注</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <textarea type="text" class="form-control" maxlength="500" value.bind="org.remark & validate"></textarea>
+                    <div class="form-group">
+                        <label class="form-label">备注</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <textarea type="text" class="form-control" maxlength="500" value.bind="org.remark & validate"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="form-actions">

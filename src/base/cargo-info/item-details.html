@@ -29,19 +29,19 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="form-label">指令数量*</label>
+                  <label class="form-label">指令件数</label>
                   <span class="help"></span>
                   <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.orderQuantity & toFloat" readonly>
+                    <input type="text" class="form-control" value.bind="cargoItem.orderNumber & toInt" readonly>
                   </div>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="form-label">指令件数</label>
+                  <label class="form-label">指令数量*</label>
                   <span class="help"></span>
                   <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.orderNumber & toInt" readonly>
+                    <input type="text" class="form-control" value.bind="cargoItem.orderQuantity & toFloat" readonly>
                   </div>
                 </div>
               </div>

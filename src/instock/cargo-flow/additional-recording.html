@@ -90,14 +90,14 @@
                   <input type="text" style="border: none;background-color:transparent;" value.bind="unitStr" readonly/>
                 </ak-template>
               </ak-col>
-              <ak-col k-title="指令数量">
-                <ak-template>
-                  <input type="number" value.bind="orderQuantity & toFloat" step="0.01" />
-                </ak-template>
-              </ak-col>
               <ak-col k-title="指令件数">
                 <ak-template>
                   <input type="number" value.bind="orderNumber & toInt" />
+                </ak-template>
+              </ak-col>
+              <ak-col k-title="指令数量">
+                <ak-template>
+                  <input type="number" value.bind="orderQuantity & toFloat" step="0.01" />
                 </ak-template>
               </ak-col>
               <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
