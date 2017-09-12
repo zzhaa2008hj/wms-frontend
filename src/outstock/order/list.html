@@ -49,7 +49,7 @@
           required-permissions="C000027">上传提货信息
         </button>
         <a class="btn btn-danger btn-small" click.delegate="delete(id)" if.bind="stage == 2 || stage == 0" required-permissions="D000013">删除</a>
-        <a class="btn btn-small btn-primary" if.bind="stage == 1 || stage == 9" route-href="route: verify-business; params.bind: {id: id}"
+        <a class="btn btn-small btn-primary" if.bind="(stage == 1&& create_account_id != userId)|| stage == 9" route-href="route: verify-business; params.bind: {id: id}"
           required-permissions="U000034">商务审核</a>
         <a class="btn btn-small btn-primary" if.bind="(stage == 5 || stage == 6) && clearanceStatus" route-href="route: verify-deputy-general; params.bind: {id: id}"
           required-permissions="U000056">副总审批</a>
@@ -64,7 +64,7 @@
         <button class="btn btn-small" if.bind="stage == 13 || stage == 15" click.delegate="changeStage({id:id,stage:14})"
                 required-permissions="U000038">作业完成
         </button>
-        <a class="btn btn-small btn-primary" if.bind="stage == 14" route-href="route: verify-work; params.bind:{id}" required-permissions="U000039">库场审核</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 14 && create_account_id != userId" route-href="route: verify-work; params.bind:{id}" required-permissions="U000039">库场审核</a>
         <a class="btn btn-sm btn-small btn-primary" route-href="route: order-work; params.bind:{id}" if.bind="stage == 11" required-permissions="C000028">生成作业指令单</a>
         <a class="btn btn-sm btn-small" route-href="route: order-work; params.bind:{id}" if.bind="stage > 11" required-permissions="R000038">查看作业指令单</a>
         <button class="btn btn-small btn-primary" if.bind="stage == 7" click.delegate="createOutstockOrder(id)" required-permissions="U000040">生成出库单
