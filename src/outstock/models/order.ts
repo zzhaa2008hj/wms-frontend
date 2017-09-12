@@ -46,6 +46,7 @@ export interface Order {
 
   createTime: Date;
   createTimeStr: string;
+  createAccountId: string ;
 
   outstockLastStageName: string;
 

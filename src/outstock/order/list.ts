@@ -34,6 +34,7 @@ export class OrderList {
   };
   existEntering = false;
   outstockStages: any[] = ConstantValues.OutstockStages;
+  userId:string ;
 
   constructor(@inject private orderService: OrderService,
               @inject private messageDialogService: MessageDialogService,
@@ -50,6 +51,7 @@ export class OrderList {
   }
 
   async activate() {
+    this.userId = this.user.userInfo.userId ;
     this.orderCriteria.infoId = this.routerParams.infoId;
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.orderService.queryOrders(this.orderCriteria)

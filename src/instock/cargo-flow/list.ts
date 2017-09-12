@@ -31,6 +31,7 @@ export class CargoFlowList {
     pageSizes: true,
     buttonCount: 10
   };
+  userId :string ;
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
   existEntering = false;
@@ -54,6 +55,7 @@ export class CargoFlowList {
   }
 
   async activate() {
+    this.userId =this.user.userInfo.userId ;
     this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
     if (this.routerParams.infoId) {
       this.dataSource = this.dataSourceFactory.create({
