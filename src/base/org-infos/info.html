@@ -2,85 +2,116 @@
   <div class="grid simple">
     <div class="grid-body no-border">
       <form submit.delegate="save()">
-        <div class="row">
-          <div class="form-group col-md-6">
+        <div class="col-md-3">
+          <h4>基础信息</h4>
+          <div class="form-group">
             <label class="form-label">机构名称*</label>
             <span class="help"></span>
             <div class="controls">
               <input type="text" class="form-control" value.bind="org.name & validate" readonly.bind="!edit">
             </div>
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group">
             <label class="form-label">机构简称*</label>
             <span class="help"></span>
             <div class="controls">
               <input type="text" class="form-control" value.bind="org.shortName & validate" readonly.bind="!edit">
             </div>
           </div>
-          <div class="form-group col-md-6">
+        </div>
+        <div class="col-md-4">
+          <h4>联系人信息</h4>
+          <div class="form-group">
             <label class="form-label">联系人*</label>
             <span class="help"></span>
             <div class="controls">
               <input type="text" class="form-control" value.bind="org.contactPerson & validate" readonly.bind="!edit">
             </div>
           </div>
-          <div class="form-group col-md-6">
-            <label class="form-label">联系人手机*</label>
+          <div class="form-group">
+            <label class="form-label">联系电话*</label>
             <span class="help"></span>
             <div class="controls">
               <input type="text" class="form-control" value.bind="org.contactMobile & validate" readonly.bind="!edit">
             </div>
           </div>
-          <div class="form-group col-md-6">
-            <label class="form-label">组织机构代码*</label>
+        </div>
+
+        <div class="col-md-5">
+          <h4>银行账户信息</h4>
+          <div class="form-group">
+            <label class="form-label">银行</label>
             <span class="help"></span>
             <div class="controls">
-              <input type="text" class="form-control" value.bind="org.organizationCode & validate" readonly.bind="!edit">
+              <input type="text" class="form-control" value.bind="org.bankInfo" readonly.bind="!edit">
             </div>
           </div>
-          <div class="form-group col-md-6">
-            <label class="form-label">机构邮箱</label>
+          <div class="form-group">
+            <label class="form-label">银行账户</label>
             <span class="help"></span>
             <div class="controls">
-              <input type="text" class="form-control" value.bind="org.email & validate" readonly.bind="!edit">
+              <input type="text" class="form-control" value.bind="org.bankNo" readonly.bind="!edit">
             </div>
           </div>
-          <div class="form-group col-md-6">
-            <label class="form-label">地址</label>
-            <span class="help"></span>
-            <div class="controls">
-              <input type="text" class="form-control" value.bind="org.address & validate" readonly.bind="!edit">
+        </div>
+        <div class="col-md-12">
+          <h4>详情信息</h4>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">统一社会信用代码（18位）*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.organizationCode & validate" readonly.bind="!edit">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">法人</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.legalPerson & validate" readonly.bind="!edit">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">注册代码</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.registerCode & validate" readonly.bind="!edit">
+              </div>
             </div>
           </div>
-          <div class="form-group col-md-6">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">传真号码</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.faxNumber & validate" readonly.bind="!edit">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">机构邮箱</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.email & validate" readonly.bind="!edit">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">地址</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.address & validate" readonly.bind="!edit">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
             <label class="form-label">机构描述</label>
             <span class="help"></span>
             <div class="controls">
               <input type="text" class="form-control" value.bind="org.description & validate" readonly.bind="!edit">
             </div>
           </div>
-          <div class="form-group col-md-6">
-            <label class="form-label">注册代码</label>
-            <span class="help"></span>
-            <div class="controls">
-              <input type="text" class="form-control" value.bind="org.registerCode & validate" readonly.bind="!edit">
-            </div>
-          </div>
-          <div class="form-group col-md-6">
-            <label class="form-label">法人</label>
-            <span class="help"></span>
-            <div class="controls">
-              <input type="text" class="form-control" value.bind="org.legalPerson & validate" readonly.bind="!edit">
-            </div>
-          </div>
-          <div class="form-group col-md-6">
-            <label class="form-label">传真号码</label>
-            <span class="help"></span>
-            <div class="controls">
-              <input type="text" class="form-control" value.bind="org.faxNumber & validate" readonly.bind="!edit">
-            </div>
-          </div>
-          <div class="form-group col-md-6">
+          <div class="form-group">
             <label class="form-label">备注</label>
             <span class="help"></span>
             <div class="controls">

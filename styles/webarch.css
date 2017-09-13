@@ -3945,6 +3945,7 @@ form legend,
   margin: 0 !important;
   margin-top: 8px !important;
   margin-right: 15px !important;
+  margin-bottom: 9px !important;
 }
 .controls > .radio.line,
 .controls > .checkbox.line {
@@ -10269,6 +10270,14 @@ body.rtl .footer-widget {
 
 .bg-red {
   background-color: #dd4b39 !important;
+}
+
+.bg-light-blue {
+  background-color: #3c8dbc !important;
+}
+
+.bg-default {
+  background-color: #d2d6de !important;
 }
 
 .small-box {

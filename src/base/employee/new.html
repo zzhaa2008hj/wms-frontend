@@ -15,8 +15,8 @@
                         <label class="form-label">性别*</label>
                         <span class="help"></span>
                         <div class="controls">
-                            <input type="radio" name="sex" value="1" disabled.bind="disabled" checked.bind="employee.sex"/>男
-                            <input type="radio" name="sex" value="0" disabled.bind="disabled" checked.bind="employee.sex"/>女
+                            <input type="radio" class="radio" name="sex" value="1" disabled.bind="disabled" checked.bind="employee.sex" />男
+                            <input type="radio" class="radio" name="sex" value="0" disabled.bind="disabled" checked.bind="employee.sex" />女
                         </div>
                     </div>
                     <div class="form-group">
@@ -52,30 +52,30 @@
                     </div>
 
                 </div>
-              <div class="col-md-4">
-                <h4>其他</h4>
-                <div class="form-group">
-                  <label class="form-label">职位</label>
-                  <span class="help"></span>
-                  <div class="controls">
-                    <input type="text" class="form-control" disabled.bind="disabled" value.bind="employee.position & validate">
-                  </div>
+                <div class="col-md-4">
+                    <h4>其他</h4>
+                    <div class="form-group">
+                        <label class="form-label">职位</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" disabled.bind="disabled" value.bind="employee.position & validate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">家庭电话</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" disabled.bind="disabled" value.bind="employee.homeNumber & validate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">家庭住址</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" disabled.bind="disabled" value.bind="employee.address & validate">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">家庭电话</label>
-                  <span class="help"></span>
-                  <div class="controls">
-                    <input type="text" class="form-control" disabled.bind="disabled" value.bind="employee.homeNumber & validate" >
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">家庭住址</label>
-                  <span class="help"></span>
-                  <div class="controls">
-                    <input type="text" class="form-control" disabled.bind="disabled" value.bind="employee.address & validate">
-                  </div>
-                </div>
-              </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-label">备注</label>
