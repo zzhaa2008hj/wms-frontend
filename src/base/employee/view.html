@@ -2,74 +2,86 @@
     <div class="grid simple">
         <div class="grid-body no-border">
             <form>
-                <div class="form-group">
-                    <label class="form-label">员工姓名*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.name " readonly>
+                <div class="col-md-4">
+                    <h4>基本信息</h4>
+                    <div class="form-group">
+                        <label class="form-label">员工姓名*</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.name " readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">性别*</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.sex = 0 ? '女' : '男'" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">身份证号码</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.idcard  " readonly>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">邮箱</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.email " readonly>
+                <div class="col-md-4">
+                    <h4>联系方式</h4>
+                    <div class="form-group">
+                        <label class="form-label">手机号码*</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.mobile " readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">邮箱</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.email " readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">办公号码</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.officeNumber " readonly>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">手机号码*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.mobile " readonly>
+                <div class="col-md-4">
+                    <h4>其他</h4>
+                    <div class="form-group">
+                        <label class="form-label">职位</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.position " readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">家庭电话</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.homeNumber " readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">家庭住址</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <input type="text" class="form-control" value.bind="employee.address " readonly>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">性别*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        ${employee.sex = 0 ? '女' : '男'}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">身份证号码</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.idcard  " readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">办公号码</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.officeNumber " readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">家庭电话</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.homeNumber " readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">职位</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.position " readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">家庭住址</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <input type="text" class="form-control" value.bind="employee.address " readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">备注</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                        <textarea type="text" class="form-control" value.bind="employee.remark " readonly></textarea>
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label class="form-label">备注</label>
+                        <span class="help"></span>
+                        <div class="controls">
+                            <textarea type="text" class="form-control" value.bind="employee.remark " readonly></textarea>
+                        </div>
                     </div>
                 </div>
             </form>

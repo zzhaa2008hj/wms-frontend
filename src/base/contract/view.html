@@ -52,8 +52,7 @@
               <label class="form-label">合同开始日期*</label>
               <span class="help"></span>
               <div class="controls">
-                <input ak-datepicker="k-value.two-way : contractVo.contract.startTime" style="width: 100%" type="text" class="form-control"
-                  readonly>
+                <input type="text" class="form-control" value.bind="contractVo.contract.startTimeStr" readonly>
               </div>
             </div>
           </div>
@@ -62,8 +61,7 @@
               <label class="form-label">合同结束日期*</label>
               <span class="help"></span>
               <div class="controls">
-                <input ak-datepicker="k-value.two-way : contractVo.contract.endTime" style="width: 100%" type="text" class="form-control"
-                  readonly>
+                <input type="text" class="form-control" value.bind="contractVo.contract.endTimeStr" readonly>
               </div>
             </div>
           </div>
@@ -72,8 +70,7 @@
               <label class="form-label">签订日期*</label>
               <span class="help"></span>
               <div class="controls">
-                <input ak-datepicker="k-value.two-way : contractVo.contract.signDate" style="width: 100%" type="text" class="form-control"
-                  readonly>
+                <input type="text" class="form-control" value.bind="contractVo.contract.signDateStr" readonly>
               </div>
             </div>
           </div>
@@ -125,7 +122,6 @@
                   <ak-col k-field="pricingMode== 1 ?  '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
                   <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
                   <ak-col k-field="workName" k-title="作业内容"></ak-col>
-                  <ak-col k-field="warehouseTypeStr" k-title="库位性质"></ak-col>
                   <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
                   <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
                   <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>

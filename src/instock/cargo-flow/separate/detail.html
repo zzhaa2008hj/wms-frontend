@@ -91,8 +91,8 @@
           <h4>货物信息</h4>
           <ak-grid k-data-source.bind="beforeCargoItems" k-on-data-bound.delegate="onDataBound($event.detail)" k-on-detail-init.delegate="detailInit($event.detail)">
             <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-            <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
             <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+            <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
             <ak-col k-field="unit" k-title="计量单位"></ak-col>
             <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
             <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>
@@ -170,8 +170,8 @@
           <h4>货物信息</h4>
           <ak-grid k-data-source.bind="afterCargoItems" k-on-data-bound.delegate="onDataBound($event.detail)" k-on-detail-init.delegate="detailInit($event.detail)">
             <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+            <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>            
             <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-            <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
             <ak-col k-field="unit" k-title="计量单位"></ak-col>
             <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
             <ak-col k-field="cargoSubCatergoryName" k-title="品牌 "></ak-col>

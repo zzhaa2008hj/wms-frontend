@@ -41,7 +41,11 @@ export class NewCargoDistrain {
   }
 
   async activate() {
-    this.cargoInfos = await this.cargoInfoService.getCargoInfosByInstockStatus(1);
+    //this.cargoInfos = await this.cargoInfoService.getCargoInfosByInstockStatus(1);
+    this.cargoInfos = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: -3, outstockStatus: 0 });
+    this.cargoInfos.map(res => {
+      res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")";
+    });
     this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
   }
 

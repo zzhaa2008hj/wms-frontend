@@ -46,13 +46,6 @@
           </div>
         </div>
         <div class="col-md-3">
-          <label class="form-label">指令合计数量</label>
-          <span class="help"></span>
-          <div class="controls">
-            <input type="text" value.bind="outstockOrder.quantitySum" readonly>
-          </div>
-        </div>
-        <div class="col-md-3">
           <label class="form-label">指令合计件数</label>
           <span class="help"></span>
           <div class="controls">
@@ -60,10 +53,10 @@
           </div>
         </div>
         <div class="col-md-3">
-          <label class="form-label">作业合计数量</label>
+          <label class="form-label">指令合计数量</label>
           <span class="help"></span>
           <div class="controls">
-            <input type="text" value.bind="workStatistics.quantity" readonly>
+            <input type="text" value.bind="outstockOrder.quantitySum" readonly>
           </div>
         </div>
         <div class="col-md-3">
@@ -71,6 +64,13 @@
           <span class="help"></span>
           <div class="controls">
             <input type="text" value.bind="workStatistics.number" readonly>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">作业合计数量</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" value.bind="workStatistics.quantity" readonly>
           </div>
         </div>
       </div>
@@ -91,8 +91,8 @@
               <ak-col k-field="phoneNumber" k-title="电话" k-width.bind="100"></ak-col>
               <ak-col k-field="workOrderNumber" k-title="作业单号"></ak-col>
               <ak-col k-field="workDate" k-title="作业日期" k-format="{0:yyyy-MM-dd}"></ak-col>
-              <ak-col k-field="quantity" k-title="货物数量"></ak-col>
               <ak-col k-field="number" k-title="货物件数"></ak-col>
+              <ak-col k-field="quantity" k-title="货物数量"></ak-col>
               <ak-col k-field="unit" k-title="计量单位"></ak-col>
               <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
             </ak-grid>

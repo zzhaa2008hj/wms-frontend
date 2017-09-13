@@ -25,8 +25,8 @@
     <ak-col k-field="agentName" k-title="代理商名称" k-width.bind="100"></ak-col>
     <ak-col k-field="customerName" k-title="客户名称" k-width.bind="100"></ak-col>
     <ak-col k-title="入库日期" k-field="instockDate" k-width.bind="90" k-format="{0:yyyy-MM-dd}"></ak-col>
-    <ak-col k-title="指令数量" k-field="orderQuantity" k-width.bind="70"></ak-col>
     <ak-col k-title="指令件数" k-field="orderNumber" k-width.bind="70"></ak-col>
+    <ak-col k-title="指令数量" k-field="orderQuantity" k-width.bind="70"></ak-col>
     <ak-col k-title="计量单位" k-field="unit" k-width.bind="70"></ak-col>
     <ak-col k-title="上阶段" k-field="instockLastStageName" k-width.bind="160"></ak-col>
     <ak-col k-title="当前阶段" k-field="instockStageName" k-width.bind="160"></ak-col>
@@ -58,12 +58,12 @@
         <button class="btn btn-small" if.bind="stage == 4" click.delegate="changeStage({id:id,stage:5})" required-permissions="U000055">作业开始</button>
         <a class="btn btn-small" route-href="route: work-order; params.bind:{id:id, type:1}" if.bind="stage == 5" required-permissions="C000041">添加作业信息</a>
         <button class="btn btn-small" if.bind="stage == 5" click.delegate="changeStage({id:id,stage:6})" required-permissions="U000057">作业完成</button>
-        <a class="btn btn-small btn-primary" if.bind="stage == 6" route-href="route: verify; params.bind:{id}" required-permissions="U000058">库场审核</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 6 && createAccountId != userId" route-href="route: verify; params.bind:{id}" required-permissions="U000058">库场审核</a>
         <a class="btn btn-small btn-warning" if.bind="stage != -1 && stage < 6 && enteringMode != 2" route-href="route: separate; params.bind: { id: id }"
           required-permissions="C000042">拆单</a>
         <a class="btn btn-small btn-warning" if.bind="stage != -1 && stage < 6 && enteringMode == 2" route-href="route: separate-additional-recording; params.bind: { id: id }"
           required-permissions="C000043">补录拆单</a>
-        <a class="btn btn-small btn-primary" if.bind="stage == 1" route-href="route: verify-business; params.bind: {id: id}" required-permissions="U000059">商务审核</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 1 && createAccountId != userId " route-href="route: verify-business; params.bind: {id: id}" required-permissions="U000059">商务审核</a>
         <button class="btn btn-small btn-primary" if.bind="!clearanceStatus" click.delegate="verifyCustomhouse(id)" required-permissions="U000060">单证审核</button>
       </ak-template>
     </ak-col>

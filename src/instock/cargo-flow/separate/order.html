@@ -42,8 +42,8 @@
             <td align="center">单位</td>
             <td align="center">箱号</td>
             <td align="center">说明</td>
+            <td align="center" nowrap>通知件数</td>            
             <td align="center" nowrap>通知数量</td>
-            <td align="center" nowrap>通知件数</td>
           </tr>
           <template repeat.for="item of cargoItems">
             <tr>
@@ -53,8 +53,8 @@
               <td align="center">${item.unitStr}</td>
               <td align="center">${item.containerNumber}</td>
               <td align="center">${item.remark}</td>
+              <td align="center">${item.orderNumber}</td>              
               <td align="center">${item.orderQuantity}</td>
-              <td align="center">${item.orderNumber}</td>
             </tr>
           </template>
           <tr>

@@ -22,7 +22,6 @@ export interface Rate {
   unit: string;
   unitStr: string;
   price: number;
-  warehouseType: string;
   warehouseCategory: string;
   warehouseTypeStr: string;
   warehouseCategoryStr: string;
@@ -102,15 +101,6 @@ export const rateValidationRules = ValidationRules
   })
   .withMessage(`\${$displayName} 不能为空`)
 
-  .ensure((rate: Rate) => rate.warehouseType)
-  .displayName('库位性质')
-  .satisfies((x: string, rate: Rate) => {
-    if ((x == '' || x == null) && rate.chargeCategory == 1) {
-      return false;
-    }
-    return true;
-  })
-  .withMessage(`\${$displayName} 不能为空`)
   .ensure((rate: Rate) => rate.warehouseCategory)
   .displayName('库位类别')
   .satisfies((x: string, rate: Rate) => {

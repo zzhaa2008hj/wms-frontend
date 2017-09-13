@@ -89,15 +89,6 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="form-label">指令数量*</label>
-                  <span class="help"></span>
-                  <div class="controls">
-                    <input type="number" class="form-control" value.bind="cargoInfo.orderQuantity & toFloat" readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
                   <label class="form-label">指令件数*</label>
                   <span class="help"></span>
                   <div class="controls">
@@ -105,7 +96,17 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">指令数量*</label>
+                  <span class="help"></span>
+                  <div class="controls">
+                    <input type="number" class="form-control" value.bind="cargoInfo.orderQuantity & toFloat" readonly>
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div class="col-md-11">
               <div class="form-group">
                 <label class="form-label">备注</label>
@@ -123,8 +124,8 @@
               <ak-grid k-data-source.bind="dataSource" k-widget.bind="customerGrid">
                 <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
                 <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>                
                 <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
                 <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
                 <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
                 <ak-col k-field="remark" k-title="备注"></ak-col>
@@ -151,8 +152,8 @@
               <ak-col k-field="customerName" k-title="客户名称"></ak-col>
               <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
               <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+              <ak-col k-field="sumNumber" k-title="入库件数"></ak-col>              
               <ak-col k-field="sumQuantity" k-title="入库数量"></ak-col>
-              <ak-col k-field="sumNumber" k-title="入库件数"></ak-col>
               <ak-col k-field="unit" k-title="单位"></ak-col>
               <ak-col k-field="remark" k-title="备注"></ak-col>
               <ak-template for="detailTemplate">
@@ -174,8 +175,8 @@
               <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
               <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
               <ak-col k-field="outstockDate" k-title="出库日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+              <ak-col k-field="numberSum" k-title="合计件数"></ak-col>              
               <ak-col k-field="quantitySum" k-title="合计数量"></ak-col>
-              <ak-col k-field="numberSum" k-title="合计件数"></ak-col>
               <ak-col k-field="unit" k-title="单位"></ak-col>
               <ak-col k-field="remark" k-title="备注"></ak-col>
               <ak-template for="detailTemplate">

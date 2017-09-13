@@ -1,6 +1,6 @@
 <template>
   <div class="grid simple">
-    <div class="grid-title no-border">
+    <div class="grid-body" style="padding: 10px;">
       <div>
         <span class="notice">网站公告<em class="fa fa-volume-up m-l-5"></em></span>
         <span class="m-l-50" if.bind="show">【${notice.createTimeStr}】</span>
@@ -8,6 +8,113 @@
       </div>
     </div>
   </div>
-  <div id="main" style="width: 400px;height:300px;"></div>
-  <div><button class="btn btn-small" click.delegate="printOrder()">打印</button></div>
+  <!--  商务首页 start  -->
+  <div class="grid simple">
+    <!-- if.bind="requiredPermissions('R000075')"-->
+    <div class="grid-body" style="padding: 10px;">
+      <div class="col-md-3 col-xs-6">
+        <div class="small-box bg-aqua">
+          <div class="inner">
+            <h3>150</h3>
+            <p>待审核入库单数</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="/instock/cargo-flows" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-6">
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>150</h3>
+            <p>待审核出库单数</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="/outstock/outstock-orders" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-6">
+        <div class="small-box bg-yellow">
+          <div class="inner">
+            <h3>150</h3>
+            <p>待审核货转单数</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="#" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-6">
+        <div class="small-box bg-red">
+          <div class="inner">
+            <h3>150</h3>
+            <p>待审核移库单数</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="#" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid simple">
+    <div class="col-md-7 grid-body">
+      <div class="col-md-6">
+        <h1>仓库信息概览</h1>
+      </div>
+      <div class="row">
+        <div class="k-content pull-right">
+          <ul ak-buttongroup="k-index.bind: 0" k-on-select.delegate="onSelect($event.detail)">
+            <li>柱状图</li>
+            <li>折线图</li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="k-content pull-right">
+          <ul ak-buttongroup="k-index.bind: 0" k-on-select.delegate="onSelect($event.detail)">
+            <li>本周</li>
+            <li>本月</li>
+            <li>本季</li>
+            <li>本年</li>
+          </ul>
+        </div>
+      </div>
+      <div id="main" style="height:420px;"></div>
+    </div>
+    <div class="col-md-5 grid-body">
+      <div class="col-md-6">
+        <h1>库存信息概览</h1>
+      </div>
+      <div class="row">
+        <div class="k-content pull-right">
+          <ul ak-buttongroup="k-index.bind: 0" k-on-select.delegate="onSelect($event.detail)">
+            <li>一号库</li>
+            <li>二号库</li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="k-content pull-right">
+          <ul ak-buttongroup="k-index.bind: 0" k-on-select.delegate="onSelect($event.detail)">
+            <li>本周</li>
+            <li>本月</li>
+            <li>本季</li>
+            <li>本年</li>
+            <li>一号库</li>
+            <li>二号库</li>
+          </ul>
+        </div>
+      </div>
+      <div id="main2" style="height:420px;"></div>
+    </div>
+  </div>
+  <!--  商务首页 end  -->
+  <!-- <div><button class="btn btn-small" click.delegate="printOrder()">打印测试</button></div> -->
+
 </template>

@@ -10,7 +10,7 @@
           <span class="help"></span>
           <div class="controls">
             <ak-drop-down-list k-enabled.two-way="!disabled" k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="storageItem.type"
-              k-data-source.bind="types" >
+              k-data-source.bind="types">
             </ak-drop-down-list>
           </div>
         </div>
@@ -41,13 +41,6 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">数量*</label>
-          <span class="help"></span>
-          <div class="controls">
-            <input type="number" class="form-control" disabled.bind="disabled" min="0.00" step="0.01" value.bind="storageItem.storageQuantity & toFloat & validate">
-          </div>
-        </div>
-        <div class="form-group">
           <label class="form-label">件数*</label>
           <span class="help"></span>
           <div class="controls">
@@ -55,11 +48,18 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="form-label">数量*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="number" class="form-control" disabled.bind="disabled" min="0.00" step="0.01" value.bind="storageItem.storageQuantity & toFloat & validate">
+          </div>
+        </div>
+        <div class="form-group">
           <label class="form-label">计量单位*</label>
           <span class="help"></span>
           <div class="controls">
             <ak-drop-down-list k-enabled.two-way="!disabled" k-option-label="请选择" k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
-              k-value.two-way="storageItem.unit" k-data-source.bind="units" >
+              k-value.two-way="storageItem.unit" k-data-source.bind="units">
             </ak-drop-down-list>
           </div>
         </div>

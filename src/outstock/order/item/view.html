@@ -31,19 +31,19 @@
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label class="form-label">合计数量*</label>
+              <label class="form-label">合计件数*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="text" class="form-control" value.bind="order.quantitySum" readonly>
+                <input type="text" class="form-control" value.bind="order.numberSum" readonly>
               </div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label class="form-label">合计件数*</label>
+              <label class="form-label">合计数量*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="text" class="form-control" value.bind="order.numberSum" readonly>
+                <input type="text" class="form-control" value.bind="order.quantitySum" readonly>
               </div>
             </div>
           </div>
@@ -75,9 +75,8 @@
               <ak-grid k-data-source.bind="datasource">
                 <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
                 <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                <ak-col k-field="outstockNumber" k-title="件数"></ak-col>                
                 <ak-col k-field="outstockQuantity" k-title="数量"></ak-col>
-                <ak-col k-field="outstockNumber" k-title="件数"></ak-col>
                 <ak-col k-field="unitStr" k-title="单位"></ak-col>
                 <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
               </ak-grid>

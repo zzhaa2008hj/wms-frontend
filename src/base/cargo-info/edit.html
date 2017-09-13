@@ -82,19 +82,19 @@
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label class="form-label">指令数量*</label>
+              <label class="form-label">指令件数*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="number" class="form-control" value.bind="cargoInfo.orderQuantity & toFloat" readonly>
+                <input type="number" class="form-control" value.bind="cargoInfo.orderNumber & toInt" readonly>
               </div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label class="form-label">指令件数*</label>
+              <label class="form-label">指令数量*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="number" class="form-control" value.bind="cargoInfo.orderNumber & toInt" readonly>
+                <input type="number" class="form-control" value.bind="cargoInfo.orderQuantity & toFloat" readonly>
               </div>
             </div>
           </div>
@@ -116,9 +116,8 @@
               <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
                 <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
                 <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>                
                 <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
                 <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
                 <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
                 <ak-col k-field="remark" k-title="备注"></ak-col>
