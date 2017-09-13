@@ -1,0 +1,134 @@
+<template>
+  <div class="controlbar">
+    <div class="spacer"></div>
+    <div class="input-group">
+      <ak-drop-down-list style="width: 200px" k-data-text-field="text" k-data-value-field="value"
+                         k-value.two-way="criteria.type" k-data-source.bind="types"
+                         k-on-change.delegate="onChanged()"></ak-drop-down-list>
+      <input style="width: 200px" class="form-control" type="text" value.bind="criteria.customerName"
+             placeholder="请输入客户名称" if.bind="criteria.type == 1">
+      <input style="width: 200px" class="form-control" type="text" value.bind="criteria.cargoCategoryName"
+             placeholder="请输入货类名称" if.bind="criteria.type == 2">
+      <ak-drop-down-list k-value.two-way="criteria.billingType" k-data-text-field="text" k-data-value-field="value"
+                         k-option-label="请选择开票状态"
+                         k-data-source.bind="billingType" if.bind="criteria.type == 4">
+      </ak-drop-down-list>
+      <input style="width: 200px" class="form-control"
+             ak-datepicker=" k-value.two-way : search.searchDate;k-max.bind:maxDate; k-start.bind:'year'; k-depth.bind: 'year';k-format.bind:'MMMM yyyy';k-widget.two-way: searchDatePicker;"
+             style="width: 200px" placeholder="请输入月份"/>
+      <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+      <div class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></div>
+      <button class="btn btn-small" click.delegate="print()" required-permissions="R000069">打印</button>
+    </div>
+  </div>
+  </div>
+  <ak-grid k-data-source.bind="dataSource"  k-reorderable.bind="true" k-resizable.bind="true"
+           k-pageable.bind="pageable" if.bind="criteria.type == 1">
+    <ak-col k-field="month" k-title="年月" k-format='{0:yyyy-MM-dd}'></ak-col>
+    <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+    <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
+    <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
+    <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
+    <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+    <ak-col k-field="monthCharge" k-title="本月收费"></ak-col>
+    <ak-col k-field="monthArrears" k-title="本月欠费"></ak-col>
+    <ak-col k-field="grandTotalCharge" k-title="收费累计"></ak-col>
+    <ak-col k-field="grandTotalArrears" k-title="欠费累计"></ak-col>
+    <ak-col k-field="grandTotalAmount" k-title="费用累计"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+  </ak-grid>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+           k-pageable.bind="pageable" if.bind="criteria.type == 2">
+    <ak-col k-field="month" k-title="年月"></ak-col>
+    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+    <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
+    <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
+    <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
+    <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+    <ak-col k-field="monthCharge" k-title="本月收费"></ak-col>
+    <ak-col k-field="monthArrears" k-title="本月欠费"></ak-col>
+    <ak-col k-field="grandTotalAmount" k-title="费用累计"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+  </ak-grid>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+           k-pageable.bind="pageable" if.bind="criteria.type == 3">
+    <ak-col k-field="month" k-title="年月"></ak-col>
+    <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
+    <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
+    <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
+    <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+    <ak-col k-field="monthCharge" k-title="本月收费"></ak-col>
+    <ak-col k-field="monthArrears" k-title="本月欠费"></ak-col>
+    <ak-col k-field="grandTotalCharge" k-title="收费累计"></ak-col>
+    <ak-col k-field="grandTotalArrears" k-title="欠费累计"></ak-col>
+    <ak-col k-field="grandTotalAmount" k-title="费用累计"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+  </ak-grid>
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+           k-pageable.bind="pageable" if.bind="criteria.type == 4">
+    <ak-col k-field="month" k-title="年月"></ak-col>
+    <ak-col k-field="invoiceState ==  1 ? '已开票' : '未开票'" k-title="开票状态"></ak-col>
+    <ak-col k-field="warehousingAmount" k-title="仓储费"></ak-col>
+    <ak-col k-field="loadingAmount" k-title="装卸费"></ak-col>
+    <ak-col k-field="otherAmount" k-title="其他费用"></ak-col>
+    <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+  </ak-grid>
+
+  <div class="col-md-9 col-md-offset-2" id="monthlyCharge" style="display: none">
+    <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+      <tr>
+        <td align="center" colspan="12">
+          <h4>${criteria.customerName}&nbsp;&nbsp;${criteria.cargoCategoryName}&nbsp;&nbsp;${criteria.invoiceStateStr}&nbsp;&nbsp;${criteria.yearMonth}收费统计明细</h4>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">年月</td>
+        <td align="center" if.bind="criteria.type == 1">客户名称</td>
+        <td align="center" if.bind="criteria.type == 2">货类</td>
+        <td align="center" if.bind="criteria.type == 4">开票状态</td>
+        <td align="center">仓储费</td>
+        <td align="center">装卸费</td>
+        <td align="center">其他费用</td>
+        <td align="center">费用合计</td>
+        <td align="center">本月收费</td>
+        <td align="center">本月欠费</td>
+        <td align="center">收费累计</td>
+        <td align="center">欠费累计</td>
+        <td align="center">费用累计</td>
+        <td align="center">备注</td>
+      </tr>
+      <template repeat.for="monthlyCharge of monthlyCharges">
+        <tr>
+          <td align="center">${monthlyCharge.month}</td>
+          <td align="center" if.bind="criteria.type == 1">${monthlyCharge.customerName}</td>
+          <td align="center" if.bind="criteria.type == 2">${monthlyCharge.cargoCategoryName}</td>
+          <td align="center" if.bind="criteria.type == 4">${monthlyCharge.invoiceStateStr}</td>
+          <td align="center">${monthlyCharge.warehousingAmount}</td>
+          <td align="center">${monthlyCharge.loadingAmount}</td>
+          <td align="center">${monthlyCharge.otherAmount}</td>
+          <td align="center">${monthlyCharge.sumAmount}</td>
+          <td align="center">${monthlyCharge.monthCharge}</td>
+          <td align="center">${monthlyCharge.monthArrears}</td>
+          <td align="center">${monthlyCharge.grandTotalCharge}</td>
+          <td align="center">${monthlyCharge.grandTotalArrears}</td>
+          <td align="center">${monthlyCharge.grandTotalAmount}</td>
+          <td align="center">${monthlyCharge.remark}</td>
+        </tr>
+      </template>
+      <tr if.bind="criteria.type != 3">
+        <td align="center" colspan="2">总计</td>
+        <td align="center">${total.warehousingAmount}</td>
+        <td align="center">${total.loadingAmount}</td>
+        <td align="center">${total.otherAmount}</td>
+        <td align="center">${total.sumAmount}</td>
+        <td align="center">${total.monthCharge}</td>
+        <td align="center">${total.monthArrears}</td>
+        <td align="center">${total.grandTotalCharge}</td>
+        <td align="center">${total.grandTotalArrears}</td>
+        <td align="center">${total.grandTotalAmount}</td>
+      </tr>
+    </table>
+  </div>
+
+</template>
