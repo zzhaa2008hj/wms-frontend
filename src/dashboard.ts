@@ -40,6 +40,22 @@ export class Dashboard {
 
   // 页面载入完成后执行
   attached() {
+    this.getStorageInfo();
+    this.getChargeInfo();
+    this.getPayInfo();
+    this.getWorkOrderInfo();
+  }
+
+  async getChargeInfo() {
+
+  }
+
+  async getPayInfo() {
+
+  }
+
+  // 出入库、移库、货转作业信息
+  async getWorkOrderInfo() {
     let myChart = echarts.init(document.getElementById('main') as HTMLDivElement);
     // 指定图表的配置项和数据
     let option = {
@@ -84,10 +100,13 @@ export class Dashboard {
     };
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+  }
 
-    let myChart2 = echarts.init(document.getElementById('main2') as HTMLDivElement);
+  // 库存信息
+  async getStorageInfo() {
+    let myChart = echarts.init(document.getElementById('main2') as HTMLDivElement);
     // 指定图表的配置项和数据
-    let option2 = {
+    let option = {
       title: {
         text: '世界人口总量',
         subtext: '数据来自网络'
@@ -129,7 +148,7 @@ export class Dashboard {
       ]
     };
     // 使用刚指定的配置项和数据显示图表。
-    myChart2.setOption(option2);
+    myChart.setOption(option);
   }
 
   async printOrder() {
@@ -139,7 +158,7 @@ export class Dashboard {
   }
 
   onSelect(e) {
-
+    console.log(e);
   }
 
   requiredPermissions(sourceCode: string) {
