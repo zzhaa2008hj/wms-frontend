@@ -10,9 +10,9 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://192.168.133.118:81/sso/loginRpc",
-    "loginOutUrl":"http://192.168.133.118:8080/rpc/login/logOut",
-    "changePasswordUrl":"http://192.168.133.118:81/sso/changePasswordRpc",
+    "loginUrl": "http://192.168.133.118:3000/loginRpc",
+    "loginOutUrl": "http://192.168.133.118:8080/rpc/login/logOut",
+    "changePasswordUrl": "http://192.168.133.118:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
@@ -44,117 +44,6 @@
     }
   },
   "routes": [{
-      "route": "/base/org-info",
-      "name": "organization-info",
-      "title": "机构信息",
-      "moduleId": "./base/org-infos/index",
-      "group": "group1"
-    },{
-      "route": "/base/attachments",
-      "name": "attachments",
-      "title": "附件管理",
-      "moduleId": "./common/attachment/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/cargo-category",
-      "name": "cargoCategory",
-      "title": "货物种类",
-      "moduleId": "./base/cargo-category/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/contract",
-      "name": "contract",
-      "title": "合同管理",
-      "moduleId": "./base/contract/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/handling-customer",
-      "name": "handling-customer",
-      "title": "装卸单位",
-      "moduleId": "./base/customer/handling-customer/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/warehouse-customer",
-      "name": "warehouse-customer",
-      "title": "仓储客户",
-      "moduleId": "./base/customer/warehouse-customer/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/dictionary",
-      "name": "dictionary",
-      "title": "数据字典",
-      "moduleId": "./base/dictionary/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/employee",
-      "name": "employee",
-      "title": "员工管理",
-      "moduleId": "./base/employee/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/message",
-      "name": "message",
-      "title": "站内信管理",
-      "moduleId": "./base/message/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/notice",
-      "name": "notice",
-      "title": "公告管理",
-      "moduleId": "./base/notice/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/operation-logs",
-      "name": "operation-log",
-      "title": "操作日志",
-      "moduleId": "./base/operation-logs/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/organization-roles",
-      "name": "organization-roles",
-      "title": "角色管理",
-      "moduleId": "./base/organization-role/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/rate",
-      "name": "rate",
-      "title": "基础费率",
-      "moduleId": "./base/rate/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/warehouse",
-      "name": "warehouse",
-      "title": "仓库库区",
-      "moduleId": "./base/warehouse/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/work-info",
-      "name": "workInfo",
-      "title": "作业内容",
-      "moduleId": "./base/work-info/index",
-      "group": "group1"
-    },
-    {
-      "route": "/base/verify-records",
-      "name": "verifyRecord",
-      "title": "审核审批",
-      "moduleId": "./common/verify-records/index",
-      "group": "group1"
-    },
-    {
       "route": "/instock/cargo-infos",
       "name": "cargoInfo",
       "title": "入库指令",
@@ -297,6 +186,118 @@
       "title": "每月收费统计",
       "moduleId": "./report/statistics-charge/index",
       "group": "group5"
+    },
+    {
+      "route": "/base/org-info",
+      "name": "organization-info",
+      "title": "机构信息",
+      "moduleId": "./base/org-infos/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/verify-records",
+      "name": "verifyRecord",
+      "title": "审核审批",
+      "moduleId": "./common/verify-records/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/attachments",
+      "name": "attachments",
+      "title": "附件管理",
+      "moduleId": "./common/attachment/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/dictionary",
+      "name": "dictionary",
+      "title": "数据字典",
+      "moduleId": "./base/dictionary/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/organization-roles",
+      "name": "organization-roles",
+      "title": "角色管理",
+      "moduleId": "./base/organization-role/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/employee",
+      "name": "employee",
+      "title": "员工管理",
+      "moduleId": "./base/employee/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/cargo-category",
+      "name": "cargoCategory",
+      "title": "货物种类",
+      "moduleId": "./base/cargo-category/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/warehouse",
+      "name": "warehouse",
+      "title": "仓库库区",
+      "moduleId": "./base/warehouse/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/work-info",
+      "name": "workInfo",
+      "title": "作业内容",
+      "moduleId": "./base/work-info/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/rate",
+      "name": "rate",
+      "title": "基础费率",
+      "moduleId": "./base/rate/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/handling-customer",
+      "name": "handling-customer",
+      "title": "装卸单位",
+      "moduleId": "./base/customer/handling-customer/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/warehouse-customer",
+      "name": "warehouse-customer",
+      "title": "仓储客户",
+      "moduleId": "./base/customer/warehouse-customer/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/contract",
+      "name": "contract",
+      "title": "合同管理",
+      "moduleId": "./base/contract/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/message",
+      "name": "message",
+      "title": "站内信管理",
+      "moduleId": "./base/message/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/notice",
+      "name": "notice",
+      "title": "公告管理",
+      "moduleId": "./base/notice/index",
+      "group": "group1"
+    },
+    {
+      "route": "/base/operation-logs",
+      "name": "operation-log",
+      "title": "操作日志",
+      "moduleId": "./base/operation-logs/index",
+      "group": "group1"
     }
   ]
 }
