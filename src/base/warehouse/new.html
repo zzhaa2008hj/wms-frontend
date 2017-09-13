@@ -13,17 +13,17 @@
                     <input type="text" class="form-control" value.bind="warehouse.name & validate">
                 </div>
             </div>
+          <div class="form-group">
+            <label class="form-label">库区性质*</label>
+            <span class="help"></span>
+            <ak-drop-down-list k-value.two-way="warehouse.type & validate"
+                               k-option-label="请选择..."
+                               k-data-text-field="dictDataName"
+                               k-data-value-field="dictDataCode"
+                               k-data-source.bind="type">
+            </ak-drop-down-list>
+          </div>
             <div if.bind="!pWarehouse">
-                <div class="form-group">
-                    <label class="form-label">库区性质*</label>
-                    <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="warehouse.type & validate"
-                                       k-option-label="请选择..."
-                                       k-data-text-field="dictDataName"
-                                       k-data-value-field="dictDataCode"
-                                       k-data-source.bind="type">
-                    </ak-drop-down-list>
-                </div>
                 <div class="form-group">
                     <label class="form-label">库区类别*</label>
                     <span class="help"></span>
