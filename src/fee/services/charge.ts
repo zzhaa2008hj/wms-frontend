@@ -29,10 +29,8 @@ export class ChargeInfoService {
     return res.content;
   }
 
-  issueChargeInvoice(id: string, chargeAuditList: ChargeAuditList): Promise<void> {
-    return this.http
-      .put(`/fee/charge-info/chargeInvoice/${id}?invoiceType=${chargeAuditList.invoiceType}&invoiceNumber=${chargeAuditList.invoiceNumber}`, null)
-      .then(handleResult);
+  issueChargeInvoice(id: string): Promise<void> {
+    return this.http.put(`/fee/charge-info/chargeInvoice/${id}`, null).then(handleResult);
   }
 
   auditSecondFee(id: string, status: number): Promise<void> {
@@ -67,8 +65,8 @@ export class ChargeInfoService {
   /**
    * 获取相关结算申请明细
    */
-  async getItems(batchNumber: string, chargeCategory: number, rateType?: number): Promise<ChargeAuditItem[]> {
-    let res = await this.http.get(`/fee/charge-info/item?batchNumber=${batchNumber}&chargeCategory=${chargeCategory}&rateType=${rateType}`);
+  async getItems(customerId: string, chargeStartDate?: string, chargeEndDate?: string, batchNumber?: string, chargeCategory?: number, rateType?: number): Promise<ChargeAuditItem[]> {
+    let res = await this.http.get(`/fee/charge-info/item?customerId=${customerId}&chargeStartDate=${chargeStartDate}&chargeEndDate=${chargeEndDate}&batchNumber=${batchNumber}&chargeCategory=${chargeCategory}&rateType=${rateType}`);
     return res.content;
   }
 

@@ -45,12 +45,15 @@ export class CustomerConfirm {
     let containerTypes = await this.dictionaryDataService.getDictionaryDatas("containerType");
 
     if (this.chargeAuditLists) {
-      let totalAmount = 0;
+      let totalAmount = 0, warehousingAmounts = 0, loadingAmounts = 0, otherAmounts = 0;
       this.chargeAuditLists.forEach(cal => {
         totalAmount += cal.sumAmount;
+        warehousingAmounts += cal.warehousingAmount;
+        loadingAmounts += cal.loadingAmount;
+        otherAmounts += cal.otherAmount;
         Object.assign(cal, { index: this.chargeAuditLists.indexOf(cal) + 1 });
       });
-      Object.assign(this.chargeInfo, { totalAmount: totalAmount });
+      Object.assign(this.chargeInfo, { totalAmount, warehousingAmounts, loadingAmounts, otherAmounts});
       for (let cal of this.chargeAuditLists) {
         cal.chargeAuditItems = await this.chargeAuditItemService.getListByChargeAuditId(cal.id);
         if (cal.chargeAuditItems.length <= 0) {
@@ -83,12 +86,28 @@ export class CustomerConfirm {
   }
 
   // 打印对账单
-  async printConfirm() {
-    let title = "对账单";
-    let strHTML = $("#confirm").html();
+  async printTotal() {
+    let title = "对账单统计";
+    let strHTML = $("#total").html();
     strHTML = addHeader(strHTML);
     print(title, strHTML, true, 2);
     //await this.dialogService.alert({ title: "提示", message: "打印成功！" });
+  }
+
+  printDetail() {
+    let title = "对账单明细";
+    let strHTML = $("#detail").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true, 2);
+    //await this.dialogService.alert({ title: "提示", message: "打印成功！" });
+  }
+
+  exportTotal() {
+
+  }
+
+  exportDetail() {
+    
   }
 
   async customerConfirm(num: number) {
