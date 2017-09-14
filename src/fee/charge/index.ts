@@ -16,7 +16,9 @@ export class Charge {
       { route: '/new-audit', name: 'new-audit', moduleId: './new-audit' },
       { route: '/:id/view', name: 'view', moduleId: './view' },
       { route: '/:id/edit', name: 'edit', moduleId: './edit' },
-      { route: '/:id/edit-audit', name: 'edit-audit', moduleId: './edit-audit' }
+      { route: '/:id/edit-audit', name: 'edit-audit', moduleId: './edit-audit' },
+      { route: '/:id/invoice', name: 'invoice', moduleId: './invoice/index', title: '发票录入' },
+      { route: '/:id/verification', name: 'verification', moduleId: './verification/index', title: '核销' }
     ]);
     this.router = router;
   }

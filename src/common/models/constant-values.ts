@@ -298,4 +298,14 @@ export class ConstantValues {
       title: "已收费核销"
     }];
   }
+
+  static get FeeType() {
+    return [{
+      stage: 1,
+      title: "收费"
+    }, {
+      stage: 2,
+      title: "付费"
+    }];
+  }
 }

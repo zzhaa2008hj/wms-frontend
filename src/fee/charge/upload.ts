@@ -79,11 +79,11 @@ export class NewUpload {
 
   async save() {
     this.disabled = true;
-    if (this.attachments.length == 0) {
-      await this.dialogService.alert({ title: "提示", message: "上传内容不可为空" });
-      this.disabled = false;
-      return;
-    }
+    // if (this.attachments.length == 0) {
+    //   await this.dialogService.alert({ title: "提示", message: "上传内容不可为空" });
+    //   this.disabled = false;
+    //   return;
+    // }
     await this.dialogController.ok(this.attachments);
   }
 
