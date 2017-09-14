@@ -1,5 +1,4 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { InvoiceEntry } from "@app/fee/charge/invoice";
 import { DialogService, MessageDialogService } from "ui";
 import { ChargeInfoService, ChargeInfoCriteria } from "@app/fee/services/charge";
 import { DataSourceFactory } from '@app/utils';
@@ -110,12 +109,9 @@ export class ChargeInfoList {
    * 发票录入
    */
   async invoiceEntry(id: string) {
-    let result = await this.dialogService.open({ viewModel: InvoiceEntry, model: {}, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
     try {
-      await this.chargeInfoService.issueChargeInvoice(id, result.output);
-      await this.dialogService.alert({ title: "提示", message: "发票录入成功！" });
+      await this.chargeInfoService.issueChargeInvoice(id);
+      await this.dialogService.alert({ title: "提示", message: "发票录入完成！" });
       this.dataSource.read();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
