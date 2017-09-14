@@ -13,7 +13,8 @@
                 <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="shortName"
                                    k-data-value-field="id" k-value.two-way="chargeInfo.agentId"
                                    k-data-source.bind="agents" k-widget.two-way="agentWidget"
-                                   k-on-close.delegate="validateProperty('agentId')">
+                                   k-on-close.delegate="validateProperty('agentId')"
+                                   k-on-change.delegate="agentChanged()">
                 </ak-drop-down-list>
                 <input class="form-control" type="hidden" value.bind="chargeInfo.agentId & validate ">
               </div>
@@ -58,10 +59,29 @@
         <div class="row column-seperation">
           <h4>费用明细</h4>
           <div class="col-md-2">
+            <div class="form-group">
+              <label class="form-label">结算开始时间*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" disabled.bind="disabled" k-on-change.delegate="startChange()" ak-datepicker="k-value.two-way : chargeStartDate; k-format.bind:'yyyy-MM-dd'; k-widget.two-way: startDatePicker">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label class="form-label">结算结束时间*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" disabled.bind="disabled" k-on-change.delegate="endChange()" ak-datepicker="k-value.two-way : chargeEndDate; k-format.bind:'yyyy-MM-dd'; k-widget.two-way: endDatePicker">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
              <div class="form-group"> 
               <label class="form-label">批次号*</label>
                <div class="controls"> 
-                <ak-drop-down-list k-data-text-field="value" k-data-value-field="key"
+                <ak-drop-down-list k-option-label="请选择..." k-data-text-field="value" k-data-value-field="key"
                   k-data-source.bind="batchNumbers" k-widget.two-way="batchNumberWidget" k-enabled.two-way="!disabled">
                 </ak-drop-down-list>
                </div> 
@@ -91,7 +111,7 @@
             <span class="help"></span>
             <div class="controls right">
               <a class="btn btn-primary" click.delegate="addChargeItem()">新增结算明细</a>
-              <a class="btn btn-danger" click.delegate="deleteChargeItem()">删除结算明细</a>
+              <a class="btn btn-danger" click.delegate="deleteChargeItem()">清空明细</a>
               <ak-grid k-data-source.bind="chargeItemDataSource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-detail-init.delegate="detailInit($event.detail)"
               >
                 <ak-col k-field="batchNumber" k-title="批次号" k-width="110px"></ak-col>
