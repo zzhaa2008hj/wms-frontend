@@ -8,6 +8,11 @@ import { ReadNotification } from '@app/base/notifications/read';
 import { print } from '@app/common/services/print-tool';
 import { requiredPermissionsAttributeResult } from '@app/utils';
 import { UserSession } from '@app/user';
+import { BusinessOrder } from '@app/common/models/business-order';
+import { IndexService } from '@app/common/services/index';
+import { FeeOrder } from '@app/common/models/fee-order';
+import { WarehouseOrder } from '@app/common/models/warehouse-order';
+import { Warehouse } from '@app/base/models/warehouse';
 
 @autoinject
 export class Dashboard {
@@ -15,10 +20,26 @@ export class Dashboard {
   notices: Notice[];
   notice: Notice = {} as Notice;
   show: boolean = false;
+  businessOrder: BusinessOrder;
+  feeOrder: FeeOrder;
+  warehouseOrder: WarehouseOrder;
+
+  wc: string = "bar";
+  wd: string = "week";
+  sc: string = "bar";
+  sw: string = "";
+
+  warehouseCategories = [{ value: "bar", text: "柱状图" }, { value: "line", text: "折线图" }];
+  warehouseDates = [{ value: "week", text: "本周" }, { value: "month", text: "本月" }, 
+    { value: "quarter", text: "本季" }, { value: "year", text: "本年" }];
+  storageCategories = [{ value: "bar", text: "柱状图" }, { value: "cake", text: "饼图" }];
+  storateWarehouses = [] as Warehouse[];
+  warehouse: Warehouse = {} as Warehouse;
 
   constructor(private dialogService: DialogService,
-    private user: UserSession,
-    private noticeService: NoticeService) {
+              private indexService: IndexService,
+              private user: UserSession,
+              private noticeService: NoticeService) {
 
   }
 
@@ -30,6 +51,13 @@ export class Dashboard {
       this.notice = this.notices[0];
       this.notice.createTimeStr = this.notice.createTime ? moment(this.notice.createTime).format("YYYY-MM-DD") : '';
     }
+
+    this.businessOrder = await this.indexService.getBusinessOrderNumber();
+    this.feeOrder = await this.indexService.getFeeOrderNumber();
+    this.warehouseOrder = await this.indexService.getWarehouseOrderNumber();
+    Object.assign(this.warehouse, {id: '', name: '全部'});
+    this.storateWarehouses.push(this.warehouse);
+    this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
   }
 
   async detail() {
@@ -108,8 +136,7 @@ export class Dashboard {
     // 指定图表的配置项和数据
     let option = {
       title: {
-        text: '世界人口总量',
-        subtext: '数据来自网络'
+        text: '世界人口总量'
       },
       tooltip: {
         trigger: 'axis',
@@ -157,8 +184,21 @@ export class Dashboard {
     print(title, strHTML, true);
   }
 
-  onSelect(e) {
-    console.log(e);
+  changeWCategory(category) {
+    this.wc = category;
+
+  }
+
+  changeWDate(date) {
+    this.wd = date;
+  }
+
+  changeSCategory(category) {
+    this.sc = category;
+  }
+
+  changeSWarehouse(warehouse) {
+    this.sw = warehouse;
   }
 
   requiredPermissions(sourceCode: string) {

@@ -12,7 +12,7 @@ export class RequiredPermissionsAttribute {
 
   async valueChanged(permissions: string | string[]) {
     if (!Array.isArray(permissions)) {
-      permissions = permissions ? permissions.split(' ') : [];
+      permissions = permissions ? permissions.split(',') : [];
     }
     let authorized = await Promise.resolve(this.hasPermissions(permissions));
     this.element.style.display = authorized ? '' : 'none'; //TODO use ViewSlot
@@ -20,7 +20,7 @@ export class RequiredPermissionsAttribute {
 
   hasPermissions(permissions: string[]): boolean | Promise<boolean> {
     let aa = new Set(this.user.userInfo.menuVoList.map(x => x.code));
-    return  !permissions.every(a => !aa.has(a));
+    return !permissions.every(a => !aa.has(a));
     //return permissions.length == 0;
   }
 
