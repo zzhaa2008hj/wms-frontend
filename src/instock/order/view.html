@@ -1,89 +1,97 @@
 <template>
-    <div class="grid simple">
-        <div class="grid-body no-border">
-            <form>
-                <div class="row column-seperation">
-                    <h4>基本信息</h4>
-                    <div class="col-md-3">
-                        <label class="form-label">入库单号*</label>
-                        <span class="help"></span>
-                        <div class="controls right">
-                            <input type="text" class="form-control" value.bind="instockOrderVo.order.instockOrderNumber" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">代理商名称*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control" value.bind="instockOrderVo.order.agentName" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">批次号*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control" value.bind="instockOrderVo.order.batchNumber" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">合计件数*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control" value.bind="instockOrderVo.order.sumNumber" readonly>
-                            </div>
-                        </div>
-                    </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="form-label">合计数量*</label>
-                      <span class="help"></span>
-                      <div class="controls">
-                        <input type="text" class="form-control" value.bind="instockOrderVo.order.sumQuantity" readonly>
-                      </div>
-                    </div>
-                  </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">计量单位*</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <input type="text" class="form-control" value.bind="instockOrderVo.order.unit" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-label">备注</label>
-                            <span class="help"></span>
-                            <div class="controls">
-                                <textarea type="text" class="form-control" value.bind="instockOrderVo.order.remark" readonly>
-                                </textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row column-seperation">
-                    <h4>入库明细</h4>
-                    <div class="col-md-12">
-                        <span class="help"></span>
-                        <div class="controls right">
-                            <ak-grid k-data-source.bind="datasource">
-                                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-                                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                                <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
-                                <ak-col k-field="instockNumber" k-title="件数"></ak-col>
-                              <ak-col k-field="instockQuantity" k-title="数量"></ak-col>
-                              <ak-col k-field="unit" k-title="单位"></ak-col>
-                            </ak-grid>
-                        </div>
-                    </div>
-                </div>
-            </form>
+  <div class="grid simple">
+    <div class="grid-body no-border">
+      <form>
+        <div class="row column-seperation">
+          <h4>基本信息</h4>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">批次号*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="instockOrderVo.order.batchNumber" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">入库单号*</label>
+            <span class="help"></span>
+            <div class="controls right">
+              <input type="text" class="form-control" value.bind="instockOrderVo.order.instockOrderNumber" readonly>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">代理商名称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="instockOrderVo.order.agentName" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">客户名称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="instockOrderVo.order.customerName" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">合计件数*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="instockOrderVo.order.sumNumber" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">合计数量*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="instockOrderVo.order.sumQuantity" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">计量单位*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="instockOrderVo.order.unit" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">备注</label>
+              <span class="help"></span>
+              <div class="controls">
+                <textarea type="text" class="form-control" value.bind="instockOrderVo.order.remark" readonly></textarea>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="row column-seperation">
+          <h4>入库明细</h4>
+          <div class="col-md-12">
+            <span class="help"></span>
+            <div class="controls right">
+              <ak-grid k-data-source.bind="datasource">
+                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                <ak-col k-field="instockNumber" k-title="件数"></ak-col>
+                <ak-col k-field="instockQuantity" k-title="数量"></ak-col>
+                <ak-col k-field="unit" k-title="单位"></ak-col>
+              </ak-grid>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
+  </div>
 </template>
