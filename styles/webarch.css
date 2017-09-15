@@ -323,7 +323,7 @@ body.boxed-layout .footer-widget {
   margin-top: 3px;
 }
 .header .header-seperation {
-  width: 250px;
+  width: 220px;
   display: block;
   float: left;
   height: 60px;
@@ -8757,7 +8757,7 @@ body.rtl .footer-widget {
     display: inline-block;
     float: left;
     position: fixed;
-    width: 250px;
+    width: 220px;
     margin-top: 58px;
     padding-bottom: 119px;
   }
@@ -8768,18 +8768,18 @@ body.rtl .footer-widget {
     display: inline-block;
     float: left;
     height: 100%;
-    max-width: 250px;
+    max-width: 220px;
     width: 100%;
   }
   .page-sidebar.fixed {
     position: fixed;
   }
   .page-sidebar ul {
-    width: 250px;
+    width:220px;
   }
   /*** Page content ***/
   .page-content {
-    margin-left: 250px;
+    margin-left: 220px;
     min-height: 100%;
   }
   .page-content.no-min-height {
