@@ -9,11 +9,12 @@ import { Order, OrderItem, orderValidationRules, vehicleValidationRules } from "
 import { CargoInfo } from "@app/base/models/cargo-info";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
-import { copy, fixDate, uuid } from "@app/utils";
+import { copy, uuid } from "@app/utils";
 import { AttachmentService } from "@app/common/services/attachment";
 import { AttachmentMap } from "@app/common/models/attachment";
 import { Uploader, Upload } from "@app/upload";
 import { AttachmentDetail } from "@app/common/attachment/detail";
+import * as moment from 'moment';
 
 /**
  * Created by Hui on 2017/6/23.
@@ -69,7 +70,8 @@ export class EditOrder {
   async activate(params) {
 
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.order = await this.orderService.getOrderById(params.id).then(res => fixDate(res, "outstockDate"));
+    this.order = await this.orderService.getOrderById(params.id);
+    this.order.outstockDateStr = moment(this.order.outstockDate).format("YYYY-MM-DD");
     let canDeliveries = await this.orderService.getValidOutstockNum(this.order.cargoInfoId);
     if (this.order.outstockOrderItems) {
       this.outstockOrderItems = this.order.outstockOrderItems;
