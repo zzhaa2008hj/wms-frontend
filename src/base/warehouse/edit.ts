@@ -15,7 +15,7 @@ export class EditWarehouse {
   warehouse: Warehouse = {} as Warehouse;
   @observable
   hasParentId: boolean = false;
-  type = [] as DictionaryData[];
+  // type = [] as DictionaryData[];
   category = [] as DictionaryData[];
   validationController: ValidationController;
 
@@ -31,7 +31,7 @@ export class EditWarehouse {
   }
 
   async activate(warehouse: Warehouse) {
-    this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    // this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.category = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     Object.assign(this.oldWarehouse, warehouse);
     this.warehouse = warehouse;
@@ -45,7 +45,7 @@ export class EditWarehouse {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 
-    if (this.oldWarehouse.category != this.warehouse.category || this.oldWarehouse.type != this.warehouse.type) {
+    if (this.oldWarehouse.category != this.warehouse.category) {
       let confirmed = await this.messageDialogService.confirm({ title: "提示:", message: "修改后子集性质与类别将同步修改，确认吗？" });
       if (confirmed) {
         await this.dialogController.ok(this.warehouse);

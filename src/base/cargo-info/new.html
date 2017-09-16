@@ -1,146 +1,147 @@
 <template>
-  <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
-  <div class="grid simple">
-    <div class="grid-body no-border">
-      <form submit.delegate="save()">
-        <div class="row column-seperation">
-          <h4>基本信息</h4>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label">批次号*</label>
-              <span class="help"></span>
-              <div class="controls">
-                <input type="text" class="form-control" value.bind="cargoInfo.batchNumber " readonly>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">库区性质*</label>
-              <span class="help"></span>
-              <div class="form-controls">
-                <ak-drop-down-list k-option-label="请选择" k-data-text-field="dictDataName" k-data-value-field="dictDataCode" k-value.two-way="cargoInfo.warehouseType"
-                  k-data-source.bind="warehouseTypes" style="width: 100%">
-                </ak-drop-down-list>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">货物形式*</label>
-              <span class="help"></span>
-              <div class="form-controls">
-                <input type="radio" class="form-controls" name="cargoForm" model.bind="1" checked.bind="cargoInfo.cargoForm" />散装<br>
-                <input type="radio" class="form-controls" name="cargoForm" model.bind="2" checked.bind="cargoInfo.cargoForm" />集装箱
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">货物性质*</label>
-              <span class="help"></span>
-              <div class="form-controls">
-                <input type="radio" class="form-controls" name="cargoType" model.bind="1" checked.bind="cargoInfo.cargoType" />内贸<br>
-                <input type="radio" class="form-controls" name="cargoType" model.bind="2" checked.bind="cargoInfo.cargoType" />保税
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">代理商名称*</label>
-              <span class="help"></span>
-              <div class="controls">
-                <ak-drop-down-list k-option-label="请选择" k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="cargoInfo.agentId"
-                  k-data-source.bind="agents" k-widget.two-way="agentInfo" style="width: 100%" k-on-close.delegate="validateProperty('agentId')">
-                </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="cargoInfo.agentId & validate ">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">客户名称*</label>
-              <span class="help"></span>
-              <div class="controls">
-                <ak-drop-down-list k-option-label="请选择" k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="cargoInfo.customerId"
-                  k-data-source.bind="customers" k-widget.two-way="customerInfo" style="width: 100%" k-on-change.delegate="customerChanged()"
-                  k-on-close.delegate="validateProperty('customerId')">
-                </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="cargoInfo.customerId & validate ">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">提单号*</label>
-              <span class="help"></span>
-              <div class="controls">
-                <input type="text" class="form-control" maxlength="30" value.bind="cargoInfo.billLadingNumber & validate">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">指令数量*</label>
-              <span class="help"></span>
-              <div class="controls">
-                <input type="text" class="form-control" value.bind="cargoInfo.orderQuantity & toFloat" readonly>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">指令件数*</label>
-              <span class="help"></span>
-              <div class="controls">
-                <input type="number" class="form-control" value.bind="cargoInfo.orderNumber & toInt" readonly>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label">备注</label>
-              <span class="help"></span>
-              <div class="controls">
-                <textarea type="text" class="form-control" value.bind="cargoInfo.remark "></textarea>
-              </div>
-            </div>
-          </div>
+    <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
+    <div class="grid simple">
+        <div class="grid-body no-border">
+            <form submit.delegate="save()">
+                <div class="row column-seperation">
+                    <h4>基本信息</h4>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">批次号*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="cargoInfo.batchNumber " readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">货物形式*</label>
+                            <span class="help"></span>
+                            <div class="form-controls">
+                                <input type="radio" class="form-controls" name="cargoForm" model.bind="1"
+                                       checked.bind="cargoInfo.cargoForm"/>散装<br>
+                                <input type="radio" class="form-controls" name="cargoForm" model.bind="2"
+                                       checked.bind="cargoInfo.cargoForm"/>集装箱
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">货物性质*</label>
+                            <span class="help"></span>
+                            <div class="form-controls">
+                                <input type="radio" class="form-controls" name="cargoType" model.bind="1"
+                                       checked.bind="cargoInfo.cargoType"/>内贸<br>
+                                <input type="radio" class="form-controls" name="cargoType" model.bind="2"
+                                       checked.bind="cargoInfo.cargoType"/>保税
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">代理商名称*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="shortName"
+                                                   k-data-value-field="id" k-value.two-way="cargoInfo.agentId"
+                                                   k-data-source.bind="agents" k-widget.two-way="agentInfo"
+                                                   style="width: 100%"
+                                                   k-on-close.delegate="validateProperty('agentId')">
+                                </ak-drop-down-list>
+                                <input class="form-control" type="hidden" value.bind="cargoInfo.agentId & validate ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">客户名称*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="shortName"
+                                                   k-data-value-field="id" k-value.two-way="cargoInfo.customerId"
+                                                   k-data-source.bind="customers" k-widget.two-way="customerInfo"
+                                                   style="width: 100%" k-on-change.delegate="customerChanged()"
+                                                   k-on-close.delegate="validateProperty('customerId')">
+                                </ak-drop-down-list>
+                                <input class="form-control" type="hidden" value.bind="cargoInfo.customerId & validate ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">提单号*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" maxlength="30"
+                                       value.bind="cargoInfo.billLadingNumber & validate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">指令数量*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="text" class="form-control" value.bind="cargoInfo.orderQuantity & toFloat"
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">指令件数*</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <input type="number" class="form-control" value.bind="cargoInfo.orderNumber & toInt"
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">备注</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                                <textarea type="text" class="form-control" value.bind="cargoInfo.remark "></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row column-seperation">
+                    <h4>货物明细</h4>
+                    <div class="col-md-12">
+                        <span class="help"></span>
+                        <div class="controls right">
+                            <a class="btn btn-primary" click.delegate="addCargoItem()">新增货物</a>
+                            <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
+                                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                                <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+                                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+                                <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+                                <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
+                                <ak-col k-field="remark" k-title="备注"></ak-col>
+                                <ak-col k-title="操作">
+                                    <ak-template>
+                                        <a class="btn btn-small" click.delegate="update(batchNumber)">修改</a>
+                                        <a class="btn btn-danger btn-small" click.delegate="delete(batchNumber)">删除</a>
+                                    </ak-template>
+                                </ak-col>
+                            </ak-grid>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-actions">
+                        <div class="pull-right">
+                            <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
+                            <a class="btn btn-white" click.trigger="cancel()">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="row column-seperation">
-          <h4>货物明细</h4>
-          <div class="col-md-12">
-            <span class="help"></span>
-            <div class="controls right">
-              <a class="btn btn-primary" click.delegate="addCargoItem()">新增货物</a>
-              <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
-                <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
-                <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
-                <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
-                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
-                <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
-                <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
-                <ak-col k-field="remark" k-title="备注"></ak-col>
-                <ak-col k-title="操作">
-                  <ak-template>
-                    <a class="btn btn-small" click.delegate="update(batchNumber)">修改</a>
-                    <a class="btn btn-danger btn-small" click.delegate="delete(batchNumber)">删除</a>
-                  </ak-template>
-                </ak-col>
-              </ak-grid>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="form-actions">
-            <div class="pull-right">
-              <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
-              <a class="btn btn-white" click.trigger="cancel()">返回</a>
-            </div>
-          </div>
-        </div>
-      </form>
     </div>
-  </div>
 </template>

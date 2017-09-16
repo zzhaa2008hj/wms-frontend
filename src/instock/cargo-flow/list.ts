@@ -1,5 +1,5 @@
 import { CargoFlowService } from "@app/instock/services/cargo-flow";
-import { DataSourceFactory,  requiredPermissionsAttributeResult } from "@app/utils";
+import { DataSourceFactory, requiredPermissionsAttributeResult } from "@app/utils";
 import { VerifyRecordCriteria, VerifyRecordService } from '@app/common/services/verify-record';
 import { DialogService, MessageDialogService } from 'ui';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
@@ -22,6 +22,7 @@ import { CargoInfo } from '@app/base/models/cargo-info';
 import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { CargoFlow } from "@app/instock/models/cargo-flow";
 import { UserSession } from '@app/user';
+import { OrderItems } from '@app/instock/cargo-flow/order-items';
 
 export class CargoFlowList {
   selectedItem: any;
@@ -33,7 +34,7 @@ export class CargoFlowList {
   };
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
-  existEntering = false;  
+  existEntering = false;
   private dataSource: kendo.data.DataSource;
 
   constructor(@inject private cargoFlowService: CargoFlowService,
@@ -151,7 +152,7 @@ export class CargoFlowList {
     }
   }
 
-  async additionalRecording(){
+  async additionalRecording() {
     if (this.routerParams.infoId) {
       let cargoInfo: CargoInfo = await this.cargoInfoService.getCargoInfo(this.routerParams.infoId);
       if (cargoInfo.instockStatus == 1) {
@@ -284,8 +285,11 @@ export class CargoFlowList {
     try {
       let confirmed = await this.messageDialogService.confirm({ title: "提示", message: "确认生成理货报告？" });
       if (!confirmed) return;
+      await this.orderItemService.getJudge(ids);
+      let result = await this.dialogService.open({ viewModel: OrderItems, model: ids, lock: true }).whenClosed();
+      if (result.wasCancelled) return;
       //生成理货报告
-      await this.orderItemService.saveOrderItem(ids);
+      await this.orderItemService.saveOrderItem(result.output);
       await this.messageDialogService.alert({ title: "提示", message: "生成成功！" });
       this.dataSource.read();
     } catch (err) {
@@ -336,8 +340,19 @@ export class CargoFlowList {
     let selectedRow = grid.select();
     this.selectedItem = grid.dataItem(selectedRow);
   }
-  
+
   requiredPermissions(sourceCode: string) {
     return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
+  }
+
+  /**
+   * 客户确认
+   */
+  async customerConfirm(id) {
+    let confirmed = await this.dialogService.confirm({ title: "提示", message: "客户确认通过!" });
+    if (confirmed) {
+      await this.cargoFlowService.updateFlowStage(id, 1);
+      this.dataSource.read();
+    }
   }
 }

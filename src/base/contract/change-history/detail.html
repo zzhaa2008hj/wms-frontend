@@ -1,260 +1,266 @@
 <template>
-  <ux-dialog>
-    <ux-dialog-header show-close-button.bind="true">
-      <i class="fa fa-check-square-o"></i> 修改记录详情
-    </ux-dialog-header>
-    <ux-dialog-body>
-      <div class="col-md-6">
-        <div class="grid simple">
-          <div class="grid-body no-border">
-            <div class="row column-seperation">
-              <h4>基本信息(修改前)</h4>
-              <div class="col-md-12">
-                <label class="form-label">合同类型*</label>
-                <div class="controls right">
-                  <label>${oldContractVo.contract.contractTypeStr}</label>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 修改记录详情
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="col-md-6">
+                <div class="grid simple">
+                    <div class="grid-body no-border">
+                        <div class="row column-seperation">
+                            <h4>基本信息(修改前)</h4>
+                            <div class="col-md-12">
+                                <label class="form-label">合同类型*</label>
+                                <div class="controls right">
+                                    <label>${oldContractVo.contract.contractTypeStr}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">客户名称*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.customerName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同编号*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.contractNumber}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同名称*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.contractName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同金额*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.contractAmount}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同开始日期*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.startTimeStr}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同结束日期*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.endTimeStr}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">签订日期*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.signDateStr}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">签订人*</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.signer}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">备注</label>
+                                    <div class="controls">
+                                        <label>${oldContractVo.contract.remark}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row column-seperation">
+                            <div if.bind="oldContractVo.contract.contractType==3">
+                                <h4>存放库区</h4>
+                                <div class="col-md-12">
+                                    <label class="form-label">存放库区*</label>
+                                    <span class="help"></span>
+                                    <div class="controls right">
+                                        <label>${oldContractVo.warehouseName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <template
+                                    if.bind="oldContractVo.contract.contractType==1 || oldContractVo.contract.contractType==2">
+                                <h4>合同费率</h4>
+                                <div class="col-md-12">
+                                    <span class="help"></span>
+                                    <div class="controls right">
+                                        <ak-grid k-data-source.bind="oldContractVo.rateVos"
+                                                 k-on-detail-init.delegate="oldDetailInit($event.detail)">
+                                            <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'"
+                                                    k-title="费用类别"></ak-col>
+                                            <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
+                                            <ak-col k-title="单价" k-field="price"></ak-col>
+                                            <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                                            <ak-col k-field="pricingMode== 1 ?  '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
+                                            <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                                            <!--<ak-col k-field="warehouseType" k-title="库位性质"></ak-col>-->
+                                            <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                            <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                                            <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
+                                            <ak-col k-field="remark" k-title="备注"></ak-col>
+                                            <ak-template for="detailTemplate">
+                                                <div class="oldRateSteps" if.bind="pricingMode !=1 "></div>
+                                                <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+                                            </ak-template>
+                                        </ak-grid>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">客户名称*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.customerName}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同编号*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.contractNumber}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同名称*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.contractName}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同金额*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.contractAmount}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同开始日期*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.startTimeStr}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同结束日期*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.endTimeStr}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">签订日期*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.signDateStr}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">签订人*</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.signer}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label class="form-label">备注</label>
-                  <div class="controls">
-                    <label>${oldContractVo.contract.remark}</label>
-                  </div>
-                </div>
-              </div>
             </div>
-            <div class="row column-seperation">
-              <div if.bind="oldContractVo.contract.contractType==3">
-                <h4>存放库区</h4>
-                <div class="col-md-12">
-                  <label class="form-label">存放库区*</label>
-                  <span class="help"></span>
-                  <div class="controls right">
-                    <label>${oldContractVo.warehouseName}</label>
-                  </div>
+            <div class="col-md-6">
+                <div class="grid simple">
+                    <div class="grid-body no-border">
+                        <div class="row column-seperation">
+                            <h4>基本信息(修改后)</h4>
+                            <div class="col-md-12">
+                                <label class="form-label">合同类型*</label>
+                                <div class="controls right">
+                                    <label>${newContractVo.contract.contractTypeStr}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">客户名称*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.customerName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同编号*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.contractNumber}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同名称*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.contractName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同金额*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.contractAmount}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同开始日期*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.startTimeStr}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">合同结束日期*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.endTimeStr}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">签订日期*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.signDateStr}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">签订人*</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.signer}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">备注</label>
+                                    <div class="controls">
+                                        <label>${newContractVo.contract.remark}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row column-seperation">
+                            <div if.bind="newContractVo.contract.contractType==3">
+                                <h4>存放库区</h4>
+                                <div class="col-md-12">
+                                    <label class="form-label">存放库区*</label>
+                                    <span class="help"></span>
+                                    <div class="controls right">
+                                        <label>${newContractVo.warehouseName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <template
+                                    if.bind="newContractVo.contract.contractType==1 || newContractVo.contract.contractType==2">
+                                <h4>合同费率</h4>
+                                <div class="col-md-12">
+                                    <span class="help"></span>
+                                    <div class="controls right">
+                                        <ak-grid k-data-source.bind="newContractVo.rateVos"
+                                                 k-on-detail-init.delegate="newDetailInit($event.detail)">
+                                            <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'"
+                                                    k-title="费用类别"></ak-col>
+                                            <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
+                                            <ak-col k-title="单价" k-field="price"></ak-col>
+                                            <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                                            <ak-col k-field="pricingMode== 1 ?  '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
+                                            <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                                            <!--<ak-col k-field="warehouseType" k-title="库位性质"></ak-col>-->
+                                            <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                            <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                                            <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
+                                            <ak-col k-field="remark" k-title="备注"></ak-col>
+                                            <ak-template for="detailTemplate">
+                                                <div class="newRateSteps" if.bind="pricingMode !=1 "></div>
+                                                <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+                                            </ak-template>
+                                        </ak-grid>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <template if.bind="oldContractVo.contract.contractType==1 || oldContractVo.contract.contractType==2">
-                <h4>合同费率</h4>
-                <div class="col-md-12">
-                  <span class="help"></span>
-                  <div class="controls right">
-                    <ak-grid k-data-source.bind="oldContractVo.rateVos" k-on-detail-init.delegate="oldDetailInit($event.detail)">
-                      <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
-                      <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
-                      <ak-col k-title="单价" k-field="price"></ak-col>
-                      <ak-col k-field="unit" k-title="计量单位"></ak-col>
-                      <ak-col k-field="pricingMode== 1 ?  '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
-                      <ak-col k-field="workName" k-title="作业内容"></ak-col>
-                      <ak-col k-field="warehouseType" k-title="库位性质"></ak-col>
-                      <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                      <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
-                      <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
-                      <ak-col k-field="remark" k-title="备注"></ak-col>
-                      <ak-template for="detailTemplate">
-                        <div class="oldRateSteps" if.bind="pricingMode !=1 "></div>
-                        <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
-                      </ak-template>
-                    </ak-grid>
-                  </div>
-                </div>
-              </template>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="grid simple">
-          <div class="grid-body no-border">
-            <div class="row column-seperation">
-              <h4>基本信息(修改后)</h4>
-              <div class="col-md-12">
-                <label class="form-label">合同类型*</label>
-                <div class="controls right">
-                  <label>${newContractVo.contract.contractTypeStr}</label>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">客户名称*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.customerName}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同编号*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.contractNumber}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同名称*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.contractName}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同金额*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.contractAmount}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同开始日期*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.startTimeStr}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">合同结束日期*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.endTimeStr}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">签订日期*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.signDateStr}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">签订人*</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.signer}</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label class="form-label">备注</label>
-                  <div class="controls">
-                    <label>${newContractVo.contract.remark}</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row column-seperation">
-              <div if.bind="newContractVo.contract.contractType==3">
-                <h4>存放库区</h4>
-                <div class="col-md-12">
-                  <label class="form-label">存放库区*</label>
-                  <span class="help"></span>
-                  <div class="controls right">
-                    <label>${newContractVo.warehouseName}</label>
-                  </div>
-                </div>
-              </div>
-              <template if.bind="newContractVo.contract.contractType==1 || newContractVo.contract.contractType==2">
-                <h4>合同费率</h4>
-                <div class="col-md-12">
-                  <span class="help"></span>
-                  <div class="controls right">
-                    <ak-grid k-data-source.bind="newContractVo.rateVos" k-on-detail-init.delegate="newDetailInit($event.detail)">
-                      <ak-col k-field="chargeCategory == 1 ? '仓储费': chargeCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
-                      <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
-                      <ak-col k-title="单价" k-field="price"></ak-col>
-                      <ak-col k-field="unit" k-title="计量单位"></ak-col>
-                      <ak-col k-field="pricingMode== 1 ?  '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
-                      <ak-col k-field="workName" k-title="作业内容"></ak-col>
-                      <ak-col k-field="warehouseType" k-title="库位性质"></ak-col>
-                      <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                      <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
-                      <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
-                      <ak-col k-field="remark" k-title="备注"></ak-col>
-                      <ak-template for="detailTemplate">
-                        <div class="newRateSteps" if.bind="pricingMode !=1 "></div>
-                        <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
-                      </ak-template>
-                    </ak-grid>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ux-dialog-body>
-    <ux-dialog-footer>
-      <button class="btn btn-white" click.trigger="cancel()">返回</button>
-    </ux-dialog-footer>
-  </ux-dialog>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-white" click.trigger="cancel()">返回</button>
+        </ux-dialog-footer>
+    </ux-dialog>
 </template>

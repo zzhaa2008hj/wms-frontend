@@ -12,13 +12,13 @@ import { DictionaryData } from "@app/base/models/dictionary";
 export class NewWarehouse {
   warehouse: Warehouse = {} as Warehouse;
   pWarehouse: Warehouse = {} as Warehouse;
-  type = [] as DictionaryData[];
+  // type = [] as DictionaryData[];
   category = [] as DictionaryData[];
   validationController: ValidationController;
 
   constructor(private dialogController: DialogController,
               private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory, 
+              validationControllerFactory: ValidationControllerFactory,
               container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -28,7 +28,7 @@ export class NewWarehouse {
 
   async activate(warehouse: Warehouse) {
     this.pWarehouse = warehouse;
-    this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    // this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.category = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
   }
 
@@ -36,14 +36,14 @@ export class NewWarehouse {
   async save() {
     if (this.pWarehouse) {
       this.warehouse.parentId = this.pWarehouse.id;
-      this.warehouse.type = this.pWarehouse.type;
+      // this.warehouse.type = this.pWarehouse.type;
       this.warehouse.category = this.pWarehouse.category;
     }
 
     this.validationController.addObject(this.warehouse, validationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
-    
+
     await this.dialogController.ok(this.warehouse);
   }
 
@@ -58,9 +58,9 @@ const validationRules = ValidationRules
   .displayName('库区名称')
   .required().withMessage(`\${$displayName} 不能为空`)
 
-  .ensure((warehouse: Warehouse) => warehouse.type)
-  .displayName('库区性质')
-  .required().withMessage(`\${$displayName} 不能为空`)
+  // .ensure((warehouse: Warehouse) => warehouse.type)
+  // .displayName('库区性质')
+  // .required().withMessage(`\${$displayName} 不能为空`)
 
   .ensure((warehouse: Warehouse) => warehouse.category)
   .displayName('库区类别')

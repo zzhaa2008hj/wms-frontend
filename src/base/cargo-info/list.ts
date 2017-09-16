@@ -2,8 +2,6 @@ import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService } from "ui";
 import { DataSourceFactory, requiredPermissionsAttributeResult } from "@app/utils";
 import { CargoInfoService, CargoInfoCriteria } from "@app/base/services/cargo-info";
-import { DictionaryData } from '@app/base/models/dictionary';
-import { DictionaryDataService } from '@app/base/services/dictionary';
 import { OutstockInventoryService } from "@app/outstock/services/inventory";
 import { Router } from 'aurelia-router';
 import { UserSession } from '@app/user';
@@ -18,13 +16,11 @@ export class CargoInfoList {
     pageSizes: true,
     buttonCount: 10
   };
-  warehouseTypes = [] as DictionaryData[];
   batchNumber: string;
   infoId: string;
 
   constructor(private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
-              private dictionaryDataService: DictionaryDataService,
               private dataSourceFactory: DataSourceFactory,
               private router: Router,
               private outstockInventoryService: OutstockInventoryService,
@@ -33,15 +29,8 @@ export class CargoInfoList {
   }
 
   async activate() {
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.cargoInfoService.queryCargoInfo(this.cargoInfoCriteria).map(res => {
-        let warehouseType = this.warehouseTypes.find(d => res.warehouseType == d.dictDataCode);
-        if (warehouseType) {
-          res.warehouseTypeStr = warehouseType.dictDataName;
-        }
-        return res;
-      }),
+      query: () => this.cargoInfoService.queryCargoInfo(this.cargoInfoCriteria),
       pageSize: 10
     });
   }

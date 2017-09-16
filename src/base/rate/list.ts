@@ -20,14 +20,14 @@ export class List {
     pageSizes: true,
     buttonCount: 10
   };
-  warehouseType = [] as DictionaryData[];
+  // warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   unit = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
   customerCategories = ConstantValues.CustomerCategory;
   chargeCategories = ConstantValues.ChargeCategory;
   chargeTypes = ConstantValues.ChargeType;
-  chargeCategory = [{type: 1, name: '仓储费'},{type: 2, name: '装卸费'},{type: 3, name: '其他费用'}];
+  chargeCategory = [{ type: 1, name: '仓储费' }, { type: 2, name: '装卸费' }, { type: 3, name: '其他费用' }];
 
   private dataSource: kendo.data.DataSource;
 
@@ -42,22 +42,22 @@ export class List {
 
   async activate() {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.rateService.queryRates(this.rate).map(res => {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
-        let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+        //let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
         let rateType = this.rateTypes.find(d => res.rateType == d.value);
         let chargeCategory = this.chargeCategory.find(d => d.type == res.chargeCategory);
         if (unit) {
           res.unit = unit.dictDataName;
         }
-        if (warehouseType) {
-          res.warehouseType = warehouseType.dictDataName;
-        }
+        // if (warehouseType) {
+        //   res.warehouseType = warehouseType.dictDataName;
+        // }
         if (warehouseCategory) {
           res.warehouseCategory = warehouseCategory.dictDataName;
         }
@@ -120,7 +120,7 @@ export class List {
 
   async delete(id) {
     try {
-      let confirmed = await this.messageDialogService.confirm({ title: "删除:", message: "删除后无法恢复" })
+      let confirmed = await this.messageDialogService.confirm({ title: "删除:", message: "删除后无法恢复" });
       if (confirmed) {
         await this.rateService.deleteRate(id);
         this.dataSource.read();

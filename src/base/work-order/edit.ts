@@ -318,7 +318,7 @@ const workOrderRules = ValidationRules
   })
   .withMessage(`\${$displayName}不能为空`)
   .satisfies(x => /^([\u4e00-\u9fa5][a-zA-Z](([DF](?![a-zA-Z0-9]*[IO])[0-9]{4,5})|([0-9]{5}[DF])))|([冀豫云辽黑湘皖鲁苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼渝京津沪新京军空海北沈兰济南广成使领A-Z]{1}[a-zA-Z0-9]{5,6}[a-zA-Z0-9挂学警港澳]{1})$/
-  .test(x)).withMessage(` 请输入正确车牌号`)
+    .test(x)).withMessage(` 请输入正确车牌号`)
 
 
   .ensure((workOrder: WorkOrder) => workOrder.driverName)
@@ -341,13 +341,6 @@ const workOrderRules = ValidationRules
   .ensure((workOrder: WorkOrder) => workOrder.driverIdentityNumber)
   .displayName("身份证号")
   .satisfies(x => {
-    if (!x) {
-      return false;
-    }
-    return true;
-  })
-  .withMessage(`\${$displayName}不能为空`)
-  .satisfies(x => {
     if (x) {
       return /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/.test(x);
     }
@@ -357,13 +350,6 @@ const workOrderRules = ValidationRules
 
   .ensure((workOrder: WorkOrder) => workOrder.phoneNumber)
   .displayName("电话号码")
-  .satisfies(x => {
-    if (!x) {
-      return false;
-    }
-    return true;
-  })
-  .withMessage(`\${$displayName}不能为空`)
   .satisfies(x => {
     if (x) {
       return /(^1[3|4|5|7|8][0-9]{9}$)|(([0-9]{3,4}-)?[0-9]{7,8})/.test(x);

@@ -9,7 +9,7 @@ import { DictionaryDataService } from "@app/base/services/dictionary";
 
 @autoinject
 export class WarehouseList {
-  typeDictionary = [] as DictionaryData[];
+  //typeDictionary = [] as DictionaryData[];
   categoryDictionary = [] as DictionaryData[];
   selectedItem: Warehouse;
   private dataSource: kendo.data.TreeListDataSource;
@@ -21,7 +21,7 @@ export class WarehouseList {
   }
 
   async activate() {
-    this.typeDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.typeDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.categoryDictionary = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.dataSource = new kendo.data.TreeListDataSource({
       transport: {
@@ -29,10 +29,10 @@ export class WarehouseList {
           this.warehouseService.listWarehouse()
             .then(res => {
               res.forEach(r => {
-                let typeDictionary = this.typeDictionary.find(d => r.type == d.dictDataCode);
-                if (typeDictionary) {
-                  r.typeStr = typeDictionary.dictDataName;
-                }
+                // let typeDictionary = this.typeDictionary.find(d => r.type == d.dictDataCode);
+                // if (typeDictionary) {
+                //   r.typeStr = typeDictionary.dictDataName;
+                // }
                 let categoryDictionary = this.categoryDictionary.find(d => r.category == d.dictDataCode);
                 if (categoryDictionary) {
                   r.categoryStr = categoryDictionary.dictDataName;

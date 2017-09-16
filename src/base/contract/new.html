@@ -1,181 +1,273 @@
 <template>
-  <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
-  <div class="grid simple">
-    <div class="grid-body no-border">
-      <form submit.delegate="save()">
-        <div class="row column-seperation">
-          <h4>基本信息</h4>
-          <div class="col-md-12">
-            <div class="col-md-12">
-              <label class="form-label">合同类型*</label>
-              <span class="help"></span>
-              <div class="controls right">
-                <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="type" k-value.two-way="contract.contractType"
-                  k-data-source.bind="contractTypes" k-on-change.delegate="contractTypeChanged()" k-on-close.delegate="validateProperty('contractType')"
-                  style="width: 100%" k-enabled.two-way="!disabled">
-                </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="contract.contractType & validate ">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">客户名称*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <ak-drop-down-list k-option-label="请选择" k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="contract.customerId"
-                    k-data-source.bind="customerDatasource" k-widget.two-way="customerInfo" k-on-close.delegate="validateProperty('customerId')"
-                    style="width: 100%" k-enabled.two-way="!disabled">
-                  </ak-drop-down-list>
-                  <input class="form-control" type="hidden" value.bind="contract.customerId & validate ">
+    <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
+    <div class="grid simple">
+        <div class="grid-body no-border">
+            <form submit.delegate="save()">
+                <div class="row column-seperation">
+                    <h4>基本信息</h4>
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <label class="form-label">合同类型*</label>
+                            <span class="help"></span>
+                            <div class="controls right">
+                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="name"
+                                                   k-data-value-field="type" k-value.two-way="contract.contractType"
+                                                   k-data-source.bind="contractTypes"
+                                                   k-on-change.delegate="contractTypeChanged()"
+                                                   k-on-close.delegate="validateProperty('contractType')"
+                                                   style="width: 100%" k-enabled.two-way="!disabled">
+                                </ak-drop-down-list>
+                                <input class="form-control" type="hidden"
+                                       value.bind="contract.contractType & validate ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">客户名称*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <ak-drop-down-list k-option-label="请选择" k-data-text-field="shortName"
+                                                       k-data-value-field="id" k-value.two-way="contract.customerId"
+                                                       k-data-source.bind="customerDatasource"
+                                                       k-widget.two-way="customerInfo"
+                                                       k-on-close.delegate="validateProperty('customerId')"
+                                                       style="width: 100%" k-enabled.two-way="!disabled">
+                                    </ak-drop-down-list>
+                                    <input class="form-control" type="hidden"
+                                           value.bind="contract.customerId & validate ">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">合同编号*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input type="text" class="form-control" disabled.bind="disabled"
+                                           value.bind="contract.contractNumber & validate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">合同名称*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input type="text" class="form-control" disabled.bind="disabled"
+                                           value.bind="contract.contractName & validate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">合同金额*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input type="number" step="0.01" class="form-control" disabled.bind="disabled"
+                                           value.bind="contract.contractAmount  & toFloat  & validate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">合同开始日期*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input ak-datepicker="k-value.two-way : contract.startTime & validate ; k-widget.two-way: startDatePicker"
+                                           k-on-change.delegate="startChange()"
+                                           style="width: 100%" type="text" class="form-control"
+                                           disabled.bind="disabled">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">合同结束日期*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input ak-datepicker="k-value.two-way : contract.endTime & validate ; k-widget.two-way: endDatePicker"
+                                           k-on-change.delegate="endChange()"
+                                           style="width: 100%" type="text" class="form-control"
+                                           disabled.bind="disabled">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">签订日期*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input ak-datepicker="k-value.two-way : contract.signDate & validate"
+                                           style="width: 100%" type="text" class="form-control"
+                                           disabled.bind="disabled">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">签订人*</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <input type="text" class="form-control" value.bind="contract.signer & validate"
+                                           disabled.bind="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">备注</label>
+                                <span class="help"></span>
+                                <div class="controls">
+                                    <textarea type="text" class="form-control" value.bind="contract.remark & validate"
+                                              disabled.bind="disabled"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">合同编号*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <input type="text" class="form-control" disabled.bind="disabled" value.bind="contract.contractNumber & validate">
+                <div class="row column-seperation">
+                    <div if.bind="contract.contractType==3">
+                        <h4>存放库区</h4>
+                        <div class="col-md-12">
+                            <label class="form-label">存放库区*</label>
+                            <span class="help"></span>
+                            <div class="controls right">
+                                <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="id"
+                                                   k-value.two-way="contractVo.warehouseId"
+                                                   k-data-source.bind="warehouses"
+                                                   k-on-close.delegate="validateVoProperty('warehouseId')"
+                                                   style="width: 100%"
+                                                   k-enabled.two-way="!disabled">
+                                </ak-drop-down-list>
+                                <input class="form-control" type="hidden"
+                                       value.bind="contractVo.warehouseId & validate ">
+                            </div>
+                        </div>
+                    </div>
+                    <template if.bind="contract.contractType==1 || contract.contractType==2">
+                        <h4>合同费率</h4>
+                        <div class="col-md-3">
+                            <label class="form-label">费用类别</label>
+                            <span class="help"></span>
+                            <ak-drop-down-list k-value.two-way="search.chargeCategory"
+                                               k-option-label="请选择..."
+                                               k-data-text-field="text"
+                                               k-data-value-field="value"
+                                               k-data-source.bind="chargeCategory">
+                            </ak-drop-down-list>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">货类</label>
+                            <span class="help"></span>
+                            <div class="controls right">
+                                <input type="text" class="form-label" value.bind="search.cargoCategoryName" disabled>
+                                <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择...</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="col-md-12">
+                                <label class="form-label">作业类别</label>
+                                <span class="help"></span>
+                                <ak-drop-down-list k-value.two-way="search.rateType"
+                                                   k-option-label="请选择..."
+                                                   k-data-text-field="text"
+                                                   k-data-value-field="value"
+                                                   k-data-source.bind="rateTypes">
+                                </ak-drop-down-list>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">作业内容</label>
+                            <span class="help"></span>
+                            <input type="text" class="form-label" value.bind="search.workName" readonly>
+                            <a class="btn btn-small" type="button" click.delegate="selectWorkInfo()">请选择...</a>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">库位类别</label>
+                            <span class="help"></span>
+                            <ak-drop-down-list k-value.two-way="search.warehouseCategory"
+                                               k-option-label="请选择..."
+                                               k-data-text-field="dictDataName"
+                                               k-data-value-field="dictDataCode"
+                                               k-data-source.bind="warehouseCategory">
+                            </ak-drop-down-list>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">计价方式</label>
+                            <span class="help"></span>
+                            <ak-drop-down-list k-value.two-way="search.pricingMode"
+                                               k-option-label="请选择..."
+                                               k-data-text-field="text"
+                                               k-data-value-field="value"
+                                               k-data-source.bind="pricingMode">
+                            </ak-drop-down-list>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="input-group-addon search" click.delegate="select()"><em
+                                    class="fa fa-search"></em></div>
+                        </div>
+                        <div class="col-md-12">
+                            <span class="help"></span>
+                            <div class="controls right">
+                                <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid"
+                                         k-editable.bind="true" k-on-edit.delegate="edit($event)"
+                                         k-on-detail-init.delegate="detailInit($event.detail)">
+                                    <ak-col k-field="rateCategory" k-title="费用类别">
+                                        <ak-template>
+                                            ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
+                                        </ak-template>
+                                    </ak-col>
+                                    <ak-col k-field="chargeType" k-title="收付费">
+                                        <ak-template>
+                                            ${chargeType == 1 ? '收费' :'付费'}
+                                        </ak-template>
+                                    </ak-col>
+                                    <ak-col k-title="单价" k-field="price"></ak-col>
+                                    <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+                                    <ak-col k-field="pricingMode" k-title="计价方式">
+                                        <ak-template>
+                                            ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
+                                        </ak-template>
+                                    </ak-col>
+                                    <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
+                                    <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                                    <!--<ak-col k-field="warehouseTypeStr" k-title="库位性质"></ak-col>-->
+                                    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                    <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                                    <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
+                                    <ak-col k-field="remark" k-title="备注"></ak-col>
+                                    <ak-col k-title="操作">
+                                        <ak-template>
+                                            <a class="btn btn-small" click.delegate="delete($this)">删除</a>
+                                        </ak-template>
+                                    </ak-col>
+                                    <ak-template for="detailTemplate">
+                                        <div class="rateSteps" if.bind="pricingMode !=1 "></div>
+                                        <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+                                    </ak-template>
+                                </ak-grid>
+                            </div>
+                        </div>
+                    </template>
                 </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">合同名称*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <input type="text" class="form-control" disabled.bind="disabled" value.bind="contract.contractName & validate">
+                <div class="col-md-12">
+                    <div class="form-actions">
+                        <div class="pull-right">
+                            <button class="btn btn-primary" disabled.bind="disabled" type="submit"><i
+                                    class="icon-ok"></i> 保存
+                            </button>
+                            <a class="btn" disabled.bind="disabled" click.trigger="cancel()">返回</a>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">合同金额*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <input type="number" step="0.01" class="form-control" disabled.bind="disabled" value.bind="contract.contractAmount  & toFloat  & validate">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">合同开始日期*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <input ak-datepicker="k-value.two-way : contract.startTime & validate ; k-widget.two-way: startDatePicker" k-on-change.delegate="startChange()"
-                    style="width: 100%" type="text" class="form-control" disabled.bind="disabled">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">合同结束日期*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <input ak-datepicker="k-value.two-way : contract.endTime & validate ; k-widget.two-way: endDatePicker" k-on-change.delegate="endChange()"
-                    style="width: 100%" type="text" class="form-control" disabled.bind="disabled">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">签订日期*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <input ak-datepicker="k-value.two-way : contract.signDate & validate" style="width: 100%" type="text" class="form-control"
-                    disabled.bind="disabled">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="form-label">签订人*</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <input type="text" class="form-control" value.bind="contract.signer & validate" disabled.bind="disabled">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label class="form-label">备注</label>
-                <span class="help"></span>
-                <div class="controls">
-                  <textarea type="text" class="form-control" value.bind="contract.remark & validate" disabled.bind="disabled"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
+            </form>
         </div>
-        <div class="row column-seperation">
-          <div if.bind="contract.contractType==3">
-            <h4>存放库区</h4>
-            <div class="col-md-12">
-              <label class="form-label">存放库区*</label>
-              <span class="help"></span>
-              <div class="controls right">
-                <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="id" k-value.two-way="contractVo.warehouseId"
-                  k-data-source.bind="warehouses" k-on-close.delegate="validateVoProperty('warehouseId')" style="width: 100%"
-                  k-enabled.two-way="!disabled">
-                </ak-drop-down-list>
-                <input class="form-control" type="hidden" value.bind="contractVo.warehouseId & validate ">
-              </div>
-            </div>
-          </div>
-          <template if.bind="contract.contractType==1 || contract.contractType==2">
-            <h4>合同费率</h4>
-            <div class="col-md-12">
-              <span class="help"></span>
-              <div class="controls right">
-                <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-detail-init.delegate="detailInit($event.detail)">
-                  <ak-col k-field="rateCategory" k-title="费用类别">
-                    <ak-template>
-                      ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
-                    </ak-template>
-                  </ak-col>
-                  <ak-col k-field="chargeType" k-title="收付费">
-                    <ak-template>
-                      ${chargeType == 1 ? '收费' :'付费'}
-                    </ak-template>
-                  </ak-col>
-                  <ak-col k-title="单价" k-field="price"></ak-col>
-                  <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
-                  <ak-col k-field="pricingMode" k-title="计价方式">
-                    <ak-template>
-                      ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
-                    </ak-template>
-                  </ak-col>
-                  <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
-                  <ak-col k-field="workName" k-title="作业内容"></ak-col>
-                  <ak-col k-field="warehouseTypeStr" k-title="库位性质"></ak-col>
-                  <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                  <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
-                  <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
-                  <ak-col k-field="remark" k-title="备注"></ak-col>
-                  <ak-template for="detailTemplate">
-                    <div class="rateSteps" if.bind="pricingMode !=1 "></div>
-                    <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
-                  </ak-template>
-                </ak-grid>
-              </div>
-            </div>
-          </template>
-        </div>
-        <div class="col-md-12">
-          <div class="form-actions">
-            <div class="pull-right">
-              <button class="btn btn-primary" disabled.bind="disabled" type="submit"><i class="icon-ok"></i> 保存</button>
-              <a class="btn" disabled.bind="disabled" click.trigger="cancel()">返回</a>
-            </div>
-          </div>
-        </div>
-      </form>
     </div>
-  </div>
 </template>

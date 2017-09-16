@@ -15,7 +15,7 @@ export class DetailsCargoInfo {
   cargoItems = [] as CargoItem[];
   cargoInfoId = '';
   dataSource: kendo.data.DataSource;
-  warehouseTypes = [] as DictionaryData[];
+  //warehouseTypes = [] as DictionaryData[];
 
   units = [] as DictionaryData[];
 
@@ -58,7 +58,7 @@ export class DetailsCargoInfo {
   async activate({ id }) {
     //入库指令信息
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
     this.cargoItems.map(res => res.unitStr = this.units.find(d => d.dictDataCode == res.unit).dictDataName);

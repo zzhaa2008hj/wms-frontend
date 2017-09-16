@@ -8,8 +8,6 @@ import { Organization } from '@app/base/models/organization';
 import { NewCargoItem } from '@app/base/cargo-info/item-new';
 import { ValidationControllerFactory, ValidationController, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
-import { DictionaryData } from '@app/base/models/dictionary';
-import { DictionaryDataService } from '@app/base/services/dictionary';
 
 @autoinject
 export class AdditionalRecordingCargoInfo {
@@ -22,7 +20,7 @@ export class AdditionalRecordingCargoInfo {
   contractId = '';
   index = 1;
   maxDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-  warehouseTypes = [] as DictionaryData[];
+  //warehouseTypes = [] as DictionaryData[];
 
   datasource: kendo.data.DataSource;
   customerInfo: kendo.ui.DropDownList;
@@ -31,12 +29,12 @@ export class AdditionalRecordingCargoInfo {
   validationController: ValidationController;
 
   constructor(private router: Router,
-    private cargoInfoService: CargoInfoService,
-    private messageDialogService: MessageDialogService,
-    private dialogService: DialogService,
-    private dictionaryDataService: DictionaryDataService,
-    validationControllerFactory: ValidationControllerFactory,
-    container: Container) {
+              private cargoInfoService: CargoInfoService,
+              private messageDialogService: MessageDialogService,
+              private dialogService: DialogService,
+              // private dictionaryDataService: DictionaryDataService,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -63,7 +61,7 @@ export class AdditionalRecordingCargoInfo {
 
 
   async activate() {
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.validationController.addObject(this.cargoInfo, validationRules);
 
     // 仓储代理商
@@ -97,17 +95,17 @@ export class AdditionalRecordingCargoInfo {
   }
 
   async addCargoItem() {
-    if (!this.cargoInfo.warehouseType) {
-      this.messageDialogService.alert({ title: '请选择库区性质', message: '请选择库区性质' });
-      return;
-    }
+    // if (!this.cargoInfo.warehouseType) {
+    //   this.messageDialogService.alert({ title: '请选择库区性质', message: '请选择库区性质' });
+    //   return;
+    // }
     if (!this.contractId) {
       this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
       return;
     }
     let result = await this.dialogService.open({
       viewModel: NewCargoItem,
-      model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType }, lock: true
+      model: { contractId: this.contractId }, lock: true
     })
       .whenClosed();
     if (result.wasCancelled) return;
@@ -153,7 +151,7 @@ export class AdditionalRecordingCargoInfo {
     let cargoItemInfo = cargoItemList[0];
     let result = await this.dialogService.open({
       viewModel: NewCargoItem,
-      model: { contractId: this.contractId, warehouseType: this.cargoInfo.warehouseType, cargoItemInfo },
+      model: { contractId: this.contractId, cargoItemInfo },
       lock: true
     }).whenClosed();
     if (result.wasCancelled) return;

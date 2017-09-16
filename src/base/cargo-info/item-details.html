@@ -1,113 +1,121 @@
 <template>
-  <ux-dialog>
-    <ux-dialog-header show-close-button.bind="true">
-      <i class="fa fa-check-square-o"></i> 货物明细信息
-    </ux-dialog-header>
-    <ux-dialog-body>
-      <div class="grid simple">
-        <div class="grid-body no-border">
-          <form submit.delegate="save()">
-            <div class="row column-seperation">
-              <h4>货物基本信息</h4>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">货物名称*</label>
-                  <span class="help"></span>
-                  <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.cargoName" readonly>
-                  </div>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 货物明细信息
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="grid simple">
+                <div class="grid-body no-border">
+                    <form submit.delegate="save()">
+                        <div class="row column-seperation">
+                            <h4>货物基本信息</h4>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">货物名称*</label>
+                                    <span class="help"></span>
+                                    <div class="form-controls">
+                                        <input type="text" class="form-control" value.bind="cargoItem.cargoName"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">货物种类*</label>
+                                    <span class="help"></span>
+                                    <div class="form-controls">
+                                        <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">指令数量*</label>
+                                    <span class="help"></span>
+                                    <div class="form-controls">
+                                        <input type="text" class="form-control"
+                                               value.bind="cargoItem.orderQuantity & toFloat" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">指令件数</label>
+                                    <span class="help"></span>
+                                    <div class="form-controls">
+                                        <input type="text" class="form-control"
+                                               value.bind="cargoItem.orderNumber & toInt" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">计量单位*</label>
+                                    <span class="help"></span>
+                                    <div class="form-controls">
+                                        <input type="text" class="form-control" value.bind="cargoItem.unitStr" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">免堆期</label>
+                                    <span class="help"></span>
+                                    <div class="form-controls">
+                                        <input type="text" class="form-control" value.bind="cargoItem.freeDays"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">备注</label>
+                                    <span class="help"></span>
+                                    <div class="form-controls">
+                                        <textarea type="text" class="form-control" value.bind="cargoItem.remark"
+                                                  readonly></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row column-seperation">
+                            <!--<template if.bind="cargoItem.contractType != '' || cargoItem!= null">-->
+                            <template if.bind="!!cargoItem.cargoCategoryId">
+                                <h4>货物费率信息</h4>
+                                <div class="col-md-12">
+                                    <span class="help"></span>
+                                    <div class="controls right">
+                                        <ak-grid k-data-source.bind="cargoRateDataSource" k-widget.bind="customerGrid"
+                                                 k-on-detail-init.delegate="detailInit($event.detail)">
+                                            <ak-col k-field="rateCategory == 1 ? '仓储费': rateCategory == 2 ? '装卸费': '其他费用'"
+                                                    k-title="费用类别"></ak-col>
+                                            <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
+                                            <ak-col k-field="price" k-title="单价"></ak-col>
+                                            <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+                                            <ak-col k-field="pricingMode== 1 ?  '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
+                                            <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
+                                            <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                                            <!--<ak-col k-field="warehouseTypeStr" k-title="库区性质"></ak-col>-->
+                                            <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                                            <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                                            <ak-col k-field="warehouseCategoryStr" k-title="库区类别"></ak-col>
+                                            <ak-col k-field="remark" k-title="备注"></ak-col>
+                                            <ak-template for="detailTemplate">
+                                                <div class="rateSteps" if.bind="pricingMode !=1 "></div>
+                                                <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+                                            </ak-template>
+                                        </ak-grid>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </form>
                 </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">货物种类*</label>
-                  <span class="help"></span>
-                  <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName" readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">指令数量*</label>
-                  <span class="help"></span>
-                  <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.orderQuantity & toFloat" readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">指令件数</label>
-                  <span class="help"></span>
-                  <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.orderNumber & toInt" readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">计量单位*</label>
-                  <span class="help"></span>
-                  <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.unitStr" readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="form-label">免堆期</label>
-                  <span class="help"></span>
-                  <div class="form-controls">
-                    <input type="text" class="form-control" value.bind="cargoItem.freeDays" readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label class="form-label">备注</label>
-                  <span class="help"></span>
-                  <div class="form-controls">
-                    <textarea type="text" class="form-control" value.bind="cargoItem.remark" readonly></textarea>
-                  </div>
-                </div>
-              </div>
             </div>
-            <div class="row column-seperation">
-              <!--<template if.bind="cargoItem.contractType != '' || cargoItem!= null">-->
-              <template if.bind="!!cargoItem.cargoCategoryId">
-                <h4>货物费率信息</h4>
-                <div class="col-md-12">
-                  <span class="help"></span>
-                  <div class="controls right">
-                    <ak-grid k-data-source.bind="cargoRateDataSource" k-widget.bind="customerGrid" k-on-detail-init.delegate="detailInit($event.detail)">
-                      <ak-col k-field="rateCategory == 1 ? '仓储费': rateCategory == 2 ? '装卸费': '其他费用'" k-title="费用类别"></ak-col>
-                      <ak-col k-field="chargeType == 1 ? '收费': '付费'" k-title="收付费"></ak-col>
-                      <ak-col k-field="price" k-title="单价"></ak-col>
-                      <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
-                      <ak-col k-field="pricingMode== 1 ?  '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
-                      <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
-                      <ak-col k-field="workName" k-title="作业内容"></ak-col>
-                      <ak-col k-field="warehouseTypeStr" k-title="库区性质"></ak-col>
-                      <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                      <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
-                      <ak-col k-field="warehouseCategoryStr" k-title="库区类别"></ak-col>
-                      <ak-col k-field="remark" k-title="备注"></ak-col>
-                      <ak-template for="detailTemplate">
-                        <div class="rateSteps" if.bind="pricingMode !=1 "></div>
-                        <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
-                      </ak-template>
-                    </ak-grid>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </form>
-        </div>
-      </div>
-    </ux-dialog-body>
-    <ux-dialog-footer>
-      <button class="btn btn-white" click.trigger="cancel()">关闭</button>
-    </ux-dialog-footer>
-  </ux-dialog>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-white" click.trigger="cancel()">关闭</button>
+        </ux-dialog-footer>
+    </ux-dialog>
 </template>

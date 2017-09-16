@@ -14,19 +14,19 @@ export class ChangeHistoryDetail {
   newContractVo: ContractVo;
 
   unit = [] as DictionaryData[];
-  warehouseType = [] as DictionaryData[];
+  //warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   contractTypes = ConstantValues.ContractTypes;
 
   constructor(private dialogController: DialogController,
-    private dictionaryDataService: DictionaryDataService) {
+              private dictionaryDataService: DictionaryDataService) {
 
   }
 
   async activate(changeHistory: ChangeHistory<ContractVo>) {
 
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.oldContractVo = changeHistory.oldObj;
@@ -34,7 +34,7 @@ export class ChangeHistoryDetail {
 
     this.newContractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.newContractVo.contract.contractType).name;
     this.oldContractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.oldContractVo.contract.contractType).name;
-    
+
     this.oldContractVo.contract.startTimeStr = moment(this.oldContractVo.contract.startTime)
       .format("YYYY-MM-DD");
     this.oldContractVo.contract.endTimeStr = moment(this.oldContractVo.contract.endTime)
@@ -105,14 +105,14 @@ export class ChangeHistoryDetail {
   private convertData(rates: Rate[]): Rate[] {
     return rates.map(res => {
       let unit = this.unit.find(d => res.unit == d.dictDataCode);
-      let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+      //let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       if (unit) {
         res.unit = unit.dictDataName;
       }
-      if (warehouseType) {
-        res.warehouseType = warehouseType.dictDataName;
-      }
+      // if (warehouseType) {
+      //   res.warehouseType = warehouseType.dictDataName;
+      // }
       if (warehouseCategory) {
         res.warehouseCategory = warehouseCategory.dictDataName;
       }

@@ -26,7 +26,7 @@ export class NewRate {
   chargeType = ConstantValues.ChargeType;
   pricingMode = ConstantValues.PricingMode;
 
-  warehouseType = [] as DictionaryData[];
+  //warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   unit = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
@@ -53,7 +53,7 @@ export class NewRate {
 
   async activate(params) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.rate = await this.rateService.getRate(params.id);
@@ -92,7 +92,7 @@ export class NewRate {
     this.rate.rateType = -1;
     this.rate.workName = '';
     this.rate.workId = '';
-    this.rate.warehouseType = '';
+    //this.rate.warehouseType = '';
     this.rate.warehouseCategory = '';
   }
 
