@@ -52,12 +52,12 @@ export class Dashboard {
       this.notice.createTimeStr = this.notice.createTime ? moment(this.notice.createTime).format("YYYY-MM-DD") : '';
     }
 
-    this.businessOrder = await this.indexService.getBusinessOrderNumber();
-    this.feeOrder = await this.indexService.getFeeOrderNumber();
-    this.warehouseOrder = await this.indexService.getWarehouseOrderNumber();
-    Object.assign(this.warehouse, {id: '', name: '全部'});
-    this.storateWarehouses.push(this.warehouse);
-    this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
+    // this.businessOrder = await this.indexService.getBusinessOrderNumber();
+    // this.feeOrder = await this.indexService.getFeeOrderNumber();
+    // this.warehouseOrder = await this.indexService.getWarehouseOrderNumber();
+    // Object.assign(this.warehouse, {id: '', name: '全部'});
+    // this.storateWarehouses.push(this.warehouse);
+    // this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
   }
 
   async detail() {
@@ -68,10 +68,10 @@ export class Dashboard {
 
   // 页面载入完成后执行
   attached() {
-    this.getStorageInfo();
-    this.getChargeInfo();
-    this.getPayInfo();
-    this.getWorkOrderInfo();
+    // this.getStorageInfo();
+    // this.getChargeInfo();
+    // this.getPayInfo();
+    // this.getWorkOrderInfo();
   }
 
   async getChargeInfo() {

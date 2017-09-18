@@ -274,7 +274,7 @@ export class NewContract {
 
     let { valid } = await this.validationController.validate();
     if (!valid) return;
-
+    
     let rateList = this.filterBaseRateSteps
       .filter(x => x.customerCategory == this.contract.contractType);
     rateList.forEach(r => {
