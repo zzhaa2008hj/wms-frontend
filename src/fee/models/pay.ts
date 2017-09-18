@@ -19,6 +19,8 @@ export class PaymentInfo {
 
   lastStage: number;
 
+  lastStageTitle: string;
+
   stage: number;
 
   stageTitle: string;
@@ -37,49 +39,29 @@ export class PaymentInfo {
 
   remark: string;
 
-  sumFee: number;
-
   createTime: Date; //创建时间
 
   createTimeStr: string;
 
   createAccount: String;  //创建账号
-}
 
-export class PaymentAuditListVo {
-  paymentInfo: PaymentInfo;
-
-  paymentAuditList: PaymentAuditList;
+  payableAmount: number; // 应收费用 相当于总计
+  
+  paidAmount: number; // 已收费用
 
   paymentAuditItemList: PaymentAuditItem[];
-}
-
-export class PaymentAuditList {
-  id: string;
-
-  paymentInfoId: string;
-
-  sumFee: number;
-
-  invoiceType: number;
-
-  invoiceTypeStr: string;
 
   invoiceStatus: number;
-
+  
   invoiceStatusStr: string;
 
-  invoiceNumber: string;
-
-  paymentDate: Date;
-
   paymentStatus: number;
-
+  
   paymentStatusStr: string;
+  
+  orgId: string;
 
-  payableAmount: number;
-
-  paidAmount: number;
+  payableAmountStr: string;
 }
 
 export class PaymentAuditItem {
@@ -87,7 +69,7 @@ export class PaymentAuditItem {
 
   id: string;
 
-  paymentAuditId: string;
+  paymentInfoId: string;
 
   workOrderNumber: string;
 
@@ -114,4 +96,11 @@ export class PaymentAuditItem {
   unit: string;
 
   sumAmount: number;
+
+  type: number;
+  cargoCategoryId: string;
+  warehouseId: string;
+  customerRateId: string;
+  unitStr: string;
+  remark: string;
 }    

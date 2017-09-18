@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { PaymentInfo, PaymentAuditList, PaymentAuditItem } from "@app/fee/models/pay";
-import { PaymentInfoService, PaymentAuditListService, PaymentAuditItemService } from "@app/fee/services/pay";
+import { PaymentInfo, PaymentAuditItem } from "@app/fee/models/pay";
+import { PaymentInfoService, PaymentAuditItemService } from "@app/fee/services/pay";
 import * as moment from "moment";
 import { print, addHeader } from "@app/common/services/print-tool";
 import { DictionaryDataService } from "@app/base/services/dictionary";
@@ -9,7 +9,6 @@ import { DictionaryData } from "@app/base/models/dictionary";
 @autoinject
 export class Note {
   paymentInfo: PaymentInfo;
-  paymentAuditList: PaymentAuditList;
   disabled: boolean = false;
   paymentAuditItems: PaymentAuditItem[];
   units = [] as DictionaryData[];
@@ -22,7 +21,6 @@ export class Note {
   };
 
   constructor(private paymentInfoService: PaymentInfoService,
-              private paymentAuditListService: PaymentAuditListService,
               private paymentAuditItemService: PaymentAuditItemService,
               private dictionaryDataService: DictionaryDataService) {
 
@@ -35,14 +33,16 @@ export class Note {
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
     this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
-    this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
 
     let index = 1;
-    this.paymentAuditItems = await this.paymentAuditItemService.listByPaymentAuditId(this.paymentAuditList.id).then(
+    this.paymentAuditItems = await this.paymentAuditItemService.listByPaymentAuditId(params.id).then(
       res => res.map(r => {
         r.workDateStr = moment(r.workDate).format("YYYY-MM-DD");
         r.index = index++;
-        r.unit = this.units.find(e => e.dictDataCode == r.unit).dictDataName;
+        let unit = this.units.find(e => e.dictDataCode == r.unit);
+        if (unit) {
+          r.unitStr = unit.dictDataName;
+        }
         return r;
       })
     );

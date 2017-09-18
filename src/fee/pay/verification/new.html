@@ -1,0 +1,43 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 发票核销录入
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="row">
+        <div class="form-group">
+          <label class="form-label">发票号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="number" class="form-control" value.bind="invoice.invoiceNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">发票金额</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="number" class="form-control" value.bind="invoice.amount" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">已核销金额</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="number" class="form-control" value.bind="invoice.verificationAmount" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">核销金额*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="number" class="form-control" value.bind="verification.amount & validate">
+          </div>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="save()">确认</button>
+      <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

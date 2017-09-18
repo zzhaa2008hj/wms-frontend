@@ -2,7 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { PaymentInfoService } from "@app/fee/services/pay";
 import { DataSourceFactory } from "@app/utils";
 import { ConstantValues } from '@app/common/models/constant-values';
-import { NewPaymentInfo } from '@app/fee/pay/new';
+import { NewManualPaymentInfo } from '@app/fee/pay/new-manual';
 import { EditPaymentInfo } from '@app/fee/pay/edit';
 import { DialogService, MessageDialogService } from 'ui';
 import { LeaderVerify } from "./leader-verify";
@@ -38,8 +38,20 @@ export class PaymentInfoList {
   async activate() {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.paymentInfoService.queryPaymentInfo({ keyword: this.keyword, stage: this.stage }).map(res => {
-        res.stageTitle = this.payStage.find(r => r.stage == res.stage).title;
-        res.typeTitle = this.paymentInfotype.find(r => r.stage == res.type).title;
+        let stage = this.payStage.find(r => r.stage == res.stage);
+        if (stage) {
+          res.stageTitle = stage.title;
+        }
+        let lastStage = this.payStage.find(r => r.stage == res.lastStage);
+        if (lastStage) {
+          res.lastStageTitle = lastStage.title;
+        }
+        let type = this.paymentInfotype.find(r => r.stage == res.type);
+        if (type) {
+          res.typeTitle = type.title;
+        }
+        res.chargeStartDate = new Date(res.chargeStartDate);
+        res.chargeEndDate = new Date(res.chargeEndDate);
         return res;
       }),
       pageSize: 10
@@ -80,7 +92,7 @@ export class PaymentInfoList {
   }
 
   async add() {
-    let result = await this.dialogService.open({ viewModel: NewPaymentInfo, lock: true })
+    let result = await this.dialogService.open({ viewModel: NewManualPaymentInfo, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     let paymentInfo = result.output;
@@ -121,10 +133,8 @@ export class PaymentInfoList {
 
   async invoice(id) {
     try {
-      let result = await this.dialogService.open({ viewModel: InvoiceInput, model: id, lock: true }).whenClosed();
-      if (result.wasCancelled) return;
-      await this.paymentInfoService.invoice(id, result.output);
-      await this.dialogService.alert({ title: "提示", message: "成功录入发票" });
+      await this.paymentInfoService.invoice(id);
+      await this.dialogService.alert({ title: "提示", message: "录入发票完成" });
       this.dataSource.read();
     } catch (e) {
       await this.dialogService.alert({ title: "错误", message: e.message, icon: "error" });
@@ -132,7 +142,7 @@ export class PaymentInfoList {
   }
 
   async verifyPay(id) {
-    let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认付费核销" });
+    let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认付费核销完成" });
     if (!confirmed) return;
     try {
       await this.paymentInfoService.verifyPay(id);
