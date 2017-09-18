@@ -11,13 +11,13 @@
                     <input type="text" class="form-control" value.bind="warehouse.name & validate">
                 </div>
             </div>
-            <!--<div class="form-group">
+            <div class="form-group">
                 <label class="form-label">库区性质*</label>
                 <span class="help"></span>
                 <ak-drop-down-list k-value.two-way="warehouse.type & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
                     k-data-source.bind="type" >
                 </ak-drop-down-list>
-            </div>-->
+            </div>
             <div class="form-group">
                 <label class="form-label">库区类别*</label>
                 <span class="help"></span>
@@ -27,20 +27,6 @@
                                    k-enabled.two-way="!hasParentId">
                 </ak-drop-down-list>
             </div>
-            <!-- <div class="form-group">
-                <label class="form-label">库区性质*</label>
-                <span class="help"></span>
-                <div class="controls">
-                    <input type="text" class="form-control" value.bind="warehouse.typeStr" readonly.bind="hasParentId">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">库区类别*</label>
-                <span class="help"></span>
-                <div class="controls">
-                    <input type="text" class="form-control" value.bind="warehouse.categoryStr" readonly.bind="hasParentId">
-                </div>
-            </div> -->
             <div class="form-group">
                 <label class="form-label">备注</label>
                 <span class="help"></span>
@@ -48,7 +34,6 @@
                     <input type="text" class="form-control" value.bind="warehouse.remark & validate">
                 </div>
             </div>
-
         </ux-dialog-body>
         <ux-dialog-footer>
             <button class="btn btn-primary" click.trigger="save()">保存</button>

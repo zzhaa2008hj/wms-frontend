@@ -53,7 +53,6 @@ export class NewRate {
 
   async activate(params) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.rate = await this.rateService.getRate(params.id);

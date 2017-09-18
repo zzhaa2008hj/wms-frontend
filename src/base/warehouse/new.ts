@@ -12,7 +12,7 @@ import { DictionaryData } from "@app/base/models/dictionary";
 export class NewWarehouse {
   warehouse: Warehouse = {} as Warehouse;
   pWarehouse: Warehouse = {} as Warehouse;
-  // type = [] as DictionaryData[];
+  type = [] as DictionaryData[];
   category = [] as DictionaryData[];
   validationController: ValidationController;
 
@@ -28,7 +28,7 @@ export class NewWarehouse {
 
   async activate(warehouse: Warehouse) {
     this.pWarehouse = warehouse;
-    // this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.category = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
   }
 
@@ -36,11 +36,11 @@ export class NewWarehouse {
   async save() {
     if (this.pWarehouse) {
       this.warehouse.parentId = this.pWarehouse.id;
-      // this.warehouse.type = this.pWarehouse.type;
+      this.warehouse.type = this.pWarehouse.type;
       this.warehouse.category = this.pWarehouse.category;
     }
 
-    this.validationController.addObject(this.warehouse, validationRules);
+    this.validationController.addObject(this.warehouse, wareHouseValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
 

@@ -1,6 +1,6 @@
 import { observable } from 'aurelia-binding';
 import { autoinject, Container } from "aurelia-dependency-injection";
-import { DialogController, MessageDialogService } from 'ui';
+import { DialogController } from 'ui';
 import { Warehouse, wareHouseValidationRules } from "@app/base/models/warehouse";
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
@@ -15,12 +15,11 @@ export class EditWarehouse {
   warehouse: Warehouse = {} as Warehouse;
   @observable
   hasParentId: boolean = false;
-  // type = [] as DictionaryData[];
+  type = [] as DictionaryData[];
   category = [] as DictionaryData[];
   validationController: ValidationController;
 
   constructor(private dialogController: DialogController,
-              private messageDialogService: MessageDialogService,
               private dictionaryDataService: DictionaryDataService,
               validationControllerFactory: ValidationControllerFactory,
               container: Container) {
@@ -31,7 +30,7 @@ export class EditWarehouse {
   }
 
   async activate(warehouse: Warehouse) {
-    // this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    this.type = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.category = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     Object.assign(this.oldWarehouse, warehouse);
     this.warehouse = warehouse;

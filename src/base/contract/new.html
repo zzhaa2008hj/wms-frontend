@@ -130,10 +130,59 @@
           </div>
           <template if.bind="contract.contractType==1 || contract.contractType==2">
             <h4>合同费率</h4>
+            <div class="col-md-3">
+              <label class="form-label">费用类别</label>
+              <span class="help"></span>
+              <ak-drop-down-list k-value.two-way="search.chargeCategory" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                k-data-source.bind="chargeCategory">
+              </ak-drop-down-list>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">货类</label>
+              <span class="help"></span>
+              <div class="controls right">
+                <input type="text" class="form-label" value.bind="search.cargoCategoryName" disabled>
+                <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择...</a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="col-md-12">
+                <label class="form-label">作业类别</label>
+                <span class="help"></span>
+                <ak-drop-down-list k-value.two-way="search.rateType" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                  k-data-source.bind="rateTypes">
+                </ak-drop-down-list>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">作业内容</label>
+              <span class="help"></span>
+              <input type="text" class="form-label" value.bind="search.workName" readonly>
+              <a class="btn btn-small" type="button" click.delegate="selectWorkInfo()">请选择...</a>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">库位类别</label>
+              <span class="help"></span>
+              <ak-drop-down-list k-value.two-way="search.warehouseCategory" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+                k-data-source.bind="warehouseCategory">
+              </ak-drop-down-list>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">计价方式</label>
+              <span class="help"></span>
+              <ak-drop-down-list k-value.two-way="search.pricingMode" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                k-data-source.bind="pricingMode">
+              </ak-drop-down-list>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
+            </div>
             <div class="col-md-12">
               <span class="help"></span>
               <div class="controls right">
-                <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-detail-init.delegate="detailInit($event.detail)">
+                <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-edit.delegate="edit($event)"
+                  k-on-detail-init.delegate="detailInit($event.detail)">
                   <ak-col k-field="rateCategory" k-title="费用类别">
                     <ak-template>
                       ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
@@ -154,9 +203,13 @@
                   <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
                   <ak-col k-field="workName" k-title="作业内容"></ak-col>
                   <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                  <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
                   <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
                   <ak-col k-field="remark" k-title="备注"></ak-col>
+                  <ak-col k-title="操作">
+                    <ak-template>
+                      <a class="btn btn-small" click.delegate="delete($this)">删除</a>
+                    </ak-template>
+                  </ak-col>
                   <ak-template for="detailTemplate">
                     <div class="rateSteps" if.bind="pricingMode !=1 "></div>
                     <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
@@ -169,7 +222,9 @@
         <div class="col-md-12">
           <div class="form-actions">
             <div class="pull-right">
-              <button class="btn btn-primary" disabled.bind="disabled" type="submit"><i class="icon-ok"></i> 保存</button>
+              <button class="btn btn-primary" disabled.bind="disabled" type="submit"><i
+                                  class="icon-ok"></i> 保存
+                          </button>
               <a class="btn" disabled.bind="disabled" click.trigger="cancel()">返回</a>
             </div>
           </div>

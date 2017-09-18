@@ -212,6 +212,7 @@ export class EditContract {
     this.contractVo.rateVos = rateList;
     this.contractVo.rateStepVos = allRateStep;
     this.disabled = true;
+    console.log("this.contractVo", this.contractVo);
     try {
       await this.contractService.updateContract(this.contractVo);
       await this.messageDialogService.alert({ title: "编辑成功" });

@@ -20,7 +20,6 @@ export class AdditionalRecordingCargoInfo {
   contractId = '';
   index = 1;
   maxDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-  //warehouseTypes = [] as DictionaryData[];
 
   datasource: kendo.data.DataSource;
   customerInfo: kendo.ui.DropDownList;
@@ -32,7 +31,6 @@ export class AdditionalRecordingCargoInfo {
               private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
               private dialogService: DialogService,
-              // private dictionaryDataService: DictionaryDataService,
               validationControllerFactory: ValidationControllerFactory,
               container: Container) {
     this.validationController = validationControllerFactory.create();
@@ -84,7 +82,6 @@ export class AdditionalRecordingCargoInfo {
     });
     this.customers = customersWithContract;
 
-    //this.cargoInfo.warehouseType = 1;
     this.cargoInfo.cargoForm = 1;
     this.cargoInfo.cargoType = 1;
 
@@ -95,10 +92,6 @@ export class AdditionalRecordingCargoInfo {
   }
 
   async addCargoItem() {
-    // if (!this.cargoInfo.warehouseType) {
-    //   this.messageDialogService.alert({ title: '请选择库区性质', message: '请选择库区性质' });
-    //   return;
-    // }
     if (!this.contractId) {
       this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
       return;
