@@ -164,7 +164,6 @@ export class EditCargoItem {
   }
 
   async save() {
-    alert("hehe");
     await this.cargoRateDataSource.sync();
     let { valid } = await this.validationController.validate();
     if (!valid) return;
