@@ -10,32 +10,30 @@
           <form submit.delegate="save()">
             <div class="row column-seperation">
               <h4>货物基本信息</h4>
-              <div class="col-md-12">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-label">货物名称*</label>
-                    <span class="help"></span>
-                    <div class="form-controls">
-                      <input type="text" class="form-control" value.bind="cargoItem.cargoName & validate">
-                    </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">货物名称*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <input type="text" class="form-control" value.bind="cargoItem.cargoName & validate">
                   </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-label">货物种类*</label>
-                    <span class="help"></span>
-                    <div class="form-controls">
-                      <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName" readonly>
-                    </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">货物种类*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <input type="text" class="form-control" value.bind="cargoItem.cargoCategoryName" readonly>
                   </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-label">指令件数</label>
-                    <span class="help"></span>
-                    <div class="form-controls">
-                      <input type="number" class="form-control" value.bind="cargoItem.orderNumber & toInt & validate">
-                    </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">指令件数</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <input type="number" class="form-control" value.bind="cargoItem.orderNumber & toInt & validate">
                   </div>
                 </div>
               </div>
@@ -48,37 +46,33 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-label">计量单位*</label>
-                    <span class="help"></span>
-                    <div class="form-controls">
-                      <ak-drop-down-list k-option-label="请选择" k-data-text-field="dictDataName" k-data-value-field="dictDataCode" k-value.two-way="cargoItem.unit"
-                        k-data-source.bind="unitDatasource" style="width: 100%" k-on-close.delegate="validateProperty('unit')">
-                      </ak-drop-down-list>
-                      <input class="form-control" type="hidden" value.bind="cargoItem.unit & validate ">
-                    </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">计量单位*</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <ak-drop-down-list k-option-label="请选择" k-data-text-field="dictDataName" k-data-value-field="dictDataCode" k-value.two-way="cargoItem.unit"
+                      k-data-source.bind="unitDatasource" style="width: 100%" k-on-close.delegate="validateProperty('unit')">
+                    </ak-drop-down-list>
+                    <input class="form-control" type="hidden" value.bind="cargoItem.unit & validate ">
                   </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-label">免堆期</label>
-                    <span class="help"></span>
-                    <div class="form-controls">
-                      <input type="number" class="form-control" value.bind="cargoItem.freeDays & toInt & validate">
-                    </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">免堆期</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <input type="number" class="form-control" value.bind="cargoItem.freeDays & toInt & validate">
                   </div>
                 </div>
               </div>
               <div class="col-md-12">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <label class="form-label">备注</label>
-                    <span class="help"></span>
-                    <div class="form-controls">
-                      <textarea type="text" class="form-control" value.bind="cargoItem.remark"></textarea>
-                    </div>
+                <div class="form-group">
+                  <label class="form-label">备注</label>
+                  <span class="help"></span>
+                  <div class="form-controls">
+                    <textarea type="text" class="form-control" value.bind="cargoItem.remark"></textarea>
                   </div>
                 </div>
               </div>

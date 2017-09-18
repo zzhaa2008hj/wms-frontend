@@ -5,7 +5,7 @@
       <form submit.delegate="save()">
         <div class="row column-seperation">
           <h4>基本信息</h4>
-          <div class="col-md-12">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">批次号*</label>
               <span class="help"></span>
@@ -14,35 +14,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">货物形式*</label>
-              <span class="help"></span>
-              <div class="form-controls">
-                <label if.bind="cargoInfo.cargoForm == 1"> 
-                  <input type="radio" class="form-controls" name="cargoForm" model.bind="1" checked.bind="cargoInfo.cargoForm" />散装<br>
-                </label>
-                <label if.bind="cargoInfo.cargoForm == 2">
-                  <input type="radio" class="form-controls" name="cargoForm" model.bind="2" checked.bind="cargoInfo.cargoForm" />集装箱<br>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">货物性质*</label>
-              <span class="help"></span>
-              <div class="form-controls">
-                <label if.bind="cargoInfo.cargoType == 1">
-                  <input type="radio" class="form-controls" name="cargoType" model.bind="1" checked.bind="cargoInfo.cargoType" />内贸<br>
-                </label>
-                <label if.bind="cargoInfo.cargoType == 2">
-                  <input type="radio" class="form-controls" name="cargoType" model.bind="2" checked.bind="cargoInfo.cargoType" />保税<br>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">代理商名称*</label>
               <span class="help"></span>
@@ -51,7 +23,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">客户名称*</label>
               <span class="help"></span>
@@ -60,16 +32,36 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="form-group">
-              <label class="form-label">提单号*</label>
+              <label class="form-label">货物性质*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="text" class="form-control" readonly value.bind="cargoInfo.billLadingNumber">
+                <input type="text" class="form-control" if.bind="cargoInfo.cargoType == 1" value="内贸" readonly>
+                <input type="text" class="form-control" if.bind="cargoInfo.cargoType == 2" value="保税" readonly>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">货物形式*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="radio" class="radio" name="cargoForm" model.bind="1" checked.bind="cargoInfo.cargoForm" />散装
+                <input type="radio" class="radio" name="cargoForm" model.bind="2" checked.bind="cargoInfo.cargoForm" />集装箱
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">提单号</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="cargoInfo.billLadingNumber">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">指令件数*</label>
               <span class="help"></span>
@@ -78,7 +70,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">指令数量*</label>
               <span class="help"></span>
@@ -105,7 +97,7 @@
               <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
                 <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
                 <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
-                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>                
+                <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
                 <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
                 <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
                 <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
