@@ -85,6 +85,7 @@ export class EditCargoItem {
     this.unitDatasource = await this.dictionaryDataService.getDictionaryDatas("unit");
     // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
+    console.log('this.warehouseCategory',this.warehouseCategory);
     this.cargoItem = cargoItemInfo;
     this.cargoRates = cargoItemInfo.cargoRates;
 
@@ -126,7 +127,7 @@ export class EditCargoItem {
 
 
     //   this.cargoRates = this.cargoItem.cargoRates;
-    //   this.convertCargoRates();
+    this.convertCargoRates();
     //   this.cargoRateDataSource.read();
     // }
 
@@ -167,6 +168,26 @@ export class EditCargoItem {
     await this.cargoRateDataSource.sync();
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+    let rate;
+
+    this.cargoRates.forEach(r =>{
+      let rates = this.cargoRates.filter(e =>
+        r.chargeType == e.chargeType&&
+        r.rateCategory == e.rateCategory&&
+        r.rateType == e.rateType&&
+        r.workId == e.workId&&
+        r.warehouseCategory == e.warehouseCategory
+      )
+      if(rates.length>1){
+        rate = r;
+      }
+    });
+    if(rate){
+       await this.dialogService.alert({title:"提示",
+       message: ['仓储费','装卸费','其他费用'][rate.rateCategory-1]+'-'+['收费','付费'][rate.chargeType-1]+'-'+rate.workName+':'+"存在多条费率"});
+      return;      
+    }
+
     this.cargoItem.unitStr = this.unitDatasource.find(d => this.cargoItem.unit == d.dictDataCode).dictDataName;
 
     let rateList = this.cargoRates;
@@ -185,7 +206,6 @@ export class EditCargoItem {
 
     });
     this.cargoItem.cargoRates = rateList;
-
     await this.dialogController.ok(this.cargoItem);
   }
 
@@ -320,6 +340,7 @@ export class EditCargoItem {
     });
     //合并费率
     this.cargoRates = this.cargoRates.concat(source);
+    this.convertCargoRates();
     this.cargoRateDataSource.read();
   }
 
