@@ -136,6 +136,7 @@ export class EditCargoItem {
   }
 
   convertCargoRates() {
+    this.allCargoRates = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
     this.cargoRates.map(res => {
       let unit = this.unitDatasource.find(d => res.unit == d.dictDataCode);
       //let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
@@ -301,7 +302,7 @@ export class EditCargoItem {
 
   select() {
     let source = [];
-    Object.assign(source, this.contractCargoRates);
+    Object.assign(source, this.allCargoRates);
     //按条件搜索
     for (let e in this.search) {
       if (this.search[e]) {
