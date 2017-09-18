@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <td colspan="3" align="center">费用合计:</td>
-                        <td colspan="10">${paymentAuditList.sumFee}</td>
+                        <td colspan="10">${paymentInfo.payableAmount}</td>
                     </tr>
                     <tr>
                         <td align="center" colspan="13">对账清单明细</td>
@@ -61,7 +61,7 @@
                             <td align="center">${item.price}</td>
                             <td align="center">${item.number}</td>                            
                             <td align="center">${item.quantity}</td>
-                            <td align="center">${item.unit}</td>
+                            <td align="center">${item.unitStr}</td>
                             <td align="center">${item.sumAmount}</td>
                             <td align="center">${item.remark}</td>
                         </tr>

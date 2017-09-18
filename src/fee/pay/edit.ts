@@ -26,10 +26,10 @@ export class EditPaymentInfo {
     this.validationController.addObject(this.paymentInfo, validationRules);
     this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(id);
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
-    if (this.paymentInfo.type == 2) {
-      let { sumFee } = await this.paymentInfoService.getPaymentAuditFee(this.paymentInfo.id);
-      this.paymentInfo.sumFee = sumFee;
-    }
+    // if (this.paymentInfo.type == 2) {
+    //   let { sumFee } = await this.paymentInfoService.getPaymentAuditFee(this.paymentInfo.id);
+    //   this.paymentInfo.sumFee = sumFee;
+    // }
 
   }
 
@@ -70,7 +70,7 @@ const validationRules = ValidationRules
   .displayName("备注")
   .maxLength(200).withMessage(`\${$displayName}最大长度为200`)
 
-  .ensure((paymentInfo: PaymentInfo) => paymentInfo.sumFee)
+  .ensure((paymentInfo: PaymentInfo) => paymentInfo.payableAmount)
   .displayName("费用合计")
   .satisfies((sumFee, paymentInfo) => {
     if (!paymentInfo.type || paymentInfo.type == 1) {

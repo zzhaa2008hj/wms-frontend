@@ -224,7 +224,10 @@ export class ConstantValues {
       title: "已开票"
     }, {
       stage: 9,
-      title: "已付费核销"
+      title: "核销"
+    }, {
+      stage: 10,
+      title: "付费完成"
     }];
   }
 

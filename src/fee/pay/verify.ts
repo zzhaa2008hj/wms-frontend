@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { PaymentInfo, PaymentAuditList } from "@app/fee/models/pay";
-import { PaymentInfoService, PaymentAuditListService, PaymentAuditItemService } from "@app/fee/services/pay";
+import { PaymentInfo } from "@app/fee/models/pay";
+import { PaymentInfoService, PaymentAuditItemService } from "@app/fee/services/pay";
 import * as moment from "moment";
 import { DataSourceFactory } from "@app/utils";
 import { DialogService } from "ui";
@@ -12,7 +12,6 @@ import { DictionaryData } from "@app/base/models/dictionary";
 @autoinject
 export class Verify {
   paymentInfo: PaymentInfo;
-  paymentAuditList: PaymentAuditList;
   disabled: boolean = false;
   paymentInfoType = ConstantValues.PaymentInfoType;
   units = [] as DictionaryData[];
@@ -24,7 +23,6 @@ export class Verify {
   };
 
   constructor(private paymentInfoService: PaymentInfoService,
-              private paymentAuditListService: PaymentAuditListService,
               private paymentAuditItemService: PaymentAuditItemService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
@@ -39,16 +37,19 @@ export class Verify {
     this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(params.id);
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
-    this.paymentInfo.typeTitle = this.paymentInfoType.find(r => r.stage == this.paymentInfo.type).title;
-    this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
+    let type = this.paymentInfoType.find(r => r.stage == this.paymentInfo.type);
+    if (type) {
+      this.paymentInfo.typeTitle = type.title;
+    }
 
     this.datasource = this.dataSourceFactory.create({
-      query: () => this.paymentAuditItemService.queryPaymentAuditItems({ paymentAuditId: this.paymentAuditList.id })
+      query: () => this.paymentAuditItemService.queryPaymentAuditItems({ paymentInfoId: params.id })
         .map(
           res => {
             if (res.unit) {
               res.unit = this.units.find(r => r.dictDataCode == res.unit).dictDataName;
             }
+            res.workDate = new Date(res.workDate);
             return res;
           }
         ),
