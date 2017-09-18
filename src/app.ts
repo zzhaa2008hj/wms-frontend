@@ -11,6 +11,7 @@ kendo.culture('zh');
 export class App {
 
   router: Router;
+  loading: boolean = false;
   private subscriptions: Subscription[];
 
   constructor(@inject('config') private config: any,
@@ -34,6 +35,12 @@ export class App {
       this.events.subscribe('user:logout', () => this.user.loginVerdict()),
       this.events.subscribe('error', err => this.dialogService.alert(
         { title: '发生错误', message: err.message, icon: 'error' })),
+      this.events.subscribe('router:navigation:processing', () => {
+        this.loading = true;
+      }),
+      this.events.subscribe('router:navigation:complete', () => {
+        this.loading = false;
+      }),
       this.events.subscribe('error-403', async err => {
         await this.dialogService.alert({ title: '发生错误', message: err.message, icon: 'error' });
         window.location.href = window.location.protocol + '//' + window.location.host;

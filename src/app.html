@@ -7,6 +7,7 @@
                 menu.bind="nav" condensed.bind="user.settings.sidebar.condensed"></wa-sidebar>
     <div class="page-content">
       <div class="content">
+        <loading-indicator loading.bind="loading"></loading-indicator>
         <router-view containerless></router-view>
       </div>
     </div>
