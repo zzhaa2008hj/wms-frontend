@@ -1,0 +1,87 @@
+<template>
+  <div class="row">
+    <div class="col-md-11"></div>
+    <div class="input-group col-md-1">
+      <button class="btn btn-small btn-primary" click.delegate="print()">打印</button>
+    </div>
+  </div>
+  <div class="grid simple">
+    <div class="grid-body" id="pay">
+      <div class="page-title text-center" align="center">
+        <h3>${organization.name}汇款申请单</h3>
+      </div>
+      <div class="col-md-8 col-md-offset-2">
+        <table style="width:100%;">
+          <tr>
+            <td align="left">
+              <h5>部门: <input type="text" style="height: 16px;min-height: 0px"></h5>
+            </td>
+            <td align="center" colspan="3"></td>
+            <td align="right">
+              <h5>${date}</h5>
+            </td>
+          </tr>
+        </table>
+        <tr>&nbsp;</tr>
+        <table border="1" style="width:100%;">
+          <tr>
+            <td colspan="2" align="center" nowrap>付款事由</td>
+            <td colspan="10">
+              <input type="text" style="height: 16px;min-height: 0px;width:500px">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">付款银行</td>
+            <td colspan="10">${organization.bankInfo}</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">付款人账号</td>
+            <td colspan="10">${organization.bankNo}</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">收款单位</td>
+            <td colspan="10">${customer.name}</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">收款银行</td>
+            <td colspan="10">${customer.bankInfo}</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">收款人账号</td>
+            <td colspan="10">${customer.bankNo}</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">付款金额（大写）</td>
+            <td colspan="10">${paymentInfo.payableAmountStr}</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">付款金额（小写）</td>
+            <td colspan="10">${paymentInfo.payableAmount}</td>
+          </tr>
+          <tr>
+            <td rowspan="2" align="center">审<br/>批</td>
+            <td colspan="1" align="center">单位负责人</td>
+            <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td colspan="2" align="center">分管领导</td>
+            <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td colspan="2" align="center">财务负责人</td>
+            <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="1" align="center">部门负责人</td>
+            <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td colspan="2" align="center">商务审核</td>
+            <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td colspan="2" align="center">经办人员</td>
+            <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <a class="btn btn-small" route-href="route: list">返回</a>
+    </div>
+  </div>
+  </div>
+</template>

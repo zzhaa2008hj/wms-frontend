@@ -1,13 +1,15 @@
 <template>
+  <div class="controlbar">
+    <a class="btn btn-small btn-success" click.delegate="add()" required-permissions="C000047">新增</a>
+    <div class="spacer"></div>
+  </div>
   <ak-grid k-data-source.bind="dataSource">
     <ak-col k-field="invoiceType == 1 ? '普通发票': '增值税发票'" k-title="发票类型"></ak-col>
     <ak-col k-field="invoiceNumber" k-title="发票号"></ak-col>
     <ak-col k-field="amount" k-title="发票金额"></ak-col>
-    <ak-col k-field="verificationAmount" k-title="已核销金额"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
-        <button class="btn btn-small" click.delegate="view(id)" required-permissions="R000083">查看</button>
-        <button class="btn btn-primary btn-small" click.delegate="add($this)" required-permissions="C000046">新增核销</button>
+        <button class="btn btn-danger btn-small" click.delegate="delete(id)" required-permissions="D000018">删除</button>
       </ak-template>
     </ak-col>
   </ak-grid>

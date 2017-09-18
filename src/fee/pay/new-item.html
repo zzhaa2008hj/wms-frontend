@@ -1,0 +1,86 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 新增
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="grid simple">
+        <div class="grid-body no-border">
+          <form>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label class="form-label">作业日期*</label>
+                <span class="help"></span>
+                <input ak-datepicker="k-value.two-way : paymentAuditItem.workDate; k-widget.two-way: workDatePicker; k-format.bind:'yyyy-MM-dd'" type="text" class="form-control">
+              </div>
+              <div class="form-group col-md-4">
+                <label class="form-label">作业内容*</label>
+                <span class="help"></span>
+                <input type="text" class="form-control" value.bind="paymentAuditItem.workName & validate">
+              </div>
+              <div class="form-group col-md-4">
+                <label class="form-label">货名*</label>
+                <span class="help"></span>
+                <input type="text" class="form-control" value.bind="paymentAuditItem.cargoName & validate">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label class="form-label">货类*</label>
+                <span class="help"></span>
+                <div>
+                  <input type="text" class="form-control" value.bind="paymentAuditItem.cargoCategoryName & validate" />
+                  <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择货类</a>
+                </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="form-label">库区*</label>
+                <span class="help"></span>
+                <ak-drop-down-list k-data-text-field="name" k-data-value-field="id" k-value.two-way="paymentAuditItem.warehouseId" k-data-source.bind="warehouseSource"
+                  k-option-label="请选择库区" k-widget.two-way="warehouseDrop">
+                </ak-drop-down-list>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="form-label">计量单位*</label>
+                <span class="help"></span>
+                <ak-drop-down-list k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode" k-value.two-way="paymentAuditItem.unit"
+                  k-data-source.bind="unitSource" k-widget.two-way="unitDrop">
+                </ak-drop-down-list>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label class="form-label">作业数量*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="number" step="0.01" class="form-control" value.bind="paymentAuditItem.workNumber  & toFloat  & validate">
+                </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="form-label">单价*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="number" step="0.01" class="form-control" value.bind="paymentAuditItem.price  & toFloat  & validate">
+                </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="form-label">费用合计*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="number" class="form-control" value.bind="(paymentAuditItem.workNumber * 100) * (paymentAuditItem.price * 100) / 10000" readonly>
+                </div>
+              </div>
+
+            </div>
+            
+          </form>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="save()">保存</button>
+      <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

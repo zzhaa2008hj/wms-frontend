@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
-import { PaymentInfo, PaymentAuditList, PaymentAuditItem } from "@app/fee/models/pay";
-import { PaymentInfoService, PaymentAuditListService, PaymentAuditItemService } from "@app/fee/services/pay";
+import { PaymentInfo, PaymentAuditItem } from "@app/fee/models/pay";
+import { PaymentInfoService, PaymentAuditItemService } from "@app/fee/services/pay";
 import * as moment from 'moment';
 import { DialogService } from "ui";
 import { UploadConfirm } from "./upload-confirm";
@@ -12,13 +12,11 @@ import { DictionaryData } from "@app/base/models/dictionary";
 @autoinject
 export class PaymentConfirm {
   paymentInfo: PaymentInfo;
-  paymentAuditList: PaymentAuditList;
   paymentInfoId: string;
   paymentAuditItems: PaymentAuditItem[];
   units = [] as DictionaryData[];
 
   constructor(private paymentInfoService: PaymentInfoService,
-              private paymentAuditListService: PaymentAuditListService,
               private dialogService: DialogService,
               private router: Router,
               private paymentAuditItemService: PaymentAuditItemService,
@@ -38,14 +36,16 @@ export class PaymentConfirm {
       this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
     }
     this.paymentInfo.createTimeStr = moment(this.paymentInfo.createTime).format("YYYY-MM-DD");
-    this.paymentAuditList = await this.paymentAuditListService.getByPaymentInfoId(params.id);
 
     let index = 1;
-    this.paymentAuditItems = await this.paymentAuditItemService.listByPaymentAuditId(this.paymentAuditList.id).then(
+    this.paymentAuditItems = await this.paymentAuditItemService.listByPaymentAuditId(this.paymentInfoId).then(
       res => res.map(r => {
         r.workDateStr = moment(r.workDate).format("YYYY-MM-DD");
         r.index = index++;
-        r.unit = this.units.find(e => e.dictDataCode == r.unit).dictDataName;
+        let unit = this.units.find(e => e.dictDataCode == r.unit);
+        if (unit) {
+          r.unit = unit.dictDataName;
+        }
         return r;
       })
     );
@@ -73,10 +73,25 @@ export class PaymentConfirm {
     }
   }
 
-  print() {
+  printDetail() {
     let title = "对账清单";
-    let strHTML = $("#confirm").html();
+    let strHTML = $("#detail").html();
     strHTML = addHeader(strHTML);
-    print(title, strHTML, true);
+    print(title, strHTML, true, 2);
+  }
+
+  printTotal() {
+    let title = "对账清单明细";
+    let strHTML = $("#total").html();
+    strHTML = addHeader(strHTML);
+    print(title, strHTML, true, 2);
+  }
+
+  exportTotal() {
+    
+  }
+    
+  exportDetail() {
+        
   }
 }

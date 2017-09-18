@@ -1,0 +1,35 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 手动新增付费结算申请
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="form-group">
+        <label class="form-label">装卸单位名称*</label>
+        <span class="help"></span>
+        <ak-drop-down-list k-option-label="请选择..." k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="paymentInfo.customerId & validate"
+          k-data-source.bind="customersSource" k-enabled.two-way="!disabled" k-widget.two-way="customerDrop"
+          style="width: 60%">
+        </ak-drop-down-list>
+      </div>
+      <div class="form-group">
+        <label class="form-label">费用合计*</label>
+        <span class="help"></span>
+        <div class="controls">
+          <input type="number" step="0.01" class="form-control" value.bind="paymentInfo.payableAmount & validate">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <span class="help"></span>
+        <div class="controls">
+          <textarea type="text" class="form-control & validate" value.bind="paymentInfo.remark" maxlength="200">
+          </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+        <button class="btn btn-primary" click.trigger="save()">保存</button>
+        <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

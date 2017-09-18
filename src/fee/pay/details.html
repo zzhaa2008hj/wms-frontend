@@ -36,37 +36,16 @@
             <label class="form-label">费用合计</label>
             <span class="help"></span>
             <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.sumFee" readonly>
+              <input type="text" class="form-control" value.bind="paymentInfo.payableAmount" readonly>
             </div>
           </div>
-          <div class="col-md-4">
-            <label class="form-label">开票状态</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.invoiceStatusStr" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">票据类型</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.invoiceTypeStr" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">票据编号</label>
-            <span class="help"></span>
-            <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.invoiceNumber" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
             <label class="form-label">付款状态</label>
             <span class="help"></span>
             <div class="controls right">
-              <input type="text" class="form-control" value.bind="paymentAuditList.paymentStatusStr" readonly>
+              <input type="text" class="form-control" value.bind="paymentInfo.paymentStatusStr" readonly>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="row column-seperation" if.bind="paymentInfo.type ==1">
           <h4>清单明细</h4>
@@ -83,12 +62,19 @@
                 <ak-col k-field="workNumber" k-title="作业数量"></ak-col>
                 <ak-col k-field="unit" k-title="计量单位"></ak-col>
                 <ak-col k-field="sumAmount" k-title="费用合计"></ak-col>
+
+                <ak-template for="detailTemplate">
+                  <rate-steps rate-steps.bind="customerRateStepList" if.bind="pricingMode !=1 "></rate-steps>
+                  <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+                </ak-template>
               </ak-grid>
             </div>
           </div>
         </div>
+        <div class="pull-right">
+          <a class="btn btn-default" route-href="route: list">返回</a>
+        </div>
       </form>
     </div>
-    </form>
   </div>
 </template>
