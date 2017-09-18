@@ -38,7 +38,7 @@
             <td align="center" nowrap>车号</td>
             <td align="center" nowrap>提货日期</td>
             <td align="center" nowrap>实出件数</td>            
-            <td align="center" nowrap>实出重量</td>
+            <td align="center" nowrap>实出数量</td>
           </tr>
           <template repeat.for="item of outstockInventoryVo.outstockInventoryItems">
             <tr>
@@ -55,8 +55,8 @@
           </template>
           <tr>
             <td align="right" colspan="7">合计：</td>
+            <td align="center">${outstockInventoryVo.sumNumber}</td>            
             <td align="center">${outstockInventoryVo.sumQuantity}</td>
-            <td align="center">${outstockInventoryVo.sumNumber}</td>
           </tr>
           <tr>
             <td align="center">备注：</td>
