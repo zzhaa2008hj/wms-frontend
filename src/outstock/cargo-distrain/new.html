@@ -7,9 +7,8 @@
         <div class="form-group">
           <label class="form-label">批次号*</label>
           <span class="help"></span>
-          <ak-drop-down-list style="width: 300px;" k-filter="contains" k-widget.two-way="cargoInfoWidget" k-option-label="请选择批次" 
-            k-data-text-field="batchNumberStr" k-data-value-field="id" k-data-source.bind="cargoInfos" 
-            k-on-select.delegate="onSelectCargoInfo($event.detail)">
+          <ak-drop-down-list style="width: 300px;" k-filter="contains" k-widget.two-way="cargoInfoWidget" k-option-label="请选择批次" k-data-text-field="batchNumberStr"
+            k-data-value-field="id" k-data-source.bind="cargoInfos" k-on-select.delegate="onSelectCargoInfo($event.detail)">
           </ak-drop-down-list>
         </div>
 
@@ -26,7 +25,6 @@
             </ak-template>
           </ak-col>
         </ak-grid>
-        <br>
 
         <ak-grid k-data-source.bind="dataSourceCargoDistrain">
           <ak-col k-title="货物名称">

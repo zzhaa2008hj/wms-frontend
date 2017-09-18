@@ -37,7 +37,7 @@ export class ConstantValues {
       title: "撤回中"
     }, {
       stage: 0,
-      title: "已撤回"
+      title: "初始阶段"
     }, {
       stage: 1,
       title: "待审核"
@@ -62,7 +62,7 @@ export class ConstantValues {
       title: "撤回中"
     }, {
       stage: 0,
-      title: "初始状态"
+      title: "初始阶段"
     }, {
       stage: 1,
       title: "待商务审核"
@@ -133,7 +133,7 @@ export class ConstantValues {
       title: "撤回中"
     }, {
       stage: 0,
-      title: "已撤回"
+      title: "初始阶段"
     }, {
       stage: 1,
       title: "待商务审核"

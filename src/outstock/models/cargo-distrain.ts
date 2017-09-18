@@ -33,6 +33,9 @@ export interface CargoDistrainVo extends CargoDistrain {
     cargoCategoryName: string;
 
     cargoSubCatergoryName: string;
+
+    storageNumber: number;
+    storageQuantity: number;
 }
 
 export interface CargoItemStorageInfoVo{

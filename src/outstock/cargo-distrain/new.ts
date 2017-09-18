@@ -72,7 +72,9 @@ export class NewCargoDistrain {
     let cargoItemStorageInfoVo = {} as CargoItemStorageInfoVo;
     Object.assign(cargoItemStorageInfoVo, param);
 
-    let result = await this.dialogService.open({ viewModel: NewDistrain, model: {}, lock: true}).whenClosed();
+    let result = await this.dialogService
+      .open({ viewModel: NewDistrain, model: cargoItemStorageInfoVo, lock: true})
+      .whenClosed();
     if (result.wasCancelled) return;
     let cargoDistrainVo: CargoDistrainVo = result.output;
     let dict = this.units.find(r => r.dictDataCode == cargoDistrainVo.unit);

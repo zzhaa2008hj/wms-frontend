@@ -21,7 +21,6 @@ export class Detail {
   orderItems = [] as OrderItem[];
   vehicles = [] as Vehicle[];
 
-  warehouseTypes = [] as DictionaryData[];
   units = [] as DictionaryData[];
 
   constructor(private orderService: OrderService,
@@ -35,16 +34,13 @@ export class Detail {
     this.order = await this.orderService.getOrderById(params.id);
 
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.order.cargoInfoId);
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
     this.orderItems = this.order.outstockOrderItems;
     this.vehicles = this.order.outstockVehicles;
 
     this.order.outstockDateStr = moment(this.order.outstockDate).format("YYYY-MM-DD");
-    this.cargoInfo.warehouseTypeStr = this.warehouseTypes
-      .find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
-    this.cargoInfo.cargoTypeStr = this.order.cargoType == 1 ? "内贸" : "保税";
+    this.cargoInfo.cargoTypeStr = this.cargoInfo.cargoType == 1 ? "内贸" : "保税";
     this.orderItems.forEach(oi => {
       oi.unitStr = this.units.find(res => res.dictDataCode == oi.unit).dictDataName;
       Object.assign(oi, { index: this.orderItems.indexOf(oi) + 1 });

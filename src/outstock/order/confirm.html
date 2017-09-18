@@ -24,10 +24,12 @@
             <td>${order.outstockOrderNumber}</td>
             <td align="center">提货时间:</td>
             <td>${order.outstockDateStr}</td>
-            <td align="center">代理商名称</td>
-            <td>${order.agentName}</td>
+            <td align="center">提货单号:</td>
+            <td>${order.takeDeliveryNum}</td>
           </tr>
           <tr>
+            <td align="center">代理商名称</td>
+            <td>${order.agentName}</td>
             <td align="center">客户名称</td>
             <td>${order.customerName}</td>
             <td align="center">联系人</td>
@@ -36,14 +38,10 @@
             <td colspan="3">${order.contactNumber}</td>
           </tr>
           <tr>
-            <td align="center">提货单号:</td>
-            <td>${order.takeDeliveryNum}</td>
             <td align="center">货物性质:</td>
             <td>${cargoInfo.cargoTypeStr}</td>
-          </tr>
-          <tr>
             <td align="center">备注</td>
-            <td colspan="7">${order.remark}</td>
+            <td colspan="5">${order.remark}</td>
           </tr>
           <tr>
             <td align="center" colspan="8">货物信息</td>
