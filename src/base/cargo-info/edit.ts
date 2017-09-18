@@ -4,7 +4,6 @@ import { autoinject } from "aurelia-dependency-injection";
 import { MessageDialogService, DialogService } from "ui";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo, CargoItem } from '@app/base/models/cargo-info';
-import { copy } from '@app/utils';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 
@@ -17,7 +16,7 @@ export class EditCargoInfo {
   datasource: kendo.data.DataSource;
 
   unit = [] as DictionaryData[];
-  warehouseTypes = [] as DictionaryData[];
+  //warehouseTypes = [] as DictionaryData[];
 
   constructor(private router: Router,
               private cargoInfoService: CargoInfoService,
@@ -47,7 +46,7 @@ export class EditCargoInfo {
 
   async activate({ id }) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");    
+    //this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");    
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
     this.cargoItems.map(res => {
@@ -70,22 +69,24 @@ export class EditCargoInfo {
 
     let result = await this.dialogService.open({
       viewModel: EditCargoItem,
-      model: { cargoItemInfo: copy(cargoItemInfo) },
+      //model: { cargoItemInfo: copy(cargoItemInfo) },
+      model: { contractId: this.cargoInfo.contractId, cargoItemInfo },
       lock: true
     }).whenClosed();
     if (result.wasCancelled) return;
     this.cargoItems = this.cargoItems.map(x => {
-      if(x.id == id){
+      if (x.id == id) {
         return result.output;
       }
       return x;
-    })
-   
+    });
+
     this.datasource.read();
 
     this.orderNumChange();
 
   }
+
   async save() {
 
     // this.cargoInfoVo.cargoInfo = this.cargoInfo;

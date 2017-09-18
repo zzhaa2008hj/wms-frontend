@@ -9,13 +9,15 @@ import { formValidationRenderer } from '@app/validation/support';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
+import { ContractSearch } from '@app/base/models/contract';
+import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 
 @autoinject
 export class NewCargoItem {
   cargoItem = {} as CargoItem;
 
   unitDatasource = [] as DictionaryData[];
-  warehouseType = [] as DictionaryData[];
+  //warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   cargoCategory = {} as CargoCategory;
 
@@ -25,15 +27,20 @@ export class NewCargoItem {
   contractCargoRates: CargoRate[];
   contractCargoRateSteps: CargoRateStep[];
 
-  cargoRates: CargoRate[];
+  cargoRates: CargoRate[] = [];
+  allCargoRates: CargoRate[];
   rateTypes = ConstantValues.WorkInfoCategory;
 
+  search = {} as ContractSearch;
+  chargeCategory = ConstantValues.ChargeCategory;
+  pricingMode = ConstantValues.PricingMode;
+
   constructor(private cargoInfoService: CargoInfoService,
-    private dialogController: DialogController,
-    private dialogService: DialogService,
-    private dictionaryDataService: DictionaryDataService,
-    validationControllerFactory: ValidationControllerFactory,
-    container: Container) {
+              private dialogController: DialogController,
+              private dialogService: DialogService,
+              private dictionaryDataService: DictionaryDataService,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
 
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -62,7 +69,7 @@ export class NewCargoItem {
             rateTypeStr: { editable: false },
             pricingMode: { editable: false },
             workName: { editable: false },
-            warehouseTypeStr: { editable: false },
+            // warehouseTypeStr: { editable: false },
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
             warehouseCategoryStr: { editable: false },
@@ -73,33 +80,42 @@ export class NewCargoItem {
     });
   }
 
+  aa(e) {
+    let mode = e.detail.model.pricingMode;
+    if (mode == 1) {
+      return;
+    }
+    let dataGrid = e.detail.sender;
+    dataGrid.closeCell();
+  }
 
-  async activate({ contractId, warehouseType, cargoItemInfo }) {
+  async activate({ contractId, cargoItemInfo }) {
     this.unitDatasource = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     //免堆期的默认值
     this.cargoItem.freeDays = 0;
     this.cargoItem.orderNumber = 0;
     this.cargoItem.orderQuantity = 0;
     //该合同下所有货物的费率
-    this.contractCargoRates = await this.cargoInfoService.getContractCargoRates(contractId, warehouseType);
+    this.contractCargoRates = await this.cargoInfoService.getContractCargoRates(contractId);
     //该合同下所有货物的阶梯费率
     this.contractCargoRateSteps = await this.cargoInfoService.getContractCargoRateSteps(contractId);
     //编辑时带过来的信息
     if (cargoItemInfo) {
       //要把费率list中的已修改的数据修改掉
       this.cargoItem = cargoItemInfo;
-      this.convertCargoRates();
+      // this.convertCargoRates();
+      this.cargoRates = this.cargoItem.cargoRates;
       this.cargoItem.cargoRates.forEach(r => {
-        let id = r.id;
-        this.cargoRates.every((res, index, arr) => {
-          if (res.id == id) {
-            arr[index] = r;
-            return false;
-          }
-          return true;
-        });
+        //let id = r.id;
+        // this.cargoRates.every((res, index, arr) => {
+        //   if (res.id == id) {
+        //     arr[index] = r;
+        //     return false;
+        //   }
+        //   return true;
+        // });
         r.cargoRateSteps.forEach((steps) => {
           let id = steps.id;
           this.contractCargoRateSteps.every((contractRes, stepIndex, stepArr) => {
@@ -111,8 +127,8 @@ export class NewCargoItem {
           });
         });
       });
-      //this.cargoRates = this.cargoItem.cargoRates;
-      //this.cargoRateDataSource.read();
+      this.cargoRates = this.cargoItem.cargoRates;
+      this.cargoRateDataSource.read();
     }
 
     this.validationController.addObject(this.cargoItem, validationRules);
@@ -120,18 +136,18 @@ export class NewCargoItem {
   }
 
   convertCargoRates() {
-    this.cargoRates = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
-    this.cargoRates.map(res => {
+    this.allCargoRates = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
+    this.allCargoRates.map(res => {
       let unit = this.unitDatasource.find(d => res.unit == d.dictDataCode);
-      let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+      //let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
-      if (warehouseType) {
-        res.warehouseTypeStr = warehouseType.dictDataName;
-      }
+      // if (warehouseType) {
+      //   res.warehouseTypeStr = warehouseType.dictDataName;
+      // }
       if (warehouseCategory) {
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
       }
@@ -165,10 +181,12 @@ export class NewCargoItem {
     if (!this.cargoItem.cargoCategoryId || this.cargoItem.cargoCategoryId != result.output.id) {
       this.cargoItem.cargoCategoryName = result.output.categoryName;
       this.cargoItem.cargoCategoryId = result.output.id;
+      this.cargoRates = [];
       this.cargoCategoryChanged();
     }
 
   }
+
   async save() {
     await this.cargoRateDataSource.sync();
     let { valid } = await this.validationController.validate();
@@ -183,7 +201,6 @@ export class NewCargoItem {
     });
     this.cargoItem.cargoRates = cargoRateList;
     this.cargoItem.unitStr = this.unitDatasource.find(d => this.cargoItem.unit == d.dictDataCode).dictDataName;
-
     await this.dialogController.ok(this.cargoItem);
   }
 
@@ -218,7 +235,13 @@ export class NewCargoItem {
               stepNum: { editable: false },
               stepStart: { editable: false },
               stepEnd: { editable: false },
-              stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, title: '阶梯价' },
+              stepPrice: {
+                editable: true,
+                notify: true,
+                type: 'number',
+                validation: { required: true, min: 0, max: 1000000000000000 },
+                title: '阶梯价'
+              },
               stepUnitStr: { editable: false },
               remark: { editable: false }
             }
@@ -247,6 +270,68 @@ export class NewCargoItem {
     });
   }
 
+  async selectWorkInfo() {
+    let result = await this.dialogService.open({ viewModel: WorkInfoTree, model: this.search.workId, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let workInfo = result.output;
+    this.search.workName = workInfo.name;
+    this.search.workId = workInfo.id;
+  }
+
+  select() {
+    console.log("this.allCargoRates", this.allCargoRates);
+    let source = [];
+    Object.assign(source, this.allCargoRates);
+    //按条件搜索
+    for (let e in this.search) {
+      if (this.search[e]) {
+        source = source.filter(x => x[e] == this.search[e]);
+      }
+    }
+    // 过滤不同合同类型的费率
+    // source = source.filter(r => r.customerCategory == this.contract.contractType);
+    //过滤已经选择的合同费率
+    source = source.filter(r => {
+      return this.cargoRates.every(e => {
+        let res1 = true;
+        let res2 = true;
+        let res3 = true;
+        let res4 = true;
+        let res5 = true;
+        let res6 = true;
+        if (e.chargeType) {
+          res1 = e.chargeType == r.chargeType;
+        }
+        if (e.rateCategory) {
+          res2 = e.rateCategory == r.rateCategory;
+        }
+        if (e.rateType) {
+          res3 = e.rateType == r.rateType;
+        }
+        if (e.workId) {
+          res4 = e.workId == r.workId;
+        }
+        if (e.warehouseCategory) {
+          res5 = e.warehouseCategory == r.warehouseCategory;
+        }
+        if (e.pricingMode) {
+          res6 = e.pricingMode == r.pricingMode;
+        }
+        return !(res1 && res2 && res3 && res4 && res5 && res6);
+      });
+    });
+    //合并费率
+    this.cargoRates = this.cargoRates.concat(source);
+    this.cargoRateDataSource.read();
+  }
+
+  delete(e) {
+    this.cargoRates = this.cargoRates.filter(r => r.id != e.id);
+    this.cargoRateDataSource.remove(e);
+  }
+
+
 }
 const validationRules = ValidationRules
   .ensure((cargoItem: CargoItem) => cargoItem.cargoName)
@@ -264,7 +349,9 @@ const validationRules = ValidationRules
   .satisfies((x, cargoItem) => {
     if (cargoItem.orderNumber) return true;
     if (x) return (x <= 1000000000000000 && x > 0);
-    if (x === 0) { return false; }
+    if (x === 0) {
+      return false;
+    }
     return true;
   })
   .withMessage(`\${$displayName} 为无效值(过大或过小)`)

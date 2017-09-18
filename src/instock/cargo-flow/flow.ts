@@ -9,7 +9,7 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { print, addHeader } from '@app/common/services/print-tool';
 import { InstockVehicle } from "@app/instock/models/instock-vehicle";
-import { InstockVehicleService } from "@app/instock/services/instock-vehicle";
+import { InstockVehicleService } from "@app/instock/services/instock-vehicle"
 
 @autoinject
 export class Order {
@@ -18,7 +18,6 @@ export class Order {
   instockVehicles: InstockVehicle[];
   organization: Organization;
   units = [] as DictionaryData[];
-  judge: boolean;
 
   constructor(private cargoFlowService: CargoFlowService,
               private cargoItemService: CargoItemService,
@@ -42,14 +41,6 @@ export class Order {
       return res;
     });
     this.organization = await this.organizationService.getOrganization(this.cargoFlow.orgId);
-    if (this.cargoFlow.stage == 3) {
-      this.cargoFlowService.updateFlowStage(params.id, 4);
-    }
-    if (this.instockVehicles == null || this.instockVehicles.length == 0) {
-      this.judge = false;
-    } else {
-      this.judge = true;
-    }
   }
 
   async printOrder() {
@@ -57,15 +48,5 @@ export class Order {
     let strHTML = $('#order').html();
     strHTML = addHeader(strHTML);
     print(title, strHTML, true);
-    // closePrint();
-    // todo 获取打印状态
-    //let res = checkPrintStatus(jobCode);
-    // if (res == 1) {
-    //   await this.messageDialogService.alert({title: '打印成功', message: '打印成功'});
-    //   return;
-    // } else {
-    //   await this.messageDialogService.alert({title: '打印失败', message: '打印失败', icon: 'error'});
-    //   return;
-    // }
   }
 }

@@ -4,7 +4,7 @@ export interface Contract {
    * 1：客户仓储；2：装卸单位；3：库区租赁
    */
   contractType: number;
-  
+
   contractTypeStr: string;
 
   customerId: string;
@@ -41,4 +41,25 @@ export interface Contract {
 
   orgId: string;
 
+}
+
+export interface ContractSearch {
+
+  chargeCategory: string;
+
+  cargoCategoryId: string;
+
+  cargoCategoryName: string;
+
+  rateType: number;
+
+  workName: string;
+
+  workId: string;
+
+  warehouseCategory: number;
+
+  pricingMode: number;
+
+  rateCategory: number;
 }

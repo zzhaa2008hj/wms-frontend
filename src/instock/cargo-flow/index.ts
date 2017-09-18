@@ -20,6 +20,7 @@ export class CargoFlow {
       { route: '/:id/edit', name: 'edit', moduleId: './edit', title: "编辑" },
       { route: '/:id/details', name: 'details', moduleId: './details', title: "详情" },
       { route: '/order/:id', name: 'order', moduleId: './order', title: "入库指令单" },
+      { route: '/flow/:id', name: 'flow', moduleId: './flow', title: "打印入库流水单" },
       {
         route: '/separate/:id?/histories', href: '/separate/histories', name: 'separateHistory',
         moduleId: './separate/index', title: "拆单历史"

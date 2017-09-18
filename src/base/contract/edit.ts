@@ -1,5 +1,5 @@
 import { Router } from "aurelia-router";
-import { MessageDialogService } from "ui";
+import { MessageDialogService, DialogService } from "ui";
 import { newInstance, inject } from 'aurelia-dependency-injection';
 import { ContractVo } from "@app/base/models/contractVo";
 import { ContractService } from "@app/base/services/contract";
@@ -7,10 +7,13 @@ import { Rate, RateStep } from "@app/base/models/rate";
 import { WorkInfo } from "@app/base/models/work-info";
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
-import { Contract } from '@app/base/models/contract';
+import { Contract, ContractSearch } from '@app/base/models/contract';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
+import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
+import { WorkInfoTree } from "@app/base/rate/work-info-tree";
+import { uuid } from '@app/utils';
 
 export class EditContract {
   disabled: boolean = false;
@@ -18,6 +21,7 @@ export class EditContract {
   contract = {} as Contract;
 
   unit = [] as DictionaryData[];
+  // warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
 
@@ -33,16 +37,28 @@ export class EditContract {
    * 客户合同费率
    */
   baseRateAndSteps: Rate[];
-
   /**
    * 客户合同阶梯费率
    */
   baseRateStep: RateStep[];
+  /**
+   * 基础费率
+   */
+  allBaseRateAndSteps: Rate[];
+  /**
+   * 基础阶梯费率
+   */
+  allBaseRateStep: RateStep[];
+
+  search = {} as ContractSearch;
+  chargeCategory = ConstantValues.ChargeCategory;
+  pricingMode = ConstantValues.PricingMode;
 
   constructor(@inject private router: Router,
               @inject private contractService: ContractService,
               @inject private messageDialogService: MessageDialogService,
               @inject private dictionaryDataService: DictionaryDataService,
+              @inject private dialogService: DialogService,
               @newInstance() private validationController: ValidationController) {
     this.datasource = new kendo.data.DataSource({
       transport: {
@@ -67,7 +83,7 @@ export class EditContract {
             rateTypeStr: { editable: false },
             pricingMode: { editable: false },
             workName: { editable: false },
-            warehouseTypeStr: { editable: false },
+            // warehouseTypeStr: { editable: false },
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
             warehouseCategoryStr: { editable: false },
@@ -84,6 +100,7 @@ export class EditContract {
    */
   async activate({ id }) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+    // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.contractVo = await this.contractService.getContract(id);
@@ -97,11 +114,15 @@ export class EditContract {
       let rates = this.contractVo.rateVos;
       rates.map(res => {
         let unit = this.unit.find(d => res.unit == d.dictDataCode);
+        // let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
         let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
         let rateType = this.rateTypes.find(d => res.rateType == d.value);
         if (unit) {
           res.unitStr = unit.dictDataName;
         }
+        // if (warehouseType) {
+        //   res.warehouseTypeStr = warehouseType.dictDataName;
+        // }
         if (warehouseCategory) {
           res.warehouseCategoryStr = warehouseCategory.dictDataName;
         }
@@ -119,6 +140,38 @@ export class EditContract {
         return res;
       });
     }
+    //获取所有的费率
+    let allRates = await this.contractService.getBaseRate();
+    allRates.map(res => {
+      let unit = this.unit.find(d => res.unit == d.dictDataCode);
+      //let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      let rateType = this.rateTypes.find(d => res.rateType == d.value);
+      if (unit) {
+        res.unitStr = unit.dictDataName;
+      }
+      // if (warehouseType) {
+      //   res.warehouseTypeStr = warehouseType.dictDataName;
+      // }
+      if (warehouseCategory) {
+        res.warehouseCategoryStr = warehouseCategory.dictDataName;
+      }
+      if (rateType) {
+        res.rateTypeStr = rateType.text;
+      }
+      return res;
+    });
+    this.allBaseRateAndSteps = allRates;
+
+    //获得基础费率的阶梯费率
+    this.allBaseRateStep = await this.contractService.getBaseRateStep();
+    this.allBaseRateStep.map(res => {
+      if (res.stepUnit) {
+        res.stepUnitStr = this.unit.find(r => r.dictDataCode == res.stepUnit).dictDataName;
+      }
+      return res;
+    });
+
     this.validationController.addObject(this.contract, validationRules);
   }
 
@@ -129,6 +182,35 @@ export class EditContract {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     this.contractVo.contract = this.contract;
+
+    let rateList = this.baseRateAndSteps;
+    let allRateStep = [];
+    //  .filter(x => x.customerCategory == this.contract.contractType);
+
+    rateList.forEach(r => {
+      let id = r.id;
+      let rateSteps: RateStep[];
+      if (r.customerCategory) {
+        rateSteps = this.allBaseRateStep.filter(res => res.rateId == id);
+        r.id = uuid();
+        rateSteps.map(e => {
+          e.rateId = r.id;
+          e.id = uuid();
+          return e;
+        });
+      } else {
+        rateSteps = this.baseRateStep.filter(res => res.rateId == id);
+        r.id = uuid();
+        rateSteps.map(e => {
+          e.rateId = r.id;
+          e.id = uuid();
+          return e;
+        });
+      }
+      allRateStep = allRateStep.concat(rateSteps);
+    });
+    this.contractVo.rateVos = rateList;
+    this.contractVo.rateStepVos = allRateStep;
     this.disabled = true;
     try {
       await this.contractService.updateContract(this.contractVo);
@@ -139,6 +221,7 @@ export class EditContract {
       this.disabled = false;
     }
   }
+
   onOpen() {
     if (!this.initTime) {
       let startDate = this.contract.startTime;
@@ -201,6 +284,7 @@ export class EditContract {
   validateVoProperty(propertyName: string) {
     this.validationController.validate({ object: this.contractVo, propertyName });
   }
+
   detailInit(e) {
     let detailRow = e.detailRow;
 
@@ -208,7 +292,11 @@ export class EditContract {
       dataSource: {
         transport: {
           read: (options) => {
-            options.success(this.baseRateStep);
+            if (e.data.customerCategory) {
+              options.success(this.allBaseRateStep);
+            } else {
+              options.success(this.baseRateStep);
+            }
           },
           update: (options) => {
             options.success();
@@ -224,7 +312,13 @@ export class EditContract {
               stepNum: { editable: false },
               stepStart: { editable: false },
               stepEnd: { editable: false },
-              stepPrice: { editable: true, notify: true, type: 'number', validation: { required: true, min: 0, max: 1000000000000000 }, title: '阶梯价' },
+              stepPrice: {
+                editable: true,
+                notify: true,
+                type: 'number',
+                validation: { required: true, min: 0, max: 1000000000000000 },
+                title: '阶梯价'
+              },
               stepUnit: { editable: false },
               remark: { editable: false }
             }
@@ -251,6 +345,76 @@ export class EditContract {
         e.sender.saveChanges();
       }
     });
+  }
+
+  async selectCargoCategory() {
+    let result = await this.dialogService
+      .open({ viewModel: CargoCategoryTree, model: this.search.cargoCategoryId, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let cargoCategory = result.output;
+    this.search.cargoCategoryName = cargoCategory.categoryName;
+    this.search.cargoCategoryId = cargoCategory.id;
+  }
+
+  async selectWorkInfo() {
+    let result = await this.dialogService.open({ viewModel: WorkInfoTree, model: this.search.workId, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let workInfo = result.output;
+    this.search.workName = workInfo.name;
+    this.search.workId = workInfo.id;
+  }
+
+  select() {
+    let source = [];
+    Object.assign(source, this.allBaseRateAndSteps);
+    //按条件搜索
+    for (let e in this.search) {
+      if (this.search[e]) {
+        source = source.filter(x => x[e] == this.search[e]);
+      }
+    }
+    //过滤不同合同类型的费率
+    source = source.filter(r => r.customerCategory == this.contract.contractType);
+    //过滤已经选择的合同费率
+    source = source.filter(r => {
+      return this.baseRateAndSteps.every(e => {
+        let res1 = true;
+        let res2 = true;
+        let res3 = true;
+        let res4 = true;
+        let res5 = true;
+        let res6 = true;
+        if (e.chargeType) {
+          res1 = e.chargeType == r.chargeType
+        }
+        if (e.chargeCategory) {
+          res2 = e.chargeCategory == r.rateCategory
+        }
+        if (e.rateType) {
+          res3 = e.rateType == r.rateType
+        }
+        if (e.workId) {
+          res4 = e.workId == r.workId
+        }
+        if (e.warehouseCategory) {
+          res5 = e.warehouseCategory == r.warehouseCategory
+        }
+        if (e.pricingMode) {
+          res6 = e.pricingMode == r.pricingMode
+        }
+        return !(res1 && res2 && res3 && res4 && res5 && res6);
+      });
+    });
+    //合并费率
+    this.baseRateAndSteps = this.baseRateAndSteps.concat(source);
+    this.datasource.read();
+  }
+
+  delete(e) {
+    this.baseRateAndSteps = this.baseRateAndSteps.filter(r => r.id != e.id);
+    this.datasource.remove(e);
   }
 
 }

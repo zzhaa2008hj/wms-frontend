@@ -1,6 +1,6 @@
 import { Router } from "aurelia-router";
 import { autoinject, Container } from 'aurelia-dependency-injection';
-import { MessageDialogService } from "ui";
+import { MessageDialogService, DialogService } from "ui";
 import { ContractService } from "@app/base/services/contract";
 import { ContractVo } from "@app/base/models/contractVo";
 import { Rate, RateStep } from "@app/base/models/rate";
@@ -8,10 +8,12 @@ import { WorkInfo } from "@app/base/models/work-info";
 import { Organization } from "@app/base/models/organization";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
-import { Contract } from '@app/base/models/contract';
+import { Contract, ContractSearch } from '@app/base/models/contract';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
+import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
+import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 
 @autoinject
 export class NewContract {
@@ -21,6 +23,7 @@ export class NewContract {
   contractVo = {} as ContractVo;
   contract = {} as Contract;
   unit = [] as DictionaryData[];
+  // warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
 
@@ -42,6 +45,9 @@ export class NewContract {
    * 基础费率
    */
   baseRateAndSteps: Rate[];
+  filterBaseRateSteps: Rate[];
+  source: Rate[];
+
 
   /**
    * 基础阶梯费率
@@ -49,12 +55,18 @@ export class NewContract {
   baseRateStep: RateStep[];
   instockStages: any[] = ConstantValues.InstockStages;
 
+  selection: Rate[];
+  search = {} as ContractSearch;
+  chargeCategory = ConstantValues.ChargeCategory;
+  pricingMode = ConstantValues.PricingMode;
+
   constructor(private router: Router,
-    private contractService: ContractService,
-    private messageDialogService: MessageDialogService,
-    private dictionaryDataService: DictionaryDataService,
-    validationControllerFactory: ValidationControllerFactory,
-    container: Container) {
+              private contractService: ContractService,
+              private messageDialogService: MessageDialogService,
+              private dictionaryDataService: DictionaryDataService,
+              private dialogService: DialogService,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -62,7 +74,7 @@ export class NewContract {
     this.datasource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
-          options.success(this.baseRateAndSteps);
+          options.success(this.filterBaseRateSteps);
         },
         update: (options) => {
           options.success();
@@ -88,7 +100,7 @@ export class NewContract {
             rateTypeStr: { editable: false },
             pricingMode: { editable: false },
             workName: { editable: false },
-            warehouseTypeStr: { editable: false },
+            // warehouseTypeStr: { editable: false },
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
             warehouseCategoryStr: { editable: false },
@@ -116,11 +128,21 @@ export class NewContract {
 
   }
 
+  edit(e) {
+    let mode = e.detail.model.pricingMode;
+    if (mode == 1) {
+      return;
+    }
+    let dataGrid = e.detail.sender;
+    dataGrid.closeCell();
+  }
+
   async activate() {
     //this.validationController.addObject(this.contractVo, validationRules);
     //this.validationController.addObject(this.contractVo.contract, validationRules);
     this.validationController.addObject(this.contract, validationRules);
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+    // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.warehouses = await this.contractService.getWarehouses();
@@ -131,11 +153,15 @@ export class NewContract {
     let rates = await this.contractService.getBaseRate();
     rates.map(res => {
       let unit = this.unit.find(d => res.unit == d.dictDataCode);
+      // let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
+      // if (warehouseType) {
+      //   res.warehouseTypeStr = warehouseType.dictDataName;
+      // }
       if (warehouseCategory) {
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
       }
@@ -145,6 +171,7 @@ export class NewContract {
       return res;
     });
     this.baseRateAndSteps = rates;
+    this.filterBaseRateSteps = [];
     this.baseRateStep = await this.contractService.getBaseRateStep();
     this.baseRateStep.map(res => {
       if (res.stepUnit) {
@@ -198,6 +225,7 @@ export class NewContract {
 
   contractTypeChanged() {
     // let contractType = this.contractVo.contract.contractType;
+    this.search = {} as ContractSearch;
     let contractType = this.contract.contractType;
     this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: contractType });
     //1 :
@@ -215,15 +243,39 @@ export class NewContract {
       this.validationController.removeObject(this.contractVo);
     }
     this.customerDatasource.read();
+    this.filterBaseRateSteps = [];
+    this.datasource.read();
   }
 
+  select() {
+    this.source = [];
+    Object.assign(this.source, this.baseRateAndSteps);
+    //按条件搜索
+    for (let e in this.search) {
+      if (this.search[e]) {
+        //let rate = this.baseRateAndSteps;
+        this.source = this.source.filter(x => x[e] == this.search[e]);
+        //this.datasource.filter({ field: e, operator: 'eq', value: this.search[e]});
+      }
+    }
+    // this.filterBaseRateSteps = source;
+    //过滤掉已经选择的费率
+    this.source = this.source.filter(r => {
+      return this.filterBaseRateSteps.every(e => r.id != e.id);
+    });
+    //合并费率
+    this.filterBaseRateSteps = this.filterBaseRateSteps.concat(this.source);
+    this.datasource.read();
+    this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: this.contract.contractType });
+  }
 
   async save() {
     await this.datasource.sync();
 
     let { valid } = await this.validationController.validate();
     if (!valid) return;
-    let rateList = this.baseRateAndSteps
+
+    let rateList = this.filterBaseRateSteps
       .filter(x => x.customerCategory == this.contract.contractType);
     rateList.forEach(r => {
       let id = r.id;
@@ -253,6 +305,11 @@ export class NewContract {
 
   cancel() {
     this.router.navigateToRoute("list");
+  }
+
+  delete(e) {
+    this.filterBaseRateSteps = this.filterBaseRateSteps.filter(r => r.id != e.id);
+    this.datasource.remove(e);
   }
 
   detailInit(e) {
@@ -312,6 +369,25 @@ export class NewContract {
     });
   }
 
+  async selectCargoCategory() {
+    let result = await this.dialogService
+      .open({ viewModel: CargoCategoryTree, model: this.search.cargoCategoryId, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let cargoCategory = result.output;
+    this.search.cargoCategoryName = cargoCategory.categoryName;
+    this.search.cargoCategoryId = cargoCategory.id;
+  }
+
+  async selectWorkInfo() {
+    let result = await this.dialogService.open({ viewModel: WorkInfoTree, model: this.search.workId, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    let workInfo = result.output;
+    this.search.workName = workInfo.name;
+    this.search.workId = workInfo.id;
+  }
+
 }
 
 const validationRules = ValidationRules
@@ -367,3 +443,5 @@ const warehouseIdRules = ValidationRules
   .displayName('存放库区')
   .required().withMessage(`\${$displayName} 不能为空`)
   .rules;
+
+

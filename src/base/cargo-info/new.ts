@@ -98,10 +98,6 @@ export class NewCargoInfo {
   }
 
   async addCargoItem() {
-    if (!this.cargoInfo.warehouseType) {
-      this.messageDialogService.alert({ title: '请选择库区性质', message: '请选择库区性质' });
-      return;
-    }
     if (!this.contractId) {
       this.messageDialogService.alert({ title: '客户选择错误', message: '请选择客户后再新增货物！' });
       return;
@@ -159,7 +155,7 @@ export class NewCargoInfo {
     }).whenClosed();
     if (result.wasCancelled) return;
     this.cargoItems = this.cargoItems.map(x => {
-      if(x.batchNumber == batchNumber){
+      if (x.batchNumber == batchNumber) {
         return result.output;
       }
       return x;
@@ -214,10 +210,10 @@ const validationRules = ValidationRules
   .displayName('客户名称')
   .required().withMessage(`\${$displayName} 不能为空`)
 
-  .ensure((cargoInfo: CargoInfo) => cargoInfo.billLadingNumber)
-  .displayName('提单号')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .maxLength(30).withMessage(`\${$displayName} 过长`)
+  // .ensure((cargoInfo: CargoInfo) => cargoInfo.billLadingNumber)
+  // .displayName('提单号')
+  // .required().withMessage(`\${$displayName} 不能为空`)
+  // .maxLength(30).withMessage(`\${$displayName} 过长`)
 
   .ensure((cargoInfo: CargoInfo) => cargoInfo.remark)
   .displayName('备注')

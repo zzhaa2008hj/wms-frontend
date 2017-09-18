@@ -22,7 +22,7 @@ export class VerifyBusinessEdit {
   cargoFlow: CargoFlow;
   instockStages: any[] = ConstantValues.InstockStages;
   units = [] as DictionaryData[];
-  warehouseTypes = [] as DictionaryData[];
+  //warehouseTypes = [] as DictionaryData[];
 
   attachments = [] as AttachmentMap[];
 
@@ -42,12 +42,10 @@ export class VerifyBusinessEdit {
 
   async activate() {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.cargoFlow = await this.cargoFlowService.getCargoFlowById(this.cargoFlowId.id);
     this.cargoFlow.instockDateStr = moment(this.cargoFlow.instockDate).format("YYYY-MM-DD");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.cargoFlow.cargoInfoId);
-    this.cargoInfo.warehouseTypeStr = this.warehouseTypes
-      .find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
     this.cargoItems = await this.cargoItemService.getCargoItemsByFlowId(this.cargoFlowId.id);
     this.cargoItems.map(res => {
       res.unitStr = this.units.find(r => r.dictDataCode == res.unit).dictDataName;

@@ -13,7 +13,7 @@ export class CargoFlowChangeHistoryDetail {
   oldCargoFlow: CargoFlow;
   newCargoFlow: CargoFlow;
   units = [] as DictionaryData[];
-  warehouseTypes = [] as DictionaryData[];
+  //warehouseTypes = [] as DictionaryData[];
   oldCargoItems: InstockCargoItem[];
   newCargoItems: InstockCargoItem[];
   oldVehicles: InstockVehicle[];
@@ -29,7 +29,7 @@ export class CargoFlowChangeHistoryDetail {
     this.newCargoFlow = changeHistory.newObj;
 
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
 
     this.oldCargoFlow.instockDateStr = moment(this.oldCargoFlow.instockDate).format("YYYY-MM-DD");
     this.oldCargoItems = this.oldCargoFlow.cargoItems;

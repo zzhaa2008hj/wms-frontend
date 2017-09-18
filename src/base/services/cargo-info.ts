@@ -53,8 +53,8 @@ export class CargoInfoService {
    * @param contractId
    * @param wareHouseType
    */
-  async getContractCargoRates(contractId: string, warehouseType: string): Promise<CargoRate[]> {
-    let res = await this.http.get(`base/contract/contractRateList?contractId=${contractId}&warehouseType=${warehouseType}`);
+  async getContractCargoRates(contractId: string): Promise<CargoRate[]> {
+    let res = await this.http.get(`base/contract/contractRateList?contractId=${contractId}`);
     return res.content;
   }
 
@@ -211,7 +211,7 @@ export class CargoInfoService {
   async getListByBatchValidation(enteringMode?: number): Promise<Array<CargoInfo>> {
     let res = await this.http.createRequest(`/base/cargoInfo/batchValidation`)
       .withParams({ enteringMode: enteringMode }).asGet().send();
-    return res.content
+    return res.content;
   }
 
   /**

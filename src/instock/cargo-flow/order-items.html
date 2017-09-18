@@ -1,0 +1,22 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <h4>理货报告</h4>
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true">
+                <ak-col k-title="货名" k-field="cargoName"></ak-col>
+                <ak-col k-title="货类" k-field="cargoCategoryName"></ak-col>
+                <ak-col k-title="备注" k-field="remark">
+                    <ak-template>
+                        <input type="text" value.bind="remark">
+                    </ak-template>
+                </ak-col>
+            </ak-grid>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">保存</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

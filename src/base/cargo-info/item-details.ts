@@ -13,12 +13,12 @@ export class DetailsCargoItem {
 
   cargoRates: CargoRate[];
   unitDatasource = [] as DictionaryData[];
-  warehouseType = [] as DictionaryData[];
+  //warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
 
   constructor(private dialogController: DialogController,
-    private dictionaryDataService: DictionaryDataService) {
+              private dictionaryDataService: DictionaryDataService) {
     this.cargoRateDataSource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -31,7 +31,7 @@ export class DetailsCargoItem {
 
   async activate({ cargoItemInfo }) {
     this.unitDatasource = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.cargoItem = cargoItemInfo;
     this.cargoItem.unitStr = this.unitDatasource.find(d => d.dictDataCode == this.cargoItem.unit).dictDataName;
@@ -42,7 +42,7 @@ export class DetailsCargoItem {
   convertCargoRates() {
     this.cargoRates.map(res => {
       let unit = this.unitDatasource.find(d => res.unit == d.dictDataCode);
-      let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+      //let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (res.cargoRateSteps) {
@@ -55,9 +55,9 @@ export class DetailsCargoItem {
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
-      if (warehouseType) {
-        res.warehouseTypeStr = warehouseType.dictDataName;
-      }
+      // if (warehouseType) {
+      //   res.warehouseTypeStr = warehouseType.dictDataName;
+      // }
       if (warehouseCategory) {
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
       }

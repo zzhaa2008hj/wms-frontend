@@ -20,9 +20,22 @@ export class OrderItemService {
     return this.http.query(`instock/instockOrderItem/page`, criteria);
   }
 
+  //判断是否能生成理货报告
+  getJudge(flowIds: string[]): Promise<void> {
+    return this.http.post(`/instock/instockOrderItem/ids`, flowIds).then(handleResult);
+  }
+
+  //获取将要生成的理货报告
+  async getOrderItems(flowIds: string[]): Promise<OrderItem[]> {
+    console.log('flowIds', flowIds);
+    let res = await this.http.post(`/instock/instockOrderItem/items`, flowIds);
+    console.log('res.content', res.content);
+    return res.content;
+  }
+
   //生成理貨報告
-  saveOrderItem(ids: string[]): Promise<void> {
-    return this.http.post(`/instock/instockOrderItem`, ids).then(handleResult);
+  saveOrderItem(orderItems: OrderItem[]): Promise<void> {
+    return this.http.post(`/instock/instockOrderItem`, orderItems).then(handleResult);
   }
 
   async getOrderItem(id: string): Promise<OrderItem> {

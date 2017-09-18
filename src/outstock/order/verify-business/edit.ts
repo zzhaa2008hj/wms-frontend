@@ -1,5 +1,4 @@
 import { inject } from "aurelia-dependency-injection";
-import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { Order, OrderItem, Vehicle } from "@app/outstock/models/order";
 import { OrderService } from "@app/outstock/services/order";
@@ -18,7 +17,7 @@ export class VerifyBusinessDialogEdit {
   orderItems = [] as OrderItem[];
   vehicles = [] as Vehicle[];
 
-  warehouseTypes = [] as DictionaryData[];
+  //warehouseTypes = [] as DictionaryData[];
   verifyStatus: number;
   order: Order;
 
@@ -36,7 +35,7 @@ export class VerifyBusinessDialogEdit {
   async activate() {
     this.order = await this.orderService.getOrderById(this.outstockOrder.id);
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(this.order.cargoInfoId);
-    this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
+    //this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     let units = await this.dictionaryDataService.getDictionaryDatas('unit');
 
     this.orderItems = this.order.outstockOrderItems.map(res => {
@@ -48,8 +47,8 @@ export class VerifyBusinessDialogEdit {
     });
     this.vehicles = this.order.outstockVehicles;
     this.order.outstockDateStr = moment(this.order.outstockDate).format("YYYY-MM-DD");
-    this.cargoInfo.warehouseTypeStr = this.warehouseTypes
-      .find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
+    // this.cargoInfo.warehouseTypeStr = this.warehouseTypes
+    //   .find(res => res.dictDataCode == this.cargoInfo.warehouseType).dictDataName;
 
     let arr = await this.attachmentService.listAttachments({ businessType: 2, businessId: this.outstockOrder.id });
     if (arr != null && arr.length > 0) {
@@ -70,7 +69,7 @@ export class VerifyBusinessDialogEdit {
   async verifyBusiness(verifyStatus: number) {
     let status = verifyStatus == 1 ? '通过' : '不通过';
     let confirm = await this.dialogService.confirm({ title: "提示", message: `确定${status}商务审核？` });
-    if (!confirm) return; 
+    if (!confirm) return;
     this.disabled = true;
     try {
       await this.orderService.auditBusiness(this.order.id, verifyStatus);

@@ -1,0 +1,104 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-body">
+            <div class="page-title">
+                <h4>入库流水单</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-11"></div>
+                <div class="input-group col-md-1">
+                    <button class="btn btn-small" click.delegate="printOrder()">打印</button>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-offset-2" id="order">
+                <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+                    <tr>
+                        <td align="center" colspan="8">
+                            <h3>${organization.name}入库流水单</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" align="right">
+                            <h4>入库单号：&nbsp;&nbsp;${cargoFlow.instockFlowNumber}&nbsp;&nbsp;</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" nowrap>代理商名称:</td>
+                        <td align="center" colspan="3" nowrap>${cargoFlow.agentName}</td>
+                        <td align="center" nowrap>客户名称:</td>
+                        <td align="center" colspan="3" nowrap>${cargoFlow.customerName}</td>
+                    </tr>
+                    <tr>
+                        <td align="center" nowrap>批次号:</td>
+                        <td align="center" colspan="3" nowrap>${cargoFlow.batchNumber}</td>
+                        <td align="center" nowrap>入库日期:</td>
+                        <td align="center" colspan="3" nowrap>${cargoFlow.instockDateStr}</td>
+                    </tr>
+                    <tr>
+                        <td align="center">联系人:</td>
+                        <td align="center" colspan="3">${cargoFlow.contactPerson}</td>
+                        <td align="center">联系方式:</td>
+                        <td align="center" colspan="3">${cargoFlow.contactNumber}</td>
+                    </tr>
+                    <tr>
+                        <td align="center">序号</td>
+                        <td align="center">货名</td>
+                        <td align="center">货类</td>
+                        <td align="center">单位</td>
+                        <td align="center">箱号</td>
+                        <td align="center">说明</td>
+                        <td align="center" nowrap>指令数量</td>
+                        <td align="center" nowrap>指令件数</td>
+                    </tr>
+                    <template repeat.for="item of cargoItems">
+                        <tr>
+                            <td align="center">${item.index}</td>
+                            <td align="center">${item.cargoName}</td>
+                            <td align="center">${item.cargoCategoryName}</td>
+                            <td align="center">${item.unitStr}</td>
+                            <td align="center">${item.containerNumber}</td>
+                            <td align="center">${item.remark}</td>
+                            <td align="center">${item.orderQuantity}</td>
+                            <td align="center">${item.orderNumber}</td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td align="center">备注</td>
+                        <td align="center" colspan="7">
+                            ${cargoFlow.remark}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" align="right"><label class="m-r-10">合计:</label></td>
+                        <td align="center">
+                            ${cargoFlow.orderQuantity}
+                        </td>
+                        <td align="center">
+                            ${cargoFlow.orderNumber}
+                        </td>
+                    </tr>
+                    <tr if.bind="instockVehicles">
+                        <td align="center" colspan="2">车牌号</td>
+                        <td align="center" colspan="2">司机名称</td>
+                        <td align="center" colspan="2">电话</td>
+                        <td align="center" colspan="2">备注</td>
+                    </tr>
+                    <template repeat.for="item of instockVehicles">
+                        <tr>
+                            <td align="center" colspan="2">${item.plateNumber}</td>
+                            <td align="center" colspan="2">${item.driverName}</td>
+                            <td align="center" colspan="2">${item.phoneNumber}</td>
+                            <td align="center" colspan="2">${item.remark}</td>
+                        <tr>
+                    </template>
+                    <tr>
+                        <td colspan="2" align="right" nowrap>制单人&nbsp;&nbsp;</td>
+                        <td colspan="2" align="center">&nbsp;${cargoFlow.createAccount}&nbsp;</td>
+                        <td colspan="2" align="right" nowrap>制单日期&nbsp;&nbsp;</td>
+                        <td colspan="2" align="center" nowrap>&nbsp;${cargoFlow.createTimeStr}&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</template>
