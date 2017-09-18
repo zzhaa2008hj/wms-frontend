@@ -85,65 +85,43 @@
               </div>
             </div>
             <div class="row column-seperation">
-              <!--<template if.bind="cargoItem.contractType != '' || cargoItem!= null">-->
               <template if.bind="!!cargoItem.cargoCategoryId">
                 <h4>货物费率信息</h4>
-                <div class="col-md-3">
+                <div class="col-md-12">
+                  <div class="form-group">
                     <label class="form-label">费用类别</label>
                     <span class="help"></span>
-                      <ak-drop-down-list k-value.two-way="search.rateCategory"
-                                        k-option-label="请选择..."
-                                        k-data-text-field="text"
-                                        k-data-value-field="value"
-                                        k-data-source.bind="chargeCategory" >
-                      </ak-drop-down-list>
-                </div>
-                <div class="col-md-3">
-                  <div class="col-md-12">
-                    <label class="form-label">作业类别</label>
-                    <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="search.rateType"
-                                      k-option-label="请选择..."
-                                      k-data-text-field="text"
-                                      k-data-value-field="value"
-                                      k-data-source.bind="rateTypes">
+                    <ak-drop-down-list k-value.two-way="search.rateCategory" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                      k-data-source.bind="chargeCategory">
                     </ak-drop-down-list>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">作业内容</label>
+                    <label class="form-label">&nbsp;作业类别</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="search.rateType" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                      k-data-source.bind="rateTypes">
+                    </ak-drop-down-list>
+                    <label class="form-label">&nbsp;作业内容</label>
                     <span class="help"></span>
                     <input type="text" class="form-label" value.bind="search.workName" readonly>
                     <a class="btn btn-small" type="button" click.delegate="selectWorkInfo()">请选择...</a>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">库位类别</label>
+                    <label class="form-label">&nbsp;库位类别</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="search.warehouseCategory"
-                                      k-option-label="请选择..."
-                                      k-data-text-field="dictDataName"
-                                      k-data-value-field="dictDataCode"
-                                      k-data-source.bind="warehouseCategory">
-                </ak-drop-down-list>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">计价方式</label>
-                    <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="search.pricingMode"
-                                      k-option-label="请选择..."
-                                      k-data-text-field="text"
-                                      k-data-value-field="value"
-                                      k-data-source.bind="pricingMode">
+                    <ak-drop-down-list k-value.two-way="search.warehouseCategory" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+                      k-data-source.bind="warehouseCategory">
                     </ak-drop-down-list>
-                </div>
-                <div class="col-md-3">
+                    <label class="form-label">&nbsp;计价方式</label>
+                    <span class="help"></span>
+                    <ak-drop-down-list k-value.two-way="search.pricingMode" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                      k-data-source.bind="pricingMode">
+                    </ak-drop-down-list>
                     <label class="form-label">&nbsp;</label>
-                    <div class="input-group-addon search" click.delegate="select()"><em class="fa fa-search"></em></div>
+                    <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+                  </div>
                 </div>
                 <div class="col-md-12">
                   <span class="help"></span>
                   <div class="controls right">
-                    <ak-grid k-data-source.bind="cargoRateDataSource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-edit.delegate="aa($event)" k-on-detail-init.delegate="detailInit($event.detail)">
+                    <ak-grid k-data-source.bind="cargoRateDataSource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-edit.delegate="aa($event)"
+                      k-on-detail-init.delegate="detailInit($event.detail)">
                       <ak-col k-field="rateCategory" k-title="费用类别">
                         <ak-template>
                           ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
