@@ -34,7 +34,7 @@ export class OrderList {
   };
   existEntering = false;
   outstockStages: any[] = ConstantValues.OutstockStages;
-  userId:string ;
+  userId: string ;
 
   constructor(@inject private orderService: OrderService,
               @inject private messageDialogService: MessageDialogService,

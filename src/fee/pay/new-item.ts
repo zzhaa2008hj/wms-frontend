@@ -59,15 +59,18 @@ export class NewAutoPaymentInfo {
   // 合计
   @computedFrom('paymentAuditItem.price', 'paymentAuditItem.workNumber')
   get total(): number {
-    let mul = accMul(this.paymentAuditItem.price, this.paymentAuditItem.workNumber);
-    console.log(mul);
-    if (mul) {
-      return parseFloat(mul.toFixed(2));
+    if (this.paymentAuditItem.price && this.paymentAuditItem.workNumber) {
+      let mul = accMul(this.paymentAuditItem.price, this.paymentAuditItem.workNumber);
+      if (mul) {
+        return parseFloat(mul.toFixed(2));
+      }
+      return null;
     }
     return null;
   }
-  
-
+  set total(x: number) {
+    console.log(x);
+  }
 }
 
 const validationRules = ValidationRules
