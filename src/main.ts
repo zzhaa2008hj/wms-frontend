@@ -73,6 +73,7 @@ async function configureRestClient(baseUrl: string, container: Container) {
             return Promise.reject(new Error(res.content.message));
           }
           if (res.statusCode >= 500) {
+            eventAggregator.publish('error-500', new Error(res.content.message));
             if (res.mimeType == 'application/json') {
               console.error(res.content.message);
             } else {
