@@ -46,7 +46,9 @@ export class ChargeInfoService {
    */
   pageChargeInfo(chargeInfoCriteria?: ChargeInfoCriteria): Query<ChargeInfo> {
     return this.http.query<ChargeInfo>(`/fee/charge-info/page`, chargeInfoCriteria).map(info => {
-      info.chargeStartDate = new Date(info.chargeStartDate);
+      if (info.chargeStartDate) {
+        info.chargeStartDate = new Date(info.chargeStartDate);
+      }
       if (info.chargeEndDate) {
         info.chargeEndDate = new Date(info.chargeEndDate);
       }

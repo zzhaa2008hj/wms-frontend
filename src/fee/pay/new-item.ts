@@ -14,7 +14,7 @@ export class NewAutoPaymentInfo {
   paymentAuditItem = {} as PaymentAuditItem;
   warehouseDrop: kendo.ui.DropDownList;
   unitDrop: kendo.ui.DropDownList;
-  endDatePicker: kendo.ui.DatePicker;
+  workDatePicker: kendo.ui.DatePicker;
   unitSource: any;
   warehouseSource: any;
   constructor(private dialogController: DialogController,
@@ -32,6 +32,10 @@ export class NewAutoPaymentInfo {
     this.validationController.addObject(this.paymentAuditItem, validationRules);
     this.unitSource = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.warehouseSource = await this.warehouseService.listWarehouse({status: true});
+  }
+
+  onOpen() {
+    this.workDatePicker.max(new Date());
   }
 
   async selectCargoCategory() {
