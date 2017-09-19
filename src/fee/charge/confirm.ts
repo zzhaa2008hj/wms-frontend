@@ -113,6 +113,11 @@ export class CustomerConfirm {
   async customerConfirm(num: number) {
     this.disabled = true;
     try {
+      if (num == -1) {
+        let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认作废此单？" });
+        if (!confirmed) return;
+        await this.chargeInfoService.customerConfirm(this.chargeInfo.id, -1, []);
+      }
       if (num == 0) {
         await this.chargeInfoService.customerConfirm(this.chargeInfo.id, 2, []);
       }

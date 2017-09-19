@@ -314,4 +314,17 @@ export class ConstantValues {
       title: "付费"
     }];
   }
+
+  static get FeeStatus() {
+    return [{
+      status: -1,
+      title: "作废"
+    }, {
+      status: 0,
+      title: "未完成"
+    }, {
+      status: 1,
+      title: "完成"
+    }];
+  }
 }

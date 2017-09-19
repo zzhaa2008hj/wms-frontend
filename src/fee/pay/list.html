@@ -24,12 +24,13 @@
     <ak-col k-field="chargeEndDate" k-title="结算结束日期" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
     <ak-col k-field="lastStageTitle" k-title="上阶段"></ak-col>
     <ak-col k-field="stageTitle" k-title="当前阶段"></ak-col>
+    <ak-col k-field="statusTitle" k-title="状态"></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
     <ak-col k-title="操作" k-width.bind="300">
       <ak-template>
-        <a class="btn btn-small" route-href="route: details; params.bind: { id: id }" required-permissions="R000047">查看结算清单</a>
-        <a if.bind='stage == 0 && type == 2' class="btn btn-primary btn-small" click.delegate="edit(id)" required-permissions="U000002">编辑</a>
-        <a if.bind='stage == 0 && type == 1' class="btn btn-primary btn-small" route-href="route: edit; params.bind: { id: id }" required-permissions="U000002">编辑</a>
+        <a class="btn btn-small" if.bind="status != -1" route-href="route: details; params.bind: { id: id }" required-permissions="R000047">查看结算清单</a>
+        <a if.bind='stage == 0 && type == 2 && status != -1' class="btn btn-primary btn-small" click.delegate="edit(id)" required-permissions="U000002">编辑</a>
+        <a if.bind='stage == 0 && type == 1 && status != -1' class="btn btn-primary btn-small" route-href="route: edit; params.bind: { id: id }" required-permissions="U000002">编辑</a>
         <a class="btn btn-small" if.bind="stage==1" route-href="route: confirm; params.bind: {id: id}" required-permissions="U000049">装卸单位确认</a>
         <a class="btn btn-small" if.bind="stage==3" route-href="route: verify; params.bind: {id: id}" required-permissions="U000050">费收审核</a>
         <a class="btn btn-small" if.bind="stage==5" route-href="route: note; params.bind: {id: id, status: 1}" required-permissions="U000051">生成付费单

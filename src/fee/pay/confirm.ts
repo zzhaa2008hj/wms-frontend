@@ -52,8 +52,12 @@ export class PaymentConfirm {
   }
 
   async check(num) {
-    //返回值result.output
     try {
+      if (num == -1) {
+        let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认作废此单？" });
+        if (!confirmed) return;
+        await this.paymentInfoService.confirm(this.paymentInfo.id, -1, []);
+      }
       if (num == 0) {
         await this.paymentInfoService.confirm(this.paymentInfo.id, 0, []);
       }

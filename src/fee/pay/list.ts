@@ -9,7 +9,6 @@ import { LeaderVerify } from "./leader-verify";
 import { VerifyRecordCriteria } from "@app/common/services/verify-record";
 import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
 import { InvoiceService } from '@app/fee/services/invoice';
-import { VerificationService } from '@app/fee/services/verification';
 @autoinject
 export class PaymentInfoList {
   dataSource: kendo.data.DataSource;
@@ -32,8 +31,7 @@ export class PaymentInfoList {
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
-              private invoiceService: InvoiceService,
-              private verificationService: VerificationService) {
+              private invoiceService: InvoiceService) {
 
   }
 
@@ -55,6 +53,10 @@ export class PaymentInfoList {
         res.chargeStartDate = new Date(res.chargeStartDate);
         if (res.chargeEndDate) {
           res.chargeEndDate = new Date(res.chargeEndDate);
+        }
+        let status = ConstantValues.FeeStatus.find(s => s.status == res.status);
+        if (status) {
+          res.statusTitle = status.title;
         }
         return res;
       }),
