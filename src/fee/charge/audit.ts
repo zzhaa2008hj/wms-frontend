@@ -29,8 +29,8 @@ export class Audit {
     this.chargeInfo = Object.assign(this.chargeInfo, chargeInfo);
     this.chargeAuditLists = await this.chargeAuditListService.getListByChargeInfoId(this.chargeInfo.id);
     this.organization = await this.organizationService.getOrganization(this.chargeInfo.orgId);
-
-    this.chargeInfo.chargeStartDateStr = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD");
+    console.log(this.chargeInfo);
+    this.chargeInfo.chargeStartDateStr = this.chargeInfo.chargeStartDate ? moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD"):'';
     this.chargeInfo.chargeEndDateStr = this.chargeInfo.chargeEndDate ? moment(this.chargeInfo.chargeEndDate).format("YYYY-MM-DD"): '';
 
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
