@@ -201,22 +201,25 @@ export class NewCargoItem {
       r.cargoRateSteps = cargoRateStepList;
     });
     this.cargoItem.cargoRates = cargoRateList;
-    this.cargoItem.cargoRates.forEach(r =>{
+    this.cargoItem.cargoRates.forEach(r => {
       let rates = this.cargoItem.cargoRates.filter(e =>
-        r.chargeType == e.chargeType&&
-        r.rateCategory == e.rateCategory&&
-        r.rateType == e.rateType&&
-        r.workId == e.workId&&
+        r.chargeType == e.chargeType &&
+        r.rateCategory == e.rateCategory &&
+        r.rateType == e.rateType &&
+        r.workId == e.workId &&
         r.warehouseCategory == e.warehouseCategory
-      )
-      if(rates.length>1){
+      );
+      if (rates.length > 1) {
         rate = r;
-      } 
+      }
     });
-    if(rate){
-       await this.dialogService.alert({title:"提示",
-       message: ['仓储费','装卸费','其他费用'][rate.rateCategory-1]+'-'+['收费','付费'][rate.chargeType-1]+'-'+rate.workName+':'+"存在多条费率"});
-      return;      
+    if (rate) {
+      await this.dialogService.alert({
+        title: "提示",
+        message: ['仓储费', '装卸费', '其他费用'][rate.rateCategory - 1] +
+        '-' + ['收费', '付费'][rate.chargeType - 1] + '-' + rate.workName + ':' + "存在多条费率"
+      });
+      return;
     }
     this.cargoItem.unitStr = this.unitDatasource.find(d => this.cargoItem.unit == d.dictDataCode).dictDataName;
     await this.dialogController.ok(this.cargoItem);
