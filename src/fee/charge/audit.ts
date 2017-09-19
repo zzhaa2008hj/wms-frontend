@@ -100,7 +100,7 @@ export class Audit {
         { field: 'cargoSubCategoryName', title: '品牌' },
         { field: 'warehouseName', title: '库区名称' },
         { field: 'number', title: '件数' },        
-        { field: 'quantity', title: '重量' },
+        { field: 'quantity', title: '数量' },
         { field: 'unitStr', title: '计量单位' },
         { field: 'startDate', title: '开始日期', format: '{0:yyyy-MM-dd}'},
         { field: 'endDate', title: '结束日期', format: '{0:yyyy-MM-dd}'},
