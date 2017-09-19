@@ -1,7 +1,7 @@
 import { RestClient, Query } from '@app/utils';
-import { DailyCharge } from '@app/report/models/daily-payment';
 import { autoinject } from 'aurelia-dependency-injection';
 import { FeeStatisticsCriteria } from "@app/report/models/fee-statistics-criteria";
+import { DailyCharge } from '@app/report/models/daily-charge';
 
 
 @autoinject
