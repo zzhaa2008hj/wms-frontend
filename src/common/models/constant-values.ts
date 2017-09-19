@@ -298,7 +298,7 @@ export class ConstantValues {
       title: "已开票"
     }, {
       stage: 8,
-      title: "已收费核销"
+      title: "核销"
     }, {
       stage: 9,
       title: "收费完成"
@@ -312,6 +312,19 @@ export class ConstantValues {
     }, {
       stage: 2,
       title: "付费"
+    }];
+  }
+
+  static get FeeStatus() {
+    return [{
+      status: -1,
+      title: "作废"
+    }, {
+      status: 0,
+      title: "未完成"
+    }, {
+      status: 1,
+      title: "完成"
     }];
   }
 }

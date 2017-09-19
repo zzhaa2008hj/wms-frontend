@@ -50,6 +50,9 @@ export class App {
         // let url = this.config.loginParam.loginUrl + "?appKey=" + this.config.loginParam.appKey + "&appType=" + this.config.loginParam.appType + "&returnUrl=" + encodeURIComponent(window.location.href);
         // window.location.href = url;
         this.user.login();
+      }),
+      this.events.subscribe('error-500', () => {
+        this.dialogService.alert({ title: '发生错误', message: '服务器发生错误，请联系管理员。', icon: 'error' });
       })
     ];
 

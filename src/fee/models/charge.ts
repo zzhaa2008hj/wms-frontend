@@ -38,6 +38,8 @@ export interface ChargeInfo {
 
   //费用总计
   feeTotal: number;
+
+  statusTitle: string; 
 }
 
 export const chargeInfoValidationRules = ValidationRules
