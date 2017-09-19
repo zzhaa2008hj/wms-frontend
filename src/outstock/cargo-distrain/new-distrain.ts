@@ -1,6 +1,6 @@
 import { inject, newInstance } from 'aurelia-dependency-injection';
 import { DialogController } from "ui";
-import { CargoDistrainVo, CargoItemStorageInfoVo, CargoDistrain } from '@app/outstock/models/cargo-distrain';
+import { CargoDistrainVo, CargoItemStorageInfoVo } from '@app/outstock/models/cargo-distrain';
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { DictionaryDataService } from '@app/base/services/dictionary';
