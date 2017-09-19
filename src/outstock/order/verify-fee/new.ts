@@ -8,9 +8,6 @@ export class VerifyFeeDialogNew {
   constructor(@inject private dialogController: DialogController) {
   }
 
-  async activate() {
-  }
-
   async save() {
     await this.dialogController.ok(this.status);
   }
