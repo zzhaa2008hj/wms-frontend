@@ -1,5 +1,5 @@
 import { autoinject, Container } from "aurelia-dependency-injection";
-import { DialogController, DialogService } from "ui";
+import { DialogService } from "ui";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { PaymentInfoService } from "@app/fee/services/pay";
@@ -40,7 +40,6 @@ export class NewPaymentInfo {
     }
   });
   constructor(private paymentInfoService: PaymentInfoService,
-              private dialogController: DialogController,
               private dictionaryDataService: DictionaryDataService,
               private router: Router,
               validationControllerFactory: ValidationControllerFactory,
@@ -123,7 +122,6 @@ export class NewPaymentInfo {
 
     try {
       this.disabled = true;
-      console.log(this.paymentInfo);
       await this.paymentInfoService.savePaymentInfo(this.paymentInfo);
       await this.dialogService.alert({ title: "提示", message: "新增成功！" });
       this.router.navigateToRoute("list");

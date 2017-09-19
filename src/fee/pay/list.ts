@@ -3,13 +3,13 @@ import { PaymentInfoService } from "@app/fee/services/pay";
 import { DataSourceFactory } from "@app/utils";
 import { ConstantValues } from '@app/common/models/constant-values';
 import { NewManualPaymentInfo } from '@app/fee/pay/new-manual';
-import { EditPaymentInfo } from '@app/fee/pay/edit';
+import { EditPaymentInfo } from '@app/fee/pay/edit-manual';
 import { DialogService, MessageDialogService } from 'ui';
 import { LeaderVerify } from "./leader-verify";
-import { InvoiceInput } from "./invoice";
 import { VerifyRecordCriteria } from "@app/common/services/verify-record";
 import { VerifyRecordDialogList } from "@app/common/verify-records/dialog-list";
-
+import { InvoiceService } from '@app/fee/services/invoice';
+import { VerificationService } from '@app/fee/services/verification';
 @autoinject
 export class PaymentInfoList {
   dataSource: kendo.data.DataSource;
@@ -31,7 +31,9 @@ export class PaymentInfoList {
   constructor(private paymentInfoService: PaymentInfoService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
-              private messageDialogService: MessageDialogService) {
+              private messageDialogService: MessageDialogService,
+              private invoiceService: InvoiceService,
+              private verificationService: VerificationService) {
 
   }
 
@@ -51,7 +53,9 @@ export class PaymentInfoList {
           res.typeTitle = type.title;
         }
         res.chargeStartDate = new Date(res.chargeStartDate);
-        res.chargeEndDate = new Date(res.chargeEndDate);
+        if (res.chargeEndDate) {
+          res.chargeEndDate = new Date(res.chargeEndDate);
+        }
         return res;
       }),
       pageSize: 10
@@ -104,7 +108,7 @@ export class PaymentInfoList {
       await this.messageDialogService.alert({ title: "新增失败", message: err.message, icon: "error" });
     }
   }
-
+  
   async edit(id) {
     let result = await this.dialogService.open({ viewModel: EditPaymentInfo, model: id, lock: true })
       .whenClosed();
@@ -132,6 +136,8 @@ export class PaymentInfoList {
   }
 
   async invoice(id) {
+    let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认录入发票完成" });
+    if (!confirmed) return;
     try {
       await this.paymentInfoService.invoice(id);
       await this.dialogService.alert({ title: "提示", message: "录入发票完成" });
@@ -142,6 +148,13 @@ export class PaymentInfoList {
   }
 
   async verifyPay(id) {
+    let invoice = await this.invoiceService.getInvoices(id, 2);
+    
+    if (invoice && invoice.length > 0) {
+    }else {
+      await this.dialogService.alert({ title: "提示", message: "发票还未录入", icon: "error" });
+    }
+    
     let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认付费核销完成" });
     if (!confirmed) return;
     try {

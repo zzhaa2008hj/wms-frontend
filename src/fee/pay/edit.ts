@@ -1,83 +1,166 @@
 import { autoinject, Container } from "aurelia-dependency-injection";
-import { DialogController } from "ui";
+import { DialogService } from "ui";
 import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { PaymentInfoService } from "@app/fee/services/pay";
-import { PaymentInfo } from "@app/fee/models/pay";
+import { PaymentInfo, PaymentAuditItem } from "@app/fee/models/pay";
 import * as moment from 'moment';
+import { NewAutoPaymentInfo } from '@app/fee/pay/new-item';
+import { DictionaryDataService } from '@app/base/services/dictionary';
+import { DictionaryData } from '@app/base/models/dictionary';
+import { Router } from "aurelia-router";
 
 @autoinject
-export class EditPaymentInfo {
+export class NewPaymentInfo {
 
+  disabled = false;
   validationController: ValidationController;
   paymentInfo = {} as PaymentInfo;
+  customerDrop: kendo.ui.DropDownList;
   endDatePicker: kendo.ui.DatePicker;
+ 
+  // 自动
+  items: PaymentAuditItem[] = [];
+  // 手动
+  manualItems: PaymentAuditItem[] = [];
+  units: DictionaryData[];
+  itemDataSource = new kendo.data.DataSource({
+    transport: {
+      read: options => {
+        options.success(this.items);
+      }
+    }
+  });
   constructor(private paymentInfoService: PaymentInfoService,
-    private dialogController: DialogController,
-    validationControllerFactory: ValidationControllerFactory,
-    container: Container) {
+              private dictionaryDataService: DictionaryDataService,
+              private router: Router,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container,
+              private dialogService: DialogService) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
-
   }
 
-  async activate(id) {
+  async activate({id}) {
     this.validationController.addObject(this.paymentInfo, validationRules);
-    this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(id);
+    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
+    this.paymentInfo = await this.paymentInfoService.getPaymentAuditList(id);
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
-    // if (this.paymentInfo.type == 2) {
-    //   let { sumFee } = await this.paymentInfoService.getPaymentAuditFee(this.paymentInfo.id);
-    //   this.paymentInfo.sumFee = sumFee;
-    // }
+    this.paymentInfo.chargeEndDate = new Date(this.paymentInfo.chargeEndDate);
+    // this.endDatePicker.min(new Date(this.paymentInfo.chargeStartDate));
+    // this.endDatePicker.max(new Date());
+    this.items = this.paymentInfo.paymentAuditItemList;
+    this.items.forEach(item => {
+      item.workDate = new Date(item.workDate);
+      let u = this.units.find(u => u.dictDataCode == item.unit);
+      if (u) {
+        item.unitStr = u.dictDataName;
+      }
+    });
+  }
+  /**
+   * 获取开始时间
+   */
+  async getChargeStartDate() {
+    let { chargeStartDate } = await this.paymentInfoService.getChargeStartDate(this.paymentInfo.customerId);
+    this.paymentInfo.chargeStartDateStr = moment(chargeStartDate).format("YYYY-MM-DD");
+    this.paymentInfo.chargeStartDate = chargeStartDate;
 
+    this.endDatePicker.min(new Date(this.paymentInfo.chargeStartDate));
+    this.endDatePicker.max(new Date());
+  }
+  /**
+   * 获取明细
+   */
+  async getItems() {
+    if (!this.paymentInfo.chargeStartDateStr) {
+      this.dialogService.alert({ title: "提示", message: '请选择装卸单位', icon: "error" });
+      this.endDatePicker.value(null);
+      return;
+    }
+    let endDate = moment(this.endDatePicker.value()).format("YYYY-MM-DD");
+    let items = await this.paymentInfoService.getItems(this.paymentInfo.customerId, endDate);
+    items.forEach(item => {
+      item.workDate = new Date(item.workDate);
+      let u = this.units.find(u => u.dictDataCode == item.unit);
+      if (u) {
+        item.unitStr = u.dictDataName;
+      }
+      item.type = 1;
+    });
+    // 添加
+    this.items = [];
+    // 手动有数据
+    if (this.manualItems.length > 0) {
+      this.items = this.items.concat(this.manualItems);
+    }
+    this.items = this.items.concat(items);
+    this.itemDataSource.read();
+  }
+  /**
+   * 手动新增明细
+   */
+  async addItem() {
+    let result = await this.dialogService.open({ viewModel: NewAutoPaymentInfo, lock: true }).whenClosed();
+    if (result.wasCancelled) return;
+    this.manualItems.push(result.output);
+    this.items.push(result.output);
+    this.itemDataSource.read();
   }
 
-  onOpen() {
-    let startDate = this.paymentInfo.chargeStartDate;
-    startDate = new Date(startDate);
-    startDate.setDate(startDate.getDate() + 1);
-    this.endDatePicker.min(startDate);
-    this.endDatePicker.min(startDate);
+  removeItem() {
+    this.manualItems = [];
+    this.items = [];
+    this.itemDataSource.read();
   }
-
+  /**
+   * 保存
+   */
   async save() {
     this.validationController.addObject(this.paymentInfo, validationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
-    await this.dialogController.ok(this.paymentInfo);
+    this.paymentInfo.customerName = this.customerDrop.text();
+    this.paymentInfo.paymentAuditItemList = this.items;
+
+    try {
+      this.disabled = true;
+      console.log(this.paymentInfo);
+      await this.paymentInfoService.updatePaymentInfo(this.paymentInfo);
+      await this.dialogService.alert({ title: "提示", message: "修改成功！" });
+      this.router.navigateToRoute("list");
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+      this.disabled = false;
+    }
   }
 
-  async cancel() {
-    await this.dialogController.cancel();
+  cancel() {
+    this.router.navigateToRoute("list");
   }
 
 }
 
 const validationRules = ValidationRules
+  .ensure((paymentInfo: PaymentInfo) => paymentInfo.customerId)
+  .displayName("装卸单位名称")
+  .required().withMessage(`\${$displayName}不能为空`)
+
   .ensure((paymentInfo: PaymentInfo) => paymentInfo.chargeEndDate)
   .displayName("结算结束日期")
-  .satisfies((chargeEndDate, paymentInfo) => {
-    if (paymentInfo.type == 1) {
-      if (!chargeEndDate) {
-        return false
-      }
-    }
-    return true
-  }).withMessage(`\${$displayName}不能为空`)
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((paymentInfo: PaymentInfo) => paymentInfo.type)
+  .displayName("结算生成方式")
+  .required().withMessage(`\${$displayName}不能为空`)
 
   .ensure((paymentInfo: PaymentInfo) => paymentInfo.remark)
   .displayName("备注")
   .maxLength(200).withMessage(`\${$displayName}最大长度为200`)
 
-  .ensure((paymentInfo: PaymentInfo) => paymentInfo.payableAmount)
-  .displayName("费用合计")
-  .satisfies((sumFee, paymentInfo) => {
-    if (!paymentInfo.type || paymentInfo.type == 1) {
-      return true;
-    }
-    return !!sumFee || (sumFee <= 1000000000000000 && sumFee > 0)
-
-  })
-  .withMessage(`\${$displayName} 为无效值(过大或过小)`)
+  // .ensure((paymentInfo: PaymentInfo) => paymentInfo.payableAmount)
+  // .displayName("费用合计")
+  // .required().withMessage(`\${$displayName}不能为空`)
+  // .matches(/^([+]?\d{1,10})(\.\d{1,2})?$/).withMessage(`\${$displayName}小数点不能超过2位`)
   .rules;

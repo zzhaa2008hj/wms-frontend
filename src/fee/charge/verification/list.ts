@@ -2,11 +2,11 @@ import { inject } from "aurelia-dependency-injection";
 import { DialogService } from "ui";
 import { VerificationService } from "@app/fee/services/verification";
 import { InvoiceService } from "@app/fee/services/invoice";
-import { VerificationNew } from '@app/fee/charge/verification/new';
+import { VerificationNew } from '@app/fee/charge/verification/new-verification';
 import { Invoice } from '@app/fee/models/invoice';
 import { Router } from "aurelia-router";
 import { VerificationView } from '@app/fee/charge/verification/view';
-
+import { InvoiceNew } from '@app/fee/charge/verification/new-invoice';
 
 export class InvoiceList {
   invoice: Invoice[] = [];
@@ -28,6 +28,32 @@ export class InvoiceList {
         }
       }
     });
+  }
+
+  async addInvoice() {
+    let result = await this.dialogService.open({ viewModel: InvoiceNew, model: {infoId: this.infoId}, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+    try {
+      await this.invoiceService.saveInvoice(result.output);
+      await this.dialogService.alert({ title: "提示", message: "新增成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
+
+  async deleteInvoice(id) {
+    try {
+      let confirm = await this.dialogService.confirm({ title: "提示", message: "删除后无法恢复，确定要删除？" });
+      if (confirm) {
+        await this.invoiceService.deleteInvoice(id);
+        await this.dialogService.alert({ title: "提示", message: "删除成功！" });
+        this.dataSource.read();
+      }
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: 'error' });
+    }
   }
 
   async add(invoice) {

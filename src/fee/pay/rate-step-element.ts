@@ -31,7 +31,6 @@ export class RateStepsCustomElement {
           stepStart: { editable: false },
           stepEnd: { editable: false },
           stepPrice: { editable: false },
-          actualStepPrice: { editable: false, type: 'number', validation: { required: false, min: 0, max: 10000000 } },
           stepUnitName: { editable: false },
           remark: { editable: false }
         }

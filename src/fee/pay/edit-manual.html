@@ -1,0 +1,32 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 编辑
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <div class="form-group">
+                <label class="form-label">装卸单位名称*</label>
+                <span class="help"></span>
+                <input value.bind="paymentInfo.customerName" type="text" class="form-control" disabled.bind="false" readonly>
+            </div>
+            <div class="form-group">
+                <label class="form-label">费用合计*</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <input type="number" step="0.01" class="form-control" value.bind="paymentInfo.payableAmount  & toFloat  & validate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                    <textarea type="text" class="form-control" value.bind="paymentInfo.remark & validate" maxlength="200">
+                </div>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button class="btn btn-primary" click.trigger="save()">保存</button>
+            <button class="btn btn-white" click.trigger="cancel()">取消</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

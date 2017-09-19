@@ -10,10 +10,9 @@ import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { uuid } from '@app/utils';
 import { ChargeAuditItem } from '@app/fee/models/charge-audit';
-
-export class NewChargeInfo {
+import * as moment from 'moment';
+export class EditChargeInfo {
   disabled: boolean = false;
- 
   chargeInfo = {} as ChargeInfo;
   batchNumbers = new kendo.data.HierarchicalDataSource({
     data: []
@@ -22,7 +21,7 @@ export class NewChargeInfo {
   chargeCategoryVos = ConstantValues.ChargeCategoryVo;
 
   batchNumber: string;
-  chargeCategory: number;
+  chargeCategory: number = -1;
   rateType: number = -1;
 
   chargeItems: ChargeAuditItem[] = [];
@@ -32,7 +31,7 @@ export class NewChargeInfo {
         options.success(this.chargeItems);
       },
       update: (options) => {
-          options.success();
+        options.success();
       },
       destroy: (options) => {
         options.success();
@@ -51,7 +50,7 @@ export class NewChargeInfo {
           warehouseName: { editable: false },
           quantity: { editable: false },
           number: { editable: false },
-          unitName: { editable: false },
+          unitStr: { editable: false },
           pricingMode: { editable: false },
           price: { editable: false },
           actualPrice: { editable: true, type: 'number', validation: { required: false, min: 0, max: 10000000 }},
@@ -64,7 +63,14 @@ export class NewChargeInfo {
   });
   cargoRateStepList = new Map(); 
   units = [] as DictionaryData[];
-  customerGrid : kendo.ui.Grid;
+  batchNumberWidget: any;
+  chargeCategoryWidget: any;
+  workInfoCategoryWidget: any;
+
+  startDatePicker: any;
+  endDatePicker: any;
+  chargeStartDate: any;
+  chargeEndDate: any;
   constructor(@inject private router: Router,
               @newInstance() private validationController: ValidationController,
               @inject private chargeInfoService: ChargeInfoService,
@@ -122,9 +128,11 @@ export class NewChargeInfo {
       if (batchNumbers) {
         let bs = batchNumbers.map(b => Object.assign({key: b, value: b}));
         this.batchNumbers.data(bs);
-        this.batchNumber = bs[0].value;
       }
     }
+    this.chargeItems = [];
+    this.cargoRateStepList = new Map();
+    this.chargeItemDataSource.read();
   }
 
   cancel() {
@@ -135,10 +143,17 @@ export class NewChargeInfo {
    * 列出申请明细
    */
   async addChargeItem() {
-    if (!this.batchNumber || !this.chargeCategory) {
-      return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类别", icon: 'error' });
+    if (!this.chargeInfo.customerId) {
+      return this.dialogService.alert({ title: "提示", message: "请选择客户", icon: 'error' });
     }
-    let items = await this.chargeInfoService.getItems(this.batchNumber, this.chargeCategory, this.rateType);
+    this.batchNumber = this.batchNumberWidget.value();
+    this.chargeCategory = this.chargeCategoryWidget.value();
+    this.rateType = this.workInfoCategoryWidget.value();
+    if (!this.rateType) this.rateType = -1;
+    if (!this.chargeCategory) this.chargeCategory = -1;
+    let chargeStartDate = moment(this.chargeStartDate).format("YYYY-MM-DD HH:mm:ss");
+    let chargeEndDate = moment(this.chargeEndDate).hour(23).minute(59).second(59).format("YYYY-MM-DD HH:mm:ss");
+    let items = await this.chargeInfoService.getItems(this.chargeInfo.customerId, chargeStartDate, chargeEndDate, this.batchNumber, this.chargeCategory, this.rateType);
     if (items && items.length == 0) {
       return await this.dialogService.alert({ title: "提示", message: "无此费用可结算", icon: 'error' });
     }
@@ -147,32 +162,17 @@ export class NewChargeInfo {
       Object.assign(m, items);
       return await this.dialogService.alert({ title: "提示", message: m.message, icon: 'error' });
     }
-    // 过滤重复
-    if (2 == this.chargeCategory) {
-      for (let item of this.chargeItems) {
-        if (!this.rateType || -1 == this.rateType) {
-          if (item.batchNumber == this.batchNumber && (2 == item.chargeCategory || 3 == item.chargeCategory)) {
-            return;
-          }
-        }else {
-          if (item.batchNumber == this.batchNumber && (2 == item.chargeCategory || 3 == item.chargeCategory) && item.rateType == this.rateType) {
-            return;
-          }
-        }
-      }
-    }else {
-      for (let item of this.chargeItems) {
-        if (!this.rateType || -1 == this.rateType) {
-          if (item.batchNumber == this.batchNumber && item.chargeCategory == this.chargeCategory) {
-            return;
-          }
-        }else {
-          if (item.batchNumber == this.batchNumber && item.chargeCategory == this.chargeCategory && item.rateType == this.rateType) {
-            return;
-          }
+    
+    for (let item of this.chargeItems) {
+      for (let i of items) {
+        if (item.batchNumber == i.batchNumber && item.chargeCategory == i.chargeCategory
+          && item.rateType == i.rateType && item.cargoItemId == i.cargoItemId
+          && item.warehouseId == i.warehouseId && item.cargoRateId == i.cargoRateId) {
+          return;
         }
       }
     }
+    
     if (items) {
       items.map(item => {
         if (item.startDate) {
@@ -199,43 +199,21 @@ export class NewChargeInfo {
             if (unit) {
               rate.stepUnitName = unit.dictDataName;
             }
+            this.cargoRateStepList.set(rate.id, rate);
           });
         }
+        
         // 临时加id，让组件修改时识别
-        item.id = '_' + uuid();
+        item.id = uuid();
       });
     }
     
     this.chargeItems = this.chargeItems.concat(items);
     this.chargeItemDataSource.read();
-    
   }
 
   async deleteChargeItem() {
-    if (!this.batchNumber || !this.chargeCategory) {
-      return this.dialogService.alert({ title: "提示", message: "请选择批次、费用类别", icon: 'error' });
-    }
-    if (2 == this.chargeCategory) {
-      if (this.rateType && -1 != this.rateType) {
-        this.chargeItems = this.chargeItems.filter(item => 
-          item.batchNumber != this.batchNumber || (2 != item.chargeCategory && 3 != item.chargeCategory) || item.rateType != this.rateType
-        );
-      }else {
-        this.chargeItems = this.chargeItems.filter(item => 
-          item.batchNumber != this.batchNumber || (2 != item.chargeCategory && 3 != item.chargeCategory)
-        );
-      }
-    }else {
-      if (this.rateType && -1 != this.rateType) {
-        this.chargeItems = this.chargeItems.filter(item => 
-          item.batchNumber != this.batchNumber || item.chargeCategory != this.chargeCategory || item.rateType != this.rateType
-        );
-      }else {
-        this.chargeItems = this.chargeItems.filter(item => 
-          item.batchNumber != this.batchNumber || item.chargeCategory != this.chargeCategory
-        );
-      }
-    }
+    this.chargeItems = [];
     this.chargeItemDataSource.read();
   }
 
@@ -312,5 +290,39 @@ export class NewChargeInfo {
         // this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
       }
     });
+  }
+
+  startChange() {
+    let startDate = this.startDatePicker.value();
+    let endDate = this.endDatePicker.value();
+
+    if (startDate) {
+      startDate = new Date(startDate);
+      startDate.setDate(startDate.getDate());
+      this.endDatePicker.min(startDate);
+    } else if (endDate) {
+      this.startDatePicker.max(new Date(endDate));
+    } else {
+      endDate = new Date();
+      this.startDatePicker.max(endDate);
+      this.endDatePicker.min(endDate);
+    }
+  }
+
+  endChange() {
+    let endDate = this.endDatePicker.value();
+    let startDate = this.startDatePicker.value();
+
+    if (endDate) {
+      endDate = new Date(endDate);
+      endDate.setDate(endDate.getDate());
+      this.startDatePicker.max(endDate);
+    } else if (startDate) {
+      this.endDatePicker.min(new Date(startDate));
+    } else {
+      endDate = new Date();
+      this.startDatePicker.max(endDate);
+      this.endDatePicker.min(endDate);
+    }
   }
 }
