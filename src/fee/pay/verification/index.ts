@@ -12,7 +12,6 @@ export class VerificationIndex {
 
     config.map([
       { route: '', name: 'list', moduleId: './list' },
-      { route: '/new', name: 'new', moduleId: './new' },
       { route: '/:id/view', name: 'view', moduleId: './view' },
     ]);
     this.router = router;

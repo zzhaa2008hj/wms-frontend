@@ -497,3 +497,55 @@ export function convertCurrency(currencyDigits) {
   // outputCharacters = CN_SYMBOL + outputCharacters;
   return outputCharacters;
 }
+
+/**
+ * 两个浮点数相乘
+ */
+export function accMul(num1, num2): number {
+  if (!num1 && !num2) return null;
+  let m = 0, s1 = num1.toString(), s2 = num2.toString();
+  try { m += s1.split(".")[1].length; } catch (e) { }
+  try { m += s2.split(".")[1].length; } catch (e) { }
+  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+} 
+
+/**
+ * 两个浮点数相减  
+ */
+export function accSub(num1, num2): number {
+  if (!num1 && !num2) return null;
+  let r1, r2, m, n;
+  try {
+    r1 = num1.toString().split('.')[1].length;
+  } catch (e) {
+    r1 = 0;
+  }
+  try {
+    r2 = num2.toString().split(".")[1].length;
+  } catch (e) {
+    r2 = 0;
+  }
+  m = Math.pow(10, Math.max(r1, r2));
+  n = (r1 >= r2) ? r1 : r2;
+  return parseFloat((Math.round(num1 * m - num2 * m) / m).toFixed(n));
+} 
+
+/**
+ * 两个浮点数相加  
+ */
+export function accAdd(num1, num2) {
+  if (!num1 && !num2) return null;
+  let r1, r2, m;
+  try {
+    r1 = num1.toString().split('.')[1].length;
+  } catch (e) {
+    r1 = 0;
+  }
+  try {
+    r2 = num2.toString().split(".")[1].length;
+  } catch (e) {
+    r2 = 0;
+  }
+  m = Math.pow(10, Math.max(r1, r2));
+  return Math.round(num1 * m + num2 * m) / m;  
+}
