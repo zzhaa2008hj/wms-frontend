@@ -1,11 +1,8 @@
 import { DialogController } from "ui";
 import { inject } from "aurelia-dependency-injection";
 export class RequisitionOut {
-  out = {};
+  out = {department: "仓储部", content: "装卸单位结算"};
   constructor(@inject private dialogController: DialogController) {
-  }
-
-  activate() {
   }
 
   async save() {
