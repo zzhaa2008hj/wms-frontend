@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, RestClient } from "@app/utils";
 import { WorkInfo } from "@app/base/models/work-info";
 import { CargoRate } from '@app/base/models/cargo-info';
+
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -10,9 +11,9 @@ export class WorkInfoService {
   constructor(private http: RestClient) {
   }
 
-  async listWorkInfo(params?: { status: boolean }): Promise<WorkInfo[]> {
+  async listWorkInfo(status?: boolean): Promise<WorkInfo[]> {
     let url = `/base/workInfo/list`;
-    let res = await this.http.createRequest(url).withParams(params).asGet().send();
+    let res = await this.http.createRequest(url).withParams({ status: status }).asGet().send();
     return res.content;
   }
 
