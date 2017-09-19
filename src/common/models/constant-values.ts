@@ -299,6 +299,9 @@ export class ConstantValues {
     }, {
       stage: 8,
       title: "已收费核销"
+    }, {
+      stage: 9,
+      title: "收费完成"
     }];
   }
 
