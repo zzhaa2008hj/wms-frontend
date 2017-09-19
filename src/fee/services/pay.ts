@@ -100,6 +100,13 @@ export class PaymentInfoService {
     return this.http.get(`/fee/paymentInfo/items?customerId=${customerId}&chargeEndDate=${chargeEndDate}`)
     .then(res => res.content);
   }
+
+  /**
+   * 作废单据
+   */
+  async deleteInfo(id: string): Promise<void> {
+    await this.http.delete(`/fee/paymentInfo/${id}`).then(handleResult);
+  }
 }
 
 export interface PaymentAuditItemCrieria {

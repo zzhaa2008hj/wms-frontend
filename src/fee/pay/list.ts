@@ -167,4 +167,15 @@ export class PaymentInfoList {
       await this.dialogService.alert({ title: "错误", message: e.message, icon: "error" });
     }
   }
+
+  async deleteInfo(id) {
+    try {
+      let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认作废此单？" });
+      if (!confirmed) return;
+      await this.paymentInfoService.deleteInfo(id);
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
 }

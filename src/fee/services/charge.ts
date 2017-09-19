@@ -91,6 +91,12 @@ export class ChargeInfoService {
   async updateChargeInfo(id: string, chargeInfo: ChargeInfo): Promise<void> {
     await this.http.put(`/fee/charge-info/${id}`, chargeInfo).then(handleResult);
   }
+  /**
+   * 作废单据
+   */
+  async deleteInfo(id: string): Promise<void> {
+    await this.http.delete(`/fee/charge-info/${id}`).then(handleResult);
+  }
 }
 
 export interface ChargeInfoCriteria {
