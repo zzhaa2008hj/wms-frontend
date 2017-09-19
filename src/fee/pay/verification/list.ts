@@ -7,11 +7,13 @@ import { Invoice } from '@app/fee/models/invoice';
 import { Router } from "aurelia-router";
 import { VerificationView } from '@app/fee/pay/verification/view';
 import { InvoiceNew } from '@app/fee/pay/verification/new-invoice';
-
+import { PaymentRequisiton } from '@app/fee/pay/payment-requisition';
+import { RequisitionOut } from '@app/fee/pay/verification/new-requisition';
 export class InvoiceList {
   invoice: Invoice[] = [];
   infoId: string;
   dataSource: kendo.data.DataSource;
+  selection: Invoice[] = [];
   constructor(@inject private invoiceService: InvoiceService,
               @inject private verificationService: VerificationService,
               @inject private dialogService: DialogService,
@@ -77,4 +79,26 @@ export class InvoiceList {
   cancel() {
     this.router.navigateToRoute("pay");
   }
+  // 多选数据绑定
+  selectionChange(event) {
+    let grid = event.detail.sender as kendo.ui.Grid;
+    this.selection = getSelectedDataItems(grid).map(data => data as Invoice);
+  }
+  // 汇款申请单
+  async requisition() {
+    if (!this.selection || this.selection.length == 0) {
+      this.dialogService.alert({ title: "提示", message: "请选择发票", icon: "error" });
+      return;
+    }
+    let result = await this.dialogService.open({ viewModel: RequisitionOut, model: null, lock: true })
+    .whenClosed();
+    if (result.wasCancelled) return;
+
+    let out = result.output;
+    let req = {selection : this.selection, out: out};
+    await this.dialogService.open({ viewModel: PaymentRequisiton, model: req, lock: true });
+  }
+}
+function getSelectedDataItems(grid: kendo.ui.Grid): any[] {
+  return grid.select().toArray().map(tr => grid.dataItem(tr));
 }
