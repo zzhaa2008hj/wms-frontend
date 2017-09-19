@@ -41,6 +41,7 @@
           required-permissions="U000048">修改结算申请</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 0 && type == 2 && status != -1" route-href="route: edit-audit; params.bind: { id: id }"
           required-permissions="U000048">修改结算申请</a>
+        <button class="btn btn-small btn-danger" if.bind="stage == 0 && status != -1" click.delegate="deleteInfo(id)" required-permissions="D000020">作废</button>
       </ak-template>
     </ak-col>
   </ak-grid>
