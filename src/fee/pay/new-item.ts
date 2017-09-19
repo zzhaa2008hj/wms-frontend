@@ -6,10 +6,10 @@ import { PaymentAuditItem } from "@app/fee/models/pay";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { CargoCategoryTree } from '@app/fee/pay/cargo-category-tree';
 import { WarehouseService } from '@app/base/services/warehouse';
-
+import {computedFrom} from "aurelia-framework";
+import { accMul } from "@app/utils";
 @autoinject
 export class NewAutoPaymentInfo {
-
   validationController: ValidationController;
   paymentAuditItem = {} as PaymentAuditItem;
   warehouseDrop: kendo.ui.DropDownList;
@@ -47,7 +47,7 @@ export class NewAutoPaymentInfo {
   async save() {
     this.paymentAuditItem.warehouseName = this.warehouseDrop.text();
     this.paymentAuditItem.unitStr = this.unitDrop.text();
-    this.paymentAuditItem.sumAmount = (this.paymentAuditItem.price * 100) * (this.paymentAuditItem.workNumber * 100) / 10000;
+    this.paymentAuditItem.sumAmount = this.total;
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     await this.dialogController.ok(this.paymentAuditItem);
@@ -56,6 +56,17 @@ export class NewAutoPaymentInfo {
   async cancel() {
     await this.dialogController.cancel();
   }
+  // 合计
+  @computedFrom('paymentAuditItem.price', 'paymentAuditItem.workNumber')
+  get total(): number {
+    let mul = accMul(this.paymentAuditItem.price, this.paymentAuditItem.workNumber);
+    console.log(mul);
+    if (mul) {
+      return parseFloat(mul.toFixed(2));
+    }
+    return null;
+  }
+  
 
 }
 

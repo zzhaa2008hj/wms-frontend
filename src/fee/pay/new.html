@@ -5,11 +5,15 @@
       <div class="row column-seperation">
         <h4>新增付费结算申请</h4>
         <div class="col-md-4">
-          <label class="form-label">装卸单位名称*</label>
-          <span class="help"></span>
-          <ak-drop-down-list k-option-label="请选择..." k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="paymentInfo.customerId"
-            k-data-source.bind="customersSource" k-enabled.two-way="!disabled" k-widget.two-way="customerDrop" k-on-change.delegate="getChargeStartDate()">
-          </ak-drop-down-list>
+            <div class="form-group">
+            <label class="form-label">装卸单位名称*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <ak-drop-down-list k-option-label="请选择..." k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="paymentInfo.customerId"
+                k-data-source.bind="customersSource" k-enabled.two-way="!disabled" k-widget.two-way="customerDrop" k-on-change.delegate="getChargeStartDate()">
+              </ak-drop-down-list>
+            </div>
+          </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
@@ -21,7 +25,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="form-group">
+          <div class="form-group input-group">
             <label class="form-label">结算结束日期*</label>
             <span class="help"></span>
             <div class="controls">

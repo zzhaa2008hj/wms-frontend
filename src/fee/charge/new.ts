@@ -102,6 +102,8 @@ export class NewChargeInfo {
    */
   async agentChanged() {
     this.chargeInfo.customerId = this.agentWidget.value();
+    this.chargeInfo.customerName = this.agentWidget.text();
+    this.chargeInfo.agentName = this.agentWidget.text();
     this.chargeInfo.paymentUnit = this.agentWidget.text();
     let batchNumbers = await this.chargeInfoService.getBatchNumbers(this.chargeInfo.customerId);
     if (batchNumbers) {
@@ -165,7 +167,7 @@ export class NewChargeInfo {
       Object.assign(m, items);
       return await this.dialogService.alert({ title: "提示", message: m.message, icon: 'error' });
     }
-    
+    // 过滤多选
     for (let item of this.chargeItems) {
       for (let i of items) {
         if (item.batchNumber == i.batchNumber && item.chargeCategory == i.chargeCategory

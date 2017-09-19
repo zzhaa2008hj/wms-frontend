@@ -11,7 +11,7 @@ import { DialogService } from "ui";
 import { auditListValidationRules, ChargeAuditList } from '@app/fee/models/charge-audit';
 import { ChargeInfoService } from "@app/fee/services/charge";
 import * as moment from 'moment';
-
+import { accAdd } from '@app/utils';
 export class NewChargeInfo {
   disabled: boolean = false;
   agents: Organization[];
@@ -103,7 +103,7 @@ export class NewChargeInfo {
         this.validationController.addObject(c, auditListValidationRules);
         let result = await this.validationController.validate();
         if (!result.valid) return;
-        c.sumAmount = c.loadingAmount + c.otherAmount + c.warehousingAmount;
+        c.sumAmount = accAdd(accAdd(c.loadingAmount, c.otherAmount), c.warehousingAmount);
       }
       Object.assign(this.chargeInfo, { chargeAuditList: chargeAuditList });
     }

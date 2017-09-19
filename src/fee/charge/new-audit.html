@@ -1,7 +1,7 @@
 <template>
   <div class="grid simple">
     <div class="grid-body no-border">
-      <form submit.delegate="save()">
+      <form >
         <div class="row column-seperation">
           <h4>基本信息</h4>
           <div class="col-md-3">
@@ -76,7 +76,7 @@
           <h4>账单明细</h4>
           <div class="col-md-12">
             <div class="controls right">
-              <ak-grid k-data-source.bind="chargeAuditDataSource" k-toolbar.bind="['create']" k-editable.bind="true" k-widget.two-way="itemGrid">
+              <ak-grid k-data-source.bind="chargeAuditDataSource" k-toolbar.bind="['create']" k-editable.bind="true" k-widget.two-way="itemGrid" k-navigatable.bind="true">
                 <ak-col k-title="批次号">
                   <ak-template>
                     <ak-drop-down-list k-option-label="请选择" k-filter="contains" k-data-text-field="value" k-data-value-field="key" k-value.two-way="batchNumber"
@@ -109,7 +109,7 @@
         <div class="col-md-12">
           <div class="form-actions">
             <div class="pull-right">
-              <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
+              <button class="btn btn-primary" click.trigger="save()">保存</button>
               <a class="btn btn-white" click.trigger="cancel()">返回</a>
             </div>
           </div>

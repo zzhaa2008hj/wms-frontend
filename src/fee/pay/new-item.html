@@ -68,12 +68,10 @@
                 <label class="form-label">费用合计*</label>
                 <span class="help"></span>
                 <div class="controls">
-                  <input type="number" class="form-control" value.bind="(paymentAuditItem.workNumber * 100) * (paymentAuditItem.price * 100) / 10000" readonly>
+                  <input type="number" step="0.01" class="form-control" value.bind="total" readonly>
                 </div>
               </div>
-
             </div>
-            
           </form>
         </div>
       </div>

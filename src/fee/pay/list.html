@@ -28,18 +28,17 @@
     <ak-col k-title="操作" k-width.bind="300">
       <ak-template>
         <a class="btn btn-small" route-href="route: details; params.bind: { id: id }" required-permissions="R000047">查看结算清单</a>
-        <a if.bind='stage == 0' class="btn btn-primary btn-small" click.delegate="edit(id)" required-permissions="U000002">编辑</a>
+        <a if.bind='stage == 0 && type == 2' class="btn btn-primary btn-small" click.delegate="edit(id)" required-permissions="U000002">编辑</a>
+        <a if.bind='stage == 0 && type == 1' class="btn btn-primary btn-small" route-href="route: edit; params.bind: { id: id }" required-permissions="U000002">编辑</a>
         <a class="btn btn-small" if.bind="stage==1" route-href="route: confirm; params.bind: {id: id}" required-permissions="U000049">装卸单位确认</a>
         <a class="btn btn-small" if.bind="stage==3" route-href="route: verify; params.bind: {id: id}" required-permissions="U000050">费收审核</a>
         <a class="btn btn-small" if.bind="stage==5" route-href="route: note; params.bind: {id: id, status: 1}" required-permissions="U000051">生成付费单
         </a>
         <a class="btn btn-small" if.bind="stage>5" route-href="route: note; params.bind: {id: id}" required-permissions="R000048">查看付费单</a>
         <button class="btn btn-small" if.bind="stage==6" click.delegate="leaderVerify(id)" required-permissions="C000032">领导签字审核</button>
-        <a class="btn btn-small" if.bind="stage==7" route-href="route: invoice; params.bind: {id: id}" required-permissions="R000084">发票录入</a>
-        <button class="btn btn-small" if.bind="stage==7" click.delegate="invoice(id)" required-permissions="U000052">发票录入完成</button>
+        <a class="btn btn-small btn-primary" if.bind="stage==7 || stage==8" route-href="route: verification; params.bind: {id: id}" required-permissions="R000084">发票录入</a>
         <a class="btn btn-small" if.bind="stage > 7" route-href="route: requisition; params.bind: {id: id}" required-permissions="U000052">汇款申请单</a>
-        <a class="btn btn-small" if.bind="stage==8" route-href="route: verification; params.bind: {id: id}" required-permissions="R000085">付费核销</a>
-        <button class="btn btn-small" if.bind="stage==8" click.delegate="verifyPay(id)" required-permissions="U000053">付费核销完成</button>
+        <button class="btn btn-small btn-primary" if.bind="stage==8" click.delegate="verifyPay(id)" required-permissions="U000053">付费核销完成</button>
       </ak-template>
     </ak-col>
   </ak-grid>

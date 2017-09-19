@@ -5,7 +5,7 @@ import { formValidationRenderer } from "@app/validation/support";
 import { Verification, verificationValidationRules } from "@app/fee/models/verification";
 import { Invoice } from "@app/fee/models/invoice";
 import { DialogService } from "ui";
-
+import { accSub } from "@app/utils";
 export class VerificationNew {
   verification = {} as Verification;
   invoice = {} as Invoice;
@@ -26,7 +26,7 @@ export class VerificationNew {
   async save() {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
-    let v = (this.invoice.amount * 100 - this.invoice.verificationAmount * 100) / 100;
+    let v = accSub(this.invoice.amount, this.invoice.verificationAmount);
     if (this.verification.amount > v) {
       await this.dialogService.alert({ title: "提示", message: '核销数量已超过发票金额', icon: "error" });
     }else {
