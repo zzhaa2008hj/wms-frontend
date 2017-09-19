@@ -1,9 +1,10 @@
 <template>
   <div class="controlbar">
     <a class="btn btn-small btn-success" click.delegate="addInvoice()" required-permissions="C000047">新增发票</a>
+    <!-- <a class="btn btn-small" click.delegate="addInvoice()" required-permissions="U000052">汇款申请单</a> -->
     <div class="spacer"></div>
   </div>
-  <ak-grid k-data-source.bind="dataSource">
+  <ak-grid k-data-source.bind="dataSource" k-selectable="row">
     <ak-col k-field="invoiceType == 1 ? '普通发票': '增值税发票'" k-title="发票类型"></ak-col>
     <ak-col k-field="invoiceNumber" k-title="发票号"></ak-col>
     <ak-col k-field="amount" k-title="发票金额"></ak-col>

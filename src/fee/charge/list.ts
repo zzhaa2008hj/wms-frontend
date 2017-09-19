@@ -47,6 +47,10 @@ export class ChargeInfoList {
         if (lastStage) {
           res.lastStageName = lastStage.title;
         }
+        let status = ConstantValues.FeeStatus.find(s => s.status == res.status);
+        if (status) {
+          res.statusTitle = status.title;
+        }
         return res;
       }),
       pageSize: 10
