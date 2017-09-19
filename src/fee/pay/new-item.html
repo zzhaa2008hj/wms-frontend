@@ -11,7 +11,7 @@
               <div class="form-group col-md-4">
                 <label class="form-label">作业日期*</label>
                 <span class="help"></span>
-                <input ak-datepicker="k-value.two-way : paymentAuditItem.workDate; k-widget.two-way: workDatePicker; k-format.bind:'yyyy-MM-dd'" type="text" class="form-control">
+                <input ak-datepicker="k-value.two-way : paymentAuditItem.workDate; k-widget.two-way: workDatePicker; k-format.bind:'yyyy-MM-dd';" k-on-open.delegate="onOpen()" type="text" class="form-control">
               </div>
               <div class="form-group col-md-4">
                 <label class="form-label">作业内容*</label>

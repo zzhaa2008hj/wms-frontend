@@ -35,8 +35,8 @@ export class Verify {
     this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
 
     this.paymentInfo = await this.paymentInfoService.getPaymentInfoById(params.id);
-    this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
-    this.paymentInfo.chargeEndDateStr = moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD");
+    this.paymentInfo.chargeStartDateStr = this.paymentInfo.chargeStartDate ? moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD") : '';
+    this.paymentInfo.chargeEndDateStr = this.paymentInfo.chargeEndDate ? moment(this.paymentInfo.chargeEndDate).format("YYYY-MM-DD") : '';
     let type = this.paymentInfoType.find(r => r.stage == this.paymentInfo.type);
     if (type) {
       this.paymentInfo.typeTitle = type.title;

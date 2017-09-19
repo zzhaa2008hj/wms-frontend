@@ -10,7 +10,7 @@ import { ConstantValues } from "@app/common/models/constant-values";
 import { DialogService } from "ui";
 import { auditListValidationRules, ChargeAuditList } from '@app/fee/models/charge-audit';
 import { ChargeInfoService } from "@app/fee/services/charge";
-import * as moment from 'moment';
+// import * as moment from 'moment';
 import { accAdd } from '@app/utils';
 export class NewChargeInfo {
   disabled: boolean = false;
@@ -56,7 +56,6 @@ export class NewChargeInfo {
   batchNumbers = new kendo.data.HierarchicalDataSource({
     data: []
   });
-
   constructor(@inject private router: Router,
               @inject private cargoInfoService: CargoInfoService,
               @newInstance() private validationController: ValidationController,
@@ -107,6 +106,22 @@ export class NewChargeInfo {
   }
 
   /**
+   * 代理商 -> 客户
+   */
+  async agentChanged() {
+    this.chargeInfo.customerId = this.agentWidget.value();
+    this.chargeInfo.customerName = this.agentWidget.text();
+    this.chargeInfo.agentName = this.agentWidget.text();
+    this.chargeInfo.paymentUnit = this.agentWidget.text();
+    let batchNumbers = await this.chargeInfoService.getBatchNumbers(this.chargeInfo.customerId);
+    if (batchNumbers) {
+      let bs = batchNumbers.map(b => Object.assign({key: b, value: b}));
+      this.batchNumbers.data(bs);
+    }
+    this.chargeAuditDataSource.read();
+  }
+
+  /**
    * 保存
    */
   async save() {
@@ -124,8 +139,8 @@ export class NewChargeInfo {
     if (this.chargeInfo.chargeAuditList.length == 0) {
       return this.dialogService.alert({ title: "提示", message: "请填写账单信息", icon: 'error' });
     }
-    this.chargeInfo.chargeEndDate = moment(this.chargeInfo.chargeEndDate).hour(23).minute(59).second(59).toDate();
-    console.log(this.chargeInfo);
+    // this.chargeInfo.chargeStartDate = new Date();
+    // this.chargeInfo.chargeEndDate = moment(new Date()).hour(23).minute(59).second(59).toDate();
     
     this.disabled = true;
     try {
@@ -171,6 +186,11 @@ export class NewChargeInfo {
       this.endDatePicker.min(endDate);
     }
   }
+  
+  // 动态合计
+  sum (warehousingAmount, loadingAmount, otherAmount) {
+    return accAdd(accAdd(warehousingAmount, loadingAmount), otherAmount);
+  }
 
 }
 
@@ -183,13 +203,13 @@ const validationRules = ValidationRules
   .displayName('客户名称')
   .required().withMessage(`\${$displayName} 不能为空`)
 
-  .ensure((info: ChargeInfo) => info.chargeStartDate)
-  .displayName('开始时间')
-  .required().withMessage(`\${$displayName} 不能为空`)
+  // .ensure((info: ChargeInfo) => info.chargeStartDate)
+  // .displayName('开始时间')
+  // .required().withMessage(`\${$displayName} 不能为空`)
 
-  .ensure((info: ChargeInfo) => info.chargeEndDate)
-  .displayName('结束时间')
-  .required().withMessage(`\${$displayName} 不能为空`)
+  // .ensure((info: ChargeInfo) => info.chargeEndDate)
+  // .displayName('结束时间')
+  // .required().withMessage(`\${$displayName} 不能为空`)
 
   .ensure((info: ChargeInfo) => info.remark)
   .displayName('备注')

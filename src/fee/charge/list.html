@@ -18,11 +18,11 @@
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
-    <ak-col k-field="agentName" k-title="代理商名称" k-width.bind="150"></ak-col>
-    <ak-col k-field="customerName" k-title="客户名称" k-width.bind="150"></ak-col>
-    <ak-col k-field="paymentUnit" k-title="付款单位" k-width.bind="150"></ak-col>
-    <ak-col k-field="chargeStartDate" k-title="结算开始日期" k-format="{0:yyyy-MM-dd}" k-width.bind="150"></ak-col>
-    <ak-col k-field="chargeEndDate" k-title="结算结束日期" k-format="{0:yyyy-MM-dd}" k-width.bind="150"></ak-col>
+    <ak-col k-field="agentName" k-title="代理商名称"></ak-col>
+    <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+    <ak-col k-field="paymentUnit" k-title="付款单位"></ak-col>
+    <ak-col k-field="chargeStartDate" k-title="结算开始日期" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="chargeEndDate" k-title="结算结束日期" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-field="statusTitle" k-title="状态"></ak-col>
     <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
     <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
