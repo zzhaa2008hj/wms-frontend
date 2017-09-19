@@ -26,7 +26,7 @@
     <ak-col k-field="stageTitle" k-title="当前阶段"></ak-col>
     <ak-col k-field="statusTitle" k-title="状态"></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
-    <ak-col k-title="操作" k-width.bind="450">
+    <ak-col k-title="操作" k-width.bind="350">
       <ak-template>
         <a class="btn btn-small" if.bind="status != -1" route-href="route: details; params.bind: { id: id }" required-permissions="R000047">查看结算清单</a>
         <a if.bind='stage == 0 && type == 2 && status != -1' class="btn btn-primary btn-small" click.delegate="edit(id)" required-permissions="U000002">编辑</a>
@@ -40,6 +40,7 @@
         <a class="btn btn-small btn-primary" if.bind="stage==7 || stage==8" route-href="route: verification; params.bind: {id: id}" required-permissions="R000084">发票录入</a>
         <a class="btn btn-small" if.bind="stage > 7" route-href="route: requisition; params.bind: {id: id}" required-permissions="U000052">汇款申请单</a>
         <button class="btn btn-small btn-primary" if.bind="stage==8" click.delegate="verifyPay(id)" required-permissions="U000053">核销完成</button>
+        <button class="btn btn-small btn-danger" if.bind="stage == 0 && status != -1" click.delegate="deleteInfo(id)" required-permissions="D000021">作废</button>
       </ak-template>
     </ak-col>
   </ak-grid>
