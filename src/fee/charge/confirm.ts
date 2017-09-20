@@ -13,7 +13,7 @@ import { addHeader, print } from "@app/common/services/print-tool";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
-
+import { exportPDF } from '@app/utils';
 @autoinject
 export class CustomerConfirm {
   disabled: boolean = true;
@@ -37,7 +37,7 @@ export class CustomerConfirm {
     this.organization = await this.organizationService.getOrganization(this.chargeInfo.orgId);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
 
-    this.chargeInfo.chargeStartDateStr = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD");
+    this.chargeInfo.chargeStartDateStr = this.chargeInfo.chargeStartDate ? moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD") : '';
     this.chargeInfo.chargeEndDateStr = this.chargeInfo.chargeEndDate ? moment(this.chargeInfo.chargeEndDate)
       .format("YYYY-MM-DD") : '';
     this.chargeInfo.createTimeStr = moment(this.chargeInfo.createTime).format("YYYY-MM-DD");
@@ -103,12 +103,12 @@ export class CustomerConfirm {
   }
 
   exportTotal() {
-
+    exportPDF('total', '对账清单统计');
   }
 
   exportDetail() {
-    
-  }
+    exportPDF('detail', '对账清单明细');
+  } 
 
   async customerConfirm(num: number) {
     this.disabled = true;
