@@ -164,7 +164,7 @@ export class NewCargoItem {
   }
 
   cargoCategoryChanged() {
-    this.convertCargoRates();
+    //this.convertCargoRates();
     this.cargoRateDataSource.read();
   }
 
@@ -301,6 +301,7 @@ export class NewCargoItem {
   }
 
   select() {
+    this.convertCargoRates();
     console.log("this.allCargoRates", this.allCargoRates);
     let source = [];
     Object.assign(source, this.allCargoRates);
