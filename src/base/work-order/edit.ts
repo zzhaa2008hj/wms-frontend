@@ -190,7 +190,6 @@ export class EditWorkOrder {
     }
 
     this.disabled = true;
-
     let len = this.datasource.data().length;
     for (let i = 0; i < len; i++) {
       let items = this.itemsDataSources.get(this.datasource.data()[i].uid);
