@@ -39,6 +39,7 @@
         <a class="btn btn-small btn-primary" if.bind="stage==7 || stage==8" route-href="route: verification; params.bind: {id: id}" required-permissions="R000084">发票录入</a>
         <button class="btn btn-small btn-primary" if.bind="stage==8" click.delegate="verifyPay(id)" required-permissions="U000053">核销完成</button>
         <button class="btn btn-small btn-danger" if.bind="stage == 0 && status != -1" click.delegate="deleteInfo(id)" required-permissions="D000021">作废</button>
+        <a class="btn btn-small btn-primary" if.bind="stage > 8" route-href="route: invoice; params.bind: {id: id}" required-permissions="R000084">查看发票</a>
       </ak-template>
     </ak-col>
   </ak-grid>

@@ -16,7 +16,6 @@ export class NewPaymentInfo {
   disabled = false;
   validationController: ValidationController;
   paymentInfo = {} as PaymentInfo;
-  customerDrop: kendo.ui.DropDownList;
   endDatePicker: kendo.ui.DatePicker;
  
   // 自动
@@ -43,7 +42,6 @@ export class NewPaymentInfo {
   }
 
   async activate({id}) {
-    this.validationController.addObject(this.paymentInfo, validationRules);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.paymentInfo = await this.paymentInfoService.getPaymentAuditList(id);
     this.paymentInfo.chargeStartDateStr = moment(this.paymentInfo.chargeStartDate).format("YYYY-MM-DD");
@@ -121,7 +119,6 @@ export class NewPaymentInfo {
     this.validationController.addObject(this.paymentInfo, validationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
-    this.paymentInfo.customerName = this.customerDrop.text();
     this.paymentInfo.paymentAuditItemList = this.items;
 
     try {
