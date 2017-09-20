@@ -34,7 +34,8 @@ export interface CargoFlow {
   createTime: Date;
   createTimeStr: string;
   createAccount: string;
-  createAccountId: string ;
+  createAccountId: string;
+  modifyAccountId: string;
 
 
   //入库货物信息
