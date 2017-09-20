@@ -9,7 +9,7 @@ import { print } from '@app/common/services/print-tool';
 import { requiredPermissionsAttributeResult } from '@app/utils';
 import { UserSession } from '@app/user';
 import { BusinessOrder } from '@app/common/models/business-order';
-import { IndexService } from '@app/common/services/index';
+//import { IndexService } from '@app/common/services/index';
 import { FeeOrder } from '@app/common/models/fee-order';
 import { WarehouseOrder } from '@app/common/models/warehouse-order';
 import { Warehouse } from '@app/base/models/warehouse';
@@ -37,7 +37,7 @@ export class Dashboard {
   warehouse: Warehouse = {} as Warehouse;
 
   constructor(private dialogService: DialogService,
-              private indexService: IndexService,
+              //private indexService: IndexService,
               private user: UserSession,
               private noticeService: NoticeService) {
 
