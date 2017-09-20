@@ -8,7 +8,7 @@ import { Router } from "aurelia-router";
 import { print, addHeader } from "@app/common/services/print-tool";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
-
+import { exportPDF } from '@app/utils';
 @autoinject
 export class PaymentConfirm {
   paymentInfo: PaymentInfo;
@@ -92,10 +92,10 @@ export class PaymentConfirm {
   }
 
   exportTotal() {
-    
+    exportPDF('total', '对账清单统计');
   }
-    
+
   exportDetail() {
-        
+    exportPDF('detail', '对账清单明细');
   }
 }
