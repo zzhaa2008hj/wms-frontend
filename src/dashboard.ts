@@ -13,6 +13,7 @@ import { IndexService } from '@app/common/services/index';
 import { FeeOrder } from '@app/common/models/fee-order';
 import { WarehouseOrder } from '@app/common/models/warehouse-order';
 import { Warehouse } from '@app/base/models/warehouse';
+import { WarehouseNum } from "@app/report/models/daily-inventory";
 
 @autoinject
 export class Dashboard {
@@ -24,17 +25,80 @@ export class Dashboard {
   feeOrder: FeeOrder;
   warehouseOrder: WarehouseOrder;
 
-  wc: string = "bar";
-  wd: string = "week";
-  sc: string = "bar";
-  sw: string = "";
+  /**
+   * 仓库信息概览
+   */
+  wareChart;
+  //显示类别 1 入库 2，出库 ，3，货权转移 ，4 ，货位转移
+  wItems: string = "1";
+  //显示时间: 默认本周
+  wd: string = "1";
+  // 柱状还是 折线
+  wShow = "bar";
+  //显示数据
+  warehouseData1 = {} as  WarehouseNum;
+  warehouseDataNum;
+  warehouseDataQua;
+  warehouseCate: any[];
+  warehouseItems = [{ value: "1", text: "入库" }, { value: "2", text: "出库" }, { value: "3", text: "货权转移" }, {
+    value: "4",
+    text: "货位转移"
+  }]
+  warehouseDates = [{ value: "1", text: "本周" }, { value: "2", text: "本月" }, { value: "3", text: "本季" }, {
+    value: "4",
+    text: "本年"
+  }];
 
-  warehouseCategories = [{ value: "bar", text: "柱状图" }, { value: "line", text: "折线图" }];
-  warehouseDates = [{ value: "week", text: "本周" }, { value: "month", text: "本月" }, 
-    { value: "quarter", text: "本季" }, { value: "year", text: "本年" }];
+  /**
+   * 库存信息概览
+   */
+  //bar  柱子  pie  饼图
+  sc: string = "bar";
+  //选中的库
+  sw: string ;
+  // seriesData ;
+  //chart
+  stoChart ;
   storageCategories = [{ value: "bar", text: "柱状图" }, { value: "cake", text: "饼图" }];
   storateWarehouses = [] as Warehouse[];
   warehouse: Warehouse = {} as Warehouse;
+
+  /**
+   * 收费信息统计
+   */
+  //柱子还是折线
+  cagShow ='bar';
+  //默认显示本周
+  cagDate ='1';
+  //x 轴时间数据
+  cagDateInfo ;
+  //显示数据
+  cagData;
+  //chart
+  cagChart;
+  chargeDates = [{ value: "1", text: "本周" }, { value: "2", text: "本月" }, { value: "3", text: "本季" }, {
+    value: "4",
+    text: "本年"
+  }];
+
+
+  /**
+   * 付费信息统计
+   */
+    //柱子还是折线
+  payShow ='bar';
+  //默认显示本周
+  payDate ='1';
+  //x 轴时间数据
+  payDateInfo ;
+  //显示数据
+  payData;
+  //chart
+  payChart;
+  paymentDates = [{ value: "1", text: "本周" }, { value: "2", text: "本月" }, { value: "3", text: "本季" }, {
+    value: "4",
+    text: "本年"
+  }];
 
   constructor(private dialogService: DialogService,
               private indexService: IndexService,
@@ -51,14 +115,21 @@ export class Dashboard {
       this.notice = this.notices[0];
       this.notice.createTimeStr = this.notice.createTime ? moment(this.notice.createTime).format("YYYY-MM-DD") : '';
     }
-
+    //首页 几个数据显示
     this.businessOrder = await this.indexService.getBusinessOrderNumber();
     this.feeOrder = await this.indexService.getFeeOrderNumber();
     this.warehouseOrder = await this.indexService.getWarehouseOrderNumber();
-    Object.assign(this.warehouse, {id: '', name: '全部'});
+    // 第一张echarts 图 加载数据
+    await this.warehouseChange();
+    //库存
+    Object.assign(this.warehouse, { id: '', name: '全部' });
     this.storateWarehouses.push(this.warehouse);
     this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
+    //  收费
+    //  付费
+
   }
+
 
   async detail() {
     await this.dialogService
@@ -67,30 +138,63 @@ export class Dashboard {
   }
 
   // 页面载入完成后执行
-  attached() {
+  async attached() {
+    //初始化
+    this.getWorkOrderInfo();
+
     this.getStorageInfo();
     this.getChargeInfo();
     this.getPayInfo();
-    this.getWorkOrderInfo();
   }
 
-  async getChargeInfo() {
 
+  /**
+   * 仓库信息
+   */
+  //初始化数据
+  async warehouseChange() {
+    this.warehouseData1 = await this.indexService.getWareNum(this.wItems, this.wd);
+    this.warehouseDataNum = this.warehouseData1.num;
+    this.warehouseDataQua = this.warehouseData1.qua;
+    this.warehouseCate = this.warehouseData1.date;
   }
 
-  async getPayInfo() {
-
+  //初始化echarts
+  getWorkOrderInfo() {
+    this.wareChart = echarts.init(document.getElementById('main') as HTMLDivElement);
+    this.wareChart.on('magictypechanged', (params) => {
+      this.wShow = params.currentType;
+    });
+    this.wareChart.setOption(this.wareOption);
   }
 
-  // 出入库、移库、货转作业信息
-  async getWorkOrderInfo() {
-    let myChart = echarts.init(document.getElementById('main') as HTMLDivElement);
-    // 指定图表的配置项和数据
-    let option = {
+  //时间选择
+  async changeWDate(date) {
+    this.wd = date;
+    await this.warehouseChange();
+    this.wareChart.setOption(this.wareOption);
+  }
+
+  //仓库信息选择 出库 、入库  、货权转移 、货位转移 切换
+  async changeWarehouseitems(value) {
+    this.wItems = value;
+    await this.warehouseChange();
+    this.wareChart.setOption(this.wareOption);
+  }
+
+  //仓储信息 option
+  get wareOption() {
+    return {
       tooltip: {
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          magicType: { show: true, type: ['line', 'bar'] },
         }
       },
       legend: {
@@ -105,7 +209,7 @@ export class Dashboard {
       xAxis: [
         {
           type: 'category',
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+          data: this.warehouseCate
         }
       ],
       yAxis: [
@@ -113,27 +217,222 @@ export class Dashboard {
           type: 'value'
         }
       ],
-      series: [
-        {
-          name: '件数',
-          type: 'bar',
-          data: [320, 332, 301, 334, 390, 330, 320]
+      series: [{
+        name: '件数',
+        type: this.wShow,
+        data: this.warehouseDataNum
+      }, {
+        name: '数量',
+        type: this.wShow,
+        data: this.warehouseDataQua
+      }]
+    };
+
+  }
+
+  /**
+   *库存信息
+   */
+  //数据
+  //初始化图
+  async getStorageInfo() {
+    this.stoChart = echarts.init(document.getElementById('main2') as HTMLDivElement);
+    // 指定图表的配置项和数据
+
+    // 使用刚指定的配置项和数据显示图表。
+    this.stoChart.setOption(this.stoOption);
+  }
+  get optionBar(){
+
+    let  option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
         },
+        toolbox: {
+          show: true,
+          feature: {
+            myTool2: {
+              show: true,
+              title: '切换成柱状图',
+              icon:'path://M6.7,22.9h10V48h-10V22.9zM24.9,13h10v35h-10V13zM43.2,2h10v46h-10V2zM3.1,58h53.7',
+              onclick: ()=>{
+                this.sc = "bar";
+
+                this.stoChart.setOption(this.stoOption);
+              }
+            },
+            myTool1: {
+              show: true,
+              title: '切换成饼图',
+              icon:'image://assets/images/chart-icon.png',
+              onclick: ()=>{
+                this.sc = "pie";
+
+                this.stoChart.setOption(this.stoOption);
+              }
+            }
+          }
+        },
+        legend: {
+          data: ['2011年', '2012年']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          show: true,
+          type: 'value',
+          boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+          show: true,
+          type: 'category',
+          data: ['巴西','印尼','美国','印度','中国','世界人口(万)']
+        },
+        series: [
+          {
+            name: '2011年',
+            type: 'bar',
+            data: [18203, 23489, 29034, 104970, 131744, 630230]
+          },
+          {
+            name: '2012年',
+            type: 'bar',
+            data: [19325, 23438, 31000, 121594, 134141, 681807]
+          }
+        ]
+      };
+
+    return option ;
+
+  }
+  get optionPie(){
+    let option = {
+      tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      xAxis:{
+        show: false
+      },
+      yAxis:{
+        show: false
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          myTool2: {
+            show: true,
+            title: '切换成柱状图',
+            icon:'path://M6.7,22.9h10V48h-10V22.9zM24.9,13h10v35h-10V13zM43.2,2h10v46h-10V2zM3.1,58h53.7',
+            onclick: ()=>{
+              this.sc = "bar";
+              this.stoChart.setOption(this.stoOption);
+            }
+          },
+          myTool1: {
+            show: true,
+            title: '切换成饼图',
+            icon:'image://assets/images/chart-icon.png',
+            onclick: ()=>{
+              this.sc = "pie";
+              this.stoChart.setOption(this.stoOption);
+            }
+          }
+        }
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+      },
+      series : [
         {
-          name: '数量',
-          type: 'bar',
-          data: [120, 132, 101, 134, 90, 230, 210]
+          name: '访问来源',
+          type: 'pie',
+          radius : '35%',
+          center: ['70%', '60%'],
+          data:[
+            {value:335, name:'直接访问'},
+            {value:310, name:'邮件营销'},
+            {value:234, name:'联盟广告'},
+            {value:135, name:'视频广告'},
+            {value:1548, name:'搜索引擎'}
+          ],
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        },{
+          name: '访问来源',
+          type: 'pie',
+          radius : '35%',
+          center: ['26%', '60%'],
+          data:[
+            {value:335, name:'直接访问'},
+            {value:310, name:'邮件营销'},
+            {value:234, name:'联盟广告'},
+            {value:135, name:'视频广告'},
+            {value:1548, name:'搜索引擎'}
+          ],
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
         }
       ]
     };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    return option ;
+
+  }
+  //
+  get stoOption(){
+    if(this.sc=="pie"){
+      return this.optionPie ;
+    }else {
+      return this.optionBar ;
+    }
+
+  }
+  changeSCategory(category) {
+    this.sc = category;
   }
 
-  // 库存信息
-  async getStorageInfo() {
-    let myChart = echarts.init(document.getElementById('main2') as HTMLDivElement);
-    // 指定图表的配置项和数据
+  changeSWarehouse(warehouse) {
+    this.sw = warehouse;
+  }
+
+  /**
+   * 收费
+   */
+  //初始化数据
+  async getChargedata() {
+    // this.cagDateInfo = ;
+    // this.cagData =
+
+  }
+  //初始化echarts
+  getChargeInfo() {
+    this.cagChart = echarts.init(document.getElementById('mainCag') as HTMLDivElement);
+    this.cagChart.on('magictypechanged', (params) => {
+      this.cagShow = params.currentType;
+    });
+    this.cagChart.setOption(this.cagOption);
+  }
+  get cagOption(){
+
     let option = {
       title: {
         text: '世界人口总量'
@@ -144,8 +443,11 @@ export class Dashboard {
           type: 'shadow'
         }
       },
-      legend: {
-        data: ['件数', '数量']
+      toolbox: {
+        show: true,
+        feature: {
+          magicType: { show: true, type: ['line', 'bar'] },
+        }
       },
       grid: {
         left: '3%',
@@ -153,20 +455,15 @@ export class Dashboard {
         bottom: '3%',
         containLabel: true
       },
-      xAxis: {
+      yAxis: {
         type: 'value',
         boundaryGap: [0, 0.01]
       },
-      yAxis: {
+      xAxis: {
         type: 'category',
         data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
       },
       series: [
-        {
-          name: '件数',
-          type: 'bar',
-          data: [18203, 23489, 29034, 104970, 131744, 630230]
-        },
         {
           name: '数量',
           type: 'bar',
@@ -174,9 +471,78 @@ export class Dashboard {
         }
       ]
     };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    return option ;
+}
+  changeChargeDate(val) {
+    this.cagDate = val ;
+
   }
+
+  /**
+   * 付费
+   */
+
+  //初始化数据
+  async getPayData() {
+    // this.payDateInfo = ;
+    // this.payData =
+  }
+
+  //初始化echarts
+  getPayInfo() {
+    this.payChart = echarts.init(document.getElementById('mainPay') as HTMLDivElement);
+    this.payChart.on('magictypechanged', (params) => {
+      this.payShow = params.currentType;
+    });
+    this.payChart.setOption(this.payOption);
+  }
+  get payOption(){
+
+    let option = {
+      title: {
+        text: '世界人口总量'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          magicType: { show: true, type: ['line', 'bar'] },
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.01]
+      },
+      xAxis: {
+        type: 'category',
+        data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
+      },
+      series: [
+        {
+          name: '数量',
+          type: 'bar',
+          data: [19325, 23438, 31000, 121594, 134141, 681807]
+        }
+      ]
+    };
+    return option ;
+  }
+
+  changePayDate(val) {
+    this.payDate = val ;
+  }
+
 
   async printOrder() {
     let title = "打印测试";
@@ -184,22 +550,7 @@ export class Dashboard {
     print(title, strHTML, true);
   }
 
-  changeWCategory(category) {
-    this.wc = category;
 
-  }
-
-  changeWDate(date) {
-    this.wd = date;
-  }
-
-  changeSCategory(category) {
-    this.sc = category;
-  }
-
-  changeSWarehouse(warehouse) {
-    this.sw = warehouse;
-  }
 
   requiredPermissions(sourceCode: string) {
     return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);

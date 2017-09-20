@@ -4,6 +4,7 @@ import { BusinessOrder } from '@app/common/models/business-order';
 import { FeeOrder } from '@app/common/models/fee-order';
 import { WarehouseOrder } from '@app/common/models/warehouse-order';
 import { Warehouse } from '@app/base/models/warehouse';
+import { WarehouseNum } from "@app/report/models/daily-inventory";
 
 @autoinject
 export class IndexService {
@@ -28,5 +29,10 @@ export class IndexService {
   async getTopWarehouses(): Promise<Array<Warehouse>> {
     let res = await this.http.get(`/index/warehouse-list`);
     return res.content;
+  }
+
+  async getWareNum(item :string , date : string) : Promise<WarehouseNum>{
+    let res = await this.http.get(`/index/warehouse-chart?item=${item}&date=${date}`);
+    return res.content ;
   }
 }

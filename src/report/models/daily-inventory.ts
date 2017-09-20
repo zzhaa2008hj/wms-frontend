@@ -1,4 +1,3 @@
-
 export interface DailyInventory {
   customerName: string;
 
@@ -47,6 +46,13 @@ export interface DailyInventoryVo {
   totalOutstockQuantity: number;
 
   totalOutstockNumber: number;
-  
+
   data: DailyInventory[];
+}
+
+export interface WarehouseNum {
+  //首页显示仓库概况  echarts 图
+  qua : any ;
+  num : any  ;
+  date: any  ;
 }
