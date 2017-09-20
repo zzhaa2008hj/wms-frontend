@@ -115,8 +115,6 @@ export class EditChargeInfo {
       });
     }
     this.chargeItems = this.chargeInfo.chargeAuditItemList;
-
-    this.customerChanged();
   }
 
   /**
