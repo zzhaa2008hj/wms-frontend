@@ -14,6 +14,7 @@ import { FeeOrder } from '@app/common/models/fee-order';
 import { WarehouseOrder } from '@app/common/models/warehouse-order';
 import { Warehouse } from '@app/base/models/warehouse';
 import { WarehouseNum } from "@app/report/models/daily-inventory";
+import { ChargeAmt, PaymentAmt } from "@app/report/models/daily-payment";
 
 @autoinject
 export class Dashboard {
@@ -56,9 +57,17 @@ export class Dashboard {
   sc: string = "bar";
   //选中的库
   sw: string ;
-  // seriesData ;
-  //chart
+  //库存 chart
   stoChart ;
+  //库存 数据 从后台获取
+  stodatas;
+  //柱状图 时间数据
+  stoDateInfo ;
+  //柱状图数据
+  stoData ;
+  //饼图 数量数据
+  //饼图 件数数据
+
   storageCategories = [{ value: "bar", text: "柱状图" }, { value: "cake", text: "饼图" }];
   storateWarehouses = [] as Warehouse[];
   warehouse: Warehouse = {} as Warehouse;
@@ -74,6 +83,8 @@ export class Dashboard {
   cagDateInfo ;
   //显示数据
   cagData;
+  //后台传入数据
+  cagDatas ={} as ChargeAmt
   //chart
   cagChart;
   chargeDates = [{ value: "1", text: "本周" }, { value: "2", text: "本月" }, { value: "3", text: "本季" }, {
@@ -91,6 +102,8 @@ export class Dashboard {
   payDate ='1';
   //x 轴时间数据
   payDateInfo ;
+  //后台获取数据
+  payDatas = {} as PaymentAmt ;
   //显示数据
   payData;
   //chart
@@ -104,6 +117,12 @@ export class Dashboard {
               private indexService: IndexService,
               private user: UserSession,
               private noticeService: NoticeService) {
+    let  a  =[6,7,3,4,5];
+    let b =['一','二','三','四','五'];
+    let c  = a.map((value ,index)=>({name:b[index],value}));
+    console.log(c);
+    let d  = c.map((cc)=>(cc.value));
+    console.log(d);
 
   }
 
@@ -122,11 +141,12 @@ export class Dashboard {
     // 第一张echarts 图 加载数据
     await this.warehouseChange();
     //库存
-    Object.assign(this.warehouse, { id: '', name: '全部' });
-    this.storateWarehouses.push(this.warehouse);
-    this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
+    await this.getStorageData();
+
     //  收费
+    await this.getChargedata();
     //  付费
+    await this.getPayData();
 
   }
 
@@ -234,6 +254,12 @@ export class Dashboard {
    *库存信息
    */
   //数据
+  async getStorageData(){
+    Object.assign(this.warehouse, { id: '', name: '全部' });
+    this.storateWarehouses.push(this.warehouse);
+    this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
+  }
+
   //初始化图
   async getStorageInfo() {
     this.stoChart = echarts.init(document.getElementById('main2') as HTMLDivElement);
@@ -277,7 +303,7 @@ export class Dashboard {
           }
         },
         legend: {
-          data: ['2011年', '2012年']
+          data: ['数量', '件数']
         },
         grid: {
           left: '3%',
@@ -297,12 +323,12 @@ export class Dashboard {
         },
         series: [
           {
-            name: '2011年',
+            name: '数量',
             type: 'bar',
             data: [18203, 23489, 29034, 104970, 131744, 630230]
           },
           {
-            name: '2012年',
+            name: '件数',
             type: 'bar',
             data: [19325, 23438, 31000, 121594, 134141, 681807]
           }
@@ -419,8 +445,9 @@ export class Dashboard {
    */
   //初始化数据
   async getChargedata() {
-    // this.cagDateInfo = ;
-    // this.cagData =
+    this.cagDatas = await this.indexService.getCagAmt(this.cagDate);
+     this.cagDateInfo =this.cagDatas.date ;
+     this.cagData =this.cagDatas.amount ;
 
   }
   //初始化echarts
@@ -434,9 +461,7 @@ export class Dashboard {
   get cagOption(){
 
     let option = {
-      title: {
-        text: '世界人口总量'
-      },
+
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -457,24 +482,25 @@ export class Dashboard {
       },
       yAxis: {
         type: 'value',
-        boundaryGap: [0, 0.01]
       },
       xAxis: {
         type: 'category',
-        data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
+        data: this.cagDateInfo
       },
       series: [
         {
-          name: '数量',
-          type: 'bar',
-          data: [19325, 23438, 31000, 121594, 134141, 681807]
+          name: '收费',
+          type:this.cagShow,
+          data: this.cagData
         }
       ]
     };
     return option ;
 }
-  changeChargeDate(val) {
+  async changeChargeDate(val) {
     this.cagDate = val ;
+    await this.getChargedata();
+    this.cagChart.setOption(this.cagOption);
 
   }
 
@@ -484,8 +510,9 @@ export class Dashboard {
 
   //初始化数据
   async getPayData() {
-    // this.payDateInfo = ;
-    // this.payData =
+     this.payDatas =await  this.indexService.getPayAmt(this.payDate)
+     this.payData = this.payDatas.amount;
+     this.payDateInfo =this.payDatas.date ;
   }
 
   //初始化echarts
@@ -499,9 +526,6 @@ export class Dashboard {
   get payOption(){
 
     let option = {
-      title: {
-        text: '世界人口总量'
-      },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -522,25 +546,26 @@ export class Dashboard {
       },
       yAxis: {
         type: 'value',
-        boundaryGap: [0, 0.01]
       },
       xAxis: {
         type: 'category',
-        data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
+        data: this.payDateInfo
       },
       series: [
         {
-          name: '数量',
-          type: 'bar',
-          data: [19325, 23438, 31000, 121594, 134141, 681807]
+          name: '付费',
+          type: this.payShow,
+          data: this.payData
         }
       ]
     };
     return option ;
   }
 
-  changePayDate(val) {
+  async changePayDate(val) {
     this.payDate = val ;
+    await this.getPayData();
+    this.payChart.setOption(this.payOption);
   }
 
 
@@ -548,6 +573,7 @@ export class Dashboard {
     let title = "打印测试";
     let strHTML = '打印测试';
     print(title, strHTML, true);
+
   }
 
 
