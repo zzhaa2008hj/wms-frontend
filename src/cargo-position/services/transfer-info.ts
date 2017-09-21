@@ -1,4 +1,4 @@
-import { RestClient, Query, fixDate } from '@app/utils';
+import { RestClient, Query } from '@app/utils';
 import { autoinject } from 'aurelia-dependency-injection';
 import { PositionTransferInfo } from "@app/cargo-position/models/transfer-info";
 
@@ -13,8 +13,7 @@ export class PositionTransferInfoService {
   }
 
   page(criteria?: StatisticsCriteria): Query<PositionTransferInfo> {
-    return this.http.query<PositionTransferInfo>(`/position-transfer/info/page`, criteria)
-      .map(positionTransferInfo => fixDate(positionTransferInfo, 'createTime'));
+    return this.http.query<PositionTransferInfo>(`/position-transfer/info/page`, criteria);
   }
 
 }
