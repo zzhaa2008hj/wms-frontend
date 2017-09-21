@@ -210,7 +210,6 @@ export class EditCargoFlow {
 
   async upload() {
     let keyRes = await this.attachmentService.getDirKey(this.cargoFlow.cargoInfoId);
-    console.log("this.order.cargoInfoId", this.cargoFlow.cargoInfoId);
     let index = 0;
     for (let file of this.files) {
       let fileName = uuid();

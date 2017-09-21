@@ -10,9 +10,9 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://192.168.133.118:3000/loginRpc",
-    "loginOutUrl": "http://192.168.133.118:8080/rpc/login/logOut",
-    "changePasswordUrl": "http://192.168.133.118:3000/changePasswordRpc",
+    "loginUrl": "http://192.168.133.118:81/sso/loginRpc",
+    "loginOutUrl":"http://192.168.133.118:8080/rpc/login/logOut",
+    "changePasswordUrl":"http://192.168.133.118:81/sso/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
@@ -305,6 +305,12 @@
       "title": "操作日志",
       "moduleId": "./base/operation-logs/index",
       "group": "group1"
+    },
+    {
+      "route": "/electronic-warehouse",
+      "name": "electronic-warehouse",
+      "title": "电子厂图",
+      "moduleId": "./electronic-warehouse/index"
     }
   ]
 }
