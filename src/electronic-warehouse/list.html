@@ -1,0 +1,44 @@
+<template>
+    <require from="./tree"></require>
+    <!-- <div id="holder"  click.delegate="unSelect($event)" style="background-image:url(${imageUrl});margin-top:10px;float: left;border-width: 1px;border-style:solid;border-color:#000000">
+        </div> -->
+    <div style="background: white;float: left;">
+        <warehouse-tree selected-item.bind="selectedItem" data.bind="warehouses"></warehouse-tree>
+        <div style="float: left;width:90%">
+            <div if.bind="selectedItem.parentId !=null" style="float: left;box-shadow: 0 1px 2px 1px rgba(0,0,0,.08), 0 3px 6px rgba(0,0,0,.08);padding: 10px;width:100%;height: 80%">
+                <div style="float: left">
+                    <label>1：红色文字代表可出清&#12288;&#12288;2：堆位右下角的小矩形可以缩放</label>
+                </div>
+                <div style="float: right">
+                    <a class="btn btn-success btn-small" click.delegate="savePosition()">保存库存位置信息</a>
+                    <button type="button" class="btn btn-success btn-small" click.delegate="clearingStorageItem()" disabled.bind="!clearing">出清</button>
+                </div>
+                <input style="display:none" type="text" value.bind="rectId">
+                <div id="holder" click.delegate="unSelect($event)" style="background:url(${imageUrl}) no-repeat;background-size:auto 100% ;margin-top:10px;float: left;border-width: 1px;border-style:solid;border-color:#000000">
+                </div>
+            </div>
+            <div style="float: left;height: 100%">
+                <div style="float: left;width: 30%">
+                    <h3 style="text-align:center">库存统计数据</h3>
+                    <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable"
+                        k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
+                        <ak-col k-field="cargoCategoryName" k-title="货类" k-width.bind="90"></ak-col>
+                        <ak-col k-field="storageNumber" k-title="堆存总件数" k-width.bind="90"></ak-col>
+                        <ak-col k-field="storageQuantity" k-title="堆存总数量" k-width.bind="90"></ak-col>
+                    </ak-grid>
+                </div>
+                <div style="float: left;width: 60%;margin-left:30px" if.bind="rectSelected">
+                    <h3 style="text-align:center">选中堆位详情</h3>
+                    <ak-grid k-data-source.bind="selectedDataSource">
+                        <ak-col k-field="batchNumber" k-title="批次号" k-width.bind="110"></ak-col>
+                        <ak-col k-field="customerName" k-title="客户名称" k-width.bind="90"></ak-col>
+                        <ak-col k-field="cargoName" k-title="货物名称" k-width.bind="90"></ak-col>
+                        <ak-col k-field="storageNumber" k-title="堆存总件数" k-width.bind="90"></ak-col>
+                        <ak-col k-field="storageQuantity" k-title="堆存总数量" k-width.bind="90"></ak-col>
+                </div>
+                </ak-grid>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</template>

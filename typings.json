@@ -27,6 +27,7 @@
     "jquery": "registry:dt/jquery#1.10.0+20170310222111",
     "jspdf": "registry:dt/jspdf#1.1.135+20160921164505",
     "moment": "registry:dt/moment#2.11.1+20161010105546",
-    "nprogress": "registry:dt/nprogress#0.0.0+20161119044246"
+    "nprogress": "registry:dt/nprogress#0.0.0+20161119044246",
+    "raphael": "registry:dt/raphael#2.1.0+20160727010356"
   }
 }
