@@ -57,4 +57,12 @@ export class IndexService {
     let res = await this.http.get(`/index/pay-chart?date=${date}`);
     return res.content ;
   }
+
+  /**
+   * 获取库存数据
+   */
+  async getStorageNum(warehouseId : string ){
+    let res = await this.http.get(`/index/storage-chart?storageId=${warehouseId}`);
+    return res.content ;
+  }
 }

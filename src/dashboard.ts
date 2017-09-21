@@ -15,6 +15,8 @@ import { WarehouseOrder } from '@app/common/models/warehouse-order';
 import { Warehouse } from '@app/base/models/warehouse';
 import { WarehouseNum } from "@app/report/models/daily-inventory";
 import { ChargeAmt, PaymentAmt } from "@app/report/models/daily-payment";
+import { StorageNum } from "@app/report/models/storage-info";
+import { ConstantValues } from "@app/common/models/constant-values";
 
 @autoinject
 export class Dashboard {
@@ -25,6 +27,8 @@ export class Dashboard {
   businessOrder: BusinessOrder;
   feeOrder: FeeOrder;
   warehouseOrder: WarehouseOrder;
+
+  weekInfo = ConstantValues.weekInfo;
 
   /**
    * 仓库信息概览
@@ -55,18 +59,22 @@ export class Dashboard {
    */
   //bar  柱子  pie  饼图
   sc: string = "bar";
-  //选中的库
-  sw: string ;
+  //选中的库 selected warehouse
+  sw : string = '' ;
   //库存 chart
   stoChart ;
   //库存 数据 从后台获取
-  stodatas;
-  //柱状图 时间数据
-  stoDateInfo ;
-  //柱状图数据
-  stoData ;
+  stodatas ={} as StorageNum;
+  //柱状图 货类数据
+  stoCargoInfo ;
+  //柱状图数量数据
+  stoQuaData =[];
+  //柱状图件数数据
+  stoNumData =[];
   //饼图 数量数据
+  quaPie ;
   //饼图 件数数据
+  numPie ;
 
   storageCategories = [{ value: "bar", text: "柱状图" }, { value: "cake", text: "饼图" }];
   storateWarehouses = [] as Warehouse[];
@@ -117,12 +125,6 @@ export class Dashboard {
               private indexService: IndexService,
               private user: UserSession,
               private noticeService: NoticeService) {
-    let  a  =[6,7,3,4,5];
-    let b =['一','二','三','四','五'];
-    let c  = a.map((value ,index)=>({name:b[index],value}));
-    console.log(c);
-    let d  = c.map((cc)=>(cc.value));
-    console.log(d);
 
   }
 
@@ -141,6 +143,9 @@ export class Dashboard {
     // 第一张echarts 图 加载数据
     await this.warehouseChange();
     //库存
+    Object.assign(this.warehouse, { id: '', name: '全部' });
+    this.storateWarehouses.push(this.warehouse);
+    this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
     await this.getStorageData();
 
     //  收费
@@ -161,7 +166,6 @@ export class Dashboard {
   async attached() {
     //初始化
     this.getWorkOrderInfo();
-
     this.getStorageInfo();
     this.getChargeInfo();
     this.getPayInfo();
@@ -177,6 +181,11 @@ export class Dashboard {
     this.warehouseDataNum = this.warehouseData1.num;
     this.warehouseDataQua = this.warehouseData1.qua;
     this.warehouseCate = this.warehouseData1.date;
+    if(this.wd == "1"){
+      this.warehouseCate = this.warehouseCate.map(x =>{
+       return  this.weekInfo.find(r => r.stage == x).title;
+      } )
+    }
   }
 
   //初始化echarts
@@ -255,16 +264,18 @@ export class Dashboard {
    */
   //数据
   async getStorageData(){
-    Object.assign(this.warehouse, { id: '', name: '全部' });
-    this.storateWarehouses.push(this.warehouse);
-    this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
+    this.stodatas = await this.indexService.getStorageNum(this.sw) ;
+    this.stoCargoInfo = this.stodatas.cargo;
+    this.stoQuaData = this.stodatas.num ;
+    this.stoNumData = this.stodatas.qua ;
+    this.numPie = this.stoNumData.map( (value ,index)=>({name: this.stoCargoInfo[index],value}) );
+    this.quaPie = this.stoQuaData.map( (value ,index)=>({name: this.stoCargoInfo[index],value}) );
   }
 
   //初始化图
   async getStorageInfo() {
     this.stoChart = echarts.init(document.getElementById('main2') as HTMLDivElement);
     // 指定图表的配置项和数据
-
     // 使用刚指定的配置项和数据显示图表。
     this.stoChart.setOption(this.stoOption);
   }
@@ -275,7 +286,8 @@ export class Dashboard {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          }
+          },
+          formatter: false
         },
         toolbox: {
           show: true,
@@ -286,7 +298,6 @@ export class Dashboard {
               icon:'path://M6.7,22.9h10V48h-10V22.9zM24.9,13h10v35h-10V13zM43.2,2h10v46h-10V2zM3.1,58h53.7',
               onclick: ()=>{
                 this.sc = "bar";
-
                 this.stoChart.setOption(this.stoOption);
               }
             },
@@ -296,7 +307,6 @@ export class Dashboard {
               icon:'image://assets/images/chart-icon.png',
               onclick: ()=>{
                 this.sc = "pie";
-
                 this.stoChart.setOption(this.stoOption);
               }
             }
@@ -313,24 +323,23 @@ export class Dashboard {
         },
         xAxis: {
           show: true,
-          type: 'value',
-          boundaryGap: [0, 0.01]
+          type: 'value'
         },
         yAxis: {
           show: true,
           type: 'category',
-          data: ['巴西','印尼','美国','印度','中国','世界人口(万)']
+          data: this.stoCargoInfo
         },
         series: [
           {
             name: '数量',
             type: 'bar',
-            data: [18203, 23489, 29034, 104970, 131744, 630230]
+            data:this.stoQuaData
           },
           {
             name: '件数',
             type: 'bar',
-            data: [19325, 23438, 31000, 121594, 134141, 681807]
+            data: this.stoNumData
           }
         ]
       };
@@ -376,21 +385,15 @@ export class Dashboard {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        data: this.stoCargoInfo
       },
       series : [
         {
-          name: '访问来源',
+          name: '货类数量',
           type: 'pie',
           radius : '35%',
           center: ['70%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
+          data:this.quaPie,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -399,17 +402,11 @@ export class Dashboard {
             }
           }
         },{
-          name: '访问来源',
+          name: '货类件数',
           type: 'pie',
           radius : '35%',
           center: ['26%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
+          data:this.numPie,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -432,12 +429,11 @@ export class Dashboard {
     }
 
   }
-  changeSCategory(category) {
-    this.sc = category;
-  }
 
-  changeSWarehouse(warehouse) {
+  async changeSWarehouse(warehouse) {
     this.sw = warehouse;
+    await this.getStorageData();
+    this.stoChart.setOption(this.stoOption);
   }
 
   /**
@@ -507,7 +503,6 @@ export class Dashboard {
   /**
    * 付费
    */
-
   //初始化数据
   async getPayData() {
      this.payDatas =await  this.indexService.getPayAmt(this.payDate)
