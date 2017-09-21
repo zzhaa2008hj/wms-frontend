@@ -10,6 +10,7 @@ import { AttachmentService } from '@app/common/services/attachment';
 import { AttachmentMap } from '@app/common/models/attachment';
 import { AttachmentDetail } from '@app/common/attachment/detail';
 import { uuid } from '@app/utils';
+
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -28,13 +29,13 @@ export class NewWarehouse {
   attachments = [] as AttachmentMap[];
 
   constructor(private dialogController: DialogController,
-              private dictionaryDataService: DictionaryDataService,
-              private dialogService: DialogService,
-              private attachmentService: AttachmentService,
-              private messageDialogService: MessageDialogService,
-              private uploader: Uploader,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+    private dictionaryDataService: DictionaryDataService,
+    private dialogService: DialogService,
+    private attachmentService: AttachmentService,
+    private messageDialogService: MessageDialogService,
+    private uploader: Uploader,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -49,6 +50,12 @@ export class NewWarehouse {
     this.warehouse.num = 0;
   }
 
+  onSelect(e) {
+    let dataItem: DictionaryData = this.selectedType.dataItem(e.item);
+    console.log(dataItem)
+    this.warehouse.type = dataItem.dictDataName;
+    console.log(this.warehouse);
+  }
   async chooseFile() {
     this.file = await this.dialogService.chooseFile();
     if (this.file) this.dir = this.file.name + ";";
