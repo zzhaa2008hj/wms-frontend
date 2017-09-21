@@ -31,3 +31,11 @@ export interface StorageInfoVo {
 
   list: StorageInfo[];
 }
+
+//首页 显示 charts 图
+export interface StorageNum{
+  qua: any ;
+  num: any ;
+  cargo : any ;
+
+}

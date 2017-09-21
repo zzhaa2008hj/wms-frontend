@@ -9,4 +9,13 @@ export interface DailyPayment {
   warehouse: string;
   sumAmount: number;
 }
-
+//首页 显示 charts 图
+export interface PaymentAmt{
+  amount : any ;
+  date : any ;
+}
+//首页 显示 charts 图
+export interface ChargeAmt{
+  amount : any ;
+  date : any ;
+}

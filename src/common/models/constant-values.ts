@@ -327,4 +327,34 @@ export class ConstantValues {
       title: "完成"
     }];
   }
+
+  static get weekInfo() {
+    return [{
+      stage: "1",
+      title: "星期日"
+    },
+    {
+      stage: "2",
+      title: "星期一"
+    },
+    {
+      stage: "3 ",
+      title: "星期二"
+    },
+    {
+      stage: "4",
+      title: "星期三"
+    },
+    {
+      stage: "5",
+      title: "星期四"
+    }, {
+      stage: "6",
+      title: "星期五"
+    },
+    {
+      stage: "7",
+      title: "星期六"
+    }];
+  }
 }

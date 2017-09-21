@@ -134,8 +134,8 @@
       <div class="row">
         <div class="k-content pull-right">
           <div class="btn-group m-b-10">
-            <template repeat.for="item of warehouseCategories">
-              <button type="button" class="btn btn-primary ${wc== item.value? 'active':''}" click.delegate="changeWCategory(item.value)">${item.text}</button>
+            <template repeat.for="item of warehouseItems">
+              <button type="button" class="btn btn-primary ${wc== item.value? 'active':''}" click.delegate="changeWarehouseitems(item.value)">${item.text}</button>
             </template>
           </div>
         </div>
@@ -158,15 +158,6 @@
       <div class="row">
         <div class="k-content pull-right">
           <div class="btn-group m-b-10">
-            <template repeat.for="item of storageCategories">
-              <button type="button" class="btn btn-primary ${sc== item.value? 'active':''}" click.delegate="changeSCategory(item.value)">${item.text}</button>
-            </template>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="k-content pull-right">
-          <div class="btn-group m-b-10">
             <template repeat.for="item of storateWarehouses">
               <button type="button" class="btn btn-default ${sw== item.id? 'active':''}" click.delegate="changeSWarehouse(item.id)">${item.name}</button>
             </template>
@@ -174,6 +165,7 @@
         </div>
       </div>
       <div id="main2" style="height:420px;"></div>
+      <span if.bind="sc=='pie'"> <span>数量</span>   <span>件数</span></span>
     </div>
   </div>
   <div class="grid simple">
@@ -184,22 +176,13 @@
       <div class="row">
         <div class="k-content pull-right">
           <div class="btn-group m-b-10">
-            <template repeat.for="item of warehouseCategories">
-              <button type="button" class="btn btn-primary ${wc== item.value? 'active':''}" click.delegate="changeWCategory(item.value)">${item.text}</button>
+            <template repeat.for="item of chargeDates">
+              <button type="button" class="btn btn-default ${cagDate== item.value? 'active':''}" click.delegate="changeChargeDate(item.value)">${item.text}</button>
             </template>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="k-content pull-right">
-          <div class="btn-group m-b-10">
-            <template repeat.for="item of warehouseDates">
-              <button type="button" class="btn btn-default ${wd== item.value? 'active':''}" click.delegate="changeWDate(item.value)">${item.text}</button>
-            </template>
-          </div>
-        </div>
-      </div>
-      <div id="main" style="height:420px;"></div>
+      <div id="mainCag" style="height:420px;"></div>
     </div>
     <div class="col-md-6 grid-body">
       <div class="col-md-6">
@@ -208,22 +191,13 @@
       <div class="row">
         <div class="k-content pull-right">
           <div class="btn-group m-b-10">
-            <template repeat.for="item of warehouseCategories">
-              <button type="button" class="btn btn-primary ${wc== item.value? 'active':''}" click.delegate="changeWCategory(item.value)">${item.text}</button>
+            <template repeat.for="item of paymentDates">
+              <button type="button" class="btn btn-default ${payDate== item.value? 'active':''}" click.delegate="changePayDate(item.value)">${item.text}</button>
             </template>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="k-content pull-right">
-          <div class="btn-group m-b-10">
-            <template repeat.for="item of warehouseDates">
-              <button type="button" class="btn btn-default ${wd== item.value? 'active':''}" click.delegate="changeWDate(item.value)">${item.text}</button>
-            </template>
-          </div>
-        </div>
-      </div>
-      <div id="main2" style="height:420px;"></div>
+      <div id="mainPay" style="height:420px;"></div>
     </div>
   </div> -->
 
