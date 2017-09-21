@@ -355,6 +355,8 @@ export class ConstantValues {
     {
       stage: "7",
       title: "星期六"
+    }];
+  }
   static get CargoOwnershipStage() {
     return [{
       stage: -1,
