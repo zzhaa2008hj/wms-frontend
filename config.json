@@ -304,6 +304,12 @@
       "title": "每月收费统计",
       "moduleId": "./report/monthly-charge/index",
       "group": "group5"
+    },
+    {
+      "route": "/electronic-warehouse",
+      "name": "electronic-warehouse",
+      "title": "电子厂图",
+      "moduleId": "./electronic-warehouse/index"
     }
   ]
 }

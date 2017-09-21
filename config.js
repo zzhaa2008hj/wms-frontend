@@ -42,6 +42,7 @@ System.config({
     "jquery": "npm:jquery@3.2.1",
     "moment": "npm:moment@2.18.1",
     "nprogress": "github:rstacruz/nprogress@0.2.0",
+    "raphael": "github:DmitryBaranovskiy/raphael@2.2.7",
     "uuid": "npm:uuid@3.1.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
