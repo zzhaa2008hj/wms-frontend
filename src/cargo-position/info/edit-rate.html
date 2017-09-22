@@ -1,0 +1,87 @@
+<template>
+  <require from="./rate-step-element"></require>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 库区
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label class="form-label">费用类别</label>
+          <span class="help"></span>
+          <ak-drop-down-list k-value.two-way="search.chargeCategory" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                             k-data-source.bind="chargeCategory">
+          </ak-drop-down-list>
+          <label class="form-label">&nbsp;货类</label>
+          <span class="help"></span>
+          <input type="text" class="form-label" value.bind="search.cargoCategoryName" disabled>
+          <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">请选择...</a>
+          <label class="form-label">&nbsp;作业类别</label>
+          <span class="help"></span>
+          <ak-drop-down-list k-value.two-way="search.rateType" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                             k-data-source.bind="rateTypes">
+          </ak-drop-down-list>
+          <label class="form-label">&nbsp;作业内容</label>
+          <span class="help"></span>
+          <input type="text" class="form-label" value.bind="search.workName" readonly>
+          <a class="btn btn-small" type="button" click.delegate="selectWorkInfo()">请选择...</a>
+          <label class="form-label">&nbsp;库位类别</label>
+          <span class="help"></span>
+          <ak-drop-down-list k-value.two-way="search.warehouseCategory" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+                             k-data-source.bind="warehouseCategory">
+          </ak-drop-down-list>
+          <label class="form-label">&nbsp;计价方式</label>
+          <span class="help"></span>
+          <ak-drop-down-list k-value.two-way="search.pricingMode" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
+                             k-data-source.bind="pricingMode">
+          </ak-drop-down-list>
+          <label class="form-label">&nbsp;</label>
+          <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <span class="help"></span>
+        <div class="controls right">
+          <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-edit.delegate="edit($event)"
+                   k-on-detail-init.delegate="detailInit($event.detail)">
+            <ak-col k-field="rateCategory" k-title="费用类别">
+              <ak-template>
+                ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
+              </ak-template>
+            </ak-col>
+            <ak-col k-field="chargeType" k-title="收付费">
+              <ak-template>
+                ${chargeType == 1 ? '收费' :'付费'}
+              </ak-template>
+            </ak-col>
+            <ak-col k-title="单价" k-field="price"></ak-col>
+            <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+            <ak-col k-field="pricingMode" k-title="计价方式">
+              <ak-template>
+                ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
+              </ak-template>
+            </ak-col>
+            <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
+            <ak-col k-field="workName" k-title="作业内容"></ak-col>
+            <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+            <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+            <ak-col k-title="操作">
+              <ak-template>
+                <a class="btn btn-small" click.delegate="delete($this)">删除</a>
+              </ak-template>
+            </ak-col>
+            <ak-template for="detailTemplate">
+              <rate-steps rate-steps.bind="cargoRateSteps" if.bind="pricingMode !=1 "></rate-steps>
+              <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+            </ak-template>
+          </ak-grid>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="save()">确定</button>
+      <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
