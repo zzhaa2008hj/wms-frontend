@@ -1,4 +1,5 @@
 export interface DailyCharge {
+  date: Date;
   customerName: string;
   workName: string;
   cargoCategoryName: string;

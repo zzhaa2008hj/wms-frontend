@@ -52,4 +52,14 @@ export class StorageService {
   async storageBalance(id: string): Promise<void> {
     await this.http.put(`/base/storage/${id}/balance`, null).then(handleResult);
   }
+
+  async getItemsByCargoItemId(cargoItemId: string) {
+    let res = await this.http.get(`/base/storage/${cargoItemId}/cargoItemId`);
+    return res.content;
+  }
+
+  async getItemsByBatchNumber(batchNumber: string) {
+    let res = await this.http.get(`/base/storage/${batchNumber}/batchNumber`);
+    return res.content;
+  }
 }

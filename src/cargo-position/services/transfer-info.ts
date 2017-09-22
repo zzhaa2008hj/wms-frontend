@@ -1,4 +1,4 @@
-import { RestClient, Query } from '@app/utils';
+import { RestClient, Query, handleResult } from '@app/utils';
 import { autoinject } from 'aurelia-dependency-injection';
 import { PositionTransferInfo } from "@app/cargo-position/models/transfer-info";
 
@@ -16,4 +16,7 @@ export class PositionTransferInfoService {
     return this.http.query<PositionTransferInfo>(`/position-transfer/info/page`, criteria);
   }
 
+  savePositionTransferInfo(positionTransferInfo: PositionTransferInfo): Promise<void> {
+    return this.http.post(`/position-transfer/info`, positionTransferInfo).then(handleResult);
+  }
 }

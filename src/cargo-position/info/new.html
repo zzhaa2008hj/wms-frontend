@@ -1,0 +1,192 @@
+<template>
+  <require from="./rate-element"></require>
+  <div class="grid simple">
+    <div class="grid-title no-border">新增货位转移</h4>
+    </div>
+    <div class="grid-body no-border"><br>
+      <form submit.delegate="addNewPositionTransferInfo()">
+        <div class="col-md-16">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">批次号*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..."
+                                   k-filter="contains"
+                                   k-data-text-field="batchNumber" k-data-value-field="id"
+                                   k-data-source.bind="baseCargoInfos"
+                                   k-on-select.delegate="onSelectCargoInfo($event.detail)">
+                </ak-drop-down-list>
+                <!--<div class="controls" >-->
+                <!--<input type="text" class="form-control" value.bind="positionTransferInfo.batchNumber" readonly>-->
+                <!--</div>-->
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">货位转移单号*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="positionTransferInfo.contactPerson "
+                       disabled.bind="disabled">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">客户名称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="positionTransferInfo.customerName "
+                       disabled.bind="disabled">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">代理商名称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="positionTransferInfo.agentName "
+                       disabled.bind="disabled">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-label">备注</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="positionTransferInfo.remark "
+                     disabled.bind="disabled">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" if.bind="positionTransferInfo.batchNumber != null">
+            <label class="form-label">指令上传</label>
+            <div class="controls">
+              <input style="width: 300px;" type="text" value.bind="dir" multiple/>
+              <button class="btn btn-small" click.trigger="chooseFiles()">选择文件</button>
+              <button class="btn btn-small btn-primary" click.trigger="upload()">上传</button>
+              <wa-progress width="200px" height="5px" if.bind="currentUpload" value.bind="currentUpload.progress.loaded"
+                           total.bind="currentUpload.progress.total"
+                           label="正在上传...">${percent}%
+              </wa-progress>
+              <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消</button>
+            </div>
+            <div class="controls">
+              <label repeat.for="item of attachments">
+                <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a>
+                <a class="pointer m-l-10" click.delegate="delete($this)">删除</a>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <h4>货物信息</h4>
+          <div class="form-group ">
+            <ak-drop-down-list k-widget.bind="dropDownListCargoItem"
+                               k-value.two-way="search.cargoName" k-option-label="请选择--货位转移货物"
+                               k-data-text-field="cargoName" k-data-value-field="cargoName"
+                               k-data-source.bind="dataSourceCargoItem"
+                               k-on-select.delegate="onSelectCargoItem($event.detail)">
+            </ak-drop-down-list>
+            <ak-drop-down-list k-value.two-way="search.warehouseName" k-option-label="请选择--货物所在库区"
+                               k-data-text-field="warehouseName" k-data-value-field="warehouseName"
+                               k-data-source.bind="dataSourceStorageItem">
+            </ak-drop-down-list>
+            <a class="btn btn-small" click.delegate="addStorageItem()" title="搜索"><em class="fa fa-search"></em></a>
+            <ak-grid k-data-source.bind="dataSourceStorage">
+              <ak-col k-field="cargoName" k-title="货名"></ak-col>
+              <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+              <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+              <ak-col k-field="containerType" k-title="集装箱类型 "></ak-col>
+              <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
+              <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+              <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+              <ak-col k-field="position" k-title="堆存坐标"></ak-col>
+              <ak-col k-field="instockDate" k-title="入库时间"></ak-col>
+              <ak-col k-title="新库区名称">
+                <ak-template>
+                  <input type="text" class="form-label" value.bind="newWarehouseName" readonly>
+                  <a class="btn btn-small" type="button" click.delegate="selectWarehourse(uid)">请选择...</a>
+                </ak-template>
+              </ak-col>
+              <ak-col k-title="转移数量">
+                <ak-template>
+                  <input type="text" class="form-label" value.bind="transferQuantity" >
+                </ak-template>
+              </ak-col>
+              <ak-col k-title="转移件数">
+                <ak-template>
+                  <input type="text" class="form-label" value.bind="transferNumber" >
+                </ak-template>
+              </ak-col>
+              <ak-col k-field="remark" k-title="备注"></ak-col>
+              <ak-col k-title="操作">
+                <ak-template>
+                  <a class="btn btn-small" click.delegate="deleteStorageItem($this)">删除</a>
+                  <a class="btn btn-small" click.delegate="editRate($this)">费率编辑</a>
+                </ak-template>
+              </ak-col>
+              <ak-template for="detailTemplate">
+                <rate rates.bind="cargoRates" ></rate>
+              </ak-template>
+            </ak-grid>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <h4>费率信息</h4>
+          <div class="form-group ">
+            <ak-grid k-data-source.bind="dataSourceCargoRate">
+              <ak-col k-field="rateCategory" k-title="费用类别">
+                <ak-template>
+                  ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
+                </ak-template>
+              </ak-col>
+              <ak-col k-field="chargeType" k-title="收付费">
+                <ak-template>
+                  ${chargeType == 1 ? '收费' :'付费'}
+                </ak-template>
+              </ak-col>
+              <ak-col k-title="单价" k-field="price"></ak-col>
+              <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+              <ak-col k-field="pricingMode" k-title="计价方式">
+                <ak-template>
+                  ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
+                </ak-template>
+              </ak-col>
+              <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
+              <ak-col k-field="workName" k-title="作业内容"></ak-col>
+              <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+              <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
+              <ak-col k-field="remark" k-title="备注"></ak-col>
+              <ak-col k-title="操作">
+                <ak-template>
+                  <a class="btn btn-small" click.delegate="deleteCargoRate($this)">删除</a>
+                </ak-template>
+              </ak-col>
+              <ak-template for="detailTemplate">
+                <rate-steps rate-steps.bind="cargoRateSteps" if.bind="pricingMode !=1 "></rate-steps>
+                <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+              </ak-template>
+            </ak-grid>
+          </div>
+        </div>
+        <div class="form-actions">
+          <div class="pull-right">
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i>保存
+            </button>
+            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
