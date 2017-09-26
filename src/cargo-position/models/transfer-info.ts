@@ -1,3 +1,6 @@
+import { CargoRate } from "@app/base/models/cargo-info";
+import { ValidationRules } from 'aurelia-validation';
+
 export interface PositionTransferInfo {
   id: string;
   cargoInfoId: string;
@@ -47,9 +50,25 @@ export interface PositionTransferItem {
   containerNumber: string;
   //集装箱类型
   containerType: string;
+
+  cargoRates: CargoRate[];
 }
 
 export interface PositionTransferSearch {
   warehouseName ?: string;
   cargoName ?: string;
 }
+
+export const positionTransferInfoValidationRules = ValidationRules
+  .ensure((info: PositionTransferInfo) => info.transferNumber)
+  .displayName('货位转移单号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((info: PositionTransferInfo) => info.batchNumber)
+  .displayName('批次号')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
+  .ensure((info: PositionTransferInfo) => info.remark)
+  .displayName('备注')
+  .maxLength(500).withMessage(`\${$displayName} 过长`)
+  .rules;
