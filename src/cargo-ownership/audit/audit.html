@@ -1,0 +1,123 @@
+<template>
+  <div class="grid simple">
+
+    <div class="grid-title no-border" if.bind="stage == 1"><h4>商务审核</h4></div>
+    <div class="grid-title no-border" if.bind="stage == 2"><h4>费收审核</h4></div>
+    <div class="grid-title no-border" if.bind="stage == 3"><h4>副总审批</h4></div>
+    <div class="grid-body no-border">
+      <h4>转出信息</h4>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">原批次号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.originalBatchNumber" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">原代理商</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.originalAgentName" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">原客户</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.originalCustomerName" readonly>
+          </div>
+        </div>
+      </div>
+
+      <h4>转出信息</h4>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">新批次号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.newBatchNumber" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">新代理商</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.newAgentName" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">新客户</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.newCustomerName" readonly>
+          </div>
+        </div>
+      </div>
+
+      <h4>基础信息</h4>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">转让日期</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.transferDate" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">仓储费用结算至</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.storageEndDate" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">费用承担方</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.outstockChargePayerName" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="row column-seperation">
+        <h4>附件信息查看</h4>
+
+        <div class="form-group dt-publisher-bottom  clearfix " height="850px" style="overflow-x:auto;white-space:nowrap;">
+          <div style="text-align: left; display: inline-block;" repeat.for="item of attachments" click.delegate="showDetail($this)">
+            <img width="100px" height="100px" src="${item.path}" style="padding-right: 10px;"><br>
+            <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a>
+          </div>
+        </div>
+      </div>
+      <div class="pull-right" if.bind="stage == 1">
+        <button class="btn btn-primary"  click.delegate="doAudit(1)">审核通过</button>
+        <button class="btn btn-warning"  click.delegate="doAudit(2)">审核不通过</button>
+        <button class="btn btn-primary"  click.delegate="goBack()">返回</button>
+      </div>
+      <div class="pull-right" if.bind="stage == 2">
+        <button class="btn btn-primary"  click.delegate="doAudit(1)">费收已完成</button>
+        <button class="btn btn-warning"  click.delegate="doAudit(2)">挂账</button>
+        <button class="btn btn-warning"  click.delegate="doAudit(3)">审核不通过</button>
+        <button class="btn btn-primary"  click.delegate="goBack()">返回</button>
+      </div>
+      <div class="pull-right" if.bind="stage == 3">
+        <button class="btn btn-primary"  click.delegate="doAudit(1)">审核通过</button>
+        <button class="btn btn-primary"  click.delegate="goBack()">返回</button>
+      </div>
+    </div>
+  </div>
+
+
+</template>
