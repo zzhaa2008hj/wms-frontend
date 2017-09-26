@@ -1,10 +1,10 @@
-import { inject } from 'aurelia-dependency-injection';
+import { inject, Container } from 'aurelia-dependency-injection';
 import { PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
 import { CargoInfoService } from "@app/base/services/cargo-info";
 import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 import { Router } from "aurelia-router";
 import {
-  PositionTransferInfo, PositionTransferItem,
+  PositionTransferInfo, positionTransferInfoValidationRules, PositionTransferItem,
   PositionTransferSearch
 } from "@app/cargo-position/models/transfer-info";
 import { AttachmentMap } from "@app/common/models/attachment";
@@ -20,7 +20,8 @@ import { StorageService } from "@app/base/services/storage";
 import { StorageInfo, StorageItem } from "@app/base/models/storage";
 import { WarehouseTree } from "@app/base/storage/items/warehouse-tree";
 import { EditRate } from "@app/cargo-position/info/edit-rate";
-
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
+import { formValidationRenderer } from '@app/validation/support';
 
 export class NewPositionTransferInfo {
   storageItems: StorageItem[];
@@ -54,6 +55,8 @@ export class NewPositionTransferInfo {
   baseCargoItems: CargoItem[];
   cargoItemStorageInfoVos: CargoItemStorageInfoVo[];
   search = {} as PositionTransferSearch;
+  demandFrom = [{ text: "公司", value: 1 }, { text: "个人", value: 2 }];
+  validationController: ValidationController;
   private cargoRates: any;
 
   constructor(@inject private router: Router,
@@ -64,7 +67,12 @@ export class NewPositionTransferInfo {
               @inject private storageService: StorageService,
               @inject private messageDialogService: MessageDialogService,
               @inject private positionTransferInfoService: PositionTransferInfoService,
-              @inject private cargoInfoService: CargoInfoService) {
+              @inject private cargoInfoService: CargoInfoService,
+              validationControllerFactory: ValidationControllerFactory,
+              container: Container) {
+    this.validationController = validationControllerFactory.create();
+    this.validationController.addRenderer(formValidationRenderer);
+    container.registerInstance(ValidationController, this.validationController);
   }
 
   async activate() {
@@ -75,12 +83,16 @@ export class NewPositionTransferInfo {
   async addNewPositionTransferInfo() {
     let transferItems = [];
     let storageItems: any = this.dataSourceStorage.data();
+    if (storageItems.length == 0) {
+      await this.messageDialogService.alert({ title: "新增失败", message: `请补充货位转移货物信息`, icon: 'warning' });
+      return;
+    }
     for (let si of storageItems) {
       let wrongItems = storageItems.filter(sii => sii.id == si.id && sii.newWarehouseId == si.newWarehouseId);
       if (wrongItems.length > 1) {
         await this.messageDialogService.alert({
           title: "新增失败",
-          message: `请检查数据,货物:${si.cargoName}多次向同一库区转移`,
+          message: `请检查数据,货物:${si.cargoName}多次向同一库区转移,请合并`,
           icon: 'warning'
         });
         return;
@@ -105,10 +117,18 @@ export class NewPositionTransferInfo {
       transferItem.containerNumber = si.containerNumber;
       transferItem.containerType = si.containerType;
       //费率
-      Object.assign(transferItem, { cargoRates: si.cargoRates });
+      if (si.cargoRates) {
+        Object.assign(transferItem, { cargoRates: si.cargoRates });
+      } else {
+        Object.assign(transferItem, { cargoRates: this.cargoRates });
+      }
       transferItems.push(transferItem);
     }
     this.positionTransferInfo.positionTransferItems = transferItems;
+
+    this.validationController.addObject(this.positionTransferInfo, positionTransferInfoValidationRules);
+    let { valid } = await this.validationController.validate();
+    if (!valid) return;
     try {
       await this.positionTransferInfoService.savePositionTransferInfo(this.positionTransferInfo);
       await this.messageDialogService.alert({ title: "新增成功" });
@@ -148,7 +168,10 @@ export class NewPositionTransferInfo {
   }
 
   deleteStorageItem(e) {
-    this.dataSourceStorage.remove(e);
+    let storageItems: any = this.dataSourceStorage.data();
+    let storageItem = storageItems.find(si => si.uid == e.uid);
+    storageItems.remove(storageItem);
+    this.dataSourceStorage.data(storageItems);
   }
 
   async selectWarehourse(uid: string) {
@@ -171,7 +194,7 @@ export class NewPositionTransferInfo {
     this.cargoRates = [];
     let oldStorageItems = this.dataSourceStorage.data();
     if (!this.search.cargoName && !this.search.warehouseName) {
-      oldStorageItems.push(...this.storageItems)
+      oldStorageItems.push(...this.storageItems);
       // this.dataSourceStorage.data(this.storageItems);
       this.baseCargoItems.forEach(bci => {
         for (let cr of bci.cargoRates) {
@@ -292,6 +315,10 @@ export class NewPositionTransferInfo {
       let storageInfo: StorageInfo = await this.storageService.getStorageInfoById(si.storageInfoId);
       let baseCargoItem = this.baseCargoItems.find(bci => bci.id == storageInfo.cargoItemId);
       Object.assign(si, { cargoName: baseCargoItem.cargoName });
+      let unit = this.units.find(u => si.unit == u.dictDataCode);
+      if (unit) {
+        si.unitName = unit.dictDataName;
+      }
     }
     this.dataSourceStorageItem.data(this.storageItems);
   }
