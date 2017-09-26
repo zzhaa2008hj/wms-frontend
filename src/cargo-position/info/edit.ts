@@ -22,25 +22,16 @@ import { formValidationRenderer } from '@app/validation/support';
 
 export class NewPositionTransferInfo {
   disabled = false;
-  baseCargoInfos: CargoInfo[];
-  selectedCargoInfo: any;
   positionTransferInfo = {} as PositionTransferInfo;
   attachments = [] as AttachmentMap[];
   files: File[];
   dir: string = '';
   currentUpload: Upload;
-  dropDownListCargoItem: any;
   dataSourceStorage = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  dataSourceCargoRate = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
-  cargoItems = [] as CargoItem[];
   positionTransferItems: PositionTransferItem[];
   units = [] as DictionaryData[];
-  baseCargoItems: CargoItem[];
-  cargoItemStorageInfoVos: CargoItemStorageInfoVo[];
   demandFrom = [{ text: "公司", value: 1 }, { text: "个人", value: 2 }];
   validationController: ValidationController;
   private cargoRates: any;
