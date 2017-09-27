@@ -52,6 +52,8 @@ export interface PositionTransferItem {
   containerType: string;
 
   cargoRates: CargoRate[];
+
+  unitName: string;
 }
 
 export interface PositionTransferSearch {

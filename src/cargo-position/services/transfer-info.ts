@@ -20,4 +20,13 @@ export class PositionTransferInfoService {
   savePositionTransferInfo(positionTransferInfo: PositionTransferInfo): Promise<void> {
     return this.http.post(`/position-transfer/info`, positionTransferInfo).then(handleResult);
   }
+
+  async getById(id: string): Promise<PositionTransferInfo> {
+    let res = await this.http.get(`/position-transfer/info/${id}`);
+    return res.content;
+  }
+
+  updatePositionTransferInfo(positionTransferInfo: PositionTransferInfo): Promise<void> {
+    return this.http.put(`/position-transfer/info/${positionTransferInfo.id}`, positionTransferInfo).then(handleResult);
+  }
 }

@@ -10,8 +10,13 @@
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+    <ak-col k-field="transferNumber" k-title="货位转移单号" k-width.bind="120">
+      <ak-template>
+        <a route-href="route: detail; params.bind: { id: id }" >${transferNumber}</a>
+        <!--<label if.bind="!requiredPermissions('R000034')">${outstockOrderNumber}</label>-->
+      </ak-template>
+    </ak-col>
     <ak-col k-field="createTime" k-title="时间" k-format="{0:yyyy-MM-dd}"></ak-col>
-    <ak-col k-field="transferNumber" k-title="货位转移单号"></ak-col>
     <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
     <ak-col k-field="demandFrom" k-title="需求来源"></ak-col>
     <ak-col k-field="customerName" k-title="客户名称"></ak-col>
@@ -19,6 +24,11 @@
     <ak-col k-field="warehousingAmount" k-title="上一阶段号"></ak-col>
     <ak-col k-field="loadingAmount" k-title="阶段号"></ak-col>
     <ak-col k-field="remark" k-title="备注"></ak-col>
+    <ak-col k-title="操作" k-width.bind="280">
+      <ak-template>
+        <a class="btn btn-small" if.bind="stage == 0 || stage == 2" route-href="route: edit; params.bind: { id: id }">修改</a>
+      </ak-template>
+    </ak-col>
   </ak-grid>
 
 </template>

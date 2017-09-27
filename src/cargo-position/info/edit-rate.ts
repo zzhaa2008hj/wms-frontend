@@ -90,6 +90,14 @@ export class EditRate {
       if (rateType) {
         res.rateTypeStr = rateType.text;
       }
+      if (res.rateStep) {
+        res.rateStep.forEach(rs => {
+          let stepUnit = this.unit.find(d => rs.stepUnit == d.dictDataCode);
+          if (stepUnit) {
+            rs.stepUnitStr = stepUnit.dictDataName;
+          }
+        });
+      }
       return res;
     });
     this.baseRateAndSteps = rates;
