@@ -41,7 +41,7 @@ export class Dashboard {
   // 柱状还是 折线
   wShow = "bar";
   //显示数据
-  warehouseData1 = {} as  WarehouseNum;
+  warehouseData1 = {} as WarehouseNum;
   warehouseDataNum;
   warehouseDataQua;
   warehouseCate: any[];
@@ -60,21 +60,21 @@ export class Dashboard {
   //bar  柱子  pie  饼图
   sc: string = "bar";
   //选中的库 selected warehouse
-  sw : string = '' ;
+  sw: string = '';
   //库存 chart
-  stoChart ;
+  stoChart;
   //库存 数据 从后台获取
-  stodatas ={} as StorageNum;
+  stodatas = {} as StorageNum;
   //柱状图 货类数据
-  stoCargoInfo ;
+  stoCargoInfo;
   //柱状图数量数据
-  stoQuaData =[];
+  stoQuaData = [];
   //柱状图件数数据
-  stoNumData =[];
+  stoNumData = [];
   //饼图 数量数据
-  quaPie ;
+  quaPie;
   //饼图 件数数据
-  numPie ;
+  numPie;
 
   storageCategories = [{ value: "bar", text: "柱状图" }, { value: "cake", text: "饼图" }];
   storateWarehouses = [] as Warehouse[];
@@ -84,15 +84,15 @@ export class Dashboard {
    * 收费信息统计
    */
   //柱子还是折线
-  cagShow ='bar';
+  cagShow = 'bar';
   //默认显示本周
-  cagDate ='1';
+  cagDate = '1';
   //x 轴时间数据
-  cagDateInfo ;
+  cagDateInfo;
   //显示数据
   cagData;
   //后台传入数据
-  cagDatas ={} as ChargeAmt
+  cagDatas = {} as ChargeAmt
   //chart
   cagChart;
   chargeDates = [{ value: "1", text: "本周" }, { value: "2", text: "本月" }, { value: "3", text: "本季" }, {
@@ -104,14 +104,14 @@ export class Dashboard {
   /**
    * 付费信息统计
    */
-    //柱子还是折线
-  payShow ='bar';
+  //柱子还是折线
+  payShow = 'bar';
   //默认显示本周
-  payDate ='1';
+  payDate = '1';
   //x 轴时间数据
-  payDateInfo ;
+  payDateInfo;
   //后台获取数据
-  payDatas = {} as PaymentAmt ;
+  payDatas = {} as PaymentAmt;
   //显示数据
   payData;
   //chart
@@ -122,9 +122,9 @@ export class Dashboard {
   }];
 
   constructor(private dialogService: DialogService,
-              private indexService: IndexService,
-              private user: UserSession,
-              private noticeService: NoticeService) {
+    private indexService: IndexService,
+    private user: UserSession,
+    private noticeService: NoticeService) {
 
   }
 
@@ -180,10 +180,10 @@ export class Dashboard {
     this.warehouseDataNum = this.warehouseData1.num;
     this.warehouseDataQua = this.warehouseData1.qua;
     this.warehouseCate = this.warehouseData1.date;
-    if(this.wd == "1"){
-      this.warehouseCate = this.warehouseCate.map(x =>{
-       return  this.weekInfo.find(r => r.stage == x).title;
-      } )
+    if (this.wd == "1") {
+      this.warehouseCate = this.warehouseCate.map(x => {
+        return this.weekInfo.find(r => r.stage == x).title;
+      })
     }
   }
 
@@ -262,13 +262,13 @@ export class Dashboard {
    *库存信息
    */
   //数据
-  async getStorageData(){
-    this.stodatas = await this.indexService.getStorageNum(this.sw) ;
+  async getStorageData() {
+    this.stodatas = await this.indexService.getStorageNum(this.sw);
     this.stoCargoInfo = this.stodatas.cargo;
-    this.stoQuaData = this.stodatas.num ;
-    this.stoNumData = this.stodatas.qua ;
-    this.numPie = this.stoNumData.map( (value ,index)=>({name: this.stoCargoInfo[index],value}) );
-    this.quaPie = this.stoQuaData.map( (value ,index)=>({name: this.stoCargoInfo[index],value}) );
+    this.stoQuaData = this.stodatas.num;
+    this.stoNumData = this.stodatas.qua;
+    this.numPie = this.stoNumData.map((value, index) => ({ name: this.stoCargoInfo[index], value }));
+    this.quaPie = this.stoQuaData.map((value, index) => ({ name: this.stoCargoInfo[index], value }));
   }
 
   //初始化图
@@ -278,84 +278,84 @@ export class Dashboard {
     // 使用刚指定的配置项和数据显示图表。
     this.stoChart.setOption(this.stoOption);
   }
-  get optionBar(){
+  get optionBar() {
 
-    let  option = {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          },
-          formatter: false
+    let option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
         },
-        toolbox: {
-          show: true,
-          feature: {
-            myTool2: {
-              show: true,
-              title: '切换成柱状图',
-              icon:'path://M6.7,22.9h10V48h-10V22.9zM24.9,13h10v35h-10V13zM43.2,2h10v46h-10V2zM3.1,58h53.7',
-              onclick: ()=>{
-                this.sc = "bar";
-                this.stoChart.setOption(this.stoOption);
-              }
-            },
-            myTool1: {
-              show: true,
-              title: '切换成饼图',
-              icon:'image://assets/images/chart-icon.png',
-              onclick: ()=>{
-                this.sc = "pie";
-                this.stoChart.setOption(this.stoOption);
-              }
+        formatter: false
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          myTool2: {
+            show: true,
+            title: '切换成柱状图',
+            icon: 'path://M6.7,22.9h10V48h-10V22.9zM24.9,13h10v35h-10V13zM43.2,2h10v46h-10V2zM3.1,58h53.7',
+            onclick: () => {
+              this.sc = "bar";
+              this.stoChart.setOption(this.stoOption);
+            }
+          },
+          myTool1: {
+            show: true,
+            title: '切换成饼图',
+            icon: 'image://assets/images/chart-icon.png',
+            onclick: () => {
+              this.sc = "pie";
+              this.stoChart.setOption(this.stoOption);
             }
           }
+        }
+      },
+      legend: {
+        data: ['数量', '件数']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        show: true,
+        type: 'value'
+      },
+      yAxis: {
+        show: true,
+        type: 'category',
+        data: this.stoCargoInfo
+      },
+      series: [
+        {
+          name: '数量',
+          type: 'bar',
+          data: this.stoQuaData
         },
-        legend: {
-          data: ['数量', '件数']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: {
-          show: true,
-          type: 'value'
-        },
-        yAxis: {
-          show: true,
-          type: 'category',
-          data: this.stoCargoInfo
-        },
-        series: [
-          {
-            name: '数量',
-            type: 'bar',
-            data:this.stoQuaData
-          },
-          {
-            name: '件数',
-            type: 'bar',
-            data: this.stoNumData
-          }
-        ]
-      };
+        {
+          name: '件数',
+          type: 'bar',
+          data: this.stoNumData
+        }
+      ]
+    };
 
-    return option ;
+    return option;
 
   }
-  get optionPie(){
+  get optionPie() {
     let option = {
-      tooltip : {
+      tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
       },
-      xAxis:{
+      xAxis: {
         show: false
       },
-      yAxis:{
+      yAxis: {
         show: false
       },
       toolbox: {
@@ -364,8 +364,8 @@ export class Dashboard {
           myTool2: {
             show: true,
             title: '切换成柱状图',
-            icon:'path://M6.7,22.9h10V48h-10V22.9zM24.9,13h10v35h-10V13zM43.2,2h10v46h-10V2zM3.1,58h53.7',
-            onclick: ()=>{
+            icon: 'path://M6.7,22.9h10V48h-10V22.9zM24.9,13h10v35h-10V13zM43.2,2h10v46h-10V2zM3.1,58h53.7',
+            onclick: () => {
               this.sc = "bar";
               this.stoChart.setOption(this.stoOption);
             }
@@ -373,8 +373,8 @@ export class Dashboard {
           myTool1: {
             show: true,
             title: '切换成饼图',
-            icon:'image://assets/images/chart-icon.png',
-            onclick: ()=>{
+            icon: 'image://assets/images/chart-icon.png',
+            onclick: () => {
               this.sc = "pie";
               this.stoChart.setOption(this.stoOption);
             }
@@ -386,13 +386,13 @@ export class Dashboard {
         left: 'left',
         data: this.stoCargoInfo
       },
-      series : [
+      series: [
         {
           name: '货类数量',
           type: 'pie',
-          radius : '35%',
+          radius: '35%',
           center: ['70%', '60%'],
-          data:this.quaPie,
+          data: this.quaPie,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -400,12 +400,12 @@ export class Dashboard {
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
           }
-        },{
+        }, {
           name: '货类件数',
           type: 'pie',
-          radius : '35%',
+          radius: '35%',
           center: ['26%', '60%'],
-          data:this.numPie,
+          data: this.numPie,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -416,15 +416,15 @@ export class Dashboard {
         }
       ]
     };
-    return option ;
+    return option;
 
   }
   //
-  get stoOption(){
-    if(this.sc=="pie"){
-      return this.optionPie ;
-    }else {
-      return this.optionBar ;
+  get stoOption() {
+    if (this.sc == "pie") {
+      return this.optionPie;
+    } else {
+      return this.optionBar;
     }
 
   }
@@ -441,8 +441,8 @@ export class Dashboard {
   //初始化数据
   async getChargedata() {
     this.cagDatas = await this.indexService.getCagAmt(this.cagDate);
-     this.cagDateInfo =this.cagDatas.date ;
-     this.cagData =this.cagDatas.amount ;
+    this.cagDateInfo = this.cagDatas.date;
+    this.cagData = this.cagDatas.amount;
 
   }
   //初始化echarts
@@ -453,7 +453,7 @@ export class Dashboard {
     });
     this.cagChart.setOption(this.cagOption);
   }
-  get cagOption(){
+  get cagOption() {
 
     let option = {
 
@@ -485,15 +485,15 @@ export class Dashboard {
       series: [
         {
           name: '收费',
-          type:this.cagShow,
+          type: this.cagShow,
           data: this.cagData
         }
       ]
     };
-    return option ;
-}
+    return option;
+  }
   async changeChargeDate(val) {
-    this.cagDate = val ;
+    this.cagDate = val;
     await this.getChargedata();
     this.cagChart.setOption(this.cagOption);
 
@@ -504,9 +504,9 @@ export class Dashboard {
    */
   //初始化数据
   async getPayData() {
-     this.payDatas =await  this.indexService.getPayAmt(this.payDate)
-     this.payData = this.payDatas.amount;
-     this.payDateInfo =this.payDatas.date ;
+    this.payDatas = await this.indexService.getPayAmt(this.payDate)
+    this.payData = this.payDatas.amount;
+    this.payDateInfo = this.payDatas.date;
   }
 
   //初始化echarts
@@ -517,7 +517,7 @@ export class Dashboard {
     });
     this.payChart.setOption(this.payOption);
   }
-  get payOption(){
+  get payOption() {
 
     let option = {
       tooltip: {
@@ -553,11 +553,11 @@ export class Dashboard {
         }
       ]
     };
-    return option ;
+    return option;
   }
 
   async changePayDate(val) {
-    this.payDate = val ;
+    this.payDate = val;
     await this.getPayData();
     this.payChart.setOption(this.payOption);
   }

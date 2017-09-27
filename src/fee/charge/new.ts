@@ -10,7 +10,6 @@ import { ConstantValues } from "@app/common/models/constant-values";
 import { DialogService } from "ui";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DictionaryData } from "@app/base/models/dictionary";
-// import { CargoRateStep } from '@app/base/models/cargo-info';
 import { uuid } from '@app/utils';
 import { ChargeAuditItem } from '@app/fee/models/charge-audit';
 import * as moment from 'moment';
@@ -61,24 +60,22 @@ export class NewChargeInfo {
           unitStr: { editable: false },
           pricingMode: { editable: false },
           price: { editable: false },
-          actualPrice: { editable: true, type: 'number', validation: { required: false, min: 0, max: 10000000 }},
-          workInfoName: {editable: false},
-          startDate: {editable: false},
-          endDate: {editable: false},
+          actualPrice: { editable: true, type: 'number', validation: { required: false, min: 0, max: 10000000 } },
+          workInfoName: { editable: false },
+          startDate: { editable: false },
+          endDate: { editable: false },
         }
       }
     }
   });
-  cargoRateStepList = new Map(); 
+  cargoRateStepList = new Map();
   units = [] as DictionaryData[];
   batchNumberWidget: any;
   chargeCategoryWidget: any;
   workInfoCategoryWidget: any;
 
-  startDatePicker: any;
-  endDatePicker: any;
-  chargeStartDate: any;
-  chargeEndDate: any;
+  startDatePicker: kendo.ui.DatePicker;
+  endDatePicker: kendo.ui.DatePicker;
   constructor(@inject private router: Router,
               @inject private cargoInfoService: CargoInfoService,
               @newInstance() private validationController: ValidationController,
@@ -90,7 +87,6 @@ export class NewChargeInfo {
 
   async activate() {
     this.validationController.addObject(this.chargeInfo, chargeInfoValidationRules);
-
     //仓储代理商
     this.agents = await this.cargoInfoService.getCustomers(1);
     //仓储客户
@@ -102,17 +98,27 @@ export class NewChargeInfo {
    */
   async agentChanged() {
     this.chargeInfo.customerId = this.agentWidget.value();
+    let chargeStartDate = await this.chargeInfoService.getChargeStartDate(this.chargeInfo.customerId);
+    if (!chargeStartDate) {
+      return await this.dialogService.alert({ title: "提示", message: "该客户无任何费用可结算", icon: 'error' });
+    }
+
     this.chargeInfo.customerName = this.agentWidget.text();
     this.chargeInfo.agentName = this.agentWidget.text();
     this.chargeInfo.paymentUnit = this.agentWidget.text();
     let batchNumbers = await this.chargeInfoService.getBatchNumbers(this.chargeInfo.customerId);
     if (batchNumbers) {
-      let bs = batchNumbers.map(b => Object.assign({key: b, value: b}));
+      let bs = batchNumbers.map(b => Object.assign({ key: b, value: b }));
       this.batchNumbers.data(bs);
     }
     this.chargeItems = [];
     this.cargoRateStepList = new Map();
     this.chargeItemDataSource.read();
+
+    this.startDatePicker.min(new Date(chargeStartDate));
+    this.startDatePicker.max(new Date());
+    this.endDatePicker.min(new Date(chargeStartDate));
+    this.endDatePicker.max(new Date());
   }
 
   /**
@@ -127,7 +133,7 @@ export class NewChargeInfo {
     if (this.chargeInfo.customerId) {
       let batchNumbers = await this.chargeInfoService.getBatchNumbers(this.chargeInfo.customerId);
       if (batchNumbers) {
-        let bs = batchNumbers.map(b => Object.assign({key: b, value: b}));
+        let bs = batchNumbers.map(b => Object.assign({ key: b, value: b }));
         this.batchNumbers.data(bs);
       }
     }
@@ -143,7 +149,7 @@ export class NewChargeInfo {
   cancel() {
     this.router.navigateToRoute("list");
   }
-  
+
   /**
    * 列出申请明细
    */
@@ -156,14 +162,21 @@ export class NewChargeInfo {
     this.rateType = this.workInfoCategoryWidget.value();
     if (!this.rateType) this.rateType = -1;
     if (!this.chargeCategory) this.chargeCategory = -1;
-    let chargeStartDate = moment(this.chargeStartDate).format("YYYY-MM-DD HH:mm:ss");
-    let chargeEndDate = moment(this.chargeEndDate).hour(23).minute(59).second(59).format("YYYY-MM-DD HH:mm:ss");
-    let items = await this.chargeInfoService.getItems(this.chargeInfo.customerId, chargeStartDate, chargeEndDate, this.batchNumber, this.chargeCategory, this.rateType);
+    let chargeStartDate = '', chargeEndDate = '';
+    if (this.chargeInfo.chargeStartDate) {
+      chargeStartDate = moment(this.chargeInfo.chargeStartDate).format("YYYY-MM-DD HH:mm:ss");
+    }
+    if (this.chargeInfo.chargeEndDate) {
+      chargeEndDate = moment(this.chargeInfo.chargeEndDate).hour(23).minute(59).second(59)
+        .format("YYYY-MM-DD HH:mm:ss");
+    }
+    let items = await this.chargeInfoService.getItems(this.chargeInfo.customerId, chargeStartDate, chargeEndDate,
+      this.batchNumber, this.chargeCategory, this.rateType);
     if (items && items.length == 0) {
       return await this.dialogService.alert({ title: "提示", message: "无此费用可结算", icon: 'error' });
     }
     if (items.length == undefined) {
-      let m = {message: ''};
+      let m = { message: '' };
       Object.assign(m, items);
       return await this.dialogService.alert({ title: "提示", message: m.message, icon: 'error' });
     }
@@ -177,7 +190,7 @@ export class NewChargeInfo {
         }
       }
     }
-    
+
     if (items) {
       items.map(item => {
         if (item.startDate) {
@@ -207,12 +220,12 @@ export class NewChargeInfo {
             this.cargoRateStepList.set(rate.id, rate);
           });
         }
-        
+
         // 临时加id，让组件修改时识别
         item.id = uuid();
       });
     }
-    
+
     this.chargeItems = this.chargeItems.concat(items);
     this.chargeItemDataSource.read();
   }
@@ -237,7 +250,7 @@ export class NewChargeInfo {
     this.disabled = true;
     try {
       await this.chargeInfoService.saveChargeInfo(this.chargeInfo);
-      await this.dialogService.alert({ title: "提示", message: "新增成功"});
+      await this.dialogService.alert({ title: "提示", message: "新增成功" });
       this.cancel();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: 'error' });
@@ -281,8 +294,8 @@ export class NewChargeInfo {
         { field: 'stepNum', title: '阶梯号' },
         { field: 'stepStart', title: '开始值' },
         { field: 'stepEnd', title: '结束值' },
-        { field: 'stepPrice', title: '阶梯价'},
-        { field: 'actualStepPrice', title: '实际阶梯价'},
+        { field: 'stepPrice', title: '阶梯价' },
+        { field: 'actualStepPrice', title: '实际阶梯价' },
         { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
       ],
@@ -290,7 +303,7 @@ export class NewChargeInfo {
         e.sender.saveChanges();
         // this.chargeItemDataSource.pushUpdate(a as CargoRateStep[]);
       },
-    
+
     });
   }
 

@@ -19,6 +19,9 @@ export interface Invoice{
   amount: number;
   // 核销金额
   verificationAmount: number;
+
+  // 未核销金额
+  unverificationAmount: number;
 }
 
 export const invoiceValidationRules = ValidationRules

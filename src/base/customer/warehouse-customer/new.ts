@@ -5,9 +5,12 @@ import { Organization, orgValidationRules } from '@app/base/models/organization'
 import { OrganizationService } from "@app/base/services/organization";
 import { ValidationControllerFactory, ValidationController } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
+import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class NewWareHouseCustomer {
+
+  orgProperties = ConstantValues.OrgProperties;
   org = {} as Organization;
   validationController: ValidationController;
 
@@ -21,14 +24,15 @@ export class NewWareHouseCustomer {
     container.registerInstance(ValidationController, this.validationController);
   }
 
-  /**
-  * 初始化后自动执行
-  */
   async activate() {
     //对象验证错误
     this.validationController.addObject(this.org, orgValidationRules);
+    this.org.orgProperty = 2;
   }
   async save() {
+    if (this.org.orgProperty == 1) {
+      this.org.shortName = this.org.name;
+    }
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     try {

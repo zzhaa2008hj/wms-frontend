@@ -31,7 +31,7 @@ export class NewAutoPaymentInfo {
   async activate() {
     this.validationController.addObject(this.paymentAuditItem, validationRules);
     this.unitSource = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.warehouseSource = await this.warehouseService.listWarehouse({status: true});
+    this.warehouseSource = await this.warehouseService.listWarehouse(true);
   }
 
   onOpen() {

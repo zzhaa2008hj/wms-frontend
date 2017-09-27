@@ -357,6 +357,9 @@ export class ConstantValues {
       title: "星期六"
     }];
   }
+  static get OrgProperties() {
+    return [{value: 1, name: "个人"}, {value: 2, name: "公司"}];
+  }
   static get CargoOwnershipStage() {
     return [{
       stage: -1,

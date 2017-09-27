@@ -9,14 +9,12 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 
 @autoinject
 export class EditCargoInfo {
-  // unitDatasource = [{ dictName: "吨" }, { dictName: "根" }, { dictName: "立方" }];
   cargoInfo = {} as CargoInfo;
   cargoItems = [] as CargoItem[];
   cargoInfoId = '';
   datasource: kendo.data.DataSource;
 
   unit = [] as DictionaryData[];
-  //warehouseTypes = [] as DictionaryData[];
 
   constructor(private router: Router,
               private cargoInfoService: CargoInfoService,
@@ -46,7 +44,6 @@ export class EditCargoInfo {
 
   async activate({ id }) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    //this.warehouseTypes = await this.dictionaryDataService.getDictionaryDatas("warehouseType");    
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
     this.cargoItems.map(res => {
@@ -88,8 +85,6 @@ export class EditCargoInfo {
   }
 
   async save() {
-
-    // this.cargoInfoVo.cargoInfo = this.cargoInfo;
     this.cargoInfo.cargoItems = this.cargoItems;
     try {
       await this.cargoInfoService.updateCargoInfo(this.cargoInfo, this.cargoInfoId);

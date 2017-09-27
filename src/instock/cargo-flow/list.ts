@@ -351,9 +351,17 @@ export class CargoFlowList {
    * 客户确认
    */
   async customerConfirm(id) {
-    let confirmed = await this.dialogService.confirm({ title: "提示", message: "客户确认通过!" });
+    let confirmed = await this.dialogService.confirm({ title: "提示", message: "确认通过？" });
     if (confirmed) {
       await this.cargoFlowService.updateFlowStage(id, 1);
+      this.dataSource.read();
+    }
+  }
+
+  async deleteCargoFlow(id) {
+    let confirmed = await this.dialogService.confirm({ title: "提示", message: "删除后无法恢复，确认删除" });
+    if (confirmed) {
+      await this.cargoFlowService.deleteCargoFlow(id);
       this.dataSource.read();
     }
   }

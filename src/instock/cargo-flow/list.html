@@ -52,6 +52,7 @@
       <ak-template>
         <a class="btn btn-small btn-primary" if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: { id: id }"
           required-permissions="U000004">修改</a>
+        <a class="btn btn-small btn-danger" if.bind="stage == 0" click.delegate="deleteCargoFlow(id)" required-permissions="D000022">删除</a>
         <a class="btn btn-small" if.bind="stage == 0" route-href="route: flow; params.bind: { id: id }" required-permissions="R000074">打印入库流水单</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 0" click.delegate="customerConfirm(id)" required-permissions="U000066">客户确认</a>
         <button class="btn btn-small" if.bind="stage > 2 && stage < 10" click.delegate="rollBack($this)" required-permissions="U000054">撤回</button>

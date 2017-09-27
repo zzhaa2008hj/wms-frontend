@@ -4,13 +4,14 @@
     <ak-col k-field="invoiceNumber" k-title="发票号"></ak-col>
     <ak-col k-field="amount" k-title="发票金额"></ak-col>
     <ak-col k-field="verificationAmount" k-title="已核销金额"></ak-col>
+    <ak-col k-field="unverificationAmount" k-title="未核销金额"></ak-col>
     <ak-col k-title="操作">
       <ak-template>
         <button class="btn btn-small" click.delegate="view(id)" required-permissions="R000083">查看核销</button>
       </ak-template>
     </ak-col>
   </ak-grid>
-      <div class="pull-right">
-        <a class="btn btn-white" click.trigger="cancel()">返回</a>
-      </div>
+  <div class="pull-right">
+    <a class="btn btn-white" click.trigger="cancel()">返回</a>
+  </div>
 </template>

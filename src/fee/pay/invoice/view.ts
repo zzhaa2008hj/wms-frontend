@@ -1,11 +1,9 @@
 import { inject } from "aurelia-dependency-injection";
-import { DialogService } from "ui";
 import { VerificationService } from "@app/fee/services/verification";
 
 export class VerificationView {
   dataSource: kendo.data.DataSource;
-  constructor(@inject private verificationService: VerificationService,
-              @inject private dialogService: DialogService) {
+  constructor(@inject private verificationService: VerificationService) {
   }
 
   async activate({invoiceId}) {

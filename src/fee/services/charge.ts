@@ -99,6 +99,11 @@ export class ChargeInfoService {
   async deleteInfo(id: string): Promise<void> {
     await this.http.delete(`/fee/charge-info/${id}`).then(handleResult);
   }
+
+  async getChargeStartDate(customerId: string): Promise<Date> {
+    let res = await this.http.get(`/fee/charge-info/${customerId}/charge-start-date`);
+    return res.content;
+  } 
 }
 
 export interface ChargeInfoCriteria {

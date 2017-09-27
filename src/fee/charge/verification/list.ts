@@ -24,7 +24,15 @@ export class InvoiceList {
     this.dataSource = new kendo.data.DataSource({
       transport: {
         read: async (options) => {
-          options.success(await this.invoiceService.getInvoices(this.infoId, 1));
+          options.success(await this.invoiceService.getInvoices(this.infoId, 1).then(
+            res => res.map(r => {
+              if (!r.verificationAmount) {
+                r.verificationAmount = 0;
+              }
+              r.unverificationAmount = r.amount - r.verificationAmount;
+              return r;
+            })
+          ));
         }
       }
     });

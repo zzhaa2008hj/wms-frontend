@@ -70,4 +70,8 @@ export class CargoFlowService {
     let res = await this.http.get(`/instock/cargo-flow/${infoId}/cargoInfoId`);
     return res.content;
   }
+
+  async deleteCargoFlow(id): Promise<void> {
+    return this.http.delete(`/instock/cargo-flow/${id}`).then(handleResult);
+  }
 }
