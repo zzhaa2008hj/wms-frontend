@@ -33,6 +33,16 @@
             </div>
           </div>
         </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-label">货类</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" click.delegate="selectCargoCategory()" value.bind="cargoInventory.cargoCategoryName"
+                readonly style="width: 100%" placeholder="点击选择货类">
+            </div>
+          </div>
+        </div>
         <div class="col-md-6" if.bind="cargoInventory.demandFrom == 2">
           <div class="form-group">
             <label class="form-label">库区*</label>
@@ -51,16 +61,6 @@
               <ak-drop-down-list k-value.two-way="cargoInventory.customerId" k-option-label="请选择..." k-data-text-field="shortName" style="width: 100%"
                 k-data-value-field="id" k-data-source.bind="customers" k-on-select.delegate="onSelectDemandFrom($event.detail)">
               </ak-drop-down-list>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="form-label">货类</label>
-            <span class="help"></span>
-            <div class="controls">
-              <input type="text" class="form-control" click.delegate="selectCargoCategory()" value.bind="cargoInventory.cargoCategoryName" readonly
-                style="width: 100%" placeholder="点击选择货类">
             </div>
           </div>
         </div>

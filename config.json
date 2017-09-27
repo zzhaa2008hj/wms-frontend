@@ -11,7 +11,7 @@
   },
   "loginParam": {
     "loginUrl": "http://localhost:3000/loginRpc",
-    "loginOutUrl": "http://192.168.133.118:8080/rpc/login/logOut",
+    "loginOutUrl": "http://localhost:8080/rpc/login/logOut",
     "changePasswordUrl": "http://localhost:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
@@ -43,8 +43,13 @@
       "expanded": false
     },
     "group6": {
-      "title": "货权转移管理",
+      "title": "货权转移",
       "icon": "transfer_within_a_station",
+      "expanded": false
+    },
+    "group7": {
+      "title": "货物盘点",
+      "icon": "assessment",
       "expanded": false
     }
   },
@@ -128,6 +133,13 @@
       "title": "出库清单",
       "moduleId": "./outstock/inventory/index",
       "group": "group3"
+    },
+    {
+      "route": "/cargo-inventory",
+      "name": "cargo-inventory",
+      "title": "货物盘点",
+      "moduleId": "./cargo-inventory/index",
+      "group": "group7"
     },
     {
       "route": "/fee/charge",
@@ -321,8 +333,9 @@
     {
       "route": "/electronic-warehouse",
       "name": "electronic-warehouse",
-      "title": "电子厂图",
-      "moduleId": "./electronic-warehouse/index"
+      "title": "电子场图",
+      "moduleId": "./electronic-warehouse/index",
+      "icon": "assessment"
     }
   ]
 }
