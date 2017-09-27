@@ -9,7 +9,6 @@ import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { ConstantValues } from '@app/common/models/constant-values';
 import { Router } from 'aurelia-router';
 import { Contract } from '@app/base/models/contract';
-import { UserSession } from '@app/user';
 
 @autoinject
 export class ContractList {
@@ -22,7 +21,6 @@ export class ContractList {
     buttonCount: 10
   };
   contractId: string;
-  userId: string;
   contractTypes: any[] = ConstantValues.ContractTypes;
   contractStages = ConstantValues.ContractStage;
 
@@ -31,7 +29,6 @@ export class ContractList {
               private dialogService: DialogService,
               private verifyRecordService: VerifyRecordService,
               private router: Router,
-              private user: UserSession,
               private dataSourceFactory: DataSourceFactory) {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.contractService.queryContracts({ searchName: this.searchName }).map(res => {
@@ -41,7 +38,6 @@ export class ContractList {
       }),
       pageSize: 10
     });
-    this.userId = this.user.userInfo.userId;
   }
 
   async delete(id) {

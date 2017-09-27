@@ -17,7 +17,7 @@ export class WorkInfoTree {
   tree: kendo.ui.TreeView;
 
   workInfoCategory = ConstantValues.WorkInfoCategory;
-
+  
   dataSourceWorkInfo = new kendo.data.HierarchicalDataSource({
     data: [],
     schema: {
@@ -40,7 +40,7 @@ export class WorkInfoTree {
     if (workId) {
       this.selectedWorkInfo = await this.workInfoService.getWorkInfo(workId);
     }
-    let wData = await this.workInfoService.listWorkInfo(true);
+    let wData = await this.workInfoService.listWorkInfo();
     this.helper = treeHelper(wData, { childrenKey: 'sub' });
     let wRootItems = this.helper.toTree();
     this.dataSourceWorkInfo.data(wRootItems);
@@ -72,7 +72,7 @@ export class WorkInfoTree {
     }
     let name = this.selectedWorkInfo.name;
     let id = this.selectedWorkInfo.id;
-    this.workInfo.id = id;
+    this.workInfo.id = id;        
     let data = this.selectedWorkInfo;
     while (data.parentId) {
       id = data.parentId;
@@ -80,7 +80,7 @@ export class WorkInfoTree {
       name = data.name + "-" + name;
     }
     this.workInfo.name = name;
-    this.selectedWorkInfo = null;
+    this.selectedWorkInfo = null;     
     await this.dialogController.ok(this.workInfo);
   }
 

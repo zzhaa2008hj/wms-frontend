@@ -22,6 +22,7 @@ export class ViewContract {
   baseRateAndSteps: Rate[];
 
   unit = [] as DictionaryData[];
+  // warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
 
@@ -52,6 +53,7 @@ export class ViewContract {
    */
   async activate({ id }) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+    // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.contractVo = await this.contractService.getContract(id);
@@ -63,34 +65,37 @@ export class ViewContract {
     if (this.contractVo.contract.contractType == 3) {
       //库区信息
       this.warehouses = await this.contractService.getWarehouses();
+    } else {
+      let rates = this.contractVo.rateVos;
+      rates.map(res => {
+        let unit = this.unit.find(d => res.unit == d.dictDataCode);
+        // let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
+        let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+        let rateType = this.rateTypes.find(d => res.rateType == d.value);
+        res.chargeCategoryStr = this.chargeCategory.find(x => x.value == res.rateCategory).text;
+        if (unit) {
+          res.unitStr = unit.dictDataName;
+        }
+        // if (warehouseType) {
+        //   res.warehouseTypeStr = warehouseType.dictDataName;
+        // }
+        if (warehouseCategory) {
+          res.warehouseCategoryStr = warehouseCategory.dictDataName;
+        }
+        if (rateType) {
+          res.rateTypeStr = rateType.text;
+        }
+        return res;
+      });
+      this.baseRateAndSteps = rates;
+      this.baseRateStep = this.contractVo.rateStepVos;
+      this.baseRateStep.map(res => {
+        if (res.stepUnit) {
+          res.stepUnitStr = this.unit.find(r => r.dictDataCode == res.stepUnit).dictDataName;
+        }
+        return res;
+      });
     }
-    let rates = this.contractVo.rateVos;
-    console.log(rates)
-    rates.map(res => {
-      let unit = this.unit.find(d => res.unit == d.dictDataCode);
-      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
-      let rateType = this.rateTypes.find(d => res.rateType == d.value);
-      res.chargeCategoryStr = this.chargeCategory.find(x => x.value == res.rateCategory).text;
-      if (unit) {
-        res.unitStr = unit.dictDataName;
-      }
-      if (warehouseCategory) {
-        res.warehouseCategoryStr = warehouseCategory.dictDataName;
-      }
-      if (rateType) {
-        res.rateTypeStr = rateType.text;
-      }
-      return res;
-    });
-    this.baseRateAndSteps = rates;
-    this.baseRateStep = this.contractVo.rateStepVos;
-    this.baseRateStep.map(res => {
-      if (res.stepUnit) {
-        res.stepUnitStr = this.unit.find(r => r.dictDataCode == res.stepUnit).dictDataName;
-      }
-      return res;
-    });
-
   }
 
   cancel() {

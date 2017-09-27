@@ -9,12 +9,12 @@ import { WorkOrderArea } from "@app/instock/models/work";
 import { NewWorkItem } from "./items";
 import { EditItems } from "./edit-items";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
+import { NewWorkOrder } from "./new";
 import { MessageDialogService } from "ui";
 import { EditWorkOrder } from "./edit";
 import { WorkAreaService } from "@app/base/services/work";
 import { WorkOrderItemService } from "@app/instock/services/work-order";
 import { datagridValidationRenderer } from "./new-area";
-import { DictionaryData } from '@app/base/models/dictionary';
 
 @customElement('work-area-edit')
 export class EditWorArea {
@@ -40,8 +40,6 @@ export class EditWorArea {
   items = new Set<EditItems>();
 
   resBinds = new Set<Subscription>();
-
-  units: DictionaryData[] = [];
 
   warehouseSource = new kendo.data.DataSource({
     transport: {
@@ -80,6 +78,7 @@ export class EditWorArea {
               @inject private dictionaryDataService: DictionaryDataService,
               @newInstance() private validationAreaController: ValidationController,
               @inject private eventAggregator: EventAggregator,
+              @inject private newWorkOrder: NewWorkOrder,
               @inject private messageDialogService: MessageDialogService,
               @inject private editWorkOrder: EditWorkOrder,
               @inject private workAreaService: WorkAreaService,
@@ -150,16 +149,7 @@ export class EditWorArea {
           transport: {
             read: options => {
               this.workOrderItemService.getWorkOrderItems(e.items[i].id)
-                .then(res => {
-                  res.map(e => {
-                    let unit = this.units.find(d => e.unit == d.dictDataCode);
-                    if (unit) {
-                      e.unitStr = unit.dictDataName;
-                    }
-                    return res;
-                  });
-                  options.success(res);
-                })
+                .then(options.success)
                 .catch(err => options.error("", "", err));
             }
           },
@@ -180,6 +170,7 @@ export class EditWorArea {
             }
           }
         });
+
         this.itemsDataSources.set(e.items[i].uid, itemDatasource);
       }
 
@@ -188,28 +179,29 @@ export class EditWorArea {
         this.itemsDataSources.delete(e.items.uid);
       }
 
-      // if (e.action == "add") {
-      //   let itemDataSource = new kendo.data.DataSource({
-      //     schema: {
-      //       model: {
-      //         fields: {
-      //           workName: { editable: false },
-      //           workNumber: {
-      //             editable: false,
-      //             notify: true,
-      //             type: 'number',
-      //             validation: { required: true, min: 0, max: 1000000000000000 },
-      //             title: '作业数量'
-      //           },
-      //           customerName: { editable: false },
-      //           remark: { editable: false },
-      //         }
-      //       }
-      //     }
-      //   });
-      //   alert('201');
-      //   this.itemsDataSources.set(e.items.uid, itemDataSource);
-      // }
+      if (e.action == "add") {
+        let itemDataSource = new kendo.data.DataSource({
+          schema: {
+            model: {
+              fields: {
+                workName: { editable: false },
+                workNumber: {
+                  editable: false,
+                  notify: true,
+                  type: 'number',
+                  validation: { required: true, min: 0, max: 1000000000000000 },
+                  title: '作业数量'
+                },
+                customerName: { editable: false },
+                remark: { editable: false },
+              }
+            }
+          }
+        });
+
+        this.itemsDataSources.set(e.items.uid, itemDataSource);
+
+      }
 
     });
 
@@ -232,33 +224,30 @@ export class EditWorArea {
       await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" });
       return;
     }
-    this.datasource.add({});
+    let res = this.datasource.add({});
 
-    //let res = this.datasource.add({});
-    // let itemDataSource = new kendo.data.DataSource({
-    //   schema: {
-    //     model: {
-    //       fields: {
-    //         workName: { editable: false },
-    //         workNumber: {
-    //           editable: false,
-    //           notify: true,
-    //           type: 'number',
-    //           validation: { required: true, min: 0, max: 1000000000000000 },
-    //           title: '作业数量'
-    //         },
-    //         customerName: { editable: false },
-    //         remark: { editable: false },
-    //       }
-    //     }
-    //   }
-    // });
+    let itemDataSource = new kendo.data.DataSource({
+      schema: {
+        model: {
+          fields: {
+            workName: { editable: false },
+            workNumber: {
+              editable: false,
+              notify: true,
+              type: 'number',
+              validation: { required: true, min: 0, max: 1000000000000000 },
+              title: '作业数量'
+            },
+            customerName: { editable: false },
+            remark: { editable: false },
+          }
+        }
+      }
+    });
 
-    // this.itemsDataSources.set(res.uid, itemDataSource);
-    //console.log("this.datasource.data()-edit-item",this.datasource.data());
-    //console.log("this.itemsDataSources", this.itemsDataSources);
+    this.itemsDataSources.set(res.uid, itemDataSource);
 
-    //this.newWorkOrder.getItemsDataSources(this.itemsDataSources);
+    this.newWorkOrder.getItemsDataSources(this.itemsDataSources);
   }
 
   async remove(e) {
@@ -309,7 +298,7 @@ export class EditWorArea {
     this.items.delete(item);
   }
 
-  async  bind() {
+  bind() {
     let resBind = this.eventAggregator.subscribe("item:bind", e => this.onItemAdd(e));
     if (!!resBind) {
       this.resBinds.add(resBind);
@@ -318,8 +307,6 @@ export class EditWorArea {
     if (!!resUnBind) {
       this.resBinds.add(resUnBind);
     }
-
-    this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
   }
 
   unbind() {
@@ -349,7 +336,7 @@ const workOrderAreaRules = ValidationRules
       return x <= 1000000000000000 && x > 0;
     } else {
       return x <= 1000000000000000 && x >= 0;
-    }
+    } 
   })
   .withMessage(`\${$displayName} 为无效值`)
 
@@ -361,7 +348,7 @@ const workOrderAreaRules = ValidationRules
       return x <= 1000000000000000 && x > 0;
     } else {
       return x <= 1000000000000000 && x >= 0;
-    }
+    } 
   })
   .withMessage(`\${$displayName} 为无效值`)
   .rules;  

@@ -8,9 +8,6 @@
     </div>
   </div>
   <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
-    <ak-col k-field="orgProperty" k-title="机构性质">
-      <ak-template>${orgProperty == 1 ? '个人' : '公司'}</ak-template>
-    </ak-col>
     <ak-col k-field="name" k-title="机构名称"></ak-col>
     <ak-col k-field="shortName" k-title="机构简称"></ak-col>
     <ak-col k-field="contactPerson" k-title="联系人"></ak-col>

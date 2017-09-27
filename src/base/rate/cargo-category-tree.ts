@@ -4,7 +4,6 @@ import { treeHelper, TreeHelper } from "@app/utils";
 import { CargoCategoryService } from "@app/base/services/cargo-category";
 import { CargoCategory } from "@app/base/models/cargo-category";
 import { observable } from 'aurelia-framework';
-
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -38,7 +37,7 @@ export class CargoCategoryTree {
     if (categoryId) {
       this.selectedCargoCategory = await this.cargoCategoryService.getCargoCategory(categoryId);
     }
-    let cData = await this.cargoCategoryService.listCargoCategory(true);
+    let cData = await this.cargoCategoryService.listCargoCategory();
     this.helper = treeHelper(cData, { childrenKey: 'sub' });
     let cRootItems = this.helper.toTree();
     this.dataSourceCargoCategory.data(cRootItems);
@@ -70,7 +69,7 @@ export class CargoCategoryTree {
     }
     let categoryName = this.selectedCargoCategory.categoryName;
     let id = this.selectedCargoCategory.id;
-    this.cargoCategory.id = id;
+    this.cargoCategory.id = id;        
     let data = this.selectedCargoCategory;
     while (data.parentId) {
       id = data.parentId;

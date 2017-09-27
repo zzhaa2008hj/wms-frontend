@@ -5,12 +5,9 @@ import { OrganizationService } from "@app/base/services/organization";
 import { Organization, orgValidationRules } from '@app/base/models/organization';
 import { ValidationController } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
-import { ConstantValues } from '@app/common/models/constant-values';
 
 export class EditWareHouseCustomer {
-
   org = {} as Organization;
-  orgProperties = ConstantValues.OrgProperties;
 
   constructor(@inject private router: Router,
               @inject private orgService: OrganizationService,
@@ -28,9 +25,6 @@ export class EditWareHouseCustomer {
   }
 
   async update() {
-    if (this.org.orgProperty == 1) {
-      this.org.shortName = this.org.name;
-    }
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     try {

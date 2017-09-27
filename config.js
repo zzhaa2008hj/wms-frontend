@@ -39,12 +39,9 @@ System.config({
     "bootstrap-datepicker": "npm:bootstrap-datepicker@1.6.4",
     "echarts": "npm:echarts@3.6.2",
     "font-awesome": "npm:font-awesome@4.7.0",
-    "html2canvas": "npm:html2canvas@0.5.0-beta4",
     "jquery": "npm:jquery@3.2.1",
-    "jspdf": "npm:jspdf@1.3.5",
     "moment": "npm:moment@2.18.1",
     "nprogress": "github:rstacruz/nprogress@0.2.0",
-    "raphael": "github:DmitryBaranovskiy/raphael@2.2.7",
     "uuid": "npm:uuid@3.1.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -81,9 +78,6 @@ System.config({
     },
     "github:twbs/bootstrap@3.3.7": {
       "jquery": "npm:jquery@3.2.1"
-    },
-    "npm:adler32cs@0.0.1": {
-      "buffer": "github:jspm/nodelibs-buffer@0.1.1"
     },
     "npm:asn1.js@4.9.1": {
       "bn.js": "npm:bn.js@4.11.7",
@@ -402,22 +396,11 @@ System.config({
       "minimalistic-crypto-utils": "npm:minimalistic-crypto-utils@1.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:html2canvas@0.5.0-beta4": {
-      "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:inherits@2.0.3": {
       "util": "github:jspm/nodelibs-util@0.1.0"
-    },
-    "npm:jspdf@1.3.5": {
-      "adler32cs": "npm:adler32cs@0.0.1",
-      "buffer": "github:jspm/nodelibs-buffer@0.1.1",
-      "cf-blob.js": "npm:cf-blob.js@0.0.1",
-      "file-saver": "npm:file-saver@1.3.3",
-      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:miller-rabin@4.0.0": {
       "bn.js": "npm:bn.js@4.11.7",

@@ -1,42 +1,57 @@
 <template>
-  <ak-grid k-data-source.bind="dataSource" k-pageable.bind="ture" k-editable="inline">
-    <ak-col k-title="作业内容">
-      <ak-template>
-        <ak-drop-down-list class="form-control" k-option-label="请选择..." k-data-text-field="workName" k-data-value-field="id" k-value.two-way="workId & validate"
-          k-data-source.bind="worksSource" k-enabled.two-way="!disabled" k-on-change.delegate="validateWorkOrderItem($this,'workId')"
-          style="width: 100%">
-        </ak-drop-down-list>
-      </ak-template>
-    </ak-col>
-    <ak-col k-title="计价单位" k-width.bind="100">
-      <ak-template>
-        ${unitStr}
-      </ak-template>
-    </ak-col>
-    <ak-col k-field="workNumber" k-title="作业数量">
-      <ak-template>
-        <input type="number" value.bind="workNumber & toFloat & validate" blur.trigger="aa()" disabled.bind="disabled">
-      </ak-template>
-    </ak-col>
-    <ak-col k-title="作业单位">
-      <ak-template>
-        <ak-drop-down-list class="form-control" k-option-label="请选择..." k-data-text-field="shortName" k-data-value-field="id" k-value.two-way="customerId & validate"
-          k-data-source.bind="customersSource" k-enabled.two-way="!disabled" k-on-change.delegate="validateWorkOrderItem($this,'customerId')"
-          style="width: 100%">
-        </ak-drop-down-list>
-      </ak-template>
-    </ak-col>
-    <ak-col k-field="remark" k-title="备注">
-      <ak-template>
-        <input type="text" value.bind="remark" disabled.bind="disabled" style="width: 90%">
-      </ak-template>
-    </ak-col>
-    <ak-col k-width.bind="100">
-      <ak-template>
-        <button class="btn btn-small" click.delegate="remove($this)" disabled.bind="disabled">删除</button>
-      </ak-template>
-    </ak-col>
-    <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
-  </ak-grid>
-  <button click.trigger="add()" disabled.bind="disabled">新增作业过程</button>
+    <ak-grid k-data-source.bind="dataSource"
+             k-pageable.bind="ture"
+             k-editable="inline">
+        <ak-col k-title="作业内容">
+            <ak-template>
+                <ak-drop-down-list class="form-control"
+                                   k-option-label="请选择..."
+                                   k-data-text-field="workName"
+                                   k-data-value-field="id"
+                                   k-value.two-way="workId & validate"
+                                   k-data-source.bind="worksSource"
+                                   k-enabled.two-way="!disabled"
+                                   k-on-change.delegate="validateWorkOrderItem($this,'workId')"
+                                   style="width: 60%">
+                </ak-drop-down-list>
+            </ak-template>
+        </ak-col>
+        <ak-col k-title="计价单位">
+            <ak-template>
+                ${unitStr}
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="workNumber" k-title="作业数量">
+            <ak-template>
+                <input type="number" value.bind="workNumber & toInt & validate" blur.trigger="aa()"
+                       disabled.bind="disabled">
+            </ak-template>
+        </ak-col>
+        <ak-col k-title="作业单位">
+            <ak-template>
+                <ak-drop-down-list class="form-control"
+                                   k-option-label="请选择..."
+                                   k-data-text-field="shortName"
+                                   k-data-value-field="id"
+                                   k-value.two-way="customerId & validate"
+                                   k-data-source.bind="customersSource"
+                                   k-enabled.two-way="!disabled"
+                                   k-on-change.delegate="validateWorkOrderItem($this,'customerId')"
+                                   style="width: 60%">
+                </ak-drop-down-list>
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="remark" k-title="备注">
+            <ak-template>
+                <input type="text" value.bind="remark" disabled.bind="disabled">
+            </ak-template>
+        </ak-col>
+        <ak-col>
+            <ak-template>
+                <button class="btn btn-small" click.delegate="remove($this)" disabled.bind="disabled">删除</button>
+            </ak-template>
+        </ak-col>
+        <!--<ak-col k-command.bind="['destroy']" k-title="&nbsp;" width="250px"></ak-col>-->
+    </ak-grid>
+    <button click.trigger="add()" disabled.bind="disabled">新增作业过程</button>
 </template>

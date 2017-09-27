@@ -34,6 +34,7 @@
     <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
     <ak-col k-field="workName" k-title="作业内容" k-width.bind="180"></ak-col>
     <ak-col k-field="cargoCategoryName" k-title="货类" k-width.bind="180"></ak-col>
+    <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
     <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
     <ak-col k-field="pricingMode== 1 ? '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
     <ak-col k-field="remark" k-title="备注" k-width.bind="250"></ak-col>
@@ -41,7 +42,7 @@
       <rate-recipients if.bind="pricingMode == 2" rate-id.bind="$this.id"></rate-recipients>
       <h4 if.bind="pricingMode == 1" style="text-align: center">无阶梯费率</h4>
     </ak-template>
-    <ak-col k-title="操作" k-width.bind="150">
+    <ak-col k-title="操作" k-width.bind="200">
       <ak-template>
         <a class="btn btn-small" route-href="route: edit; params.bind: { id: id }" >编辑</a>
         <button class="btn btn-warning btn-small" click.delegate="delete(id)" required-permissions="D000012">删除</button>

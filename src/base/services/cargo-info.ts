@@ -43,9 +43,8 @@ export class CargoInfoService {
    * 获取合同信息
    * @param contractType
    */
-  async getContracts(contractType?: number): Promise<Contract[]> {
-    let res = await this.http.createRequest(`base/contract/list`).withParams(contractType).asGet().send();
-    //let res = await this.http.get(`base/contract/list?contractType=${contractType}`);
+  async getContracts(contractType: number): Promise<Contract[]> {
+    let res = await this.http.get(`base/contract/list?contractType=${contractType}`);
     return res.content;
   }
 

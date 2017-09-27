@@ -26,6 +26,11 @@ export class PositionTransferInfoService {
     return this.http.put(`/position-transfer/info/${positionTransferInfo.id}`, positionTransferInfo).then(handleResult);
   }
 
+  async getChangeHistory(id: string) {
+    let res = await this.http.get(`/position-transfer/info/${id}/changeHistory`);
+    return res.content;
+  }
+
   updateBusinessVerify(id: string, status: number): Promise<void> {
     return this.http.put(`/position-transfer/info/${id}/verify`, status).then(handleResult);
   }
@@ -51,10 +56,5 @@ export class PositionTransferItemService {
 
   getItems(id: string): Promise<PositionTransferItem[]> {
     return this.http.get(`/position-transfer/info/${id}/items`).then(res => res.content);
-  }
-
-  async getChangeHistory(id: string) {
-    let res = await this.http.get(`/position-transfer/info/${id}/changeHistory`);
-    return res.content;
   }
 }

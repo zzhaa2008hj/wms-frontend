@@ -1,4 +1,4 @@
-import { autoinject } from 'aurelia-dependency-injection';
+import {  autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory } from '@app/utils';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { StatisticsCriteria, PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
@@ -14,6 +14,7 @@ export class PositionTransferInfoList {
   criteria: StatisticsCriteria = {};
   dataSource: kendo.data.DataSource;
   units: DictionaryData[] = [] as DictionaryData[];
+  id: string = '';
 
   pageable = {
     refresh: true,
@@ -23,10 +24,13 @@ export class PositionTransferInfoList {
 
   constructor( private positionTransferInfoService: PositionTransferInfoService,
                private messageDialogService: MessageDialogService,
-               private dialogService: DialogService,
                private router: Router,
-               private verifyRecordService: VerifyRecordService,
-               private dataSourceFactory: DataSourceFactory) {
+               private dataSourceFactory: DataSourceFactory,
+              private positionTransferInfoService: PositionTransferInfoService,
+              private dataSourceFactory: DataSourceFactory,
+              private dialogService: DialogService,
+              private messageDialogService: MessageDialogService,
+              private verifyRecordService: VerifyRecordService) {
   }
 
   async activate() {

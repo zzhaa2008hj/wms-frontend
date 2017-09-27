@@ -1,7 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, RestClient } from "@app/utils";
 import { CargoCategory } from "@app/base/models/cargo-category";
-
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -10,9 +9,9 @@ export class CargoCategoryService {
   constructor(private http: RestClient) {
   }
 
-  async listCargoCategory(status?: boolean): Promise<CargoCategory[]> {
+  async listCargoCategory(params?: { status: boolean }): Promise<CargoCategory[]> {
     let url = `/base/cargoCategory/list`;
-    let res = await this.http.createRequest(url).withParams({ status: status }).asGet().send();
+    let res = await this.http.createRequest(url).withParams(params).asGet().send();
     return res.content;
   }
 
