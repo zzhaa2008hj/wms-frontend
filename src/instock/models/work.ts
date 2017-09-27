@@ -92,6 +92,9 @@ export class WorkOrderDetail{
     workOrderCategory: number ;
     cargoName: string ;
     cargoCategoryName: string ;
+    newWarehouseName: string;
+    transferQuantity: number;
+    transferNumber: number;
 }
 
 export class WorkOrderArea{

@@ -114,6 +114,15 @@ export class WorkOrderItemService {
       });
   }
 
+  getTransferWorkDetails(transferId: string): Promise<WorkOrderDetail[]> {
+    return this.http.get(`/base/warehouseWorkOrderItem/${transferId}/transferDetail`)
+      .then(res => {
+        let details = res.content;
+        details.map(details => fixDate(details, "workDate"));
+        return details;
+      });
+  }
+
   checkHasWorkItem(orderId:string, type: number): Promise<void>{
     return this.http.get(`/base/warehouseWorkOrderItem/${orderId}/check?type=${type}`).then(handleResult);
   }

@@ -1,0 +1,31 @@
+<template>
+    <require from="./rate-step-element"></require>
+    <ak-grid k-data-source.bind="dataSource">
+        <ak-col k-field="rateCategory" k-title="费用类别">
+            <ak-template>
+                ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="chargeType" k-title="收付费">
+            <ak-template>
+                ${chargeType == 1 ? '收费' :'付费'}
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="price" k-title="单价"></ak-col>
+        <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+        <ak-col k-field="pricingMode" k-title="计价方式">
+            <ak-template>
+                ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
+        <ak-col k-field="workName" k-title="作业内容"></ak-col>
+        <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+        <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
+        <ak-col k-field="remark" k-title="备注"></ak-col>
+        <ak-template for="detailTemplate">
+            <rate-steps rate-steps-id.bind="id" if.bind="pricingMode !=1 "></rate-steps>
+            <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+        </ak-template>
+    </ak-grid>
+</template>
