@@ -344,7 +344,7 @@ export class CargoFlowList {
   }
 
   requiredPermissions(sourceCode: string) {
-    return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
+    return requiredPermissionsAttributeResult([sourceCode], this.user.userInfo.menuVoList);
   }
 
   /**

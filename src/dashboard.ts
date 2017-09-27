@@ -48,7 +48,7 @@ export class Dashboard {
   warehouseItems = [{ value: "1", text: "入库" }, { value: "2", text: "出库" }, { value: "3", text: "货权转移" }, {
     value: "4",
     text: "货位转移"
-  }]
+  }];
   warehouseDates = [{ value: "1", text: "本周" }, { value: "2", text: "本月" }, { value: "3", text: "本季" }, {
     value: "4",
     text: "本年"
@@ -92,7 +92,7 @@ export class Dashboard {
   //显示数据
   cagData;
   //后台传入数据
-  cagDatas = {} as ChargeAmt
+  cagDatas = {} as ChargeAmt;
   //chart
   cagChart;
   chargeDates = [{ value: "1", text: "本周" }, { value: "2", text: "本月" }, { value: "3", text: "本季" }, {
@@ -122,9 +122,9 @@ export class Dashboard {
   }];
 
   constructor(private dialogService: DialogService,
-    private indexService: IndexService,
-    private user: UserSession,
-    private noticeService: NoticeService) {
+              private indexService: IndexService,
+              private user: UserSession,
+              private noticeService: NoticeService) {
 
   }
 
@@ -137,21 +137,32 @@ export class Dashboard {
       this.notice.createTimeStr = this.notice.createTime ? moment(this.notice.createTime).format("YYYY-MM-DD") : '';
     }
     //首页 几个数据显示
-    this.businessOrder = await this.indexService.getBusinessOrderNumber();
-    this.feeOrder = await this.indexService.getFeeOrderNumber();
-    this.warehouseOrder = await this.indexService.getWarehouseOrderNumber();
+    if (this.requiredPermissions(['R000075', 'R000080'])) {
+      this.businessOrder = await this.indexService.getBusinessOrderNumber();
+    }
+    if (this.requiredPermissions(['R000080'])) {
+      this.warehouseOrder = await this.indexService.getWarehouseOrderNumber();
+    }
     // 第一张echarts 图 加载数据
-    await this.warehouseChange();
-    //库存
-    Object.assign(this.warehouse, { id: '', name: '全部' });
-    this.storateWarehouses.push(this.warehouse);
-    this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
-    await this.getStorageData();
+    if (this.requiredPermissions(['R000076'])) {
+      await this.warehouseChange();
+      //库存
+      Object.assign(this.warehouse, { id: '', name: '全部' });
+      this.storateWarehouses.push(this.warehouse);
+      this.storateWarehouses = [...this.storateWarehouses, ...await this.indexService.getTopWarehouses()];
+      await this.getStorageData();
+    }
 
-    //  收费
-    await this.getChargedata();
-    //  付费
-    await this.getPayData();
+    if (this.requiredPermissions(['R000077'])) {
+      this.feeOrder = await this.indexService.getFeeOrderNumber();
+    }
+
+    if (this.requiredPermissions(['R000078'])) {
+      //  收费
+      await this.getChargedata();
+      //  付费
+      await this.getPayData();
+    }
 
   }
 
@@ -183,7 +194,7 @@ export class Dashboard {
     if (this.wd == "1") {
       this.warehouseCate = this.warehouseCate.map(x => {
         return this.weekInfo.find(r => r.stage == x).title;
-      })
+      });
     }
   }
 
@@ -259,7 +270,7 @@ export class Dashboard {
   }
 
   /**
-   *库存信息
+   * 库存信息
    */
   //数据
   async getStorageData() {
@@ -570,9 +581,7 @@ export class Dashboard {
 
   }
 
-
-
-  requiredPermissions(sourceCode: string) {
+  requiredPermissions(sourceCode: string[]) {
     return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
   }
 }
