@@ -91,7 +91,7 @@ export class CargoInfoList {
   }
 
   requiredPermissions(sourceCode: string) {
-    return requiredPermissionsAttributeResult(sourceCode, this.user.userInfo.menuVoList);
+    return requiredPermissionsAttributeResult([sourceCode], this.user.userInfo.menuVoList);
   }
 
 }
