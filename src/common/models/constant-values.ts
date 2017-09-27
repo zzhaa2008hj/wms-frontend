@@ -402,4 +402,14 @@ export class ConstantValues {
       title: "货转完成"
     }];
   }
+  
+  static get DemandFrom() {
+    return [{
+      type: 1,
+      name: "外部"
+    }, {
+      type: 2,
+      name: "内部"
+    }];
+  }
 }
