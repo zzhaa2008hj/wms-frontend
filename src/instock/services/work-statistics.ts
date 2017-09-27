@@ -34,4 +34,8 @@ export class WorkStatisticsService {
   saveStatistics(workStatistics: WorkStatistics): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrderStatistics/statistics`, workStatistics).then(handleResult);
   }
+
+  getTransferStatistics(transferId: string): Promise<WorkStatistics> {
+    return this.http.get(`/base/warehouseWorkOrderStatistics/${transferId}/transferStatistics`).then(res => res.content);
+  }
 }

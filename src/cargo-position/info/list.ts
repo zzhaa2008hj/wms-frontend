@@ -69,4 +69,16 @@ export class PositionTransferInfoList {
     }
   }
 
+  //上传客户/领导签字确认单
+  async uploadConfirm(e) {
+    let result = await this.dialogService.open({ viewModel: "", model: e, lock: true }).whenClosed();
+    if (result.wasCancelled) return;
+    try {
+      await this.positionTransferInfoService.updateConfirm(e.id, result.output);
+      this.dialogService.alert({ title: "提示", message: "客户/领导签字确认成功" });
+    } catch (err) {
+      this.dialogService.alert({ title: "错误", message: err.message });
+    }
+  }
+
 }

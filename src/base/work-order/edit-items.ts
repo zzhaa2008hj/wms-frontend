@@ -42,23 +42,29 @@ export class EditItems {
   worksSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.workInfoService.listWorkInfoesByCargo(this.editWorArea.businessId, this.routerParams.type)
-          .then(options.success)
-          .catch(err => options.error("", "", err));
+        if (this.routerParams.type != 4) {
+          this.workInfoService.listWorkInfoesByCargo(this.editWorArea.businessId, this.routerParams.type)
+            .then(options.success)
+            .catch(err => options.error("", "", err));
+        } else {
+          this.workInfoService.listWorkInfoesByTransferItemId(this.editWorArea.businessId)
+            .then(options.success)
+            .catch(err => options.error("", "", err))
+        }
       }
     }
   });
   //this.instockCargoItemId, this.type
   unit = [] as DictionaryData[];
-  constructor(@inject private workInfoService: WorkInfoService,
-              @inject private editWorArea: EditWorArea,
-              @inject private workOrderService: WorkOrderService,
-              @inject('routerParams') private routerParams: RouterParams,
-              @inject private workOrderItemService: WorkOrderItemService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private eventAggregator: EventAggregator,
-              @newInstance() private validationController: ValidationController,
-              @inject private dictionaryDataService: DictionaryDataService) {
+  constructor( @inject private workInfoService: WorkInfoService,
+    @inject private editWorArea: EditWorArea,
+    @inject private workOrderService: WorkOrderService,
+    @inject('routerParams') private routerParams: RouterParams,
+    @inject private workOrderItemService: WorkOrderItemService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private eventAggregator: EventAggregator,
+    @newInstance() private validationController: ValidationController,
+    @inject private dictionaryDataService: DictionaryDataService) {
     this.validationController.addRenderer(datagridValidationRenderer);
 
   }

@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, RestClient } from "@app/utils";
 import { WorkInfo } from "@app/base/models/work-info";
 import { CargoRate } from '@app/base/models/cargo-info';
+import { PositionTransferRate } from "@app/cargo-position/models/transfer-rate";
 
 /**
  * Created by Hui on 2017/6/15.
@@ -20,6 +21,9 @@ export class WorkInfoService {
   listWorkInfoesByCargo(businessId: string, type: number): Promise<CargoRate[]> {
     return this.http.get(`/base/workInfo/businessId/${businessId}?type=${type}`)
       .then(res => res.content);
+  }
+  listWorkInfoesByTransferItemId(transferItemId: string): Promise<PositionTransferRate[]> {
+    return this.http.get(`/base/workInfo/transferId/${transferItemId}`).then(res => res.content);
   }
 
   saveWorkInfo(workInfo: WorkInfo): Promise<void> {

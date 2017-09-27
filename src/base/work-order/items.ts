@@ -43,23 +43,29 @@ export class NewWorkItem {
   worksSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.workInfoService.listWorkInfoesByCargo(this.newWorkArea.instockCargoId, this.routerParams.type)
-          .then(options.success)
-          .catch(err => options.error("", "", err));
+        if (this.routerParams.type != 4) {
+          this.workInfoService.listWorkInfoesByCargo(this.newWorkArea.instockCargoId, this.routerParams.type)
+            .then(options.success)
+            .catch(err => options.error("", "", err));
+        } else {
+          this.workInfoService.listWorkInfoesByTransferItemId(this.newWorkArea.instockCargoId)
+            .then(options.success)
+            .catch(err => options.error("", "", err))
+        }
       }
     }
   });
   //this.instockCargoItemId, this.type
   unit = [] as DictionaryData[];
   //private resBind: Subscription;
-  constructor(@inject private workInfoService: WorkInfoService,
-              @inject private newWorkArea: NewWorArea,
-              @inject private workOrderService: WorkOrderService,
-              @inject('routerParams') private routerParams: RouterParams,
-              @newInstance() private validationController: ValidationController,
-              @inject private eventAggregator: EventAggregator,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private dictionaryDataService: DictionaryDataService,) {
+  constructor( @inject private workInfoService: WorkInfoService,
+    @inject private newWorkArea: NewWorArea,
+    @inject private workOrderService: WorkOrderService,
+    @inject('routerParams') private routerParams: RouterParams,
+    @newInstance() private validationController: ValidationController,
+    @inject private eventAggregator: EventAggregator,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private dictionaryDataService: DictionaryDataService, ) {
     this.validationController.addRenderer(datagridValidationRenderer);
 
   }
