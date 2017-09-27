@@ -13,29 +13,41 @@
                     <input type="text" class="form-control" value.bind="warehouse.name & validate">
                 </div>
             </div>
-          <div class="form-group">
-            <label class="form-label">库区性质*</label>
-            <span class="help"></span>
-            <ak-drop-down-list k-value.two-way="warehouse.type & validate"
-                               k-option-label="请选择..."
-                               k-data-text-field="dictDataName"
-                               k-data-value-field="dictDataCode"
-                               k-data-source.bind="type">
-            </ak-drop-down-list>
-          </div>
+            <div class="form-group">
+                <label class="form-label">库区性质*</label>
+                <span class="help"></span>
+                <ak-drop-down-list k-value.two-way="warehouse.type & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+                    k-data-source.bind="type">
+                </ak-drop-down-list>
+            </div>
             <div if.bind="!pWarehouse">
                 <div class="form-group">
                     <label class="form-label">库区类别*</label>
                     <span class="help"></span>
-                    <ak-drop-down-list k-value.two-way="warehouse.category & validate"
-                                       k-option-label="请选择..."
-                                       k-data-text-field="dictDataName"
-                                       k-data-value-field="dictDataCode"
-                                       k-data-source.bind="category">
+                    <ak-drop-down-list k-value.two-way="warehouse.category & validate" k-option-label="请选择..." k-data-text-field="dictDataName"
+                        k-data-value-field="dictDataCode" k-data-source.bind="category">
                     </ak-drop-down-list>
                 </div>
             </div>
-
+            <div if.bind="pWarehouse">
+                <label class="form-label">场图上传</label>
+                <div class="controls">
+                    <input style="width: 300px;" type="text" value.bind="dir" multiple/>
+                    <input style="display:none"  class="form-control"  type="text" value.bind="warehouse.num & validate"  />
+                    <button class="btn btn-small" click.trigger="chooseFile()">选择文件</button>
+                    <button class="btn btn-small btn-primary" click.trigger="upload()">上传</button>
+                    <wa-progress width="200px" height="5px" if.bind="currentUpload" value.bind="currentUpload.progress.loaded" total.bind="currentUpload.progress.total"
+                        label="正在上传...">${percent}%
+                    </wa-progress>
+                    <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消</button>
+                </div>
+                <div class="controls">
+                    <label repeat.for="item of attachments">
+                    <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a><a class="pointer m-l-10"
+                                                                                                 click.delegate="delete($this)">删除</a>
+                  </label>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="form-label">备注</label>
                 <span class="help"></span>

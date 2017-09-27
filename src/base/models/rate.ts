@@ -68,11 +68,11 @@ export const rateValidationRules = ValidationRules
   .ensure((rate: Rate) => rate.price)
   .displayName('单价')
   .satisfies((x: number, rate: Rate) => {
-    if ((x == null || x <= 0) && rate.pricingMode == 1) {
+    if ((x == null || x < 0) && rate.pricingMode == 1) {
       return false;
     }
     return true;
-  }).withMessage(`\${$displayName} 不能为空并且应大于0`)
+  }).withMessage(`\${$displayName} 不能为空`)
   .ensure((rate: Rate) => rate.unit)
   .displayName('计量单位')
   .satisfies((x: string, rate: Rate) => {

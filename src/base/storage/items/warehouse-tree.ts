@@ -22,21 +22,21 @@ export class WarehouseTree {
     }
   });
   private helper: TreeHelper<any>;
-  
+
   constructor(private warehouseService: WarehouseService,
               private dialogController: DialogController,
               private dialogService: DialogService) {
   }
 
   async activate(storageItem: StorageItemHistory) {
-    
+
     let warehouses = [] as Warehouse[];
     if (storageItem.warehouseId) {
       this.selectedWarehouse = await this.warehouseService.getWarehouseById(storageItem.warehouseId);
     }
     if (storageItem.businessType) {
       if (storageItem.businessType == 1) {
-        warehouses = await this.warehouseService.listWarehouse();
+        warehouses = await this.warehouseService.listWarehouse(true);
       } else {
         warehouses = await this.warehouseService.listWarehouseByStorageInfo(storageItem.storageInfoId);
       }

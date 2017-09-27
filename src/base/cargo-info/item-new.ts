@@ -164,7 +164,7 @@ export class NewCargoItem {
   }
 
   cargoCategoryChanged() {
-    this.convertCargoRates();
+    //this.convertCargoRates();
     this.cargoRateDataSource.read();
   }
 
@@ -193,7 +193,6 @@ export class NewCargoItem {
     if (!valid) return;
     let rate;
 
-    //let cargoRateList = this.contractCargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
     let cargoRateList = this.cargoRates.filter(x => x.cargoCategoryId == this.cargoItem.cargoCategoryId);
     cargoRateList.forEach(r => {
       let id = r.id;
@@ -216,8 +215,8 @@ export class NewCargoItem {
     if (rate) {
       await this.dialogService.alert({
         title: "提示",
-        message: ['仓储费', '装卸费', '其他费用'][rate.rateCategory - 1] +
-        '-' + ['收费', '付费'][rate.chargeType - 1] + '-' + rate.workName + ':' + "存在多条费率"
+        message: ['仓储费', '装卸费', '其他费用'][rate.rateCategory - 1] + 
+          '-' + ['收费', '付费'][rate.chargeType - 1] + '-' + rate.workName + ':' + "存在多条费率"
       });
       return;
     }
@@ -301,7 +300,7 @@ export class NewCargoItem {
   }
 
   select() {
-    console.log("this.allCargoRates", this.allCargoRates);
+    this.convertCargoRates();
     let source = [];
     Object.assign(source, this.allCargoRates);
     //按条件搜索

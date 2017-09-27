@@ -22,6 +22,7 @@ import { Order } from "@app/outstock/models/order";
 import { OrderService, OrderItemService } from "@app/outstock/services/order";
 import { CargoRateService } from "@app/base/services/rate";
 import { EditWorArea } from "./edit-area";
+import { PositionTransferItemService } from "@app/cargo-position/services/transfer-info";
 
 export class EditWorkOrder {
   instockVehicle = {} as InstockVehicle;
@@ -127,7 +128,8 @@ export class EditWorkOrder {
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private orderItemService: OrderItemService,
               @inject private orderService: OrderService,
-              @inject private cargoRateService: CargoRateService) {
+              @inject private cargoRateService: CargoRateService,
+              @inject private positionTransferItemService: PositionTransferItemService) {
 
     this.validationController.addRenderer(formValidationRenderer);
   }
@@ -155,6 +157,17 @@ export class EditWorkOrder {
         transport: {
           read: options => {
             this.orderItemService.getItemsByOrderIdAndType(this.order.id, 0)
+              .then(options.success)
+              .catch(err => options.error("", "", err));
+          }
+        }
+      });
+    }
+    if (this.routerParams.type == 4) {
+      this.cargoItemsSource = new kendo.data.DataSource({
+        transport: {
+          read: options => {
+            this.positionTransferItemService.getItems(this.routerParams.businessId)
               .then(options.success)
               .catch(err => options.error("", "", err));
           }
@@ -190,7 +203,6 @@ export class EditWorkOrder {
     }
 
     this.disabled = true;
-
     let len = this.datasource.data().length;
     for (let i = 0; i < len; i++) {
       let items = this.itemsDataSources.get(this.datasource.data()[i].uid);

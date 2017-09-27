@@ -6,9 +6,9 @@ import { ContractVo } from "@app/base/models/contractVo";
 import { Rate, RateStep } from "@app/base/models/rate";
 import { WorkInfo } from "@app/base/models/work-info";
 import { Organization } from "@app/base/models/organization";
-import { ValidationController, ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
-import { Contract, ContractSearch } from '@app/base/models/contract';
+import { Contract, ContractSearch, warehouseIdRules, contractValidationRules } from '@app/base/models/contract';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
@@ -23,7 +23,6 @@ export class NewContract {
   contractVo = {} as ContractVo;
   contract = {} as Contract;
   unit = [] as DictionaryData[];
-  // warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
 
@@ -140,7 +139,7 @@ export class NewContract {
   async activate() {
     //this.validationController.addObject(this.contractVo, validationRules);
     //this.validationController.addObject(this.contractVo.contract, validationRules);
-    this.validationController.addObject(this.contract, validationRules);
+    this.validationController.addObject(this.contract, contractValidationRules);
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
     // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
@@ -153,15 +152,11 @@ export class NewContract {
     let rates = await this.contractService.getBaseRate();
     rates.map(res => {
       let unit = this.unit.find(d => res.unit == d.dictDataCode);
-      // let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
       let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
       let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
-      // if (warehouseType) {
-      //   res.warehouseTypeStr = warehouseType.dictDataName;
-      // }
       if (warehouseCategory) {
         res.warehouseCategoryStr = warehouseCategory.dictDataName;
       }
@@ -227,23 +222,29 @@ export class NewContract {
     // let contractType = this.contractVo.contract.contractType;
     this.search = {} as ContractSearch;
     let contractType = this.contract.contractType;
-    this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: contractType });
+    
     //1 :
+    this.filterBaseRateSteps = [];    
     if (contractType == 2) {
       this.customers = this.handlingCustomers;
       this.contract.customerId = '';
+      this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: 2 });
+      this.filterBaseRateSteps = this.baseRateAndSteps.filter(res => res.customerCategory == contractType);
     } else {
       this.customers = this.wareHouseCustomer;
       this.contract.customerId = '';
+      this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: 1 });
     }
 
     if (contractType == 3) {
+      this.customers = this.wareHouseCustomer;
+      this.contract.customerId = '';
+      this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: 1 });
       this.validationController.addObject(this.contractVo, warehouseIdRules);
     } else {
       this.validationController.removeObject(this.contractVo);
     }
     this.customerDatasource.read();
-    this.filterBaseRateSteps = [];
     this.datasource.read();
   }
 
@@ -266,7 +267,11 @@ export class NewContract {
     //合并费率
     this.filterBaseRateSteps = this.filterBaseRateSteps.concat(this.source);
     this.datasource.read();
-    this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: this.contract.contractType });
+    if (this.contract.contractType == 2) {
+      this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: 2 });
+    } else {
+      this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: 1 });
+    }
   }
 
   async save() {
@@ -275,16 +280,22 @@ export class NewContract {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     
-    let rateList = this.filterBaseRateSteps
-      .filter(x => x.customerCategory == this.contract.contractType);
+    let rateList = [];
+    if (this.contract.contractType == 2) {
+      rateList = this.filterBaseRateSteps.filter(x => x.customerCategory == 2);
+    } else {
+      rateList = this.filterBaseRateSteps.filter(x => x.customerCategory == 1);
+    }
     rateList.forEach(r => {
       let id = r.id;
       let rateSteps = this.baseRateStep.filter(res => res.rateId == id);
       r.rateStep = rateSteps;
-
     });
+    if (!rateList || rateList.length == 0) {
+      await this.messageDialogService.alert({ title: "新增失败", message: "请选择费率", icon: 'error' });
+      return;
+    }
     this.contractVo.rateVos = rateList;
-    // this.contractVo.contract.customerName = this.customerInfo.text();
     this.contract.customerName = this.customerInfo.text();
     this.contractVo.contract = this.contract;
     this.disabled = true;
@@ -390,58 +401,5 @@ export class NewContract {
 
 }
 
-const validationRules = ValidationRules
-  .ensure((contract: Contract) => contract.contractType)
-  .displayName('合同类型')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((contract: Contract) => contract.customerId)
-  .displayName('客户名称')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((contract: Contract) => contract.contractNumber)
-  .displayName('合同编号')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .maxLength(50).withMessage(`\${$displayName} 过长`)
-
-  .ensure((contract: Contract) => contract.contractName)
-  .displayName('合同名称')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .maxLength(50).withMessage(`\${$displayName} 过长`)
-
-  .ensure((contract: Contract) => contract.contractAmount)
-  .displayName('合同金额')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .satisfies(x => !x || (x <= 1000000000000000 && x >= 0))
-  .withMessage(`\${$displayName} 为无效值(过大或过小)`)
-  //.maxLength(17).withMessage(`\${$displayName} 过长`)
-
-  .ensure((contract: Contract) => contract.startTime)
-  .displayName('合同开始日期')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((contract: Contract) => contract.endTime)
-  .displayName('合同结束日期')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((contract: Contract) => contract.signDate)
-  .displayName('合同签订日期')
-  .required().withMessage(`\${$displayName} 不能为空`)
-
-  .ensure((contract: Contract) => contract.signer)
-  .displayName('签订人')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .maxLength(50).withMessage(`\${$displayName} 过长`)
-
-  .ensure((contract: Contract) => contract.remark)
-  .displayName('备注')
-  .maxLength(500).withMessage(`\${$displayName} 过长`)
-  .rules;
-
-const warehouseIdRules = ValidationRules
-  .ensure((contractVo: ContractVo) => contractVo.warehouseId)
-  .displayName('存放库区')
-  .required().withMessage(`\${$displayName} 不能为空`)
-  .rules;
 
 

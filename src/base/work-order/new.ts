@@ -22,6 +22,8 @@ import { OrderService, OrderItemService } from "@app/outstock/services/order";
 import { CargoRateService } from "@app/base/services/rate";
 import { NewWorArea } from "./new-area";
 import { observable } from "aurelia-framework";
+import { PositionTransferInfo } from "@app/cargo-position/models/transfer-info";
+import { PositionTransferInfoService, PositionTransferItemService } from "@app/cargo-position/services/transfer-info";
 
 export class NewWorkOrder {
   instockVehicle = {} as InstockVehicle;
@@ -58,6 +60,7 @@ export class NewWorkOrder {
 
   cargoItemsSource: kendo.data.DataSource;
 
+  positionTransferInfo: PositionTransferInfo;
   vehicleSource = new kendo.data.DataSource({
     transport: {
       read: options => {
@@ -90,7 +93,9 @@ export class NewWorkOrder {
               @newInstance() private validationController: ValidationController,
               @inject private orderService: OrderService,
               @inject private orderItemService: OrderItemService,
-              @inject private cargoRateService: CargoRateService) {
+              @inject private cargoRateService: CargoRateService,
+              @inject private positionTransferInfoService: PositionTransferInfoService,
+              @inject private positionTransferItemService: PositionTransferItemService) {
     this.datasource = new kendo.data.DataSource({
         transport: {
           read: (options) => {
@@ -179,6 +184,20 @@ export class NewWorkOrder {
         transport: {
           read: options => {
             this.orderItemService.getItemsByOrderIdAndType(this.order.id, 0)
+              .then(options.success)
+              .catch(err => options.error("", "", err));
+          }
+        }
+      });
+    }
+    if (this.routerParams.type == 4) {
+      this.positionTransferInfo = await this.positionTransferInfoService.getById(this.routerParams.businessId);
+      this.workOrder.workOrderCategory = this.routerParams.type;
+      this.workOrder.batchNumber = this.positionTransferInfo.batchNumber;
+      this.cargoItemsSource = new kendo.data.DataSource({
+        transport: {
+          read: options => {
+            this.positionTransferItemService.getItems(this.routerParams.businessId)
               .then(options.success)
               .catch(err => options.error("", "", err));
           }

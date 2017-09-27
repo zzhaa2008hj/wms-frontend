@@ -72,7 +72,7 @@ export class NewCargoInfo {
     //仓储客户
     this.customers = await this.cargoInfoService.getCustomers(1);
     //仓储合同
-    this.contract = await this.cargoInfoService.getContracts(1);
+    this.contract = await this.cargoInfoService.getContracts();
     //把没有仓储合同的客户排除掉
     let customersWithContract = [];
     this.customers.forEach(r => {
@@ -83,7 +83,6 @@ export class NewCargoInfo {
         }
         return true;
       });
-
     });
     this.customers = customersWithContract;
 
@@ -210,10 +209,9 @@ const validationRules = ValidationRules
   .displayName('客户名称')
   .required().withMessage(`\${$displayName} 不能为空`)
 
-  // .ensure((cargoInfo: CargoInfo) => cargoInfo.billLadingNumber)
-  // .displayName('提单号')
-  // .required().withMessage(`\${$displayName} 不能为空`)
-  // .maxLength(30).withMessage(`\${$displayName} 过长`)
+  .ensure((cargoInfo: CargoInfo) => cargoInfo.billLadingNumber)
+  .displayName('提单号')
+  .maxLength(30).withMessage(`\${$displayName} 过长`)
 
   .ensure((cargoInfo: CargoInfo) => cargoInfo.remark)
   .displayName('备注')

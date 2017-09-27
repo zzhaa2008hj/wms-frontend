@@ -1,0 +1,37 @@
+<template>
+    <ux-dialog>
+        <ux-dialog-header show-close-button.bind="true">
+            <i class="fa fa-check-square-o"></i> 上传
+        </ux-dialog-header>
+        <ux-dialog-body>
+            <label class="form-label">客户确认上传</label>
+            <div class="controls">
+                <input style="width: 300px;" type="text" value.bind="dir" multiple/>
+                <button class="btn btn-small" disabled.bind="disabled" click.trigger="chooseFiles()">选择文件</button>
+                <button class="btn btn-small btn-primary" disabled.bind="disabled" click.trigger="upload()">上传</button>
+                <wa-progress width="200px" height="5px" if.bind="currentUpload"
+                             value.bind="currentUpload.progress.loaded" total.bind="currentUpload.progress.total"
+                             label="正在上传...">${percent}%
+                </wa-progress>
+                <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消</button>
+            </div>
+            <div class="controls">
+                <label repeat.for="item of attachments">
+                    <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a><a class="pointer m-l-10"
+                                                                                                 click.delegate="delete($this)"
+                                                                                                 disabled.bind="disabled">删除</a>
+                </label>
+            </div>
+            <div style="margin-top:30px; margin-bottom: 5px; padding: 19px 0px 9px;">
+                <div class="pull-right">
+                    <button class="btn btn-small " disabled.bind="disabled" click.delegate="finish()">完成
+                    </button>
+                    <button class="btn btn-small" disabled.bind="disabled" click.delegate="cancle()">取消
+                    </button>
+                </div>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

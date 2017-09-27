@@ -33,7 +33,7 @@ export class CargoCategoryTree {
     if (categoryId) {
       this.selectedCargoCategory = await this.cargoCategoryService.getCargoCategory(categoryId);
     }
-    let cData = await this.cargoCategoryService.listCargoCategory();
+    let cData = await this.cargoCategoryService.listCargoCategory(true);
     this.helper = treeHelper(cData, { childrenKey: 'sub' });
     let cRootItems = this.helper.toTree();
     this.dataSourceCargoCategory.data(cRootItems);
@@ -65,7 +65,7 @@ export class CargoCategoryTree {
     }
     let categoryName = this.selectedCargoCategory.categoryName;
     let id = this.selectedCargoCategory.id;
-    this.cargoCategory.id = id;        
+    this.cargoCategory.id = id;
     let data = this.selectedCargoCategory;
     while (data.parentId) {
       id = data.parentId;

@@ -365,9 +365,9 @@ class QueryImpl<T> implements Query<T> {
  * @param sourceCode 
  * @param menuVoList 
  */
-export function requiredPermissionsAttributeResult(sourceCode: string[], menuVoList: MenuAndModule[]): boolean {
+export function requiredPermissionsAttributeResult(sourceCode: string, menuVoList: MenuAndModule[]): boolean {
   let aa = new Set(menuVoList.map(x => x.code));
-  return !sourceCode.every(a => !aa.has(a));
+  return aa.has(sourceCode);
 }
 
 export function alertError(dialogService: DialogService | MessageDialogService, message: any): void {

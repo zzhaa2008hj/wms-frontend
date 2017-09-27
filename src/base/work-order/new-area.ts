@@ -76,63 +76,63 @@ export class NewWorArea {
               @inject private newWorkOrder: NewWorkOrder,
               @inject private messageDialogService: MessageDialogService) {
     this.datasource = new kendo.data.DataSource({
-        transport: {
-          read: (options) => {
-            options.success([]);
-          },
-          update: (options) => {
-            options.success();
-          }
-          ,
-          destroy: (options) => {
-            options.success();
-          }
-          ,
-          create: async options => {
-            options.success();
-          }
+      transport: {
+        read: (options) => {
+          options.success([]);
         },
-        batch: true,
-        pageSize: 8,
-        schema: {
-          model: {
-            fields: {
-              workItemId: {
-                editable: false, nullable: true
-              },
-              workId: {
-                type: 'string',
-                validation: { required: true }
-              },
-              quantity: {
-                type: 'number',
-                validation: { min: 0, max: 1000000000000000 }
-              },
-              number: {
-                type: 'number',
-                validation: { min: 0, max: 1000000000000000 }
-              },
-              containerType: {
-                type: 'string'
-              },
-              containerNumber: {
-                type: 'string'
-              },
-              sign: {
-                type: 'string'
-              },
-              customerId: {
-                type: 'string',
-                validation: { required: true }
-              },
-              remark: {
-                type: 'string',
-                validation: { required: true }
-              }
+        update: (options) => {
+          options.success();
+        }
+        ,
+        destroy: (options) => {
+          options.success();
+        }
+        ,
+        create: async options => {
+          options.success();
+        }
+      },
+      batch: true,
+      pageSize: 8,
+      schema: {
+        model: {
+          fields: {
+            workItemId: {
+              editable: false, nullable: true
+            },
+            workId: {
+              type: 'string',
+              validation: { required: true }
+            },
+            quantity: {
+              type: 'number',
+              validation: { min: 0, max: 1000000000000000 }
+            },
+            number: {
+              type: 'number',
+              validation: { min: 0, max: 1000000000000000 }
+            },
+            containerType: {
+              type: 'string'
+            },
+            containerNumber: {
+              type: 'string'
+            },
+            sign: {
+              type: 'string'
+            },
+            customerId: {
+              type: 'string',
+              validation: { required: true }
+            },
+            remark: {
+              type: 'string',
+              validation: { required: true }
             }
           }
         }
       }
+    }
     );
     this.validationAreaController.addRenderer(datagridValidationRenderer);
 
@@ -151,7 +151,7 @@ export class NewWorArea {
       await this.messageDialogService.alert({ title: "提示", message: "输入内容不规范请检查输入内容" });
       return;
     }
-    let res = this.datasource.add({unit: this.instockCargoUnit});
+    let res = this.datasource.add({ unit: this.instockCargoUnit });
 
     let itemDataSource = new kendo.data.DataSource({
       schema: {
@@ -244,7 +244,7 @@ const workOrderAreaRules = ValidationRules
       return x <= 1000000000000000 && x > 0;
     } else {
       return x <= 1000000000000000 && x >= 0;
-    } 
+    }
   })
   .withMessage(`\${$displayName} 为无效值`)
 
@@ -256,7 +256,7 @@ const workOrderAreaRules = ValidationRules
       return x <= 1000000000000000 && x > 0;
     } else {
       return x <= 1000000000000000 && x >= 0;
-    } 
+    }
   })
   .withMessage(`\${$displayName} 为无效值`)
   .rules;

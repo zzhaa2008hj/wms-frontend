@@ -44,10 +44,10 @@
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label class="form-label">合同金额*</label>
+                <label class="form-label">合同金额</label>
                 <span class="help"></span>
                 <div class="controls">
-                  <input type="number" step="0.01" class="form-control" disabled.bind="disabled" value.bind="contract.contractAmount  & toFloat & validate">
+                  <input type="number" step="0.01" class="form-control" disabled.bind="disabled" value.bind="contract.contractAmount & toFloat">
                 </div>
               </div>
             </div>
@@ -121,7 +121,7 @@
             </div>
           </div>
         </div>
-        <template if.bind="contract.contractType==1 || contract.contractType==2">
+        <template if.bind="contract.contractType== 1 || contract.contractType== 2 ||contract.contractType== 3">
           <h4>合同费率</h4>
           <div class="col-md-12">
             <div class="form-group">

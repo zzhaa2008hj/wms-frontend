@@ -86,9 +86,9 @@
       </div>
     </div>
   </div>
-  <div class="grid simple" required-permissions="R000080">
+  <div class="grid simple">
     <div class="grid-body" style="padding: 10px;">
-      <div class="col-md-4 col-xs-6">
+      <div class="col-md-4 col-xs-6" required-permissions="R000080">
         <div class="small-box bg-aqua">
           <div class="inner">
             <h3>${warehouseOrder.instockNumber}</h3>
@@ -100,7 +100,7 @@
           <a href="/instock/cargo-flows" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
-      <div class="col-md-4 col-xs-6">
+      <div class="col-md-4 col-xs-6" required-permissions="R000080">
         <div class="small-box bg-green">
           <div class="inner">
             <h3>${warehouseOrder.outstockNumber}</h3>
@@ -112,7 +112,7 @@
           <a href="/outstock/outstock-orders" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
-      <div class="col-md-4 col-xs-6">
+      <div class="col-md-4 col-xs-6" required-permissions="R000080">
         <div class="small-box bg-yellow">
           <div class="inner">
             <h3>${warehouseOrder.positionNumber}</h3>
@@ -126,7 +126,7 @@
       </div>
     </div>
   </div>
-  <div class="grid simple" required-permissions="R000076">
+  <div class="grid simple">
     <div class="col-md-6 grid-body">
       <div class="col-md-6">
         <h2>仓库信息概览</h2>
@@ -168,7 +168,7 @@
       <span if.bind="sc=='pie'"> <span>数量</span>   <span>件数</span></span>
     </div>
   </div>
-  <div class="grid simple" required-permissions="R000078">
+  <div class="grid simple">
     <div class="col-md-6 grid-body">
       <div class="col-md-6">
         <h2>收费信息统计</h2>

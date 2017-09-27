@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, RestClient } from "@app/utils";
 import { Warehouse } from "@app/base/models/warehouse";
+
 /**
  * Created by Hui on 2017/6/15.
  */
@@ -9,9 +10,9 @@ export class WarehouseService {
   constructor(private http: RestClient) {
   }
 
-  async listWarehouse(params?: { status: boolean }): Promise<Warehouse[]> {
+  async listWarehouse(status?: boolean): Promise<Warehouse[]> {
     let url = `/base/warehouse/list`;
-    let res = await this.http.createRequest(url).withParams(params).asGet().send();
+    let res = await this.http.createRequest(url).withParams({ status: status }).asGet().send();
     return res.content;
   }
 

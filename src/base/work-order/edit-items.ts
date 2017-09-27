@@ -9,9 +9,9 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { ValidationController, ValidationRules } from 'aurelia-validation';
 import { WorkOrderItem } from "@app/instock/models/work";
 import { datagridValidationRenderer } from "./new-area";
-import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { CargoRate } from '@app/base/models/cargo-info';
+import { DictionaryDataService } from '@app/base/services/dictionary';
 
 @customElement('edit-area-items')
 export class EditItems {
@@ -42,23 +42,29 @@ export class EditItems {
   worksSource = new kendo.data.DataSource({
     transport: {
       read: options => {
-        this.workInfoService.listWorkInfoesByCargo(this.editWorArea.businessId, this.routerParams.type)
-          .then(options.success)
-          .catch(err => options.error("", "", err));
+        if (this.routerParams.type != 4) {
+          this.workInfoService.listWorkInfoesByCargo(this.editWorArea.businessId, this.routerParams.type)
+            .then(options.success)
+            .catch(err => options.error("", "", err));
+        } else {
+          this.workInfoService.listWorkInfoesByTransferItemId(this.editWorArea.businessId)
+            .then(options.success)
+            .catch(err => options.error("", "", err))
+        }
       }
     }
   });
   //this.instockCargoItemId, this.type
   unit = [] as DictionaryData[];
-  constructor(@inject private workInfoService: WorkInfoService,
-              @inject private editWorArea: EditWorArea,
-              @inject private workOrderService: WorkOrderService,
-              @inject('routerParams') private routerParams: RouterParams,
-              @inject private workOrderItemService: WorkOrderItemService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private eventAggregator: EventAggregator,
-              @newInstance() private validationController: ValidationController,
-              @inject private dictionaryDataService: DictionaryDataService) {
+  constructor( @inject private workInfoService: WorkInfoService,
+    @inject private editWorArea: EditWorArea,
+    @inject private workOrderService: WorkOrderService,
+    @inject('routerParams') private routerParams: RouterParams,
+    @inject private workOrderItemService: WorkOrderItemService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private eventAggregator: EventAggregator,
+    @newInstance() private validationController: ValidationController,
+    @inject private dictionaryDataService: DictionaryDataService) {
     this.validationController.addRenderer(datagridValidationRenderer);
 
   }
@@ -69,22 +75,22 @@ export class EditItems {
     this.eventAggregator.publish("item:bind", this);
     // 显示计价单位
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    await this.dataSource.sync();
-    let rateData = this.worksSource.data();
-    let data = (this.dataSource.data() as any) as WorkOrderItem[];
-    if (rateData && rateData.length > 0 && data && data.length > 0) {
-      let rates: CargoRate[] = [];
-      Object.assign(rates, rateData);
-      data.forEach(obj => {
-        let rate = rates.find(rate => rate.id == obj.workId);
-        if (rate) {
-          let unit = this.unit.find(d => rate.unit == d.dictDataCode);
-          if (unit) {
-            obj.unitStr = unit.dictDataName;
-          }
-        }
-      });
-    }
+    // await this.dataSource.sync();
+    // let rateData = this.worksSource.data();
+    // let data = (this.dataSource.data() as any) as WorkOrderItem[];
+    // if (rateData && rateData.length > 0 && data && data.length > 0) {
+    //   let rates: CargoRate[] = [];
+    //   Object.assign(rates, rateData);
+    //   data.forEach(obj => {
+    //     let rate = rates.find(rate => rate.id == obj.workId);
+    //     if (rate) {
+    //       let unit = this.unit.find(d => rate.unit == d.dictDataCode);
+    //       if (unit) {
+    //         obj.unitStr = unit.dictDataName;
+    //       }
+    //     }
+    //   });
+    // }
   }
 
   unbind() {

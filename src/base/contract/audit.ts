@@ -19,7 +19,6 @@ export class AuditContract {
   datasource: kendo.data.DataSource;
   
   unit = [] as DictionaryData[];
-  // warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;  
   
@@ -56,7 +55,6 @@ export class AuditContract {
    */
   async activate({ id }) {
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
-    // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
 
     this.contractId = id;
@@ -64,30 +62,26 @@ export class AuditContract {
     if (this.contractVo.contract.contractType == 3) {
       //库区信息
       this.warehouses = await this.contractService.getWarehouses();
-    } else {
-      let rates = this.contractVo.rateVos;
-      rates.map(res => {
-        let unit = this.unit.find(d => res.unit == d.dictDataCode);
-        // let warehouseType = this.warehouseType.find(d => res.warehouseType == d.dictDataCode);
-        let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
-        let rateType = this.rateTypes.find(d => res.rateType == d.value);
-        if (unit) {
-          res.unitStr = unit.dictDataName;
-        }
-        // if (warehouseType) {
-        //   res.warehouseTypeStr = warehouseType.dictDataName;
-        // }
-        if (warehouseCategory) {
-          res.warehouseCategoryStr = warehouseCategory.dictDataName;
-        }
-        if (rateType) {
-          res.rateTypeStr = rateType.text;
-        }
-        return res;
-      });
-      this.baseRateAndSteps = rates;
-      this.baseRateStep = this.contractVo.rateStepVos;
-    }
+    } 
+    let rates = this.contractVo.rateVos;
+    rates.map(res => {
+      let unit = this.unit.find(d => res.unit == d.dictDataCode);
+      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      let rateType = this.rateTypes.find(d => res.rateType == d.value);
+      if (unit) {
+        res.unitStr = unit.dictDataName;
+      }
+      if (warehouseCategory) {
+        res.warehouseCategoryStr = warehouseCategory.dictDataName;
+      }
+      if (rateType) {
+        res.rateTypeStr = rateType.text;
+      }
+      return res;
+    });
+    this.baseRateAndSteps = rates;
+    this.baseRateStep = this.contractVo.rateStepVos;
+  
   }
 
   formatMethod(type: number) {
