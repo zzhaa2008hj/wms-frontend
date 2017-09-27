@@ -191,39 +191,44 @@ export class NewPositionTransferInfo {
   }
 
   async addStorageItem() {
+    if (!this.positionTransferInfo.batchNumber) {
+      await this.messageDialogService.alert({ title: "", message: "请先选择批次号", icon: "warning" });
+      return;
+    }
     this.cargoRates = [];
+
     let oldStorageItems = this.dataSourceStorage.data();
-    if (!this.search.cargoName && !this.search.warehouseName) {
-      oldStorageItems.push(...this.storageItems);
-      // this.dataSourceStorage.data(this.storageItems);
-      this.baseCargoItems.forEach(bci => {
-        for (let cr of bci.cargoRates) {
-          this.cargoRates.push(cr);
-        }
-      });
-    }
-    if (this.search.cargoName && !this.search.warehouseName) {
-      let baseCargoItem = this.baseCargoItems.find(bci => bci.cargoName == this.search.cargoName);
-      let storageItems = await this.storageService.getItemsByCargoItemId(baseCargoItem.id);
-      this.dataSourceStorage.data(storageItems);
-      this.cargoRates = baseCargoItem.cargoRates;
-    }
-    if (this.search.warehouseName && !this.search.cargoName) {
-      let storageItems = this.storageItems.filter(si => si.warehouseName == this.search.warehouseName);
-      this.dataSourceStorageItem.data(storageItems);
-      this.baseCargoItems.forEach(bci => {
-        for (let cr of bci.cargoRates) {
-          this.cargoRates.push(cr);
-        }
-      });
-    }
-    if (this.search.cargoName && this.search.warehouseName) {
-      let baseCargoItem = this.baseCargoItems.find(bci => bci.cargoName == this.search.cargoName);
-      this.cargoRates = baseCargoItem.cargoRates;
-      let storageItems: any = this.dataSourceStorageItem.data();
-      storageItems = storageItems.filter(si => si.warehouseName == this.search.warehouseName);
-      this.dataSourceStorage.data(storageItems);
-    }
+    // if (!this.search.cargoName && !this.search.warehouseName) {
+    //   oldStorageItems.push(...this.storageItems);
+    //   // this.dataSourceStorage.data(this.storageItems);
+    //   this.baseCargoItems.forEach(bci => {
+    //     for (let cr of bci.cargoRates) {
+    //       this.cargoRates.push(cr);
+    //     }
+    //   });
+    // }
+    // if (this.search.cargoName && !this.search.warehouseName) {
+    //   let baseCargoItem = this.baseCargoItems.find(bci => bci.cargoName == this.search.cargoName);
+    //   let storageItems = await this.storageService.getItemsByCargoItemId(baseCargoItem.id);
+    //   this.dataSourceStorage.data(storageItems);
+    //   this.cargoRates = baseCargoItem.cargoRates;
+    // }
+    // if (this.search.warehouseName && !this.search.cargoName) {
+    //   let storageItems = this.storageItems.filter(si => si.warehouseName == this.search.warehouseName);
+    //   this.dataSourceStorageItem.data(storageItems);
+    //   this.baseCargoItems.forEach(bci => {
+    //     for (let cr of bci.cargoRates) {
+    //       this.cargoRates.push(cr);
+    //     }
+    //   });
+    // }
+    // if (this.search.cargoName && this.search.warehouseName) {
+    //   let baseCargoItem = this.baseCargoItems.find(bci => bci.cargoName == this.search.cargoName);
+    //   this.cargoRates = baseCargoItem.cargoRates;
+    //   let storageItems: any = this.dataSourceStorageItem.data();
+    //   storageItems = storageItems.filter(si => si.warehouseName == this.search.warehouseName);
+    //   this.dataSourceStorage.data(storageItems);
+    // }
     this.dataSourceStorage.data(oldStorageItems);
     console.log(this.dataSourceStorage.data());
   }

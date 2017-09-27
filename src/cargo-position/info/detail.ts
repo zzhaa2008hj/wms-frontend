@@ -1,24 +1,11 @@
-import { inject, Container } from 'aurelia-dependency-injection';
 import { PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
-import { CargoInfoService } from "@app/base/services/cargo-info";
-import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
 import { Router } from "aurelia-router";
 import {
-  PositionTransferInfo, positionTransferInfoValidationRules, PositionTransferItem,
+  PositionTransferInfo, PositionTransferItem
 } from "@app/cargo-position/models/transfer-info";
-import { AttachmentMap } from "@app/common/models/attachment";
-import { Uploader, Upload } from "@app/upload";
-import { AttachmentService } from "@app/common/services/attachment";
-import { DialogService, MessageDialogService } from "ui";
-import { AttachmentDetail } from "@app/common/attachment/detail";
-import { uuid } from "@app/utils";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
-import { CargoItemStorageInfoVo } from "@app/outstock/models/cargo-distrain";
-import { WarehouseTree } from "@app/base/storage/items/warehouse-tree";
-import { EditRate } from "@app/cargo-position/info/edit-rate";
-import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
-import { formValidationRenderer } from '@app/validation/support';
+import { inject } from "aurelia-dependency-injection";
 
 export class NewPositionTransferInfo {
   positionTransferInfo = {} as PositionTransferInfo;
@@ -27,7 +14,6 @@ export class NewPositionTransferInfo {
   });
   positionTransferItems: PositionTransferItem[];
   units = [] as DictionaryData[];
-  private cargoRates: any;
 
   constructor(@inject private router: Router,
               @inject private dictionaryDataService: DictionaryDataService,
