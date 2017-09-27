@@ -12,7 +12,7 @@ import { Contract, ContractSearch, warehouseIdRules, contractValidationRules } f
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
-import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
+import { CargoCategoryTree } from "@app/base/cargo-category/tree";
 import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 
 @autoinject

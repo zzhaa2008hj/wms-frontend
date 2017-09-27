@@ -11,7 +11,7 @@ import { Contract, ContractSearch, contractValidationRules, warehouseIdRules } f
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
-import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
+import { CargoCategoryTree } from "@app/base/cargo-category/tree";
 import { WorkInfoTree } from "@app/base/rate/work-info-tree";
 import { uuid } from '@app/utils';
 

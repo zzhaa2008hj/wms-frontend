@@ -6,7 +6,7 @@ import { DataSourceFactory } from "@app/utils";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
-import { CargoCategoryTree } from '@app/base/rate/cargo-category-tree';
+import { CargoCategoryTree } from "@app/base/cargo-category/tree";
 import { Rate } from '@app/base/models/rate';
 
 @autoinject

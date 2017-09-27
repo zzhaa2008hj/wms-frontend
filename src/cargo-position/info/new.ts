@@ -18,10 +18,10 @@ import { DictionaryDataService } from "@app/base/services/dictionary";
 import { CargoItemStorageInfoVo } from "@app/outstock/models/cargo-distrain";
 import { StorageService } from "@app/base/services/storage";
 import { StorageInfo, StorageItem } from "@app/base/models/storage";
-import { WarehouseTree } from "@app/base/storage/items/warehouse-tree";
 import { EditRate } from "@app/cargo-position/info/edit-rate";
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
+import { WarehouseTree } from "@app/base/warehouse/tree";
 
 export class NewPositionTransferInfo {
   storageItems: StorageItem[];

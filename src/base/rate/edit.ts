@@ -5,7 +5,7 @@ import { NewRateStep } from "./step/new";
 import { Rate, RateStep, rateValidationRules } from '@app/base/models/rate';
 import { RateService, RateStepService } from "@app/base/services/rate";
 import { WorkInfoTree } from "@app/base/rate/work-info-tree";
-import { CargoCategoryTree } from "@app/base/rate/cargo-category-tree";
+import { CargoCategoryTree } from "@app/base/cargo-category/tree";
 import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
