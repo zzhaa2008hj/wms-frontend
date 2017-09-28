@@ -1,9 +1,9 @@
 <template>
   <div class="grid simple">
 
-    <div class="grid-title no-border" if.bind="stage == 1"><h4>商务审核</h4></div>
-    <div class="grid-title no-border" if.bind="stage == 2"><h4>费收审核</h4></div>
-    <div class="grid-title no-border" if.bind="stage == 3"><h4>副总审批</h4></div>
+    <div class="grid-title no-border" if.bind="type == 1"><h4>商务审核</h4></div>
+    <div class="grid-title no-border" if.bind="type == 2"><h4>费收审核</h4></div>
+    <div class="grid-title no-border" if.bind="type == 3"><h4>副总审批</h4></div>
     <div class="grid-body no-border">
       <h4>转出信息</h4>
       <div class="col-md-3">
@@ -91,9 +91,26 @@
           </div>
         </div>
       </div>
-      <div class="row column-seperation">
+      <div class="col-md-12">
+        <h4>货物信息</h4>
+        <ak-grid k-data-source.bind="cargoInfo">
+          <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+          <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
+          <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+          <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+          <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
+          <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+          <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+          <ak-col k-field="remark" k-title="备注"></ak-col>
+          <ak-col k-title="操作">
+            <ak-template>
+              <button class="btn btn-small btn-primary" click.delegate="showRate(id)" required-permissions="U000056">查看费率</button>
+            </ak-template>
+          </ak-col>
+        </ak-grid>
+      </div>
+      <div class="col-md-12">
         <h4>附件信息查看</h4>
-
         <div class="form-group dt-publisher-bottom  clearfix " height="850px" style="overflow-x:auto;white-space:nowrap;">
           <div style="text-align: left; display: inline-block;" repeat.for="item of attachments" click.delegate="showDetail($this)">
             <img width="100px" height="100px" src="${item.path}" style="padding-right: 10px;"><br>
@@ -101,18 +118,18 @@
           </div>
         </div>
       </div>
-      <div class="pull-right" if.bind="stage == 1">
+      <div class="pull-right" if.bind="type == 1">
         <button class="btn btn-primary"  click.delegate="doAudit(1)">审核通过</button>
         <button class="btn btn-warning"  click.delegate="doAudit(2)">审核不通过</button>
         <button class="btn btn-primary"  click.delegate="goBack()">返回</button>
       </div>
-      <div class="pull-right" if.bind="stage == 2">
+      <div class="pull-right" if.bind="type == 2">
         <button class="btn btn-primary"  click.delegate="doAudit(1)">费收已完成</button>
         <button class="btn btn-warning"  click.delegate="doAudit(2)">挂账</button>
         <button class="btn btn-warning"  click.delegate="doAudit(3)">审核不通过</button>
         <button class="btn btn-primary"  click.delegate="goBack()">返回</button>
       </div>
-      <div class="pull-right" if.bind="stage == 3">
+      <div class="pull-right" if.bind="type == 3">
         <button class="btn btn-primary"  click.delegate="doAudit(1)">审核通过</button>
         <button class="btn btn-primary"  click.delegate="goBack()">返回</button>
       </div>

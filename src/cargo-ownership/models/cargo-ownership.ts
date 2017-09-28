@@ -94,6 +94,7 @@ export interface CargoownershipTransferItem {
   orderNumber: number;
   //单位
   unit: string;
+  unitStr: string;
 
 
 }
@@ -102,6 +103,8 @@ export interface CargoOwnershipTransferRate {
   batchNumber: string ;
   // 费用类型 出入库、移库等
   rateType: number ;
+  rateTypeStr: string;
+
   // 费用类别 仓储费、装卸费等
   rateCategory: number ;
   // 作业ID
@@ -114,14 +117,20 @@ export interface CargoOwnershipTransferRate {
   pricingMode: number;
   // 计价单位
   unit: string;
+
+  unitStr: string;
+
   // 单价
   price: number;
   // 实际单价
   actualPrice: number;
   // 库区性质 内贸、保税、承包内贸、承包保税
   warehouseType: number;
+  warehouseTypeStr: string;
+
   // 库区类别 场、库
-  warehouseCategory: number;
+  warehouseCategory: string;
+  warehouseCategoryStr: string;
 
 }
 
@@ -141,4 +150,9 @@ export interface CargoOwnershipTranferRateStep {
   // 实际单价
   actualStepPrice: number;
 
+  /*stepUnit: string;
+
+  stepUnitName: string;
+
+  stepUnitStr: string;*/
 }

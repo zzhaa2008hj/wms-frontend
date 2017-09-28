@@ -10,6 +10,7 @@ export class Transfer {
     config.map([
       { route: '', name: 'list', moduleId: './list' },
       { route: '/new', name: 'new', moduleId: './new', title: "新增" },
+      { route: '/audit/:id/:type', name: 'audit', moduleId: './audit/index', title: "审核" },
     ]);
     this.router = router;
   }

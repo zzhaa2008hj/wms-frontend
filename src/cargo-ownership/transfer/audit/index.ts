@@ -4,7 +4,7 @@ import { CargoownershipTransfer } from "src/cargo-ownership/models/cargo-ownersh
 import { CargoownershipTransferService } from "@app/cargo-ownership/services/cargo-ownership";
 
 @autoinject
-export class Audit {
+export class AuditRouter {
 
   router: Router;
 
@@ -20,9 +20,7 @@ export class Audit {
   configureRouter(config: RouterConfiguration, router: Router) {
 
     config.map([
-      { route: '', name: 'business', moduleId: './business' },
-      { route: '/charge', name: 'charge', moduleId: './charge' },
-      { route: '/manager', name: 'manager', moduleId: './manager' },
+      { route: '', name: 'audit', moduleId: './audit' }
     ]);
     this.router = router;
   }
