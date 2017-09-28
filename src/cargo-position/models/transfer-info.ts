@@ -58,6 +58,7 @@ export interface PositionTransferItem {
 
 export interface PositionTransferSearch {
   warehouseName ?: string;
+  warehouseId ?: string;
   cargoName ?: string;
 }
 

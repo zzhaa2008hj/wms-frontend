@@ -14,13 +14,13 @@
            k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
     <ak-col k-field="transferNumber" k-title="货位转移单号" k-width.bind="120">
       <ak-template>
-        <a route-href="route: detail; params.bind: { id: id }" >${transferNumber}</a>
+        <a route-href="route: detail; params.bind: { id: id }">${transferNumber}</a>
         <!--<label if.bind="!requiredPermissions('R000034')">${outstockOrderNumber}</label>-->
       </ak-template>
     </ak-col>
     <ak-col k-field="createTime" k-title="时间" k-format="{0:yyyy-MM-dd}"></ak-col>
     <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
-    <ak-col k-field="demandFrom" k-title="需求来源"></ak-col>
+    <ak-col k-field="demandFrom == 1?'内部':'客户'" k-title="需求来源"></ak-col>
     <ak-col k-field="customerName" k-title="客户名称"></ak-col>
     <ak-col k-field="cargoCategoryName" k-title="状态"></ak-col>
     <ak-col k-field="warehousingAmount" k-title="上一阶段号"></ak-col>
@@ -28,7 +28,8 @@
     <ak-col k-field="remark" k-title="备注"></ak-col>
     <ak-col k-title="操作" k-width.bind="280">
       <ak-template>
-        <a class="btn btn-small" if.bind="stage == 0 || stage == 2" route-href="route: edit; params.bind: { id: id }">修改</a>
+        <a class="btn btn-small" if.bind="stage == 0 || stage == 2"
+           route-href="route: edit; params.bind: { id: id }">修改</a>
       </ak-template>
     </ak-col>
   </ak-grid>
