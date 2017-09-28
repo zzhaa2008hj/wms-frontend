@@ -4,7 +4,8 @@ import { MessageDialogService, } from "ui";
 import { ElectronicWarehouseService } from "@app/electronic-warehouse/service/electronic-warehouse";
 import { AttachmentService } from '@app/common/services/attachment';
 import { StorageInfoItem } from '@app/base/models/storage';
-import { DataSourceFactory } from "@app/utils";
+import { DataSourceFactory, requiredPermissionsAttributeResult } from "@app/utils";
+import { UserSession } from '@app/user';
 
 const selectedItemKey = 'selected-item';
 @autoinject
@@ -30,9 +31,12 @@ export class ElectronicWarehouse {
   minSize = 20;
   //是否能出清 true：能出清
   clearing: boolean = true;
+  //是否能移动堆位
+  movePosition: boolean;
   constructor(private messageDialogService: MessageDialogService,
     private attachmentService: AttachmentService,
     private dataSourceFactory: DataSourceFactory,
+    private user: UserSession,
     private electronicWarehouseService: ElectronicWarehouseService) {
     this.selectedDataSource = new kendo.data.DataSource({
       transport: {
@@ -57,11 +61,8 @@ export class ElectronicWarehouse {
         pageSize: 10
       });
     }
-  }
-
-  test(){
-    if(this.r) this.r.remove();
-    this.r = Raphael("holder", document.body.clientWidth * 0.7, 500);
+    //是否能移动堆位
+    this.movePosition = requiredPermissionsAttributeResult("U000067", this.user.userInfo.menuVoList);
   }
 
   //保存库存位置信息
@@ -99,6 +100,7 @@ export class ElectronicWarehouse {
       }
     }
   }
+
   /**
    * 库区树节点选中事件
    */
@@ -107,13 +109,11 @@ export class ElectronicWarehouse {
       this.rectSelected = false;
       localStorage.setItem(selectedItemKey, this.selectedItem.id);
       this.dataSource.read();
-      if (this.selectedItem.parentId) {
-        this.initSvg();
+      //只有没有子节点的顶级节点才不需要初始化raphael
+      if (!this.selectedItem.parentId && this.selectedItem.hasChildren) {
+        if (this.r) await this.r.remove();
       } else {
-        //该节点下是否有子节点 true：没有子节点 false：有子节点
-        let result = this.warehouses.every(x => x.parentId != this.selectedItem.id);
-        console.log(result);
-        if (result) this.initSvg();
+        this.initSvg();
       }
     }
   }
@@ -122,7 +122,10 @@ export class ElectronicWarehouse {
   async initSvg() {
     if (this.r) await this.r.remove();
     this.warehouseCargoInfo = await this.electronicWarehouseService.warehouseCargoInfo(this.selectedItem.id);
-    let path = '/' + this.selectedItem.parentId + '/' + this.selectedItem.attachmentUrl;
+    //顶级库区没有parentId，厂区图用他自身的Id去获取
+    let id = this.selectedItem.parentId;
+    if (!id) id = this.selectedItem.id;
+    let path = '/' + id + '/' + this.selectedItem.attachmentUrl;
     let attachmentUrl = this.attachmentService.view(path);
     this.imageUrl = attachmentUrl;
     this.rectId = null;
@@ -172,96 +175,99 @@ export class ElectronicWarehouse {
 
       let ele = r.rect(x, y, width, height, this.borderSize);
       ele.id = d.id;
-      ele.attr({ fill: "grey", stroke: "grey", "fill-opacity": 0, cursor: "move", title: text })
-        .drag(
-        //拖动事件
-        (dx: number, dy: number) => {
-          let id = ele.id;
-          let x = ele["ox"] + dx;
-          let y = ele["oy"] + dy;
-          let width = ele.attr("width");
-          let height = ele.attr("height");
-          let att = { x: x, y: y };
-          ele.attr(att);
-          //同时移动文本
-          let textEle = this.r.getById(id + "_");
-          textEle.attr({ x: x + width / 2, y: y + height / 2 });
-          //移动缩放用矩形
-          let scalingEle = this.r.getById(id + "_right_buttom");
-          scalingEle.attr({ x: x + width - this.scaling + this.borderSize, y: y + height - this.scaling + this.borderSize });
-        },
-        //拖动节点开始时的事件
-        () => {
-          ele["ox"] = ele.attr("x");
-          ele["oy"] = ele.attr("y");
-          ele.animate({
-            "fill-opacity": .2
-          }, 500);
-        },
-        //拖动结束后的事件
-        () => {
-          ele.animate({
-            "fill-opacity": 0
-          }, 500);
-        }).click(() => this.doClick(ele));
-
-      //生成缩放用矩形
-      // x, y, width, height
-      let eleScaling = r.rect(x + width - this.scaling + this.borderSize, y + height - this.scaling + this.borderSize, this.scaling - this.borderSize, this.scaling - this.borderSize)
-        .attr({ "fill": "white", "stroke": "#666", 'stroke-width': 'outBorderSize', "fill-opacity": 0, cursor: "nwse-resize", })
-        .drag(
-        //拖动事件，同时缩放堆位矩形
-        (dx: number, dy: number) => {
-          //缩放堆位矩形
-          let rectEle = this.r.getById(eleScaling.id.split("_")[0]);
-          if (rectEle["owidth"] + dx < this.minSize) {
-            dx = this.minSize - rectEle["owidth"];
-          }
-          if (rectEle["oheight"] + dy < this.minSize) {
-            dy = this.minSize - rectEle["oheight"];
-          }
-          rectEle.attr({
-            'width': rectEle["owidth"] + dx,//拖动后的宽度 = 拖动前的宽度 + x轴的位移
-            'height': rectEle["oheight"] + dy//拖动后的高度 = 拖动前的高度 + y轴的位移
+      ele.attr({ fill: "grey", stroke: "grey", "fill-opacity": 0, cursor: "move", title: text }).click(() => this.doClick(ele));
+      //添加拖动事件和缩放用矩形
+      if (this.movePosition) {
+        ele.drag(
+          //拖动事件
+          (dx: number, dy: number) => {
+            let id = ele.id;
+            let x = ele["ox"] + dx;
+            let y = ele["oy"] + dy;
+            let width = ele.attr("width");
+            let height = ele.attr("height");
+            let att = { x: x, y: y };
+            ele.attr(att);
+            //同时移动文本
+            let textEle = this.r.getById(id + "_");
+            textEle.attr({ x: x + width / 2, y: y + height / 2 });
+            //移动缩放用矩形
+            let scalingEle = this.r.getById(id + "_right_buttom");
+            scalingEle.attr({ x: x + width - this.scaling + this.borderSize, y: y + height - this.scaling + this.borderSize });
+          },
+          //拖动节点开始时的事件
+          () => {
+            ele["ox"] = ele.attr("x");
+            ele["oy"] = ele.attr("y");
+            ele.animate({
+              "fill-opacity": .2
+            }, 500);
+          },
+          //拖动结束后的事件
+          () => {
+            ele.animate({
+              "fill-opacity": 0
+            }, 500);
           });
-          //重新定位文字
-          let textEle = this.r.getById(eleScaling.id.split("_")[0] + "_");
-          textEle.attr({ x: rectEle.attr("x") + rectEle.attr("width") / 2, y: rectEle.attr("y") + rectEle.attr("height") / 2 });
-          if (rectEle["owidth"] + dx < 70) {
-            textEle.attr("text", "......");
-          } else {
-            let info = this.warehouseCargoInfo.find(x => x.id == eleScaling.id.split("_")[0]);
-            let initText = "";
-            if (info.storageQuantity == 0 && info.storageNumber == 0) {
-              initText = `(可出清)\n${info.batchNumber}`;
-            } else {
-              initText = `${info.batchNumber}`;
-            }
-            textEle.attr("text", initText);
-          }
-          //自身重新定位
-          let att = { x: eleScaling["ox"] + dx, y: eleScaling["oy"] + dy };
-          eleScaling.attr(att);
-        },
-        //拖动节点开始时的事件
-        () => {
-          let rectEle = this.r.getById(eleScaling.id.split("_")[0]);
-          rectEle["owidth"] = rectEle.attr("width");
-          rectEle["oheight"] = rectEle.attr("height");
 
-          eleScaling["ox"] = eleScaling.attr("x");
-          eleScaling["oy"] = eleScaling.attr("y");
-          eleScaling.animate({
-            "fill-opacity": .2
-          }, 500);
-        },
-        //拖动结束后的事件
-        () => {
-          eleScaling.animate({
-            "fill-opacity": 0
-          }, 500);
-        });
-      eleScaling.id = d.id + "_right_buttom";
+        //生成缩放用矩形
+        // x, y, width, height
+        let eleScaling = r.rect(x + width - this.scaling + this.borderSize, y + height - this.scaling + this.borderSize, this.scaling - this.borderSize, this.scaling - this.borderSize)
+          .attr({ "fill": "white", "stroke": "#666", 'stroke-width': 'outBorderSize', "fill-opacity": 0, cursor: "nwse-resize", })
+          .drag(
+          //拖动事件，同时缩放堆位矩形
+          (dx: number, dy: number) => {
+            //缩放堆位矩形
+            let rectEle = this.r.getById(eleScaling.id.split("_")[0]);
+            if (rectEle["owidth"] + dx < this.minSize) {
+              dx = this.minSize - rectEle["owidth"];
+            }
+            if (rectEle["oheight"] + dy < this.minSize) {
+              dy = this.minSize - rectEle["oheight"];
+            }
+            rectEle.attr({
+              'width': rectEle["owidth"] + dx,//拖动后的宽度 = 拖动前的宽度 + x轴的位移
+              'height': rectEle["oheight"] + dy//拖动后的高度 = 拖动前的高度 + y轴的位移
+            });
+            //重新定位文字
+            let textEle = this.r.getById(eleScaling.id.split("_")[0] + "_");
+            textEle.attr({ x: rectEle.attr("x") + rectEle.attr("width") / 2, y: rectEle.attr("y") + rectEle.attr("height") / 2 });
+            if (rectEle["owidth"] + dx < 70) {
+              textEle.attr("text", "......");
+            } else {
+              let info = this.warehouseCargoInfo.find(x => x.id == eleScaling.id.split("_")[0]);
+              let initText = "";
+              if (info.storageQuantity == 0 && info.storageNumber == 0) {
+                initText = `(可出清)\n${info.batchNumber}`;
+              } else {
+                initText = `${info.batchNumber}`;
+              }
+              textEle.attr("text", initText);
+            }
+            //自身重新定位
+            let att = { x: eleScaling["ox"] + dx, y: eleScaling["oy"] + dy };
+            eleScaling.attr(att);
+          },
+          //拖动节点开始时的事件
+          () => {
+            let rectEle = this.r.getById(eleScaling.id.split("_")[0]);
+            rectEle["owidth"] = rectEle.attr("width");
+            rectEle["oheight"] = rectEle.attr("height");
+
+            eleScaling["ox"] = eleScaling.attr("x");
+            eleScaling["oy"] = eleScaling.attr("y");
+            eleScaling.animate({
+              "fill-opacity": .2
+            }, 500);
+          },
+          //拖动结束后的事件
+          () => {
+            eleScaling.animate({
+              "fill-opacity": 0
+            }, 500);
+          });
+        eleScaling.id = d.id + "_right_buttom";
+      }
     }
   }
 
