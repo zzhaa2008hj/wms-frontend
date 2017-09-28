@@ -250,6 +250,13 @@
       "group": "group4"
     },
     {
+      "route": "/fee/storage-budget",
+      "name": "storage-budget",
+      "title": "仓储预算",
+      "moduleId": "./fee/storage-budget/index",
+      "group": "group4"
+    },
+    {
       "route": "/report/ledger-account",
       "name": "ledger-account",
       "title": "台账流水账",
