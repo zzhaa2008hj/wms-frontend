@@ -124,7 +124,7 @@ export class ConstantValues {
   }
 
   static get WorkInfoCategory() {
-    return [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "移库", value: 4 }];
+    return [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "货权转移", value: 3 }, { text: "货位转移", value: 4 }];
   }
 
   static get OutstockStages() {

@@ -1,6 +1,6 @@
 <template>
   <div class="controlbar">
-    <a class="btn btn-small btn-success" oute-href="route: new" required-permissions="">新增货权转移</a>
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000049">新增货权转移</a>
     <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="">修改记录</a>
     <div class="spacer"></div>
     <div class="input-group">
@@ -21,12 +21,15 @@
     <ak-col k-field="newBatchNumber" k-title="新批次号"></ak-col>
     <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
     <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
-    <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
-    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>    
+    <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
     <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
-    <ak-col k-field="status" k-title="状态"></ak-col>
-    <ak-col k-title="操作"  k-width.bind="300">
+    <ak-col k-field="status == '0' ? '未完成' : '完成'" k-title="状态"></ak-col>
+    <ak-col k-title="操作" k-width.bind="300">
+      <ak-template>
         <a class="btn btn-small btn-primary" if.bind="stage == 1 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">商务审核</a>
+        <a class="btn btn-small btn-primary" if.bind="stage >= 1" route-href="route: view; params.bind: {id: id}" required-permissions="R000089">查看详情</a>
+      </ak-template>
     </ak-col>
   </ak-grid>
 </template>
