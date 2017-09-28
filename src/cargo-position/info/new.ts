@@ -108,7 +108,7 @@ export class NewPositionTransferInfo {
       transferItem.containerNumber = si.containerNumber;
       transferItem.containerType = si.containerType;
       //费率
-      if (si.cargoRates) {
+      if (si.cargoRates && si.cargoRates.length > 0) {
         Object.assign(transferItem, { cargoRates: si.cargoRates });
       } else {
         await this.messageDialogService.alert({
@@ -181,10 +181,6 @@ export class NewPositionTransferInfo {
   async addStorageItem() {
     if (!this.positionTransferInfo.batchNumber) {
       await this.messageDialogService.alert({ title: "", message: "请先选择批次号", icon: "warning" });
-      return;
-    }
-    if (!this.positionTransferInfo.demandFrom) {
-      await this.messageDialogService.alert({ title: "", message: "请先选择需求来源", icon: "warning" });
       return;
     }
     let oldStorageItems = this.dataSourceStorage.data();
@@ -291,6 +287,9 @@ export class NewPositionTransferInfo {
     //初始化数据
     this.search = {};
     this.positionTransferInfo = {} as PositionTransferInfo;
+    this.baseCargoItems = [];
+    this.storageItems = [];
+    this.dataSourceStorage.data([]);
 
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     this.positionTransferInfo.cargoInfoId = dataItem.id;
