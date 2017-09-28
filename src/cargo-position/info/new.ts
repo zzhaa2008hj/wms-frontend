@@ -15,7 +15,6 @@ import { AttachmentDetail } from "@app/common/attachment/detail";
 import { uuid } from "@app/utils";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
-import { CargoItemStorageInfoVo } from "@app/outstock/models/cargo-distrain";
 import { StorageService } from "@app/base/services/storage";
 import { StorageInfo, StorageItem } from "@app/base/models/storage";
 import { EditRate } from "@app/cargo-position/info/edit-rate";
@@ -24,6 +23,7 @@ import { formValidationRenderer } from '@app/validation/support';
 import { WarehouseTree } from "@app/base/warehouse/tree";
 
 export class NewPositionTransferInfo {
+  selectedDemandFrom: any;
   storageItems: StorageItem[];
   disabled = false;
   baseCargoInfos: CargoInfo[];
@@ -37,27 +37,18 @@ export class NewPositionTransferInfo {
   dataSourceCargoItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  dataSourceBaseCargoItem = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
   dataSourceStorage = new kendo.data.HierarchicalDataSource({
     data: []
   });
   dataSourceStorageItem = new kendo.data.HierarchicalDataSource({
     data: []
   });
-  dataSourceCargoRate = new kendo.data.HierarchicalDataSource({
-    data: []
-  });
   cargoItems = [] as CargoItem[];
-  positionTransferItems: PositionTransferItem[];
   units = [] as DictionaryData[];
   baseCargoItems: CargoItem[];
-  cargoItemStorageInfoVos: CargoItemStorageInfoVo[];
   search = {} as PositionTransferSearch;
-  demandFrom = [{ text: "公司", value: 1 }, { text: "个人", value: 2 }];
+  demandFrom = [{ text: "内部", value: 1 }, { text: "客户", value: 2 }];
   validationController: ValidationController;
-  private cargoRates: any;
 
   constructor(@inject private router: Router,
               @inject private uploader: Uploader,
@@ -92,7 +83,7 @@ export class NewPositionTransferInfo {
       if (wrongItems.length > 1) {
         await this.messageDialogService.alert({
           title: "新增失败",
-          message: `请检查数据,货物:${si.cargoName}多次向同一库区转移,请合并`,
+          message: `请检查数据,货物:${si.cargoName}多次向同一库区多次转移,请合并`,
           icon: 'warning'
         });
         return;
@@ -120,7 +111,12 @@ export class NewPositionTransferInfo {
       if (si.cargoRates) {
         Object.assign(transferItem, { cargoRates: si.cargoRates });
       } else {
-        Object.assign(transferItem, { cargoRates: this.cargoRates });
+        await this.messageDialogService.alert({
+          title: "新增失败",
+          message: `请检查数据,货物:${si.cargoName}未设置费率`,
+          icon: 'warning'
+        });
+        return;
       }
       transferItems.push(transferItem);
     }
@@ -142,13 +138,9 @@ export class NewPositionTransferInfo {
 
   async editRate(storageItem) {
     let cargoInfo: CargoInfo = await this.cargoInfoService.getByBatchNumber(this.positionTransferInfo.batchNumber);
-    let cargoRates = this.cargoRates;
-    if (storageItem.cargoRates) {
-      cargoRates = storageItem.cargoRates;
-    }
     let result = await this.dialogService.open({
       viewModel: EditRate,
-      model: { id: cargoInfo.contractId, cargoRates: cargoRates },
+      model: { id: cargoInfo.contractId, cargoRates: storageItem.cargoRates },
       lock: true
     }).whenClosed();
     if (result.wasCancelled) return;
@@ -161,10 +153,6 @@ export class NewPositionTransferInfo {
       }
     });
     this.dataSourceStorage.data(storageItems);
-  }
-
-  deleteCargoRate(e) {
-    this.dataSourceCargoRate.remove(e);
   }
 
   deleteStorageItem(e) {
@@ -195,40 +183,40 @@ export class NewPositionTransferInfo {
       await this.messageDialogService.alert({ title: "", message: "请先选择批次号", icon: "warning" });
       return;
     }
-    this.cargoRates = [];
-
+    if (!this.positionTransferInfo.demandFrom) {
+      await this.messageDialogService.alert({ title: "", message: "请先选择需求来源", icon: "warning" });
+      return;
+    }
     let oldStorageItems = this.dataSourceStorage.data();
-    // if (!this.search.cargoName && !this.search.warehouseName) {
-    //   oldStorageItems.push(...this.storageItems);
-    //   // this.dataSourceStorage.data(this.storageItems);
-    //   this.baseCargoItems.forEach(bci => {
-    //     for (let cr of bci.cargoRates) {
-    //       this.cargoRates.push(cr);
-    //     }
-    //   });
-    // }
-    // if (this.search.cargoName && !this.search.warehouseName) {
-    //   let baseCargoItem = this.baseCargoItems.find(bci => bci.cargoName == this.search.cargoName);
-    //   let storageItems = await this.storageService.getItemsByCargoItemId(baseCargoItem.id);
-    //   this.dataSourceStorage.data(storageItems);
-    //   this.cargoRates = baseCargoItem.cargoRates;
-    // }
-    // if (this.search.warehouseName && !this.search.cargoName) {
-    //   let storageItems = this.storageItems.filter(si => si.warehouseName == this.search.warehouseName);
-    //   this.dataSourceStorageItem.data(storageItems);
-    //   this.baseCargoItems.forEach(bci => {
-    //     for (let cr of bci.cargoRates) {
-    //       this.cargoRates.push(cr);
-    //     }
-    //   });
-    // }
-    // if (this.search.cargoName && this.search.warehouseName) {
-    //   let baseCargoItem = this.baseCargoItems.find(bci => bci.cargoName == this.search.cargoName);
-    //   this.cargoRates = baseCargoItem.cargoRates;
-    //   let storageItems: any = this.dataSourceStorageItem.data();
-    //   storageItems = storageItems.filter(si => si.warehouseName == this.search.warehouseName);
-    //   this.dataSourceStorage.data(storageItems);
-    // }
+    let storageItems: any = this.dataSourceStorageItem.data();
+    if (this.search.warehouseName) {
+      storageItems = storageItems.filter(si => si.warehouseId == this.search.warehouseId);
+    }
+    storageItems.forEach(si => {
+      si.cargoRates = this.baseCargoItems.find(bci => bci.cargoName == si.cargoName).cargoRates;
+      if (this.positionTransferInfo.demandFrom == 1) {
+        let deletedCargoRates = si.cargoRates.filter(cr => cr.chargeType == 1);
+        for (let dcr of deletedCargoRates) {
+          let index = si.cargoRates.indexOf(dcr);
+          si.cargoRates.splice(index, 1);
+        }
+      }
+      si.cargoRates.forEach(cr => {
+        let rateUnit = this.units.find(u => cr.unit == u.dictDataCode);
+        if (rateUnit) {
+          cr.unitStr = rateUnit.dictDataName;
+        }
+        if (cr.cargoRateSteps) {
+          cr.cargoRateSteps.forEach(crs => {
+            let stepUunit = this.units.find(u => crs.stepUnit == u.dictDataCode);
+            if (stepUunit) {
+              crs.stepUnitStr = stepUunit.dictDataName;
+            }
+          });
+        }
+      });
+    });
+    oldStorageItems.push(...storageItems);
     this.dataSourceStorage.data(oldStorageItems);
     console.log(this.dataSourceStorage.data());
   }
@@ -243,8 +231,6 @@ export class NewPositionTransferInfo {
         Object.assign(si, { cargoName: baseCargoItem.cargoName });
       }
       this.dataSourceStorageItem.data(storageItems);
-    } else {
-      this.dataSourceStorageItem.data(this.storageItems);
     }
   }
 
@@ -304,6 +290,8 @@ export class NewPositionTransferInfo {
   async onSelectCargoInfo(e) {
     //初始化数据
     this.search = {};
+    this.positionTransferInfo = {} as PositionTransferInfo;
+
     let dataItem: CargoInfo = this.selectedCargoInfo.dataItem(e.item);
     this.positionTransferInfo.cargoInfoId = dataItem.id;
     this.positionTransferInfo.batchNumber = dataItem.batchNumber;

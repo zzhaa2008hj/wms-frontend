@@ -35,9 +35,9 @@ export class NewPositionTransferInfo {
       }
       if (pti.cargoRates) {
         pti.cargoRates.forEach(cr => {
-          let rateUunit = this.units.find(u => cr.unit == u.dictDataCode);
-          if (rateUunit) {
-            cr.unitStr = rateUunit.dictDataName;
+          let rateUnit = this.units.find(u => cr.unit == u.dictDataCode);
+          if (rateUnit) {
+            cr.unitStr = rateUnit.dictDataName;
           }
           if (cr.cargoRateSteps) {
             cr.cargoRateSteps.forEach(crs => {

@@ -107,8 +107,8 @@
                                k-data-source.bind="dataSourceCargoItem"
                                k-on-select.delegate="onSelectCargoItem($event.detail)">
             </ak-drop-down-list>
-            <ak-drop-down-list k-value.two-way="search.warehouseName" k-option-label="请选择--货物所在库区"
-                               k-data-text-field="warehouseName" k-data-value-field="warehouseName"
+            <ak-drop-down-list k-value.two-way="search.warehouseId" k-option-label="请选择--货物所在库区"
+                               k-data-text-field="warehouseName" k-data-value-field="warehouseId"
                                k-data-source.bind="dataSourceStorageItem">
             </ak-drop-down-list>
             <a class="btn btn-small" click.delegate="addStorageItem()" title="搜索"><em class="fa fa-search"></em></a>
