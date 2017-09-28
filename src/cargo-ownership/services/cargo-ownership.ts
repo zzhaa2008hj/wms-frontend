@@ -87,6 +87,16 @@ export class CargoownershipTransferService {
     return res.content;
   }
 
+  /**
+   * 更改状态
+   * 开始 作业
+   *作业完成
+   * 设置完工
+   */
+  async changeStage(id : string ,stage : number): Promise<void>{
+    let res = await this.http.put(`/ownership-transfer/info/${id}/change-stage/${stage}`,"");
+    return res.content ;
+  }
 
 
 

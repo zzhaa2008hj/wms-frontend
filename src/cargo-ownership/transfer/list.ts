@@ -6,8 +6,10 @@ import { CargoownershipTransferCriteria, CargoownershipTransferService } from '@
 // import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from "@app/common/models/constant-values";
 import { UserSession } from '@app/user';
-import { DialogService } from "ui";
+import { DialogService, MessageDialogService } from "ui";
 import { Router } from "aurelia-router";
+import { VerifyRecordCriteria } from "src/common/services/verify-record";
+import { AuditList } from "@app/cargo-ownership/transfer/dialog-list";
 
 export class CargoownershipTransferList {
   search: CargoownershipTransferCriteria = {};
@@ -26,6 +28,7 @@ export class CargoownershipTransferList {
               @inject private user: UserSession,
               @inject private dialogService: DialogService,
               @inject private router: Router,
+              @inject private messageDialogService: MessageDialogService,
               // @inject private dictionaryDataService: DictionaryDataService
             ) {
   }
@@ -111,4 +114,54 @@ export class CargoownershipTransferList {
       this.endDatePicker.min(endDate);
     }
   }
+
+  /**
+   * 查看审核记录
+   */
+  async getAuditList() {
+    if (!this.selectedId) {
+      await this.dialogService.alert({ title: "提示", message: '请选择货权转移单', icon: "error" });
+      return;
+    }
+    let criteria: VerifyRecordCriteria = {};
+    criteria.businessId = this.selectedId;
+    criteria.businessType = 3;
+    let result = await this.dialogService.open({ viewModel: AuditList , model: criteria, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
+  }
+
+  /**
+   *更改状态
+   */
+  async changeStage(id , state ){
+    let stage1  ;
+    let title = "" ;
+    let message = "" ;
+    if(state == 1){
+      title = "开始作业" ;
+      message =" 确定开始作业？";
+      stage1 =8 ;
+    }else if(state == 2){
+      title = "仓管确认"
+      message = "确定完成作业?" ;
+      stage1 = 9 ;
+    }else if( state == 3){
+      title = "设置完工";
+      message = "确定完工？";
+      stage1 = 11;
+    }
+    try {
+      let conformed = await this.messageDialogService.confirm({ title, message});
+      if (!conformed) {
+        return;
+      }
+      await this.cargoownershipTransferService.changeStage(id , stage1 );
+      await this.messageDialogService.alert({ title: "消息", message: "设置成功！" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.messageDialogService.alert({ title: "消息", message: err.message, icon: "error" });
+    }
+  }
+
 }
