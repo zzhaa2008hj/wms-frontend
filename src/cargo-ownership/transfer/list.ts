@@ -47,6 +47,7 @@ export class CargoownershipTransferList {
           if (lastStage) {
             res.lastStageName = lastStage.title;
           }
+          res.transferDate = new Date(res.transferDate);
           return res;
         }),
 
