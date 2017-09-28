@@ -1,7 +1,7 @@
 import { inject, Container } from 'aurelia-dependency-injection';
 import { PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
 import { CargoInfoService } from "@app/base/services/cargo-info";
-import { CargoInfo, CargoItem } from "@app/base/models/cargo-info";
+import { CargoInfo } from "@app/base/models/cargo-info";
 import { Router } from "aurelia-router";
 import {
   PositionTransferInfo, positionTransferInfoValidationRules, PositionTransferItem,
@@ -32,7 +32,7 @@ export class NewPositionTransferInfo {
   });
   positionTransferItems: PositionTransferItem[];
   units = [] as DictionaryData[];
-  demandFrom = [{ text: "公司", value: 1 }, { text: "个人", value: 2 }];
+  demandFrom = [{ text: "内部", value: 1 }, { text: "客户", value: 2 }];
   validationController: ValidationController;
   private cargoRates: any;
 

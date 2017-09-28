@@ -1,7 +1,8 @@
-import { autoinject } from 'aurelia-dependency-injection';
+import {  autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory } from '@app/utils';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { StatisticsCriteria, PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
+import { Router } from "aurelia-router";
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { DialogService, MessageDialogService } from 'ui';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
@@ -9,10 +10,10 @@ import { VerifyRecordService } from '@app/common/services/verify-record';
 
 @autoinject
 export class PositionTransferInfoList {
-
   criteria: StatisticsCriteria = {};
   dataSource: kendo.data.DataSource;
   units: DictionaryData[] = [] as DictionaryData[];
+  id: string = '';
 
   pageable = {
     refresh: true,
@@ -20,7 +21,8 @@ export class PositionTransferInfoList {
     buttonCount: 10
   };
 
-  constructor(private positionTransferInfoService: PositionTransferInfoService,
+  constructor( private positionTransferInfoService: PositionTransferInfoService,
+               private router: Router,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
@@ -32,6 +34,21 @@ export class PositionTransferInfoList {
       query: () => this.positionTransferInfoService.page(this.criteria),
       pageSize: 10
     });
+  }
+
+  rowSelected(e) {
+    let grid = e.sender;
+    let selectedRow = grid.select();
+    let dataItem = grid.dataItem(selectedRow);
+    this.id = dataItem.id;
+  }
+
+  async changeHistory() {
+    if (!this.id) {
+      await this.messageDialogService.alert({ title: "提示", message: '请选择指令单', icon: "error" });
+      return;
+    }
+    this.router.navigateToRoute("changeHistory", { id: this.id });
   }
 
   select() {

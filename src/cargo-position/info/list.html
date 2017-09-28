@@ -1,6 +1,7 @@
 <template>
   <div class="controlbar">
     <a class="btn btn-small btn-success" route-href="route: new">新增货位转移需求</a>
+    <a class="btn btn-small" click.delegate="changeHistory()">修改记录</a>
     <div class="spacer"></div>
     <div class="input-group">
       <input type="text" value.bind="criteria.customerName" placeholder="请输入客户名称">
@@ -9,7 +10,8 @@
       <a class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></a>
     </div>
   </div>
-  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true" k-pageable.bind="pageable">
+  <ak-grid k-data-source.bind="dataSource" k-sortable.bind="true" k-reorderable.bind="true" k-resizable.bind="true"
+           k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
     <ak-col k-field="transferNumber" k-title="货位转移单号" k-width.bind="120">
       <ak-template>
         <a route-href="route: detail; params.bind: { id: id }" >${transferNumber}</a>

@@ -1,0 +1,159 @@
+<template>
+  <require from="../rate-element"></require>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 修改记录详情
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="col-md-6">
+        <div class="grid simple">
+          <div class="grid-body no-border">
+            <h3>修改前</h3>
+            <div class="row column-seperation">
+              <h4>基础信息</h4>
+              <div class="form-group">
+                <label class="form-label">批次号</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="oldPositionTransferInfo.batchNumber" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">货位转移单号*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="oldPositionTransferInfo.transferNumber" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">客户名称*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="oldPositionTransferInfo.customerName " readonly>
+                </div>
+              </div>
+                <div class="form-group">
+                  <label class="form-label">代理商名称*</label>
+                  <span class="help"></span>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldPositionTransferInfo.agentName " readonly>
+                  </div>
+                </div>
+              <div class="form-group">
+                <label class="form-label">需求来源*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="oldPositionTransferInfo.demandFrom ==1?'公司':'个人' " readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="oldPositionTransferInfo.remark" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row column-seperation">
+              <h4>货物信息</h4>
+              <ak-grid k-data-source.bind="oldPositionTransferItems">
+                <ak-col k-field="cargoName" k-title="货名"></ak-col>
+                <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+                <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+                <ak-col k-field="containerType" k-title="集装箱类型 "></ak-col>
+                <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
+                <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+                <ak-col k-field="unitName" k-title="计量单位"></ak-col>
+                <ak-col k-field="position" k-title="堆存坐标"></ak-col>
+                <ak-col k-field="instockDate" k-title="入库时间"></ak-col>
+                <ak-col  k-field="newWarehouseName" k-title="新库区名称"></ak-col>
+                <ak-col k-field="transferQuantity" k-title="转移数量"></ak-col>
+                <ak-col k-field="transferNumber" k-title="转移件数"></ak-col>
+                <ak-col k-field="remark" k-title="备注"></ak-col>
+                <ak-template for="detailTemplate">
+                  <rate rates.bind="cargoRates"></rate>
+                </ak-template>
+              </ak-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="grid simple">
+          <div class="grid-body no-border">
+            <h3>修改后</h3>
+            <div class="row column-seperation">
+              <h4>基础信息</h4>
+              <div class="form-group">
+                <label class="form-label">批次号</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="newPositionTransferInfo.batchNumber" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">货位转移单号*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="newPositionTransferInfo.transferNumber" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">客户名称*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="newPositionTransferInfo.customerName " readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">代理商名称*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="newPositionTransferInfo.agentName " readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">需求来源*</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="newPositionTransferInfo.demandFrom ==1?'公司':'个人' " readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <input type="text" class="form-control" value.bind="oldPositionTransferInfo.remark" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row column-seperation">
+              <h4>货物信息</h4>
+              <ak-grid k-data-source.bind="newPositionTransferItems">
+                <ak-col k-field="cargoName" k-title="货名"></ak-col>
+                <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+                <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+                <ak-col k-field="containerType" k-title="集装箱类型 "></ak-col>
+                <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
+                <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+                <ak-col k-field="unitName" k-title="计量单位"></ak-col>
+                <ak-col k-field="position" k-title="堆存坐标"></ak-col>
+                <ak-col k-field="instockDate" k-title="入库时间"></ak-col>
+                <ak-col  k-field="newWarehouseName" k-title="新库区名称"></ak-col>
+                <ak-col k-field="transferQuantity" k-title="转移数量"></ak-col>
+                <ak-col k-field="transferNumber" k-title="转移件数"></ak-col>
+                <ak-col k-field="remark" k-title="备注"></ak-col>
+                <ak-template for="detailTemplate">
+                  <rate rates.bind="cargoRates"></rate>
+                </ak-template>
+              </ak-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-white" click.trigger="cancel()">返回</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

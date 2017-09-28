@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8090"
+    "baseUrl": "http://192.168.133.118:8090"
   },
   "notification": {
     "baseUrl": "http://192.168.133.118:3344/wms"
@@ -10,9 +10,9 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://localhost:3000/loginRpc",
+    "loginUrl": "http://192.168.133.118:3000/loginRpc",
     "loginOutUrl": "http://192.168.133.118:8080/rpc/login/logOut",
-    "changePasswordUrl": "http://localhost:3000/changePasswordRpc",
+    "changePasswordUrl": "http://192.168.133.118:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
@@ -48,7 +48,8 @@
       "expanded": false
     }
   },
-  "routes": [{
+  "routes": [
+    {
       "route": "/instock/cargo-infos",
       "name": "cargoInfo",
       "title": "入库指令",
