@@ -131,7 +131,7 @@ export class ElectronicWarehouse {
     //创建绘图对象
     this.drawSvg(this.warehouseCargoInfo, this.r);
   }
-    
+
   drawSvg(dataPosition, r) {
     //创建绘图对象
     for (let i = 0; i < dataPosition.length; i++) {
