@@ -180,7 +180,12 @@ export class EditWorkOrder {
     //   //   this.workOrder.batchNumber = this.cargoFlow.batchNumber;
     // }
     this.workOrder = await this.workOrderService.getWorkOrderById(params.id);
-    this.validationController.addObject(this.workOrder, workOrderRules);
+    if(this.routerParams.type != 4){
+      this.validationController.addObject(this.workOrder, workOrderRules);
+    }else{
+      this.validationController.addObject(this.workOrder, transferWorkOrderRules);
+    }
+    
 
   }
 
@@ -368,5 +373,21 @@ const workOrderRules = ValidationRules
     }
     return true;
   })
+  .withMessage(`\${$displayName}不符合规范`)
+  .rules;
+
+  const transferWorkOrderRules = ValidationRules
+  .ensure((workOrder: WorkOrder) => workOrder.businessId)
+  .displayName("入库货物")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.workOrderNumber)
+  .displayName("作业单号")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.workDate)
+  .displayName("作业时间")
+  .required().withMessage(`\${$displayName}不能为空`)
+
   .withMessage(`\${$displayName}不符合规范`)
   .rules;

@@ -5,6 +5,10 @@ import {
 } from "@app/cargo-position/models/transfer-info";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
+import { CargoItemStorageInfoVo } from "@app/outstock/models/cargo-distrain";
+import { EditRate } from "@app/cargo-position/info/edit-rate";
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
+import { formValidationRenderer } from '@app/validation/support';
 import { inject } from "aurelia-dependency-injection";
 
 export class NewPositionTransferInfo {

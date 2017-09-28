@@ -1,4 +1,4 @@
-import { CargoCategoryTree } from '@app/base/cargo-info//cargo-category-tree';
+import { CargoCategoryTree } from "@app/base/cargo-category/tree";
 import { autoinject, Container } from 'aurelia-dependency-injection';
 import { DialogController, DialogService } from 'ui';
 import { CargoCategory } from '@app/base/models/cargo-category';

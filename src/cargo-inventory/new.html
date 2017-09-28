@@ -1,27 +1,66 @@
 <template>
   <div class="grid simple">
-    <div class="grid-title no-border"></div>
     <div class="grid-body no-border">
       <form submit.delegate="add()">
         <div class="col-md-6">
           <div class="form-group">
-            <label class="form-label">需求来源*</label>
+            <label class="form-label">盘点来源*</label>
             <span class="help"></span>
             <div class="controls">
-              <ak-drop-down-list style="width: 300px;" k-value.two-way="cargoInventory.demandFrom" k-option-label="请选择..." k-data-text-field="name"
+              <ak-drop-down-list style="width: 100%" k-value.two-way="cargoInventory.demandFrom" k-option-label="请选择..." k-data-text-field="name"
                 k-data-value-field="type" k-data-source.bind="demandFrom" k-on-select.delegate="onSelectDemandFrom($event.detail)">
+              </ak-drop-down-list>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">开始时间*</label>
+            <span class="help"></span>
+            <div class="input-group" style="margin-top: 6px;">
+              <input ak-datepicker="k-value.two-way : cargoInventory.startTime ; k-widget.two-way: startDatePicker" k-on-change.delegate="startChange()"
+                style="width: 100%" type="text" class="form-control" placeholder="请选择开始时间" disabled.bind="disabled">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">结束时间*</label>
+            <span class="help"></span>
+            <div class="input-group" style="margin-top: 6px;">
+              <input ak-datepicker="k-value.two-way : cargoInventory.endTime ; k-widget.two-way: endDatePicker" k-on-change.delegate="endhange()"
+                style="width: 100%" type="text" class="form-control" placeholder="请选择结束时间" disabled.bind="disabled">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" if.bind="cargoInventory.demandFrom == 2">
+          <div class="form-group">
+            <label class="form-label">库区*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.warehouseName" click.delegate="selectWarehouse()"
+                readonly placeholder="点击选择库区">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" if.bind="cargoInventory.demandFrom == 1">
+          <div class="form-group">
+            <label class="form-label">仓储客户*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <ak-drop-down-list k-value.two-way="cargoInventory.customerId" k-option-label="请选择..." k-data-text-field="shortName" style="width: 100%"
+                k-data-value-field="id" k-data-source.bind="customers" k-on-select.delegate="onSelectDemandFrom($event.detail)">
               </ak-drop-down-list>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label class="form-label">需求来源*</label>
+            <label class="form-label">货类</label>
             <span class="help"></span>
             <div class="controls">
-              <ak-drop-down-list style="width: 300px;" k-value.two-way="cargoInventory.demandFrom" k-option-label="请选择..." k-data-text-field="name"
-                k-data-value-field="type" k-data-source.bind="demandFrom" k-on-select.delegate="onSelectDemandFrom($event.detail)">
-              </ak-drop-down-list>
+              <input type="text" class="form-control" click.delegate="selectCargoCategory()" value.bind="cargoInventory.cargoCategoryName" readonly
+                style="width: 100%" placeholder="点击选择货类">
             </div>
           </div>
         </div>

@@ -1,10 +1,10 @@
-import { inject} from "aurelia-dependency-injection";
+import { inject } from "aurelia-dependency-injection";
 import { StorageService } from "@app/base/services/storage";
 import { DataSourceFactory } from "@app/utils";
-import {StorageInfo} from "@app/base/models/storage";
+import { StorageInfo } from "@app/base/models/storage";
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DialogService } from 'ui';
-import { WarehouseTree } from '@app/base/storage/items/warehouse-tree';
+import { WarehouseTree } from "@app/base/warehouse/tree";
 
 export class StorageItemList {
   dataSource: kendo.data.DataSource;
@@ -18,6 +18,7 @@ export class StorageItemList {
   selectedWarehouse: string;
   selectedWarehouseName: string;
   title: string;
+  
   constructor(@inject private storageService: StorageService,
               @inject private dataSourceFactory: DataSourceFactory,
               @inject("storageInfo") private storageInfo: StorageInfo,
@@ -43,7 +44,7 @@ export class StorageItemList {
 
   select() {
     this.dataSource.read();
-  } 
+  }
   reset() {
     this.selectedWarehouseName = '';
     this.selectedWarehouse = '';
@@ -52,7 +53,7 @@ export class StorageItemList {
 
   async selected() {
     let result = await this.dialogService
-      .open({ viewModel: WarehouseTree, model: {}, lock: true })
+      .open({ viewModel: WarehouseTree, model: this.selectedWarehouse, lock: true })
       .whenClosed();
     if (result.wasCancelled) return;
     this.selectedWarehouseName = result.output.name;

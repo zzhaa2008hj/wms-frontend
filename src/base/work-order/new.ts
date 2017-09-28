@@ -81,81 +81,81 @@ export class NewWorkOrder {
     }
   });
 
-  constructor(@inject('routerParams') private routerParams: RouterParams,
-              @inject private cargoFlowService: CargoFlowService,
-              @inject private cargoItemService: CargoItemService,
-              @inject private instockVehicleService: InstockVehicleService,
-              @inject private warehouseService: WarehouseService,
-              @inject private organizationService: OrganizationService,
-              @inject private workOrderService: WorkOrderService,
-              @inject private messageDialogService: MessageDialogService,
-              @inject private router: Router,
-              @newInstance() private validationController: ValidationController,
-              @inject private orderService: OrderService,
-              @inject private orderItemService: OrderItemService,
-              @inject private cargoRateService: CargoRateService,
-              @inject private positionTransferInfoService: PositionTransferInfoService,
-              @inject private positionTransferItemService: PositionTransferItemService) {
+  constructor( @inject('routerParams') private routerParams: RouterParams,
+    @inject private cargoFlowService: CargoFlowService,
+    @inject private cargoItemService: CargoItemService,
+    @inject private instockVehicleService: InstockVehicleService,
+    @inject private warehouseService: WarehouseService,
+    @inject private organizationService: OrganizationService,
+    @inject private workOrderService: WorkOrderService,
+    @inject private messageDialogService: MessageDialogService,
+    @inject private router: Router,
+    @newInstance() private validationController: ValidationController,
+    @inject private orderService: OrderService,
+    @inject private orderItemService: OrderItemService,
+    @inject private cargoRateService: CargoRateService,
+    @inject private positionTransferInfoService: PositionTransferInfoService,
+    @inject private positionTransferItemService: PositionTransferItemService) {
     this.datasource = new kendo.data.DataSource({
-        transport: {
-          read: (options) => {
-            options.success([]);
-          },
-          update: (options) => {
-            options.success();
-          }
-          ,
-          destroy: (options) => {
-            options.success();
-          }
-          ,
-          create: async options => {
-            this.datasource.data()[0].workOrderItem = [];
-            this.workOrderAreas = options.data.models;
-            options.success();
-          }
+      transport: {
+        read: (options) => {
+          options.success([]);
         },
-        batch: true,
-        pageSize: 8,
-        schema: {
-          model: {
-            fields: {
-              workItemId: {
-                editable: false, nullable: true
-              },
-              workId: {
-                type: 'string',
-                validation: { required: true }
-              },
-              quantity: {
-                type: 'number',
-                validation: { min: 0, max: 1000000000000000 }
-              },
-              number: {
-                type: 'number',
-                validation: { min: 0, max: 1000000000000000 }
-              },
-              containerType: {
-                type: 'string'
-              },
-              containerNumber: {
-                type: 'string'
-              },
-              sign: {
-                type: 'string'
-              },
-              customerId: {
-                type: 'string',
-                validation: { required: true }
-              },
-              remark: {
-                type: 'string',
-                validation: { required: true }
-              }
+        update: (options) => {
+          options.success();
+        }
+        ,
+        destroy: (options) => {
+          options.success();
+        }
+        ,
+        create: async options => {
+          this.datasource.data()[0].workOrderItem = [];
+          this.workOrderAreas = options.data.models;
+          options.success();
+        }
+      },
+      batch: true,
+      pageSize: 8,
+      schema: {
+        model: {
+          fields: {
+            workItemId: {
+              editable: false, nullable: true
+            },
+            workId: {
+              type: 'string',
+              validation: { required: true }
+            },
+            quantity: {
+              type: 'number',
+              validation: { min: 0, max: 1000000000000000 }
+            },
+            number: {
+              type: 'number',
+              validation: { min: 0, max: 1000000000000000 }
+            },
+            containerType: {
+              type: 'string'
+            },
+            containerNumber: {
+              type: 'string'
+            },
+            sign: {
+              type: 'string'
+            },
+            customerId: {
+              type: 'string',
+              validation: { required: true }
+            },
+            remark: {
+              type: 'string',
+              validation: { required: true }
             }
           }
         }
       }
+    }
     );
     this.validationController.addRenderer(formValidationRenderer);
   }
@@ -204,7 +204,11 @@ export class NewWorkOrder {
         }
       });
     }
-    this.validationController.addObject(this.workOrder, workOrderRules);
+    if (this.routerParams.type == 4) {
+      this.validationController.addObject(this.workOrder, transferWorkOrderRules);
+    } else {
+      this.validationController.addObject(this.workOrder, workOrderRules);
+    }
   }
 
   changeCargo() {
@@ -369,5 +373,21 @@ const workOrderRules = ValidationRules
     }
     return true;
   })
+  .withMessage(`\${$displayName}不符合规范`)
+  .rules;
+
+const transferWorkOrderRules = ValidationRules
+  .ensure((workOrder: WorkOrder) => workOrder.businessId)
+  .displayName("入库货物")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.workOrderNumber)
+  .displayName("作业单号")
+  .required().withMessage(`\${$displayName}不能为空`)
+
+  .ensure((workOrder: WorkOrder) => workOrder.workDate)
+  .displayName("作业时间")
+  .required().withMessage(`\${$displayName}不能为空`)
+
   .withMessage(`\${$displayName}不符合规范`)
   .rules;
