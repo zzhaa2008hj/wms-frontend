@@ -83,7 +83,6 @@ export interface ChargeAuditItem {
 
   //合计
   sumAmount: number;
-
 }
 
 export const chargeAuditListValidationRules = ValidationRules

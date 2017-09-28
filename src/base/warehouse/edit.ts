@@ -65,10 +65,8 @@ export class EditWarehouse {
   }
 
   async save() {
-    if (this.warehouse.parentId) {
-      this.warehouse.attachments = this.attachments;
-      this.warehouse.num = this.warehouse.attachments.filter(x => x.status ==1).length;
-    }
+    this.warehouse.attachments = this.attachments;
+    this.warehouse.num = this.warehouse.attachments.filter(x => x.status == 1).length;
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     await this.dialogController.ok(this.warehouse);
@@ -80,7 +78,9 @@ export class EditWarehouse {
   }
 
   async upload() {
-    let keyRes = await this.attachmentService.getDirKey(this.warehouse.parentId);
+    let id = this.warehouse.parentId;
+    if (!id) id = this.warehouse.id;
+    let keyRes = await this.attachmentService.getDirKey(id);
     let fileName = uuid();
     let suffix = this.file.name.split(".")[1];
     let uuidName = fileName + "." + suffix;
@@ -89,7 +89,7 @@ export class EditWarehouse {
     let result = await this.currentUpload.result;
     if (result.status == 'success') {
       this.attachments.push({ uuidName: uuidName, realName: this.file.name, status: 1 });
-      this.warehouse.num ++;
+      this.warehouse.num++;
     }
     this.currentUpload = null;
     this.dir = '';
@@ -99,7 +99,9 @@ export class EditWarehouse {
 
   async showDetail(data) {
     let item: AttachmentMap = data.item;
-    let path = '/' + this.warehouse.parentId + '/' + item.uuidName;
+    let id = this.warehouse.parentId;
+    if (!id) id = this.warehouse.id;
+    let path = '/' + id + '/' + item.uuidName;
     let attachmentUrl = this.attachmentService.view(path);
     let result = await this.dialogService
       .open({ viewModel: AttachmentDetail, model: attachmentUrl, lock: true })

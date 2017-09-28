@@ -43,6 +43,10 @@ export class PositionTransferInfoService {
     return this.http.get(`/position-transfer/info/${id}/getById`).then(res => res.content);
   }
 
+  getInfoById(id: string): Promise<PositionTransferInfo> {
+    return this.http.get(`/position-transfer/info/${id}`).then(res => res.content);
+  }
+
   updateWarehouseVerify(id: string, status: number): Promise<void> {
     return this.http.put(`/position-transfer/info/${id}/warehouseVerify`, status).then(handleResult);
   }
