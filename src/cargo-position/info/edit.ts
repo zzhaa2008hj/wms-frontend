@@ -14,7 +14,6 @@ import { AttachmentDetail } from "@app/common/attachment/detail";
 import { uuid } from "@app/utils";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
-import { CargoItemStorageInfoVo } from "@app/outstock/models/cargo-distrain";
 import { EditRate } from "@app/cargo-position/info/edit-rate";
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
@@ -53,7 +52,7 @@ export class NewPositionTransferInfo {
 
   async activate(params) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.positionTransferInfo = await this.positionTransferInfoService.getById(params.id);
+    this.positionTransferInfo = await this.positionTransferInfoService.getInfoById(params.id);
     this.positionTransferItems = this.positionTransferInfo.positionTransferItems;
     this.positionTransferItems.forEach(pti => {
       let unit = this.units.find(u => pti.unit == u.dictDataCode);
