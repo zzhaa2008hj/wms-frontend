@@ -72,23 +72,28 @@ export interface CargoownershipTransfer {
 
   stageName: string;
   lastStageName: string;
+
+  transferItems: TransferCargoItemVo[];
+  attachments: AttachmentMap[];
+  // 0 生成新的批次 1并票
+  batchNumberMode: number;
 }
 
-//货权转移 货物信息
 export interface CargoownershipTransferItem {
-  //主键
-  id: string ;
-  //批次号
-  batchNumber: string ;
-// 货权转移id
-  cargoownershipTransferId: string ;
-//货物id
+  id: string;
+  orgId: string;
+  remark: string;
+
+  batchNumber: string;
+  // 货权转移ID
+  cargoownershipTransferId: string;
+
   cargoItemId: string;
-  //货物名称
+
   cargoName: string;
-  //货物类别id
+
   cargoCategoryId: string;
-  //货物 类别名称
+
   cargoCategoryName: string;
   //品牌名称
 
@@ -144,25 +149,59 @@ export interface CargoOwnershipTransferRate {
   workName: string;
   // 货权转移明细ID
   transferItemId: string;
-  // 计价方式
-  pricingMode: number;
-  // 计价单位
+  // 堆存件数
+  storageNumber: number;
+  // 计量单位
   unit: string;
 
-  unitStr: string;
+  remark: string;
 
-  // 单价
-  price: number;
-  // 实际单价
-  actualPrice: number;
-  // 库区性质 内贸、保税、承包内贸、承包保税
-  warehouseType: number;
-  warehouseTypeStr: string;
+  orgId: string;
 
-  // 库区类别 场、库
-  warehouseCategory: string;
-  warehouseCategoryStr: string;
+  unitName: string;
+}
+export interface TransferCargoItemVo {
+  id: string;
+  orgId: string;
+  remark: string;
+  cargoInfoId: string;
+  batchNumber: string;
+  cargoName: string;
+  cargoCategoryId: string;
+  cargoCategoryName: string;
+  cargoSubCatergoryName: string;
+  unit: string;
+  freeDays: number;
 
+  // 库存
+  storageQuantity: number;
+  storageNumber: number;
+  // 费收扣量
+  distrainQuantity: number;
+  distrainNumber: number;
+  // 正在出库量
+  outstockQuantity: number;
+  outstockNumber: number;
+  // 实际可转移数
+  quantity: number;
+  number: number;
+  // 转移数
+  transferQuantity: number;
+  transferNumber: number;
+
+  transferFreeDays: number;
+  // 费率
+  cargoRates: CargoRate[];
+  // 库存明细
+  storageItems: TransferStorageItemVo[];
+  
+  unitName: string;
+}
+
+export interface TransferStorageItemVo extends StorageItem{
+  // 可转数量
+  quantity: number;
+  number: number;
 }
 
 export interface CargoOwnershipTranferRateStep {

@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
-import { CargoownershipTransfer, TransferCargoItemVo, CargoownershipTransferVo } from '@app/cargo-ownership/models/cargo-ownership';
+import { CargoownershipTransfer, TransferCargoItemVo, CargoownershipTransferVo, CargoownershipTransferItem, CargoOwnershipTransferRate } from '@app/cargo-ownership/models/cargo-ownership';
 
 export interface CargoownershipTransferCriteria {
   originalCustomerName?: string;

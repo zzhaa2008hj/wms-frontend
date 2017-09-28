@@ -55,7 +55,7 @@ export class RateView {
           cargoCategoryName: { editable: false },
           cargoSubCategoryName: { editable: false },
           warehouseCategoryStr: { editable: false },
-          remark: { editable: true }
+          remark: { editable: true },
         }
       }
     }
