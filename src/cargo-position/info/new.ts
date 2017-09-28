@@ -145,7 +145,6 @@ export class NewPositionTransferInfo {
     }).whenClosed();
     if (result.wasCancelled) return;
     let newCargoRates = result.output;
-    console.log(newCargoRates);
     let storageItems: any = this.dataSourceStorage.data();
     storageItems.forEach(si => {
       if (si.uid == storageItem.uid) {
@@ -167,7 +166,6 @@ export class NewPositionTransferInfo {
       .whenClosed();
     if (result.wasCancelled) return;
     let warehouse = result.output;
-    console.log(warehouse);
     let storageItems: any = this.dataSourceStorage.data();
     storageItems.forEach(si => {
       if (si.uid == uid) {
@@ -183,8 +181,12 @@ export class NewPositionTransferInfo {
       await this.messageDialogService.alert({ title: "", message: "请先选择批次号", icon: "warning" });
       return;
     }
+
     let oldStorageItems = this.dataSourceStorage.data();
-    let storageItems: any = this.dataSourceStorageItem.data();
+    let storageItems: any = this.storageItems;
+    if (this.search.cargoName) {
+      storageItems = storageItems.filter(si => si.cargoName == this.search.cargoName);
+    }
     if (this.search.warehouseName) {
       storageItems = storageItems.filter(si => si.warehouseId == this.search.warehouseId);
     }
@@ -214,7 +216,6 @@ export class NewPositionTransferInfo {
     });
     oldStorageItems.push(...storageItems);
     this.dataSourceStorage.data(oldStorageItems);
-    console.log(this.dataSourceStorage.data());
   }
 
   async onSelectCargoItem(e) {
