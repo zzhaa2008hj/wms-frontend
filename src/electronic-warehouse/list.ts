@@ -1,8 +1,6 @@
 import { autoinject, observable } from "aurelia-framework";
 import * as Raphael from 'raphael';
 import { MessageDialogService, } from "ui";
-import { DictionaryData } from '@app/base/models/dictionary';
-import { DictionaryDataService } from '@app/base/services/dictionary';
 import { ElectronicWarehouseService } from "@app/electronic-warehouse/service/electronic-warehouse";
 import { AttachmentService } from '@app/common/services/attachment';
 import { StorageInfoItem } from '@app/base/models/storage';
@@ -33,7 +31,6 @@ export class ElectronicWarehouse {
   //是否能出清 true：能出清
   clearing: boolean = true;
   constructor(private messageDialogService: MessageDialogService,
-    private dictionaryDataService: DictionaryDataService,
     private attachmentService: AttachmentService,
     private dataSourceFactory: DataSourceFactory,
     private electronicWarehouseService: ElectronicWarehouseService) {
@@ -60,6 +57,11 @@ export class ElectronicWarehouse {
         pageSize: 10
       });
     }
+  }
+
+  test(){
+    if(this.r) this.r.remove();
+    this.r = Raphael("holder", document.body.clientWidth * 0.7, 500);
   }
 
   //保存库存位置信息
@@ -102,14 +104,16 @@ export class ElectronicWarehouse {
    */
   async selectedItemChanged() {
     if (this.selectedItem.selected) {
+      this.rectSelected = false;
       localStorage.setItem(selectedItemKey, this.selectedItem.id);
       this.dataSource.read();
       if (this.selectedItem.parentId) {
         this.initSvg();
       } else {
-        //todo 显示该库区下的所有子库区
-        if (this.r) this.r.remove();
-        this.rectSelected = false;
+        //该节点下是否有子节点 true：没有子节点 false：有子节点
+        let result = this.warehouses.every(x => x.parentId != this.selectedItem.id);
+        console.log(result);
+        if (result) this.initSvg();
       }
     }
   }
@@ -123,11 +127,11 @@ export class ElectronicWarehouse {
     this.imageUrl = attachmentUrl;
     this.rectId = null;
     // this.r = Raphael("holder", 1000, 500);
-    this.r = Raphael("holder", document.body.clientWidth * 0.7, 500);
+    this.r = await Raphael("holder", document.body.clientWidth * 0.7, 500);
     //创建绘图对象
     this.drawSvg(this.warehouseCargoInfo, this.r);
   }
-
+    
   drawSvg(dataPosition, r) {
     //创建绘图对象
     for (let i = 0; i < dataPosition.length; i++) {
@@ -207,11 +211,11 @@ export class ElectronicWarehouse {
         .attr({ "fill": "white", "stroke": "#666", 'stroke-width': 'outBorderSize', "fill-opacity": 0, cursor: "nwse-resize", })
         .drag(
         //拖动事件，同时缩放堆位矩形
-        (dx: number, dy: number, x: number, y: number) => {
+        (dx: number, dy: number) => {
           //缩放堆位矩形
           let rectEle = this.r.getById(eleScaling.id.split("_")[0]);
           if (rectEle["owidth"] + dx < this.minSize) {
-            dx = this.minSize -  rectEle["owidth"];
+            dx = this.minSize - rectEle["owidth"];
           }
           if (rectEle["oheight"] + dy < this.minSize) {
             dy = this.minSize - rectEle["oheight"];

@@ -3,7 +3,6 @@ import { handleResult, Query, RestClient } from "@app/utils";
 import { ChargeInfo } from "@app/fee/models/charge";
 import { ChargeAuditItem } from "@app/fee/models/charge-audit";
 import { Attachment } from "@app/common/models/attachment";
-
 /**
  * Created by Hui on 2017/8/2.
  */
@@ -57,7 +56,7 @@ export class ChargeInfoService {
   }
 
   /**
-   * 根据客户货物批次号
+   * 根据客户获取批次号
    */
   async getBatchNumbers(customerId: string): Promise<string[]> {
     let res = await this.http.get(`/fee/charge-info/${customerId}/batch-number`);
