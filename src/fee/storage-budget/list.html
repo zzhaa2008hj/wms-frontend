@@ -1,0 +1,46 @@
+<template>
+  <div class="controlbar">
+    <!-- <div class="spacer"></div> -->
+    <div class="input-group">
+      <input class="form-control" style="width:200px;" ak-datepicker="k-value.two-way: endDate; k-widget.two-way: endDatePicker"
+        placeholder="请选择截止时间*" />
+      <ak-drop-down-list class="m-l-5" style="width:150px;" k-option-label="请选择客户*" k-data-text-field="shortName" k-data-value-field="id"
+        k-value.two-way="customerId" k-data-source.bind="customers" k-on-change.delegate="customerChanged()">
+      </ak-drop-down-list>
+      <ak-drop-down-list class="m-l-5" style="width:150px;" k-option-label="请选择批次号" k-data-text-field="batchNumber" k-data-value-field="batchNumber"
+        k-value.two-way="batchNumber" k-data-source.bind="batchNumbersDataSource">
+      </ak-drop-down-list>
+      <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+    </div>
+  </div>
+  <div>
+    <h2 if.bind="storageBudget.length >0" style="text-align: center">费用合计：${totalCost}</h4>
+  </div>
+  <ak-grid k-data-source.bind="dataSource" k-on-detail-init.delegate="detailInit($event.detail)">
+    <ak-col k-field="batchNumber" k-title="批次号" k-width="110px"></ak-col>
+    <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
+    <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+    <ak-col k-field="warehouseName" k-title="库区"></ak-col>
+    <ak-col k-field="number" k-title="件数"></ak-col>
+    <ak-col k-field="quantity" k-title="数量"></ak-col>
+    <ak-col k-field="unitStr" k-title="计价单位"></ak-col>
+    <!-- <ak-col k-field="unit" k-title="计量单位"></ak-col> -->
+    <ak-col k-field="pricingMode" k-title="计价方式">
+      <ak-template>
+        ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
+      </ak-template>
+    </ak-col>
+    <ak-col k-field="price" k-title="单一单价"></ak-col>
+    <ak-col k-field="actualPrice" k-title="实际单一单价" k-width="100px"></ak-col>
+    <ak-col k-field="instockDate" k-title="入库时间" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
+    <ak-col k-field="freeDays" k-title="免堆期"></ak-col>
+    <ak-col k-field="storageDays" k-title="堆存天数"></ak-col>
+    <!-- <ak-col k-field="startDate" k-title="开始时间" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="endDate" k-title="结束时间" k-format="{0:yyyy-MM-dd}"></ak-col> -->
+    <ak-col k-field="amount" k-title="费用"></ak-col>
+    <ak-template for="detailTemplate">
+      <div class="rateSteps" if.bind="pricingMode !=1 "></div>
+      <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+    </ak-template>
+  </ak-grid>
+</template>

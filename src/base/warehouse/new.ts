@@ -10,6 +10,7 @@ import { AttachmentService } from '@app/common/services/attachment';
 import { AttachmentMap } from '@app/common/models/attachment';
 import { AttachmentDetail } from '@app/common/attachment/detail';
 import { uuid } from '@app/utils';
+
 /**
  * Created by Hui on 2017/6/14.
  */
@@ -28,13 +29,13 @@ export class NewWarehouse {
   attachments = [] as AttachmentMap[];
 
   constructor(private dialogController: DialogController,
-              private dictionaryDataService: DictionaryDataService,
-              private dialogService: DialogService,
-              private attachmentService: AttachmentService,
-              private messageDialogService: MessageDialogService,
-              private uploader: Uploader,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+    private dictionaryDataService: DictionaryDataService,
+    private dialogService: DialogService,
+    private attachmentService: AttachmentService,
+    private messageDialogService: MessageDialogService,
+    private uploader: Uploader,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -49,14 +50,22 @@ export class NewWarehouse {
     this.warehouse.num = 0;
   }
 
+  onSelect(e) {
+    let dataItem: DictionaryData = this.selectedType.dataItem(e.item);
+    this.warehouse.type = dataItem.dictDataName;
+  }
   async chooseFile() {
     this.file = await this.dialogService.chooseFile();
     if (this.file) this.dir = this.file.name + ";";
   }
 
   async upload() {
-    let keyRes = await this.attachmentService.getDirKey(this.pWarehouse.id);
-
+    if (!this.warehouse.id) this.warehouse.id = uuid();
+    let dir = this.warehouse.id;
+    if(this.pWarehouse){
+      dir = this.pWarehouse.id;
+    }
+    let keyRes = await this.attachmentService.getDirKey(dir);
     let fileName = uuid();
     let suffix = this.file.name.split(".")[1];
     let uuidName = fileName + "." + suffix;
@@ -69,7 +78,7 @@ export class NewWarehouse {
     }
     this.currentUpload = null;
     this.dir = '';
-    await this.dialogService.alert({ title: '上传完成', message: '上传完成，成功上传'});
+    await this.dialogService.alert({ title: '上传完成', message: '上传完成，成功上传' });
     return;
   }
 
@@ -91,7 +100,7 @@ export class NewWarehouse {
       await this.attachmentService
         .deleteAttachments({ baseId: this.pWarehouse.id, url: path, uuidName: item.uuidName });
       this.attachments = this.attachments.filter(res => res.uuidName != item.uuidName);
-      this.warehouse.num -- ;
+      this.warehouse.num--;
     } catch (err) {
       await this.messageDialogService.alert({ title: "删除失败", message: err.message, icon: "error" });
     }
@@ -101,8 +110,8 @@ export class NewWarehouse {
     if (this.pWarehouse) {
       this.warehouse.parentId = this.pWarehouse.id;
       this.warehouse.category = this.pWarehouse.category;
-      this.warehouse.attachments = this.attachments;
     }
+    this.warehouse.attachments = this.attachments;
     if (!this.warehouse.type) {
       this.warehouse.type = this.pWarehouse.type;
     }
