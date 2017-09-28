@@ -1,4 +1,4 @@
-import {  autoinject } from 'aurelia-dependency-injection';
+import { autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory } from '@app/utils';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { StatisticsCriteria, PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
@@ -7,6 +7,8 @@ import { VerifyRecord } from '@app/common/models/verify-record';
 import { DialogService, MessageDialogService } from 'ui';
 import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { VerifyRecordService } from '@app/common/services/verify-record';
+import { UploadConfirm } from "@app/cargo-position/confirm/upload-confirm";
+import { WorkOrderItemService } from "@app/instock/services/work-order";
 
 @autoinject
 export class PositionTransferInfoList {
@@ -21,11 +23,12 @@ export class PositionTransferInfoList {
     buttonCount: 10
   };
 
-  constructor( private positionTransferInfoService: PositionTransferInfoService,
-               private router: Router,
+  constructor(private positionTransferInfoService: PositionTransferInfoService,
+              private router: Router,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
+              private workOrderItemService: WorkOrderItemService,
               private verifyRecordService: VerifyRecordService) {
   }
 
@@ -88,11 +91,43 @@ export class PositionTransferInfoList {
 
   //上传客户/领导签字确认单
   async uploadConfirm(e) {
-    let result = await this.dialogService.open({ viewModel: "", model: e, lock: true }).whenClosed();
+    let result = await this.dialogService.open({ viewModel: UploadConfirm, model: e, lock: true }).whenClosed();
     if (result.wasCancelled) return;
     try {
       await this.positionTransferInfoService.updateConfirm(e.id, result.output);
-      this.dialogService.alert({ title: "提示", message: "客户/领导签字确认成功" });
+      await this.dialogService.alert({ title: "提示", message: "客户/领导签字确认成功" });
+      this.dataSource.read();
+    } catch (err) {
+      this.dialogService.alert({ title: "错误", message: err.message });
+    }
+  }
+
+  //开始作业
+  async startWork(id) {
+    let confirm = await this.dialogService.confirm({ title: "提示", message: "是否确认开始作业;" });
+    if (!confirm) return;
+    try {
+      await this.positionTransferInfoService.updateStartWork(id);
+      await this.dialogService.alert({ title: "提示", message: "成功开始作业！" });
+      this.dataSource.read();
+    } catch (err) {
+      this.dialogService.alert({ title: "错误", message: err.message });
+    }
+  }
+
+  //作业完成
+  async endWork(id) {
+    let res = await this.workOrderItemService.getTransferWorkDetails(id);
+    if (res == null || res.length == 0) {
+      await this.dialogService.alert({ title: "提示", message: "没有作业内容！" })
+      return;
+    }
+    let confirm = await this.dialogService.confirm({ title: "提示", message: "是否确认完成作业;" });
+    if (!confirm) return;
+    try {
+      await this.positionTransferInfoService.updateEndWork(id);
+      await this.dialogService.alert({ title: "提示", message: "作业完成！" });
+      this.dataSource.read();
     } catch (err) {
       this.dialogService.alert({ title: "错误", message: err.message });
     }

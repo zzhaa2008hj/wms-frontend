@@ -36,15 +36,24 @@ export class PositionTransferInfoService {
   }
 
   updateConfirm(id: string, attachments: AttachmentMap[]): Promise<void> {
-    return this.http.put(`/position-transfer/info/${id}/confirm`, attachments).then(handleResult);
+    return this.http.put(`/position-transfer/info/${id}/sign`, attachments).then(handleResult);
   }
 
   getById(id: string): Promise<PositionTransferInfo> {
-    return this.http.get(`/position-transfer/info/${id}`).then(res => res.content);
+    return this.http.get(`/position-transfer/info/${id}/getById`).then(res => res.content);
   }
 
   updateWarehouseVerify(id: string, status: number): Promise<void> {
     return this.http.put(`/position-transfer/info/${id}/warehouseVerify`, status).then(handleResult);
+  }
+  updateStartWork(id: string): Promise<void> {
+    return this.http.put(`/position-transfer/info/${id}/startWork`,'').then(handleResult);
+  }
+  updateEndWork(id: string): Promise<void> {
+    return this.http.put(`/position-transfer/info/${id}/endWork`,'').then(handleResult);
+  }
+  updateBusinessConfirm(id: string, status: number): Promise<void> {
+    return this.http.put(`/position-transfer/info/${id}/confirm`, status).then(handleResult);
   }
 }
 
@@ -55,6 +64,6 @@ export class PositionTransferItemService {
   }
 
   getItems(id: string): Promise<PositionTransferItem[]> {
-    return this.http.get(`/position-transfer/info/${id}/items`).then(res => res.content);
+    return this.http.get(`/position-transfer/item/${id}/items`).then(res => res.content);
   }
 }

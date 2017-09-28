@@ -10,19 +10,19 @@
           <button class="btn btn-small btn-primary" click.delegate="print()">打印</button>
         </div>
       </div>
-      <div class="col-md-11 col-md-offset-1" id="outstockInventory">
+      <div class="col-md-11 col-md-offset-1" id="confirm">
         <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
           <tr>
             <td align="center" colspan="10">
               <h3>${positionTransferInfo.customerName}</h3><br/>
-              <h4>出&nbsp;&nbsp;库&nbsp;&nbsp;完&nbsp;&nbsp;工&nbsp;&nbsp;单</h4>
+              <h4>货&nbsp;&nbsp;位&nbsp;&nbsp;转&nbsp;&nbsp;移&nbsp;&nbsp;确&nbsp;&nbsp;认&nbsp;&nbsp;单</h4>
             </td>
           </tr>
           <tr>
             <td align="center" nowrap>货位转移单号：</td>
             <td colspan="4" nowrap>${positionTransferInfo.transferNumber}</td>
             <td align="center" nowrap>需求来源：</td>
-            <td colspan="4" nowrap>${positionTransferInfo.demandFrom == 1?"公司", "客户"}</td>
+            <td colspan="4" nowrap>${positionTransferInfo.demandFrom == 1 ? '内部': '客户'}</td>
           </tr>
           <tr>
             <td align="center" nowrap>代理商：</td>

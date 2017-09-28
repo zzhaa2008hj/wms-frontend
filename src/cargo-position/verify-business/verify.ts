@@ -54,8 +54,6 @@ export class NewPositionTransferInfo {
         }
       }
     });
-
-
   }
 
   getPath(uuidName) {
@@ -68,6 +66,7 @@ export class NewPositionTransferInfo {
     try {
       await this.positionTransferInfoService.updateBusinessVerify(this.positionTransferInfo.id, param);
       await this.dialogService.alert({ title: "提示", message: "操作成功" });
+      this.router.navigateToRoute("list");
     } catch (e) {
       await this.dialogService.alert({ title: "错误", message: e.message });
     }

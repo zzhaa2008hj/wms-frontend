@@ -29,6 +29,14 @@
     <ak-col k-title="操作" k-width.bind="280">
       <ak-template>
         <a class="btn btn-small" if.bind="stage == 0 || stage == 2" route-href="route: edit; params.bind: { id: id }">修改</a>
+        <a class="btn btn-small" if.bind="stage == 1" route-href="route: business-verify; params.bind: { id: id }" required-permissions="U000069">商务审核</a>
+        <a class="btn btn-small" if.bind="stage == 3" route-href="route: print-confirm; params.bind: { id: id }">打印签字确认单</a>
+        <a class="btn btn-small" if.bind="stage == 3" click.delegate = "uploadConfirm($this)">上传签字确认单</a>
+        <a class="btn btn-small" if.bind="stage == 4" click.delegate = "startWork(id)">开始作业</a>
+        <a class="btn btn-small" if.bind="stage == 5 || stage == 7" route-href="route: work-order; params.bind:{id:id, type:4}">添加作业信息</a>
+        <a class="btn btn-small" if.bind="stage == 5 || stage == 7" click.delegate = "endWork(id)">作业完成</a>
+        <a class="btn btn-small" if.bind="stage == 6" route-href="route: verify-warehouse; params.bind: { id: id }">库场审核</a>
+        <a class="btn btn-small" if.bind="stage == 8" route-href="route: confirm-business; params.bind: { id: id }">商务确认</a>
       </ak-template>
     </ak-col>
   </ak-grid>
