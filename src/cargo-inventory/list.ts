@@ -1,13 +1,13 @@
 import { autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory, fixDate } from '@app/utils';
-import { CargoInventoryService, InventoryCriteria } from '@app/cargo-inventory/services/cargo-inventory';
+import { CargoInventoryService } from '@app/cargo-inventory/services/cargo-inventory';
 import { ConstantValues } from '@app/common/models/constant-values';
 
 @autoinject
 export class CargoInventoryList {
 
   dataSource: kendo.data.DataSource;
-  criteria: InventoryCriteria;
+  keywords: string;
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -23,10 +23,10 @@ export class CargoInventoryList {
 
   activate() {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.cargoInventoryService.queryCargoInventoryPage(this.criteria).map(res => {
+      query: () => this.cargoInventoryService.queryCargoInventoryPage(this.keywords).map(res => {
         res.demandFromStr = this.demandFrom.find(d => d.type == res.demandFrom).name;
         res.statusStr = this.statusArr.find(d => d.status == res.status).title;
-        fixDate(res, 'startTime', 'endTime', 'createTime');
+        fixDate(res, 'startTime', 'endTime', 'createTime', 'inventoryCheckDate', 'actualCheckDate');
         return res;
       }),
       pageSize: 10
@@ -34,6 +34,11 @@ export class CargoInventoryList {
   }
 
   select() {
+    this.dataSource.read();
+  }
+
+  reset() {
+    this.keywords = '';
     this.dataSource.read();
   }
 }

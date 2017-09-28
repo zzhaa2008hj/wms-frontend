@@ -1,0 +1,269 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-title no-border">
+      <div class="row">
+        <div class="col-md-10">
+          <h4>需求信息</h4>
+        </div>
+        <div class="input-group col-md-1">
+          <button class="btn btn-small" if.bind="cargoInventory.status == 0" click.delegate="printCargoItems()">打印盘点记录</button>
+          <button class="btn btn-small" if.bind="cargoInventory.status == 1" click.delegate="printCargoInventory()">打印库存清单</button>
+        </div>
+      </div>
+    </div>
+    <div class="grid-body no-border">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">盘点来源*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.demandFrom == 1? '外部' : '内部'" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">开始时间*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.startTimeStr" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">结束时间*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.endTimeStr" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">货类</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.cargoCategoryName" readonly style="width: 100%" placeholder="请选择货类">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" if.bind="cargoInventory.demandFrom == 2">
+        <div class="form-group">
+          <label class="form-label">库区*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.warehouseName" readonly placeholder="请选择库区">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" if.bind="cargoInventory.demandFrom == 1">
+        <div class="form-group">
+          <label class="form-label">代理商名称*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.agentName" readonly placeholder="请选择代理商">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" if.bind="cargoInventory.demandFrom == 1">
+        <div class="form-group">
+          <label class="form-label">客户名称*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.customerName" readonly placeholder="请选择客户">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">预盘日期*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.inventoryCheckDateStr" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">盘点人*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.inventoryChecker" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">实盘日期*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.actualCheckDateStr" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-title no-border">
+      <h4>盘点信息</h4>
+    </div>
+    <div class="grid-body no-border">
+      <ak-grid k-data-source.bind="dataSource">
+        <ak-col k-field="cargoName" k-title="货名"></ak-col>
+        <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+        <ak-col k-field="instockDateStr" k-title="入库时间"></ak-col>
+        <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+        <ak-col k-field="inventoryNumber" k-title="库存件数"></ak-col>
+        <ak-col k-field="inventoryQuantity" k-title="库存数量"></ak-col>
+        <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+        <ak-col k-field="actualNumber" k-title="实盘件数"></ak-col>
+        <ak-col k-field="actualQuantity" k-title="实盘数量"></ak-col>
+        <ak-col k-field="profitLossNumber" k-title="盈亏件数">
+          <ak-template>
+            <label style="color: red" if.bind="profitLossNumber != 0">${profitLossNumber}</label>
+            <label if.bind="profitLossNumber == 0">${profitLossNumber}</label>
+          </ak-template>
+        </ak-col>
+        <ak-col k-field="profitLossQuantity" k-title="盈亏数量">
+          <ak-template>
+            <label style="color: red" if.bind="profitLossQuantity != 0">${profitLossQuantity}</label>
+            <label if.bind="profitLossQuantity == 0">${profitLossQuantity}</label>
+          </ak-template>
+        </ak-col>
+        <ak-col k-field="remark" k-title="备注"></ak-col>
+      </ak-grid>
+      <div class="form-actions">
+        <div class="pull-right">
+          <a class="btn btn-white" route-href="route: list">返回</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="inventoryItems" style="display: none;">
+      <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+        <tr>
+          <td align="center" colspan="12">
+            <h3>货物盘点记录</h3>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">货类</td>
+          <td colspan="2" align="center">${cargoInventory.cargoCategoryName}</td>
+          <template if.bind="cargoInventory.demandFrom == 1">
+            <td align="center">代理商名称</td>
+            <td colspan="2" align="center">${cargoInventory.agentName}</td>
+            <td align="center">客户名称</td>
+            <td colspan="2" align="center">${cargoInventory.customerName}</td>
+          </template>
+          <template if.bind="cargoInventory.demandFrom == 2">
+            <td colspan="2" align="center">库区名称</td>
+            <td colspan="4" align="center">${cargoInventory.warehouseName}</td>
+          </template>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">预盘日期</td>
+          <td colspan="2" align="center">${cargoInventory.inventoryCheckDateStr}</td>
+          <td align="center">盘点人</td>
+          <td colspan="2" align="center"></td>
+          <td align="center">实盘日期</td>
+          <td colspan="2" align="center"></td>
+        </tr>
+        <tr>
+          <td align="center">货名</td>
+          <td align="center">货类</td>
+          <td align="center">入库时间</td>
+          <td align="center">库区名称</td>
+          <td align="center">库存件数</td>
+          <td align="center">库存数量</td>
+          <td align="center">计量单位</td>
+          <td align="center">实盘件数</td>
+          <td align="center">实盘数量</td>
+          <td align="center" style="width:200px;">备注</td>
+        </tr>
+        <template repeat.for="item of inventoryItemList">
+          <tr>
+            <td align="center">${item.cargoName}</td>
+            <td align="center">${item.cargoCategoryName}</td>
+            <td align="center">${item.instockDateStr}</td>
+            <td align="center">${item.warehouseName}</td>
+            <td align="center">${item.inventoryNumber}</td>
+            <td align="center">${item.inventoryQuantity}</td>
+            <td align="center">${item.unitStr}</td>
+            <td align="center">${item.actualNumber}</td>
+            <td align="center">${item.actualQuantity}</td>
+            <td align="center">${item.remark}</td>
+          </tr>
+        </template>
+      </table>
+    </div>
+
+    <div id="inventoryDetail" style="display: none;">
+      <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+        <tr>
+          <td align="center" colspan="12">
+            <h3>货物盘点库存清单</h3>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">盘点来源</td>
+          <td colspan="2" align="center">${cargoInventory.demandFrom == 1? '外部': '内部'}</td>
+          <td colspan="2" align="center">开始时间</td>
+          <td colspan="2" align="center">${cargoInventory.startTimeStr}</td>
+          <td colspan="2" align="center">结束时间</td>
+          <td colspan="2" align="center">${cargoInventory.endTimeStr}</td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">货类</td>
+          <td colspan="2" align="center">${cargoInventory.cargoCategoryName}</td>
+          <template if.bind="cargoInventory.demandFrom == 1">
+            <td colspan="2" align="center">代理商名称</td>
+            <td colspan="2" align="center">${cargoInventory.agentName}</td>
+            <td colspan="2" align="center">客户名称</td>
+            <td colspan="2" align="center">${cargoInventory.customerName}</td>
+          </template>
+          <template if.bind="cargoInventory.demandFrom == 2">
+            <td colspan="2" align="center">库区名称</td>
+            <td colspan="6" align="center">${cargoInventory.warehouseName}</td>
+          </template>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">预盘日期</td>
+          <td colspan="2" align="center">${cargoInventory.inventoryCheckDateStr}</td>
+          <td colspan="2" align="center">盘点人</td>
+          <td colspan="2" align="center">${cargoInventory.inventoryChecker}</td>
+          <td colspan="2" align="center">实盘日期</td>
+          <td colspan="2" align="center">${cargoInventory.actualCheckDateStr}</td>
+        </tr>
+        <tr>
+          <td align="center">货名</td>
+          <td align="center">货类</td>
+          <td align="center">入库时间</td>
+          <td align="center">库区名称</td>
+          <td align="center">库存件数</td>
+          <td align="center">库存数量</td>
+          <td align="center">计量单位</td>
+          <td align="center">实盘件数</td>
+          <td align="center">实盘数量</td>
+          <td align="center">盈亏件数</td>
+          <td align="center">盈亏数量</td>
+          <td align="center">备注</td>
+        </tr>
+        <template repeat.for="item of inventoryItemList">
+          <tr>
+            <td align="center">${item.cargoName}</td>
+            <td align="center">${item.cargoCategoryName}</td>
+            <td align="center">${item.instockDateStr}</td>
+            <td align="center">${item.warehouseName}</td>
+            <td align="center">${item.inventoryNumber}</td>
+            <td align="center">${item.inventoryQuantity}</td>
+            <td align="center">${item.unitStr}</td>
+            <td align="center">${item.actualNumber}</td>
+            <td align="center">${item.actualQuantity}</td>
+            <td align="center">${item.profitLossNumber}</td>
+            <td align="center">${item.profitLossQuantity}</td>
+            <td align="center">${item.remark}</td>
+          </tr>
+        </template>
+      </table>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,120 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-title no-border"></div>
+    <div class="grid-body no-border">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">盘点来源*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.demandFrom == 1? '外部' : '内部'" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">开始时间*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.startTimeStr" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">结束时间*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.endTimeStr" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">货类</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.cargoCategoryName" readonly style="width: 100%" placeholder="请选择货类">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" if.bind="cargoInventory.demandFrom == 2">
+        <div class="form-group">
+          <label class="form-label">库区*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.warehouseName" readonly placeholder="请选择库区">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" if.bind="cargoInventory.demandFrom == 1">
+        <div class="form-group">
+          <label class="form-label">代理商名称*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.agentName" readonly placeholder="请选择代理商">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" if.bind="cargoInventory.demandFrom == 1">
+        <div class="form-group">
+          <label class="form-label">客户名称*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.customerName" readonly placeholder="请选择客户">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">预盘日期*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoInventory.inventoryCheckDateStr" readonly style="width: 100%">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">盘点人*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.inventoryChecker & validate" placeholder="请填写盘点人">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">实盘日期*</label>
+          <span class="help"></span>
+          <div class="input-group" style="margin-top: 6px;width: 100%">
+            <input ak-datepicker="k-value.two-way : cargoInventory.actualCheckDate & validate;" style="width: 100%" type="text" class="form-control"
+              placeholder="请选择实盘时间" disabled.bind="disabled">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-body no-border">
+      <ak-grid k-data-source.bind="dataSource" k-editable.bind="true">
+        <ak-col k-field="cargoName" k-title="货名"></ak-col>
+        <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+        <ak-col k-field="instockDate" k-title="入库时间" k-format="{0:yyyy-MM-dd}"></ak-col>
+        <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+        <ak-col k-field="inventoryNumber" k-title="库存件数"></ak-col>
+        <ak-col k-field="inventoryQuantity" k-title="库存数量"></ak-col>
+        <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+        <ak-col k-field="actualNumber" k-title="实盘件数"></ak-col>
+        <ak-col k-field="actualQuantity" k-title="实盘数量"></ak-col>
+        <ak-col k-field="profitLossNumber" k-title="盈亏件数"></ak-col>
+        <ak-col k-field="profitLossQuantity" k-title="盈亏数量"></ak-col>
+        <ak-col k-field="remark" k-title="备注"></ak-col>
+      </ak-grid>
+      <div class="form-actions">
+        <div class="pull-right">
+          <button class="btn btn-primary" click.delegate="save()">保存</button>
+          <a class="btn btn-white" route-href="route: list">取消</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

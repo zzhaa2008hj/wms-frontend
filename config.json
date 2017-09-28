@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "http://192.168.133.118:8090"
+    "baseUrl": "http://localhost:8090"
   },
   "notification": {
     "baseUrl": "http://192.168.133.118:3344/wms"
@@ -10,9 +10,9 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://192.168.133.118:3000/loginRpc",
-    "loginOutUrl": "http://192.168.133.118:8080/rpc/login/logOut",
-    "changePasswordUrl": "http://192.168.133.118:3000/changePasswordRpc",
+    "loginUrl": "http://localhost:3000/loginRpc",
+    "loginOutUrl": "http://localhost:8080/rpc/login/logOut",
+    "changePasswordUrl": "http://localhost:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
@@ -43,8 +43,13 @@
       "expanded": false
     },
     "group6": {
-      "title": "货权转移管理",
+      "title": "货权转移",
       "icon": "transfer_within_a_station",
+      "expanded": false
+    },
+    "group7": {
+      "title": "货物盘点",
+      "icon": "assessment",
       "expanded": false
     }
   },
@@ -131,6 +136,13 @@
       "group": "group3"
     },
     {
+      "route": "/cargo-inventory",
+      "name": "cargo-inventory",
+      "title": "货物盘点",
+      "moduleId": "./cargo-inventory/index",
+      "group": "group7"
+    },
+    {
       "route": "/fee/charge",
       "name": "charge",
       "title": "收费管理",
@@ -146,9 +158,16 @@
     },
     {
       "route": "/report/ledger-account",
-      "name": "ledger-account",
-      "title": "台账流水账",
-      "moduleId": "./report/ledger-account/index",
+      "name": "ledger",
+      "title": "台账",
+      "moduleId": "./report/ledger/index",
+      "group": "group5"
+    },
+    {
+      "route": "/report/current-account",
+      "name": "current-account",
+      "title": "流水账",
+      "moduleId": "./report/current-account/index",
       "group": "group5"
     },
     {
@@ -323,7 +342,8 @@
       "route": "/electronic-warehouse",
       "name": "electronic-warehouse",
       "title": "电子厂图",
-      "moduleId": "./electronic-warehouse/index"
+      "moduleId": "./electronic-warehouse/index",
+      "icon": "assessment"
     }
   ]
 }
