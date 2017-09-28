@@ -2,7 +2,6 @@ import {  autoinject } from 'aurelia-dependency-injection';
 import { DataSourceFactory } from '@app/utils';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { StatisticsCriteria, PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
-import { MessageDialogService } from "ui";
 import { Router } from "aurelia-router";
 import { VerifyRecord } from '@app/common/models/verify-record';
 import { DialogService, MessageDialogService } from 'ui';
@@ -23,10 +22,7 @@ export class PositionTransferInfoList {
   };
 
   constructor( private positionTransferInfoService: PositionTransferInfoService,
-               private messageDialogService: MessageDialogService,
                private router: Router,
-               private dataSourceFactory: DataSourceFactory,
-              private positionTransferInfoService: PositionTransferInfoService,
               private dataSourceFactory: DataSourceFactory,
               private dialogService: DialogService,
               private messageDialogService: MessageDialogService,
