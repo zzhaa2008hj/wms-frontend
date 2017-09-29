@@ -85,7 +85,7 @@
               <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消</button>
             </div>
             <div class="controls">
-              <label repeat.for="item of attachments">
+              <label repeat.for="item of showAttachments">
                 <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a>
                 <a class="pointer m-l-10" click.delegate="delete($this)">删除</a>
               </label>
