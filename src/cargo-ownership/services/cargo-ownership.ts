@@ -103,9 +103,6 @@ export class CargoownershipTransferService {
     return res.content ;
   }
 
-
-
-
   getChangeHistory(id: string, historyId: string): Promise<CargoownershipTransfer> {
     return this.http.get(`/ownership-transfer/info/${id}/changeHistory/${historyId}`).then(res => res.content);
   }
