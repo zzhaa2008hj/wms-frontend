@@ -42,8 +42,6 @@
     <ak-col k-title="操作" k-width.bind="300">
       <ak-template>
         <a class="btn btn-small btn-primary" if.bind="stage == 1 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">商务审核</a>
-        <a class="btn btn-small btn-primary" if.bind="stage >= 1" route-href="route: view; params.bind: {id: id}" required-permissions="R000089">查看详情</a>
-      
         <a class="btn btn-small btn-primary"  route-href="route: audit; params.bind: {id: id,type:1}" >商务审核</a>
         <a class="btn btn-small btn-primary" route-href="route: audit; params.bind: {id: id,type:2}" >费收审核</a>
         <a class="btn btn-small btn-primary"  route-href="route: audit; params.bind: {id: id,type:3}" >副总确认</a>
@@ -51,6 +49,8 @@
         <a class="btn btn-small btn-primary" click.delegate="changeStage(id,1)"  >开始作业</a>
         <a class="btn btn-small btn-primary" click.delegate="changeStage(id,2)" >仓管确认</a>
         <a class="btn btn-small btn-primary" click.delegate= "changeStage(id,3)">设置完工</a>
+        <a class="btn btn-small" if.bind="stage >= 1" route-href="route: view; params.bind: {id: id}" required-permissions="R000089">查看详情</a>
+        <a class="btn btn-small btn-primary"  route-href="route: edit; params.bind: {id: id}" required-permissions="R000089">修改</a>
       </ak-template>
 
     <!--  <a class="btn btn-small btn-primary" if.bind="stage == 1 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">商务审核</a>
