@@ -1,6 +1,5 @@
 <template>
   <div class="controlbar">
-    <a class="btn btn-small btn-success" oute-href="route: new" >新增货权转移</a>
     <a class="btn btn-small" click.delegate="changeHistory()" >修改记录</a>
     <a class="btn btn-small" click.delegate="changeHistory()" >生成入库单</a>
     <a class="btn btn-small" click.delegate="getAuditList()" >审批审核记录</a>
@@ -15,6 +14,7 @@
 
 
 
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000049">新增货权转移</a>
     <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="U000070">修改记录</a>
     <div class="spacer"></div>
     <div class="input-group">

@@ -1,6 +1,10 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
+<<<<<<< HEAD
 import { CargoownershipTransfer, TransferCargoItemVo, CargoownershipTransferVo, CargoownershipTransferItem, CargoOwnershipTransferRate } from '@app/cargo-ownership/models/cargo-ownership';
+=======
+import { CargoownershipTransfer, TransferCargoItemVo, CargoownershipTransferVo } from '@app/cargo-ownership/models/cargo-ownership';
+>>>>>>> 8d2e1d8830f2854a67458439ee0e2b4ad866d00f
 import { CargoInfo} from '@app/base/models/cargo-info';
 
 export interface CargoownershipTransferCriteria {
@@ -113,8 +117,6 @@ export class CargoownershipTransferService {
     let res = await this.http.put(`/ownership-transfer/info/${id}/change-stage/${stage}`,"");
     return res.content ;
   }
-
-
 
 
   getChangeHistory(id: string, historyId: string): Promise<CargoownershipTransfer> {

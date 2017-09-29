@@ -105,8 +105,12 @@ export interface CargoownershipTransferItem {
   // 指令件数
   orderNumber: number;
   //单位
-  unit: string;
   unitStr: string;
+
+  unit: string;
+
+  cargoInfoId: string;
+  freeDays: number;
 
   storageItems: TransferCargoStorageItem[];
   cargoRates: CargoRate[];
@@ -130,6 +134,19 @@ export interface CargoOwnershipTransferRate {
   workName: string;
   // 货权转移明细ID
   transferItemId: string;
+}
+export interface TransferCargoStorageItem{
+  id: string;
+  // 库存信息表主键
+  transferItemId: string;
+  // 库区主键
+  warehouseId: string;
+  // 库区名称
+  warehouseName: string;
+  // 集装箱号
+  containerNumber: string;
+  // 堆存数量
+  storageQuantity: number;
   // 堆存件数
   storageNumber: number;
   // 计量单位
