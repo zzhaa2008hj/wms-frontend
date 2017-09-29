@@ -1,0 +1,242 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o"></i> 修改记录详情
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="col-md-6">
+        <h4>修改前</h4>
+        <div class="grid simple">
+          <div class="grid-body no-border">
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">原代理商*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.originalAgentName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">原客户*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.originalCustomerName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">原批次号*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.originalBatchNumber" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">新代理商*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.newAgentName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">新客户*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.newCustomerName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">新批次号</label>
+                  <div class="controls">
+                      <input type="text" class="form-control" value.bind="oldTransfer.newBatchNumber" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div class="form-label">转让日期</div>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.transferDateStr" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div class="form-label">仓储费用结算至</div>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.storageEndDateStr" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">出库费用承担方*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="oldTransfer.outstockChargePayerName" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <textarea type="text" class="form-control" value.bind="oldTransfer.remark" readonly></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="controls">
+                <label class="form-label">出库货物*</label>
+                <ak-grid k-data-source.bind="oldCargoItemDataSource">
+                  <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                  <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
+                  <ak-col k-field="unitName" k-title="计量单位"></ak-col>
+                  <ak-col k-field="transferNumber" k-title="转移件数"></ak-col>
+                  <ak-col k-field="transferQuantity" k-title="转移数量"></ak-col>
+                  <ak-col k-field="transferFreeDays" k-title="免堆天数"></ak-col>
+                  <ak-col k-field="remark" k-title="备注"></ak-col>
+                  <ak-col k-title="操作" k-width.bind="180">
+                    <ak-template>
+                      <button class="btn btn-primary btn-small" click.delegate="showOldStorage($this)">查看库区
+                        <button class="btn btn-primary btn-small" click.delegate="showOldRate($this)">查看费率
+                        </button>
+                    </ak-template>
+                  </ak-col>
+                </ak-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+          <h4>修改后</h4>
+        <div class="grid simple">
+          <div class="grid-body no-border">
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">原代理商*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.originalAgentName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">原客户*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.originalCustomerName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">原批次号*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.originalBatchNumber" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">新代理商*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.newAgentName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">新客户*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.newCustomerName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">新批次号</label>
+                  <div class="controls">
+                      <input type="text" class="form-control" value.bind="newTransfer.newBatchNumber" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div class="form-label">转让日期</div>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.transferDateStr" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div class="form-label">仓储费用结算至</div>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.storageEndDateStr" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">出库费用承担方*</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" value.bind="newTransfer.outstockChargePayerName" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="form-label">备注</label>
+                <span class="help"></span>
+                <div class="controls">
+                  <textarea type="text" class="form-control" value.bind="newTransfer.remark" readonly></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="controls">
+                <label class="form-label">出库货物*</label>
+                <ak-grid k-data-source.bind="newCargoItemDataSource">
+                  <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+                  <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
+                  <ak-col k-field="unitName" k-title="计量单位"></ak-col>
+                  <ak-col k-field="transferNumber" k-title="转移件数"></ak-col>
+                  <ak-col k-field="transferQuantity" k-title="转移数量"></ak-col>
+                  <ak-col k-field="transferFreeDays" k-title="免堆天数"></ak-col>
+                  <ak-col k-field="remark" k-title="备注"></ak-col>
+                  <ak-col k-title="操作" k-width.bind="180">
+                    <ak-template>
+                      <button class="btn btn-primary btn-small" click.delegate="showNewStorage($this)">查看库区
+                        <button class="btn btn-primary btn-small" click.delegate="showNewRate($this)">查看费率
+                        </button>
+                    </ak-template>
+                  </ak-col>
+                </ak-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-white" click.trigger="cancel()">返回</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
