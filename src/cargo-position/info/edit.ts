@@ -23,6 +23,7 @@ export class NewPositionTransferInfo {
   disabled = false;
   positionTransferInfo = {} as PositionTransferInfo;
   attachments = [] as AttachmentMap[];
+  showAttachments = [] as AttachmentMap[];
   files: File[];
   dir: string = '';
   currentUpload: Upload;
@@ -75,9 +76,23 @@ export class NewPositionTransferInfo {
           }
         });
       }
-
     });
     this.dataSourceStorage.data(this.positionTransferItems);
+
+    let arr = await this.attachmentService.listAttachments({
+      businessType: 4,
+      businessId: this.positionTransferInfo.id
+    });
+    if (arr != null && arr.length > 0) {
+      arr.forEach(res => {
+        let attachment = {} as AttachmentMap;
+        attachment.realName = res.attachmentName;
+        attachment.uuidName = res.attachmentUrl;
+        attachment.status = 2;
+        this.attachments.push(attachment);
+      });
+    }
+    this.showAttachments = this.attachments;
   }
 
   async updatePositionTransferInfo() {
@@ -99,10 +114,13 @@ export class NewPositionTransferInfo {
       }
     }
     this.positionTransferInfo.positionTransferItems = storageItems;
-    console.log(this.positionTransferInfo);
+    this.positionTransferInfo.attachments = this.attachments;
+    console.log(this.attachments);
     this.validationController.addObject(this.positionTransferInfo, positionTransferInfoValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
+
+    this.disabled = true;
     try {
       await this.positionTransferInfoService.updatePositionTransferInfo(this.positionTransferInfo);
       await this.messageDialogService.alert({ title: "修改成功" });
@@ -167,7 +185,13 @@ export class NewPositionTransferInfo {
     try {
       await this.attachmentService
         .deleteAttachments({ baseId: this.positionTransferInfo.cargoInfoId, url: path, uuidName: item.uuidName });
-      this.attachments = this.attachments.filter(res => res.uuidName != item.uuidName);
+      this.attachments.forEach(a => {
+        if (a.uuidName == item.uuidName) {
+          a.status = 0;
+        }
+      });
+      this.showAttachments = this.showAttachments.filter(res => res.uuidName != item.uuidName);
+      console.log(this.attachments)
     } catch (err) {
       await this.messageDialogService.alert({ title: "删除失败", message: err.message, icon: "error" });
     }
@@ -195,12 +219,13 @@ export class NewPositionTransferInfo {
       this.currentUpload = this.uploader.upload(file, { path: path });
       let result = await this.currentUpload.result;
       if (result.status == 'success') {
-        this.attachments.push({ uuidName: uuidName, realName: file.name });
+        this.attachments.push({ uuidName: uuidName, realName: file.name, status: 1 });
         index++;
       }
     }
     this.currentUpload = null;
     this.dir = '';
+    this.showAttachments = this.attachments.filter(a => a.status != 0);
     await this.dialogService.alert({ title: '上传完成', message: '上传完成，成功上传' + index + '条数据' });
     return;
   }
