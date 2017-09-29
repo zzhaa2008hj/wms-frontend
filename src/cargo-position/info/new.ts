@@ -108,7 +108,7 @@ export class NewPositionTransferInfo {
       transferItem.containerNumber = si.containerNumber;
       transferItem.containerType = si.containerType;
       //费率
-      if (si.cargoRates) {
+      if (si.cargoRates.length > 0) {
         Object.assign(transferItem, { cargoRates: si.cargoRates });
       } else {
         await this.messageDialogService.alert({

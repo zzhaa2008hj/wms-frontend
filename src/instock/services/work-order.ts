@@ -50,6 +50,14 @@ export class WorkOrderService {
     });
   }
 
+  getWorkOrderByTransferItemId(id: string): Promise<WorkOrder> {
+    return this.http.get(`/base/warehouseWorkOrder/${id}/transfer`).then(res => {
+      let workOrder = res.content;
+      fixDate(workOrder, 'workDate');
+      return workOrder;
+    });
+  }
+
   saveWorkOrder(workOrder: WorkOrder): Promise<void> {
     return this.http.post(`/base/warehouseWorkOrder`, workOrder).then(handleResult);
   }

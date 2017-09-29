@@ -47,4 +47,9 @@ export class WarehouseService {
   getTopWarehouses(): Promise<Warehouse> {
     return this.http.get(`/base/warehouse/top`).then(res => res.content);
   }
+
+  getByTransferItemId(transferItemId: string): Promise<Warehouse[]> {
+    return this.http.get(`/base/warehouse/${transferItemId}/transfer`).then(res => res.content);
+  }
+  
 }

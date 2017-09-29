@@ -1,0 +1,64 @@
+<template>
+    <require from="./edit-items"></require>
+    <ak-grid k-data-source.bind="datasource" k-editable="inline" k-on-detail-init.delegate="detailInit($event.detail)"
+             k-widget.two-way="grid">
+        <button click.trigger="add()" disabled.bind="disabled">新增作业区域</button>
+        <ak-col k-title="库区名称">
+            <ak-template>
+                <ak-drop-down-list class="form-control" k-option-label="请选择..." k-data-text-field="name"
+                                   k-data-value-field="id" k-value.two-way="warehouseId & validate"
+                                   k-data-source.bind="warehouseSource" k-enabled.two-way="!disabled"
+                                   k-on-change.delegate="validateWorkOrder($this,'warehouseId')"
+                                   style="width: 100%">
+                </ak-drop-down-list>
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="number" k-title="货物件数" k-width.bind="100">
+            <ak-template>
+                <input type="number" value.bind="number & toInt & validate" disabled.bind="disabled" style="width: 75%">
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="quantity" k-title="货物数量" k-width.bind="100">
+            <ak-template>
+                <input type="number" value.bind="quantity & toFloat & validate" disabled.bind="disabled"
+                       style="width: 75%">
+            </ak-template>
+        </ak-col>
+        <ak-col k-title="计量单位" k-width.bind="100">
+            <ak-template>
+                <ak-drop-down-list k-option-label="请选择..." k-value.two-way="unit" k-data-text-field="dictDataName"
+                                   k-data-value-field="dictDataCode"
+                                   k-data-source.bind="unitSource" k-enabled.two-way="!disabled" style="width: 100%">
+                </ak-drop-down-list>
+            </ak-template>
+        </ak-col>
+        <ak-col k-title="集装箱类型" k-width.bind="100">
+            <ak-template>
+                <ak-drop-down-list k-option-label="请选择..." k-value.two-way="containerType"
+                                   k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
+                                   k-data-source.bind="containerTypeSource" k-enabled.two-way="!disabled"
+                                   style="width: 100%">
+                </ak-drop-down-list>
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="containerNumber" k-title="集装箱号">
+            <ak-template>
+                <input type="text" value.bind="containerNumber" disabled.bind="disabled" style="width: 90%">
+            </ak-template>
+        </ak-col>
+        <ak-col k-field="remark" k-title="备注">
+            <ak-template>
+                <input type="text" value.bind="remark" disabled.bind="disabled" style="width: 90%">
+            </ak-template>
+        </ak-col>
+        <ak-col k-width.bind="100">
+            <ak-template>
+                <button class="btn btn-small" click.delegate="remove($this)" disabled.bind="disabled">删除</button>
+            </ak-template>
+        </ak-col>
+        <ak-template for="detailTemplate">
+            <edit-area-items parent-uid.bind="$this.uid" disabled.bind="disabled"
+                             area-id.bind="$this.id"></edit-area-items>
+        </ak-template>
+    </ak-grid>
+</template>

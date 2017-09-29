@@ -1,0 +1,29 @@
+<template>
+    <div class="grid simple">
+        <div class="grid-body no-border">
+            <div class="row column-seperation">
+                <h4>货位转移明细</h4>
+                <div class="col-md-12">
+                    <div class="controls right">
+                        <ak-grid k-data-source.bind="datasource" k-sortable.bind="true" k-widget.bind="customerGrid">
+                            <ak-col k-field="cargoName" k-title="货名"></ak-col>
+                            <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
+                            <ak-col k-field="cargoQype" k-title="货物性质"></ak-col>
+                            <ak-col k-field="unit" k-title="计量单位"></ak-col>
+                            <ak-col k-field="storageQuantity" k-title="库存数量"></ak-col>
+                            <ak-col k-field="storageNumber" k-title="库存件数"></ak-col>
+                            <ak-col k-field="warehouseName" k-title="原库区名称"></ak-col>
+                            <ak-col k-field="newWarehouseName" k-title="新库区名称"></ak-col>
+                            <ak-col k-field="remark" k-title="备注"></ak-col>
+                            <ak-col k-title="操作" k-width.bind="280">
+                                <ak-template>
+                                    <a class="btn btn-small" route-href="route: transfer-work; params.bind: { id: id }">添加/修改作业</a>
+                                </ak-template>
+                            </ak-col>
+                        </ak-grid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
