@@ -1,5 +1,6 @@
 import { CargoRate } from "@app/base/models/cargo-info";
 import { ValidationRules } from 'aurelia-validation';
+import {  AttachmentMap } from "@app/common/models/attachment";
 
 export interface PositionTransferInfo {
   id: string;
@@ -22,6 +23,8 @@ export interface PositionTransferInfo {
   createTime: Date;
 
   positionTransferItems: PositionTransferItem[];
+
+  attachments: AttachmentMap[];
 }
 
 export interface PositionTransferItem {

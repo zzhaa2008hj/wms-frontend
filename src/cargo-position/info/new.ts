@@ -126,6 +126,7 @@ export class NewPositionTransferInfo {
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     try {
+      this.positionTransferInfo.attachments = this.attachments;
       await this.positionTransferInfoService.savePositionTransferInfo(this.positionTransferInfo);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
