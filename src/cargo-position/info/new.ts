@@ -122,7 +122,6 @@ export class NewPositionTransferInfo {
     }
     this.positionTransferInfo.positionTransferItems = transferItems;
     this.positionTransferInfo.attachments = this.attachments;
-    console.log(this.attachments)
     this.validationController.addObject(this.positionTransferInfo, positionTransferInfoValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;

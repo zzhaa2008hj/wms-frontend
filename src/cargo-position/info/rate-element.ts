@@ -16,7 +16,6 @@ export class RatesCustomElement {
       },
       update: (options) => {
         options.success();
-        console.log();
       },
       destroy: (options) => {
         options.success();
