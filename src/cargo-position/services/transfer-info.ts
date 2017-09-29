@@ -50,14 +50,21 @@ export class PositionTransferInfoService {
   updateWarehouseVerify(id: string, status: number): Promise<void> {
     return this.http.put(`/position-transfer/info/${id}/warehouseVerify`, status).then(handleResult);
   }
+
   updateStartWork(id: string): Promise<void> {
-    return this.http.put(`/position-transfer/info/${id}/startWork`,'').then(handleResult);
+    return this.http.put(`/position-transfer/info/${id}/startWork`, '').then(handleResult);
   }
+
   updateEndWork(id: string): Promise<void> {
-    return this.http.put(`/position-transfer/info/${id}/endWork`,'').then(handleResult);
+    return this.http.put(`/position-transfer/info/${id}/endWork`, '').then(handleResult);
   }
+
   updateBusinessConfirm(id: string, status: number): Promise<void> {
     return this.http.put(`/position-transfer/info/${id}/confirm`, status).then(handleResult);
+  }
+
+  getByTransferItemId(transferItemId: string): Promise<PositionTransferInfo> {
+    return this.http.get(`/position-transfer/info/${transferItemId}/byTransferItemId`).then(res => res.content);
   }
 }
 

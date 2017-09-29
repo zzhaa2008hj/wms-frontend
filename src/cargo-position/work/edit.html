@@ -1,0 +1,37 @@
+<template>
+    <require from="./edit-area"></require>
+    <h4>作业单</h4>
+    <div class="row column-seperation">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-label">作业单号</div>
+                    <div class="controls">
+                        <input type="text" class="form-control" style="width: 60%"
+                               value.bind="workOrder.workOrderNumber & validate" disabled.bind="disabled">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-label">作业日期</div>
+                    <div class="controls">
+                        <input ak-datepicker="k-value.two-way : workOrder.workDate & validate" style="width: 60%"
+                               type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4>作业过程</h4>
+    <div class="row column-seperation">
+        <div class="col-md-12">
+            <work-area-edit work-order-id.bind="workOrder.id" transfer-item-id.bind="transferItemId"
+                            disabled.bind="disabled" view-model.ref="editWorArea"></work-area-edit>
+        </div>
+    </div>
+    <div class="pull-right">
+        <button class="btn btn-primary" disabled.bind="disabled" click.trigger="save()">保存</button>
+        <button class="btn btn-white" disabled.bind="disabled" click.trigger="cancel()">取消</button>
+    </div>
+</template>
