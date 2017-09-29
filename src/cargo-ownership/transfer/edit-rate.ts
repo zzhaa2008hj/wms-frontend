@@ -7,7 +7,7 @@ import { formValidationRenderer } from '@app/validation/support';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
-import { NewRate } from '@app/cargo-ownership/transfer/new-rate';
+import { NewRate } from '@app/cargo-ownership/transfer/edit-new-rate';
 
 @autoinject
 export class RateView {

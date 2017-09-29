@@ -4,7 +4,6 @@ import { CargoInfo } from '@app/base/models/cargo-info';
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from "@app/validation/support";
 import { DialogService } from "ui";
-import { CargoInfoService } from '@app/base/services/cargo-info';
 import { observable } from 'aurelia-framework';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
@@ -13,11 +12,11 @@ import { AttachmentService } from "@app/common/services/attachment";
 import { AttachmentMap } from "@app/common/models/attachment";
 import { Uploader, Upload } from "@app/upload";
 import { AttachmentDetail } from "@app/common/attachment/detail";
-import { CargoownershipTransfer, transferValidationRules, TransferCargoItemVo } from '@app/cargo-ownership/models/cargo-ownership';
+import { transferValidationRules, TransferCargoItemVo, CargoownershipTransfer } from '@app/cargo-ownership/models/cargo-ownership';
 import { CargoownershipTransferService } from '@app/cargo-ownership/services/cargo-ownership';
-import { RateView } from '@app/cargo-ownership/transfer/rate';
-import { StorageItemView } from '@app/cargo-ownership/transfer/storage';
-
+import { RateView } from '@app/cargo-ownership/transfer/edit-rate';
+import { StorageItemView } from '@app/cargo-ownership/transfer/edit-storage';
+import * as moment from 'moment';
 export class NewTransfer {
   @observable disabled: boolean = false;
   units = [] as DictionaryData[];
@@ -99,7 +98,6 @@ export class NewTransfer {
 
   constructor(@inject private router: Router,
               @inject private dialogService: DialogService,
-              @inject private cargoInfoService: CargoInfoService,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject validationControllerFactory: ValidationControllerFactory,
               @inject container: Container,
@@ -111,89 +109,36 @@ export class NewTransfer {
     container.registerInstance(ValidationController, this.validationController);
   }
 
-  async activate() {
-    this.cargoInfoId = uuid();
-    this.transfer.batchNumberMode = 0;
-    this.transfer.cargoInfoId = this.cargoInfoId;
+  async activate({id}) {
+    this.transfer = await this.cargoownershipTransferService.getEditDetail(id);
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ finished: 0 });
-    if (this.baseCargoInfo) {
-      let agentIds = Array.from(new Set(this.baseCargoInfo.map(info => info.agentId)));
-      agentIds.forEach(id => {
-        let agentName = this.baseCargoInfo.find(info => info.agentId == id).agentName;
-        this.baseAgent.push({id: id, name: agentName});
-        this.baseNewAgent.push({id: id, name: agentName});
+    this.transfer.storageEndDateStr = moment(this.transfer.storageEndDate).format("YYYY-MM-DD");
+    this.transfer.transferDateStr = moment(this.transfer.transferDate).format("YYYY-MM-DD");
+    this.cargoInfoId = this.transfer.cargoInfoId;
+    this.cargoItems = this.transfer.transferItems;
+    if (this.cargoItems.length > 0) {
+      this.cargoItems.forEach(item => {
+        let unit = this.units.find(u => u.dictDataCode == item.unit);
+        if (unit) {
+          item.unitName = unit.dictDataName;
+        }
       });
+    }
+    console.log('this.cargoItems', this.cargoItems);
 
-      let customerIds = Array.from(new Set(this.baseCargoInfo.map(info => info.customerId)));
-      customerIds.forEach(id => {
-        let customerName = this.baseCargoInfo.find(info => info.customerId == id).customerName;
-        this.baseCustomer.push({id: id, name: customerName});
-        this.baseNewCustomer.push({id: id, name: customerName});
+    let arr = await this.attachmentService.listAttachments({ businessType: 3, businessId: this.transfer.id });
+    if (arr != null && arr.length > 0) {
+      arr.forEach(res => {
+        let attachment = {} as AttachmentMap;
+        attachment.realName = res.attachmentName;
+        attachment.uuidName = res.attachmentUrl;
+        // attachment.path = this.getPath(res.attachmentUrl);
+        attachment.status = 2;
+        this.attachments.push(attachment);
       });
     }
   }
   
-  async onSelectAgent() {
-    let agentId = this.selectedAgent.value();
-    if (!this.selectedCustomer.value() || this.selectedCustomer.value() === '') {
-      this.selectedCustomer.value(agentId);
-      this.onSelectedCustomer();
-      this.transfer.originalCustomerId = this.selectedCustomer.value();
-    }
-  }
-
-  async onSelectedCustomer() {
-    let customerId = this.selectedCustomer.value();
-    let batchNumbers = this.baseCargoInfo.filter(info => info.customerId == customerId)
-    .map(info => Object.assign({id: info.batchNumber, name: info.batchNumber}));
-    this.baseBatchNumber.data(batchNumbers);
-  }
-
-  /**
-   * 批次获取货物
-   */
-  async onSelectBatchNumber() {
-    this.cargoItems = [];
-    let batchNumber = this.selectedBatchNumber.value();
-    if (batchNumber && batchNumber != '') {
-      this.cargoItems = await this.cargoownershipTransferService.getCargoItems(batchNumber);
-      if (this.cargoItems.length == undefined) {
-        let errMessage = Object.assign({code: 0, message: '', content: ''}, this.cargoItems);
-        this.dialogService.alert({ title: '提示', message: errMessage.message, icon: 'error' });
-        this.cargoItems = [];
-        this.cargoItemDataSource.read();
-        return;
-      }
-      if (this.cargoItems.length > 0) {
-        this.cargoItems.forEach(item => {
-          let unit = this.units.find(u => u.dictDataCode == item.unit);
-          if (unit) {
-            item.unitName = unit.dictDataName;
-          }
-        });
-      }
-    }
-    console.log('cargoItems', this.cargoItems);
-    this.cargoItemDataSource.read();
-  }
-
-  async onSelectNewAgent() {
-    let agentId = this.selectedNewAgent.value();
-    if (!this.selectedNewCustomer.value() || this.selectedNewCustomer.value() === '') {
-      this.selectedNewCustomer.value(agentId);
-      this.transfer.newCustomerId = this.selectedNewCustomer.value();
-    }
-  }
-  // 出库费用承担方  原 + 旧
-  async onSelectOutFeeCustomer() {
-    let customerId = this.selectedCustomer.value();
-    let customerName = this.selectedCustomer.text();
-    let newCustomerId = this.selectedNewCustomer.value();
-    let newCustomerName = this.selectedNewCustomer.text();
-    this.baseOutFeeCustomer.data([{id: customerId, name: customerName}, {id: newCustomerId, name: newCustomerName}]);
-  }
-
   cancel() {
     this.router.navigateToRoute("list");
   }
@@ -238,37 +183,36 @@ export class NewTransfer {
   }
 
   async delete(data) {
+    // let item: AttachmentMap = data.item;
+    // let res = await this.attachmentService.getDirKey(this.cargoInfoId);
+    // let path = '/' + res.key + '/' + item.uuidName;
+    // try {
+    //   await this.attachmentService
+    //     .deleteAttachments({ baseId: this.cargoInfoId, url: path, uuidName: item.uuidName });
+    //   this.attachments = this.attachments.filter(res => res.uuidName != item.uuidName);
+    // } catch (err) {
+    //   await this.dialogService.alert({ title: "删除失败", message: err.message, icon: "error" });
+    // }
     let item: AttachmentMap = data.item;
-    let res = await this.attachmentService.getDirKey(this.cargoInfoId);
-    let path = '/' + res.key + '/' + item.uuidName;
-    try {
-      await this.attachmentService
-        .deleteAttachments({ baseId: this.cargoInfoId, url: path, uuidName: item.uuidName });
-      this.attachments = this.attachments.filter(res => res.uuidName != item.uuidName);
-    } catch (err) {
-      await this.dialogService.alert({ title: "删除失败", message: err.message, icon: "error" });
-    }
+    item.status = 0;
+  }
+  getPath(uuidName) {
+    let path = '/' + this.transfer.cargoInfoId + '/' + uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    return attachmentUrl;
   }
   // ===================================== < 上传文件 ======================================
 
   /**
    * 新增
    */
-  async addTransfer() {
-    this.transfer.originalAgentName = this.selectedAgent.text();
-    this.transfer.originalCustomerName = this.selectedCustomer.text();
-    this.transfer.originalCustomerId = this.selectedCustomer.value();
-    this.transfer.newAgentName = this.selectedNewAgent.text();
-    this.transfer.newCustomerName = this.selectedNewCustomer.text();
-    this.transfer.newCustomerId = this.selectedNewCustomer.value();
-    this.transfer.outstockChargePayerName = this.selectedOutFeeCustomer.text();
+  async editTransfer() {
     this.transfer.transferItems = this.cargoItems;
     this.transfer.attachments = this.attachments;
     this.validationController.addObject(this.transfer, transferValidationRules);
     let {results, valid} = await this.validationController.validate();
     console.log('validate', results);
     if (!valid) return;
-
     for (let item of this.cargoItems) {
       if (item.transferNumber > item.number) {
         this.dialogService.alert({ title: "提示", message: '件数不能大于可转件数', icon: 'error' });
@@ -280,24 +224,14 @@ export class NewTransfer {
       }
     }
     try {
-      console.log('saveTransfer', this.transfer);
-      await this.cargoownershipTransferService.createCargoownershipTransfer(this.transfer);
-      await this.dialogService.alert({ title: "提示", message: "新增成功"});
+      console.log('editTransfer', this.transfer);
+      await this.cargoownershipTransferService.edit(this.transfer.id, this.transfer);
+      await this.dialogService.alert({ title: "提示", message: "修改成功"});
       this.cancel();
     } catch (err) {
       await this.dialogService.alert({ title: "提示", message: err.message, icon: 'error' });
       this.disabled = false;
     }
-  }
-
-  /**
-   * 移除货物
-   */
-  async deleteCargoItem(id) {
-    let confirm = await this.dialogService.confirm({ title: "提示", message: "确定删除该货物吗？" });
-    if (!confirm) return;
-    this.cargoItems = this.cargoItems.filter(item => item.id != id);
-    this.cargoItemDataSource.read();
   }
 
   /**

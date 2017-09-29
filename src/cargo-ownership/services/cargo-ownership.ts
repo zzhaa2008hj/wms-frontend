@@ -51,6 +51,18 @@ export class CargoownershipTransferService {
   getDetail(id: string): Promise<CargoownershipTransferVo> {
     return this.http.get(`/ownership-transfer/info/${id}/detail`).then(res => res.content);
   }
+  /**
+   * 查修改详情
+   */
+  getEditDetail(id: string): Promise<CargoownershipTransfer> {
+    return this.http.get(`/ownership-transfer/info/${id}/edit-detail`).then(res => res.content);
+  }
+  /**
+   * 修改
+   */
+  edit(id: string, cargoownershipTransfer: CargoownershipTransfer): Promise<void> {
+    return this.http.put(`/ownership-transfer/info/${id}`, cargoownershipTransfer).then(handleResult);
+  }
 
   /**
    * 根据id 获取 货权转移信息
@@ -105,4 +117,7 @@ export class CargoownershipTransferService {
 
 
 
+  getChangeHistory(id: string, historyId: string): Promise<CargoownershipTransfer> {
+    return this.http.get(`/ownership-transfer/info/${id}/changeHistory/${historyId}`).then(res => res.content);
+  }
 }
