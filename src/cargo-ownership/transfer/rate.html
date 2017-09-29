@@ -1,0 +1,68 @@
+<template>
+  <require from="aurelia-kendoui-bridge/common/notify-binding-behavior"></require>
+  <ux-dialog>
+    <ux-dialog-header show-close-button.bind="true">
+      <i class="fa fa-check-square-o" if.bind="!cargoItemInfo">费率信息</i>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="grid simple">
+        <div class="grid-body no-border">
+          <form>
+            <div class="row column-seperation">
+              <h4>货物名称：${cargoCategoryName}</h4>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button class="btn btn-primary"click.delegate="addRate()">添加货物费率</button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <span class="help"></span>
+                <div class="controls right">
+                  <ak-grid k-data-source.bind="cargoRateDataSource" k-editable.bind="true"
+                    k-on-detail-init.delegate="detailInit($event.detail)">
+                    <ak-col k-field="rateCategory" k-title="费用类别">
+                      <ak-template>
+                        ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
+                      </ak-template>
+                    </ak-col>
+                    <ak-col k-field="chargeType" k-title="收付费">
+                      <ak-template>
+                        ${chargeType == 1 ? '收费' :'付费'}
+                      </ak-template>
+                    </ak-col>
+                    <ak-col k-title="单价" k-field="price"></ak-col>
+                    <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+                    <ak-col k-field="pricingMode" k-title="计价方式">
+                      <ak-template>
+                        ${pricingMode == 1 ? '单一计费' :'阶梯计费'}
+                      </ak-template>
+                    </ak-col>
+                    <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
+                    <ak-col k-field="workName" k-title="作业内容"></ak-col>
+                    <!--<ak-col k-field="warehouseTypeStr" k-title="库位性质"></ak-col>-->
+                    <!-- <ak-col k-field="cargoSubCategoryName" k-title="品牌"></ak-col> -->
+                    <ak-col k-field="warehouseCategoryStr" k-title="库位类别"></ak-col>
+                    <ak-col k-field="remark" k-title="备注"></ak-col>
+                    <ak-col k-title="操作">
+                      <ak-template>
+                        <a class="btn btn-danger btn-small" click.delegate="delete($this.id)">删除</a>
+                      </ak-template>
+                    </ak-col>
+                    <ak-template for="detailTemplate">
+                      <div class="rateSteps" if.bind="pricingMode !=1 "></div>
+                      <h4 if.bind="pricingMode ==1" style="text-align: center">无阶梯费率</h4>
+                    </ak-template>
+                  </ak-grid>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" click.trigger="save()">确定</button>
+      <button class="btn btn-white" click.trigger="cancel()">取消</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
