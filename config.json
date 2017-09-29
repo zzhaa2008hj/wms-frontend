@@ -10,9 +10,9 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://localhost:3000/sso/loginRpc",
+    "loginUrl": "http://localhost:3000/loginRpc",
     "loginOutUrl": "http://localhost:8080/rpc/login/logOut",
-    "changePasswordUrl": "http://localhost:3000/sso/changePasswordRpc",
+    "changePasswordUrl": "http://localhost:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
@@ -135,11 +135,18 @@
       "group": "group3"
     },
     {
+      "route": "/cargo-ownership/transfer",
+      "name": "ownership",
+      "title": "货权转移",
+      "moduleId": "./cargo-ownership/transfer/index",
+      "group": "group6"
+    },
+    {
       "route": "/cargo-inventory",
       "name": "cargo-inventory",
       "title": "货物盘点",
       "moduleId": "./cargo-inventory/index",
-      "icon": "assessment"
+      "icon": "check_box"
     },
     {
       "route": "/fee/charge",
@@ -230,7 +237,7 @@
       "name": "electronic-warehouse",
       "title": "电子厂图",
       "moduleId": "./electronic-warehouse/index",
-      "icon": "assessment"
+      "icon": "local_convenience_store"
     },
     {
       "route": "/base/org-info",
