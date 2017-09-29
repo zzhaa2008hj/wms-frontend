@@ -121,12 +121,12 @@ export class NewPositionTransferInfo {
       transferItems.push(transferItem);
     }
     this.positionTransferInfo.positionTransferItems = transferItems;
-
+    this.positionTransferInfo.attachments = this.attachments;
+    console.log(this.attachments)
     this.validationController.addObject(this.positionTransferInfo, positionTransferInfoValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
     try {
-      this.positionTransferInfo.attachments = this.attachments;
       await this.positionTransferInfoService.savePositionTransferInfo(this.positionTransferInfo);
       await this.messageDialogService.alert({ title: "新增成功" });
       this.router.navigateToRoute("list");
