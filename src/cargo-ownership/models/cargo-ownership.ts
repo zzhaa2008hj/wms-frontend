@@ -77,6 +77,9 @@ export interface CargoownershipTransfer {
   attachments: AttachmentMap[];
   // 0 生成新的批次 1并票
   batchNumberMode: number;
+
+  storageEndDateStr: string;
+  transferDateStr: string;
 }
 
 export interface CargoownershipTransferItem {
@@ -110,6 +113,9 @@ export interface CargoownershipTransferItem {
   storageItems: TransferCargoStorageItem[];
   cargoRates: CargoRate[];
   unitName: string;
+
+  canQuantity: number;
+  canNumber: number;
 }
 export interface TransferCargoStorageItem{
   id: string;
@@ -133,6 +139,9 @@ export interface TransferCargoStorageItem{
   orgId: string;
 
   unitName: string;
+
+  canQuantity: number;
+  canNumber: number;
 }
 export interface TransferCargoItemVo {
   id: string;
