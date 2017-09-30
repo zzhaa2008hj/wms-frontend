@@ -421,6 +421,15 @@ export class ConstantValues {
       value: 2
     }]
   }
+  static get CalculateStandard() {
+    return [{
+      text: "堆存天数",
+      value: 1
+    },{
+      text: "库存数量",
+      value: 2
+    }]
+  }
   static get ownerTsfStage(){
     return [{
       stage: -1 ,
