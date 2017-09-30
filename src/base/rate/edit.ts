@@ -25,7 +25,7 @@ export class NewRate {
   customerCategory = ConstantValues.CustomerCategory;
   chargeType = ConstantValues.ChargeType;
   pricingMode = ConstantValues.PricingMode;
-
+  calculateStandard = ConstantValues.CalculateStandard;
   //warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   unit = [] as DictionaryData[];

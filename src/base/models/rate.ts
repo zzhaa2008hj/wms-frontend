@@ -26,7 +26,8 @@ export interface Rate {
   warehouseTypeStr: string;
   warehouseCategoryStr: string;
   customerCategory: number;
-
+  calculateStandard: number;
+  calculateStandardStr: String;
   rateStep: RateStep[];
   rateCategory: number;
 }
@@ -125,7 +126,7 @@ export const rateStepValidationRules = ValidationRules
 
   .ensure((rateStep: RateStep) => rateStep.stepStart)
   .displayName('开始值')
-  .required().withMessage(`\${$displayName} 不能为空`)  
+  .required().withMessage(`\${$displayName} 不能为空`)
   .satisfies((x: number) => {
     if (x != undefined) {
       return x >= 0;

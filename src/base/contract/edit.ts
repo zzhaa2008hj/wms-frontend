@@ -23,7 +23,7 @@ export class EditContract {
   unit = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
-
+  calculateStandards = ConstantValues.CalculateStandard;
   contractTypes = ConstantValues.ContractTypes;
   warehouses: WorkInfo[];
   customerInfo: kendo.ui.DropDownList;
@@ -84,6 +84,7 @@ export class EditContract {
             workName: { editable: false },
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
+            calculateStandardStr:{editable: false },
             warehouseCategoryStr: { editable: false },
             remark: { editable: false }
           }
@@ -122,6 +123,9 @@ export class EditContract {
       if (rateType) {
         res.rateTypeStr = rateType.text;
       }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
+      }
       return res;
     });
     this.baseRateAndSteps = rates;
@@ -132,7 +136,6 @@ export class EditContract {
       }
       return res;
     });
-    
     //获取所有的费率
     let allRates = await this.contractService.getBaseRate();
     allRates.map(res => {
@@ -147,6 +150,9 @@ export class EditContract {
       }
       if (rateType) {
         res.rateTypeStr = rateType.text;
+      }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
       }
       return res;
     });
@@ -204,7 +210,6 @@ export class EditContract {
     this.contractVo.rateVos = rateList;
     this.contractVo.rateStepVos = allRateStep;
     this.disabled = true;
-    console.log("this.contractVo", this.contractVo);
     try {
       await this.contractService.updateContract(this.contractVo);
       await this.messageDialogService.alert({ title: "编辑成功" });

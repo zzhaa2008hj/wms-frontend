@@ -15,6 +15,7 @@ export class AuditContract {
   contractId: string;
   contractVo: ContractVo;
   contractTypes = ConstantValues.ContractTypes;
+  calculateStandards = ConstantValues.CalculateStandard;
   warehouses: WorkInfo[];
   datasource: kendo.data.DataSource;
   
@@ -76,6 +77,9 @@ export class AuditContract {
       }
       if (rateType) {
         res.rateTypeStr = rateType.text;
+      }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
       }
       return res;
     });

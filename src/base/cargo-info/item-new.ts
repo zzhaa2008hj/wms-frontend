@@ -34,13 +34,14 @@ export class NewCargoItem {
   search = {} as ContractSearch;
   chargeCategory = ConstantValues.ChargeCategory;
   pricingMode = ConstantValues.PricingMode;
+  calculateStandards = ConstantValues.CalculateStandard;
 
   constructor(private cargoInfoService: CargoInfoService,
-              private dialogController: DialogController,
-              private dialogService: DialogService,
-              private dictionaryDataService: DictionaryDataService,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+    private dialogController: DialogController,
+    private dialogService: DialogService,
+    private dictionaryDataService: DictionaryDataService,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
 
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -73,7 +74,8 @@ export class NewCargoItem {
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
             warehouseCategoryStr: { editable: false },
-            remark: { editable: false }
+            remark: { editable: false },
+            calculateStandardStr: { editable: false },
           }
         }
       }
@@ -154,6 +156,9 @@ export class NewCargoItem {
       if (rateType) {
         res.rateTypeStr = rateType.text;
       }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
+      }
       return res;
     });
     this.contractCargoRateSteps.map(res => {
@@ -215,8 +220,8 @@ export class NewCargoItem {
     if (rate) {
       await this.dialogService.alert({
         title: "提示",
-        message: ['仓储费', '装卸费', '其他费用'][rate.rateCategory - 1] + 
-          '-' + ['收费', '付费'][rate.chargeType - 1] + '-' + rate.workName + ':' + "存在多条费率"
+        message: ['仓储费', '装卸费', '其他费用'][rate.rateCategory - 1] +
+        '-' + ['收费', '付费'][rate.chargeType - 1] + '-' + rate.workName + ':' + "存在多条费率"
       });
       return;
     }
@@ -320,6 +325,8 @@ export class NewCargoItem {
         let res4 = true;
         let res5 = true;
         let res6 = true;
+        //计算标准
+        let res7 = true;
         if (e.chargeType) {
           res1 = e.chargeType == r.chargeType;
         }
@@ -338,7 +345,10 @@ export class NewCargoItem {
         if (e.pricingMode) {
           res6 = e.pricingMode == r.pricingMode;
         }
-        return !(res1 && res2 && res3 && res4 && res5 && res6);
+        if (e.pricingMode == 2 && e.rateCategory == 1) {
+          res7 = e.calculateStandard == r.calculateStandard;
+        }
+        return !(res1 && res2 && res3 && res4 && res5 && res6 && res7);
       });
     });
     //合并费率

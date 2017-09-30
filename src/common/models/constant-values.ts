@@ -358,7 +358,7 @@ export class ConstantValues {
     }];
   }
   static get OrgProperties() {
-    return [{value: 1, name: "个人"}, {value: 2, name: "公司"}];
+    return [{ value: 1, name: "个人" }, { value: 2, name: "公司" }];
   }
   static get CargoOwnershipStage() {
     return [{
@@ -402,7 +402,7 @@ export class ConstantValues {
       title: "货转完成"
     }];
   }
-  
+
   static get DemandFrom() {
     return [{
       type: 1,
@@ -411,5 +411,14 @@ export class ConstantValues {
       type: 2,
       name: "内部"
     }];
+  }
+  static get CalculateStandard() {
+    return [{
+      text: "堆存天数",
+      value: 1
+    },{
+      text: "库存数量",
+      value: 2
+    }]
   }
 }

@@ -8,6 +8,7 @@ import { CargoInfoService } from "@app/base/services/cargo-info";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { StorageInfo } from "@app/base/models/storage";
+import { ConstantValues } from '@app/common/models/constant-values';
 @autoinject
 export class StorageBudgetList {
   storageBudget = [] as StorageBudgetItem[];
@@ -21,6 +22,7 @@ export class StorageBudgetList {
   batchNumbers = [] as StorageInfo[];
   units = [] as DictionaryData[];
   totalCost = 0;
+  calculateStandards = ConstantValues.CalculateStandard;
   constructor(private dialogService: DialogService,
     private storageBudgeService: StorageBudgeService,
     private dictionaryDataService: DictionaryDataService,
@@ -67,6 +69,9 @@ export class StorageBudgetList {
       let unit = this.units.find(r => r.dictDataCode == x.unit);
       if (unit) x.unitStr = unit.dictDataName;
       if (x.sumAmount) this.totalCost = x.sumAmount;
+      if (x.calculateStandard) {
+        x.calculateStandardStr = this.calculateStandards.find(y => y.value == x.calculateStandard).text;
+      }
     });
     this.dataSource.read();
   }
@@ -102,7 +107,7 @@ export class StorageBudgetList {
         { field: 'stepEnd', title: '结束值' },
         { field: 'stepPrice', title: '阶梯价' },
         { field: 'actualStepPrice', title: '实际阶梯价' },
-        { field: 'valuationDays', title: '计价天数' },
+        { field: 'valuationValue', title: '计价值' },
         { field: 'amount', title: '费用' },
         { field: 'stepUnitStr', title: '单位' },
         { field: 'remark', title: '备注' }
