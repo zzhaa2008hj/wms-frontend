@@ -14,6 +14,7 @@ export async function configure(aurelia: Aurelia) {
     .plugin('webarch')
     .plugin('aurelia-dialog')
     .plugin('aurelia-validation')
+    .plugin('aurelia-after-attached-plugin')
     .plugin('aurelia-kendoui-bridge', kendo => kendo.pro());
 
   LogManager.addAppender(new ConsoleAppender());

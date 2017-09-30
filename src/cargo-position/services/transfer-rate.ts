@@ -15,6 +15,10 @@ export class PositionTransferRateService {
   getRatesByItemId(id: string): Promise<PositionTransferRate[]> {
     return this.http.get(`/position-transfer/rate/${id}/rates`).then(res => res.content);
   }
+
+  getRatesById(id: string): Promise<PositionTransferRate> {
+    return this.http.get(`/position-transfer/rate/${id}/getById`).then(res => res.content);
+  }
 }
 
 @autoinject

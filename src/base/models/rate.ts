@@ -29,6 +29,8 @@ export interface Rate {
 
   rateStep: RateStep[];
   rateCategory: number;
+
+  cargoRateSteps: RateStep[];
 }
 
 export interface RateStep {

@@ -1,7 +1,21 @@
 <template>
   <div class="controlbar">
-    <a class="btn btn-small btn-success" oute-href="route: new" required-permissions="">新增货权转移</a>
+    <a class="btn btn-small" click.delegate="changeHistory()" >修改记录</a>
+    <a class="btn btn-small" click.delegate="changeHistory()" >生成入库单</a>
+    <a class="btn btn-small" click.delegate="getAuditList()" >审批审核记录</a>
+
+
+
+   <!-- <a class="btn btn-small btn-success" oute-href="route: new" required-permissions="">新增货权转移</a>
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000049">新增货权转移</a>
     <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="">修改记录</a>
+    <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="">生成入库单</a>
+    <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="">审批审核记录</a>-->
+
+
+
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000049">新增货权转移</a>
+    <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="U000070">修改记录</a>
     <div class="spacer"></div>
     <div class="input-group">
       <input style="width:200px" class="form-control" type="text" value.bind="search.originalCustomerName" placeholder="请输入转出客户">
@@ -21,12 +35,29 @@
     <ak-col k-field="newBatchNumber" k-title="新批次号"></ak-col>
     <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
     <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
-    <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd HH:mm:ss}"></ak-col>
-    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>    
+    <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
     <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
-    <ak-col k-field="status" k-title="状态"></ak-col>
-    <ak-col k-title="操作"  k-width.bind="300">
+    <ak-col k-field="status == '0' ? '未完成' : '完成'" k-title="状态"></ak-col>
+    <ak-col k-title="操作" k-width.bind="300">
+      <ak-template>
         <a class="btn btn-small btn-primary" if.bind="stage == 1 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">商务审核</a>
-    </ak-col>
+        <a class="btn btn-small btn-primary"  route-href="route: audit; params.bind: {id: id,type:1}" >商务审核</a>
+        <a class="btn btn-small btn-primary" route-href="route: audit; params.bind: {id: id,type:2}" >费收审核</a>
+        <a class="btn btn-small btn-primary"  route-href="route: audit; params.bind: {id: id,type:3}" >副总确认</a>
+  
+        <a class="btn btn-small btn-primary" click.delegate="changeStage(id,1)"  >开始作业</a>
+        <a class="btn btn-small btn-primary" click.delegate="changeStage(id,2)" >仓管确认</a>
+        <a class="btn btn-small btn-primary" click.delegate= "changeStage(id,3)">设置完工</a>
+        <a class="btn btn-small" if.bind="stage >= 1" route-href="route: view; params.bind: {id: id}" required-permissions="R000089">查看详情</a>
+        <a class="btn btn-small btn-primary"  route-href="route: edit; params.bind: {id: id}" required-permissions="U000070">修改</a>
+      </ak-template>
+
+    <!--  <a class="btn btn-small btn-primary" if.bind="stage == 1 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">商务审核</a>
+      <a class="btn btn-small btn-primary" if.bind="stage == 3 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">费收审核</a>
+      <a class="btn btn-small btn-primary" if.bind="(stage == 5 ||stage == 6) && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">副总确认</a>
+      <a class="btn btn-small btn-primary" if.bind="stage == 7 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">开始作业</a>
+      <a class="btn btn-small btn-primary" if.bind="stage == 9 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">仓管确认</a>
+      <a class="btn btn-small btn-primary" if.bind="stage == 10 && createAccountId != userId" route-href="route: verify-business; params.bind: {id: id}" required-permissions="">设置完工</a>-->
   </ak-grid>
 </template>

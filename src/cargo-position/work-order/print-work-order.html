@@ -1,0 +1,75 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-body">
+      <div class="page-title">
+        <h4>客户/领导确认单</h4>
+      </div>
+      <div class="row">
+        <div class="col-md-11"></div>
+        <div class="input-group col-md-1">
+          <button class="btn btn-small btn-primary" click.delegate="print()">打印</button>
+        </div>
+      </div>
+      <div class="col-md-11 col-md-offset-1" id="confirm">
+        <table border="1" style="width:99%;max-width:900px;border-collapse:collapse;">
+          <tr>
+            <td align="center" colspan="10">
+              <h3>${positionTransferInfo.customerName}</h3><br/>
+              <h4>货&nbsp;&nbsp;位&nbsp;&nbsp;转&nbsp;&nbsp;移&nbsp;&nbsp;作&nbsp;&nbsp;业&nbsp;&nbsp;指&nbsp;&nbsp;令&nbsp;&nbsp;单</h4>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" nowrap>货位转移单号：</td>
+            <td colspan="4" nowrap>${positionTransferInfo.transferNumber}</td>
+            <td align="center" nowrap>需求来源：</td>
+            <td colspan="4" nowrap>${positionTransferInfo.demandFrom == 1 ? '内部': '客户'}</td>
+          </tr>
+          <tr>
+            <td align="center" nowrap>代理商：</td>
+            <td colspan="4" nowrap>${positionTransferInfo.agentName}</td>
+            <td align="center" nowrap>批次号：</td>
+            <td colspan="4" nowrap>${positionTransferInfo.batchNumber}</td>
+          </tr>
+          <tr>
+            <td align="center" nowrap>货名</td>
+            <td align="center" nowrap>货类</td>
+            <td align="center" nowrap>货物性质</td>
+            <td align="center" nowrap>库区名称</td>
+            <td align="center" nowrap>库存件数</td>            
+            <td align="center" nowrap>库存数量</td>
+            <td align="center" nowrap>新库区名称</td>
+            <td align="center" nowrap>转移数量</td>
+            <td align="center" nowrap>转移件数</td>
+            <td align="center" nowrap>备注</td>
+          </tr>
+          <template repeat.for="item of positionTransferItems">
+            <tr>
+              <td align="center" nowrap>${item.cargoName}</td>
+              <td align="center" nowrap>${item.cargoCategoryName}</td>
+              <td align="center" nowrap>${item.cargoType == 1 ? '内贸':'保税'}</td>
+              <td align="center" nowrap>${item.warehouseName}</td>
+              <td align="center" nowrap>${item.storageQuantity}</td>
+              <td align="center" nowrap>${item.storageNumber}</td>
+              <td align="center" nowrap>${item.newWarehouseName}</td>
+              <td align="center" nowrap>${item.transferQuantity}</td>              
+              <td align="center" nowrap>${item.transferNumber}</td>
+              <td align="center" nowrap>${item.remark}</td>
+            </tr>
+          </template>
+          <tr>
+            <td align="center">备注：</td>
+            <td colspan="9">${positionTransferInfo.remark}</td>
+          </tr>
+          <tr>
+            <td align="center" nowrap>制单人：</td>
+            <td align="center" colspan="2"></td>
+            <td align="center" nowrap>制单日期：</td>
+            <td align="center" colspan="2">${nowDateTime}</td>
+             <td align="center" nowrap>客户/领导签字：</td>
+            <td align="center" colspan="3"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,172 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-title no-border">新增货权转移</h4>
+    </div>
+    <div class="grid-body no-border"><br>
+      <form submit.delegate="addTransfer()">
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">原代理商*</label>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedAgent" k-option-label="请选择..." k-data-text-field="name"
+                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseAgent" k-on-change.delegate="onSelectAgent()"
+                  k-value.two-way="transfer.originalAgentId & validate" k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">原客户*</label>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCustomer" k-option-label="请选择..." k-data-text-field="name"
+                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseCustomer" k-on-change.delegate="onSelectedCustomer()"
+                  k-value.two-way="transfer.originalCustomerId & validate" k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">原批次号*</label>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedBatchNumber" k-option-label="请选择..." k-data-text-field="name"
+                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseBatchNumber" k-on-change.delegate="onSelectBatchNumber()"
+                  k-value.two-way="transfer.originalBatchNumber & validate" k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">新代理商*</label>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedNewAgent" k-option-label="请选择..." k-data-text-field="name"
+                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseNewAgent" k-on-change.delegate="onSelectNewAgent()"
+                  k-value.two-way="transfer.newAgentId & validate" k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">新客户*</label>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedNewCustomer" k-option-label="请选择..." k-data-text-field="name"
+                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseNewCustomer" k-value.two-way="transfer.newCustomerId & validate"
+                  k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">新批次号生成方式*</label>
+              <div class="controls">
+                <input type="radio" class="radio" name="batchNumberMode" model.bind="0" checked.bind="transfer.batchNumberMode" />新批次
+                <input type="radio" class="radio" name="batchNumberMode" model.bind="1" checked.bind="transfer.batchNumberMode" />并票
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <div class="form-group">
+              <div class="form-label">转让日期</div>
+              <div class="controls">
+                <input ak-datepicker="k-value.two-way : transfer.transferDate & validate; k-widget.two-way: transferDateDatePicker; k-format.bind:'yyyy-MM-dd'"
+                  type="text">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <div class="form-label">仓储费用结算至</div>
+              <div class="controls">
+                <input ak-datepicker="k-value.two-way : transfer.storageEndDate & validate; k-widget.two-way: storageEndDatePicker; k-format.bind:'yyyy-MM-dd'"
+                  type="text">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">出库费用承担方*</label>
+              <div class="controls">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedOutFeeCustomer" k-option-label="请选择..." k-data-text-field="name"
+                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseOutFeeCustomer" k-on-open.delegate="onSelectOutFeeCustomer()"
+                  k-value.two-way="transfer.outstockChargePayerId & validate" k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-label">备注</label>
+            <span class="help"></span>
+            <div class="controls">
+              <textarea type="text" class="form-control" value.bind="transfer.remark & validate" disabled.bind="disabled"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group" if.bind="transfer.originalBatchNumber">
+            <label class="form-lable">货权转移指令上传</label>
+            <div class="controls">
+              <input style="width: 300px" type="tex" value.bind="dir" multiple/>
+              <button class="btn btn-small" click.trigger="chooseFiles()">选择文件</button>
+              <button class="btn btn-small btn-primary" click.trigger="upload()">上传</button>
+              <wa-progress width="200px" height="5px" if.bind="currentUpload" value.bind="currentUpload.progress.loaded" total.bind="currentUpload.progress.total"
+                label="正在上传">${percent}%
+              </wa-progress>
+              <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消
+            </button>
+              <div class="controls">
+                <label repeat.for="item of attachments">
+                <a class="pointer" click.delegate="showDetail($this)">${item.realName}</a>
+                <a class="pointer m-l-10" click.delegate="delete($this)">删除</a>
+              </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="controls">
+            <label class="form-label">出库货物*</label>
+            <!-- <ak-drop-down-list k-widget.bind="dropDownListCargoItem" k-option-label="请选择--出库货物" k-data-text-field="cargoName" k-data-source.bind="outstockCargoItems"
+              k-on-select.delegate="onSelect($event.detail)">
+            </ak-drop-down-list> -->
+            <ak-grid k-data-source.bind="cargoItemDataSource" k-editable.bind="true">
+              <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+              <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
+              <ak-col k-field="unitName" k-title="计量单位"></ak-col>
+              <ak-col k-field="number" k-title="可转移件数"></ak-col>
+              <ak-col k-field="quantity" k-title="可转移数量"></ak-col>
+              <ak-col k-field="transferNumber" k-title="要转移件数"></ak-col>
+              <ak-col k-field="transferQuantity" k-title="要转移数量"></ak-col>
+              <ak-col k-field="transferFreeDays" k-title="现免堆天数"></ak-col>
+              <ak-col k-field="remark" k-title="备注"></ak-col>
+              <ak-col k-title="操作" k-width.bind="250">
+                <ak-template>
+                  <button class="btn btn-primary btn-small" click.delegate="showStorage($this)">查看库区
+                  <button class="btn btn-primary btn-small" click.delegate="showRate($this)">查看费率
+                  <button class="btn btn-danger btn-small" click.delegate="deleteCargoItem(id)">删除
+                  </button>
+                </ak-template>
+              </ak-col>
+            </ak-grid>
+          </div>
+        </div>
+        <div class="form-actions">
+          <div class="pull-right">
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i> 保存</button>
+            <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

@@ -132,5 +132,4 @@ export class PositionTransferInfoList {
       this.dialogService.alert({ title: "错误", message: err.message });
     }
   }
-
 }

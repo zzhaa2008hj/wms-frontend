@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "http://192.168.133.118:8090"
+    "baseUrl": "http://localhost:8090"
   },
   "notification": {
     "baseUrl": "http://192.168.133.118:3344/wms"
@@ -10,9 +10,9 @@
     "viewUrl": "http://192.168.133.118:81/uploads"
   },
   "loginParam": {
-    "loginUrl": "http://192.168.133.118:3000/loginRpc",
-    "loginOutUrl": "http://192.168.133.118:8080/rpc/login/logOut",
-    "changePasswordUrl": "http://192.168.133.118:3000/changePasswordRpc",
+    "loginUrl": "http://localhost:3000/loginRpc",
+    "loginOutUrl": "http://localhost:8080/rpc/login/logOut",
+    "changePasswordUrl": "http://localhost:3000/changePasswordRpc",
     "appKey": "151cd73d16c94c6da3d022fcea9057a0",
     "appType": "web"
   },
@@ -43,13 +43,17 @@
       "expanded": false
     },
     "group6": {
-      "title": "货权转移管理",
+      "title": "货权转移",
       "icon": "transfer_within_a_station",
+      "expanded": false
+    },
+    "group7": {
+      "title": "货物盘点",
+      "icon": "assessment",
       "expanded": false
     }
   },
-  "routes": [
-    {
+  "routes": [{
       "route": "/instock/cargo-infos",
       "name": "cargoInfo",
       "title": "入库指令",
@@ -131,6 +135,20 @@
       "group": "group3"
     },
     {
+      "route": "/cargo-ownership/transfer",
+      "name": "ownership",
+      "title": "货权转移",
+      "moduleId": "./cargo-ownership/transfer/index",
+      "group": "group6"
+    },
+    {
+      "route": "/cargo-inventory",
+      "name": "cargo-inventory",
+      "title": "货物盘点",
+      "moduleId": "./cargo-inventory/index",
+      "icon": "check_box"
+    },
+    {
       "route": "/fee/charge",
       "name": "charge",
       "title": "收费管理",
@@ -145,10 +163,24 @@
       "group": "group4"
     },
     {
+      "route": "/fee/storage-budget",
+      "name": "storage-budget",
+      "title": "仓储预算",
+      "moduleId": "./fee/storage-budget/index",
+      "group": "group4"
+    },
+    {
       "route": "/report/ledger-account",
-      "name": "ledger-account",
-      "title": "台账流水账",
-      "moduleId": "./report/ledger-account/index",
+      "name": "ledger",
+      "title": "台账",
+      "moduleId": "./report/ledger/index",
+      "group": "group5"
+    },
+    {
+      "route": "/report/current-account",
+      "name": "current-account",
+      "title": "流水账",
+      "moduleId": "./report/current-account/index",
       "group": "group5"
     },
     {
@@ -199,6 +231,13 @@
       "title": "每月收费统计",
       "moduleId": "./report/monthly-charge/index",
       "group": "group5"
+    },
+    {
+      "route": "/electronic-warehouse",
+      "name": "electronic-warehouse",
+      "title": "电子厂图",
+      "moduleId": "./electronic-warehouse/index",
+      "icon": "local_convenience_store"
     },
     {
       "route": "/base/org-info",
@@ -311,19 +350,6 @@
       "title": "操作日志",
       "moduleId": "./base/operation-logs/index",
       "group": "group1"
-    },
-    {
-      "route": "/cargo-ownership/transfer",
-      "name": "ownership",
-      "title": "货权转移",
-      "moduleId": "./cargo-ownership/transfer/index",
-      "group": "group6"
-    },
-    {
-      "route": "/electronic-warehouse",
-      "name": "electronic-warehouse",
-      "title": "电子厂图",
-      "moduleId": "./electronic-warehouse/index"
     }
   ]
 }

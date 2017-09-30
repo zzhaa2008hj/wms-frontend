@@ -2,66 +2,68 @@
   <div class="grid simple">
     <div class="grid-body no-border">
       <form submit.delegate="add()">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="form-label">盘点来源*</label>
-            <span class="help"></span>
-            <div class="controls">
-              <ak-drop-down-list style="width: 100%" k-value.two-way="cargoInventory.demandFrom" k-option-label="请选择..." k-data-text-field="name"
-                k-data-value-field="type" k-data-source.bind="demandFrom" k-on-select.delegate="onSelectDemandFrom($event.detail)">
-              </ak-drop-down-list>
-            </div>
+        <div class="form-group">
+          <label class="form-label">盘点来源*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <ak-drop-down-list k-value.two-way="cargoInventory.demandFrom" k-option-label="请选择..." k-data-text-field="name" k-data-value-field="type"
+              k-data-source.bind="demandFrom" k-on-select.delegate="onSelectDemand($event.detail)" k-enabled.two-way="!disabled">
+            </ak-drop-down-list>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">开始时间*</label>
-            <span class="help"></span>
-            <div class="input-group" style="margin-top: 6px;">
-              <input ak-datepicker="k-value.two-way : cargoInventory.startTime ; k-widget.two-way: startDatePicker" k-on-change.delegate="startChange()"
-                style="width: 100%" type="text" class="form-control" placeholder="请选择开始时间" disabled.bind="disabled">
-            </div>
+        <div class="form-group" if.bind="cargoInventory.demandFrom == 2">
+          <label class="form-label">库区*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" value.bind="cargoInventory.warehouseName & validate" readonly placeholder="请选择库区" disabled.bind="disabled">
+            <button class="btn btn-small" click.delegate="selectWarehouse()" disabled.bind="disabled">选择</button>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">结束时间*</label>
-            <span class="help"></span>
-            <div class="input-group" style="margin-top: 6px;">
-              <input ak-datepicker="k-value.two-way : cargoInventory.endTime ; k-widget.two-way: endDatePicker" k-on-change.delegate="endhange()"
-                style="width: 100%" type="text" class="form-control" placeholder="请选择结束时间" disabled.bind="disabled">
-            </div>
+        <div class="form-group" if.bind="cargoInventory.demandFrom == 1">
+          <label class="form-label">代理商名称*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <ak-drop-down-list k-value.two-way="cargoInventory.agentId & validate" k-option-label="请选择代理商" k-data-text-field="shortName"
+              k-data-value-field="id" k-data-source.bind="customers" k-on-select.delegate="onSelectAgent($event.detail)" k-enabled.two-way="!disabled">
+            </ak-drop-down-list>
+            <span class="help m-l-10"></span>
+            <ak-drop-down-list k-value.two-way="cargoInventory.customerId & validate" k-option-label="请选择客户" k-data-text-field="shortName"
+              k-data-value-field="id" k-data-source.bind="customers" k-enabled.two-way="!disabled" k-on-select.delegate="onSelectCustomer($event.detail)">
+            </ak-drop-down-list>
           </div>
         </div>
-        <div class="col-md-6" if.bind="cargoInventory.demandFrom == 2">
-          <div class="form-group">
-            <label class="form-label">库区*</label>
-            <span class="help"></span>
-            <div class="controls">
-              <input type="text" class="form-control" style="width: 100%" value.bind="cargoInventory.warehouseName" click.delegate="selectWarehouse()"
-                readonly placeholder="点击选择库区">
-            </div>
+        <div class="form-group">
+          <label class="form-label">入库时间区间*</label>
+          <span class="help"></span>
+          <div class="input-group" style="margin-top: 6px;">
+            <input ak-datepicker="k-value.two-way : cargoInventory.startTime & validate; k-widget.two-way: startDatePicker" k-on-change.delegate="startChange()"
+              type="text" placeholder="请选择开始时间" disabled.bind="disabled" disabled.bind="disabled">
+            <span class="help m-l-10"></span>
+            <input ak-datepicker="k-value.two-way : cargoInventory.endTime & validate; k-widget.two-way: endDatePicker" k-on-change.delegate="endChange()"
+              type="text" placeholder="请选择结束时间" disabled.bind="disabled">
           </div>
         </div>
-        <div class="col-md-6" if.bind="cargoInventory.demandFrom == 1">
-          <div class="form-group">
-            <label class="form-label">仓储客户*</label>
-            <span class="help"></span>
-            <div class="controls">
-              <ak-drop-down-list k-value.two-way="cargoInventory.customerId" k-option-label="请选择..." k-data-text-field="shortName" style="width: 100%"
-                k-data-value-field="id" k-data-source.bind="customers" k-on-select.delegate="onSelectDemandFrom($event.detail)">
-              </ak-drop-down-list>
-            </div>
+        <div class="form-group">
+          <label class="form-label">货类</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" value.bind="cargoInventory.cargoCategoryName & validate" readonly placeholder="请选择货类" disabled.bind="disabled">
+            <a class="btn btn-small" type="button" click.delegate="selectCargoCategory()">选择</a>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="form-label">货类</label>
-            <span class="help"></span>
-            <div class="controls">
-              <input type="text" class="form-control" click.delegate="selectCargoCategory()" value.bind="cargoInventory.cargoCategoryName" readonly
-                style="width: 100%" placeholder="点击选择货类">
-            </div>
+        <div class="form-group">
+          <label class="form-label">预盘时间*</label>
+          <span class="help"></span>
+          <div class="input-group" style="margin-top: 6px;">
+            <input ak-datepicker="k-value.two-way : cargoInventory.inventoryCheckDate;" type="text" placeholder="请选择预盘时间"
+              disabled.bind="disabled" disabled.bind="disabled">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">备注</label>
+          <span class="help"></span>
+          <div class="controls">
+            <textarea value.bind="cargoInventory.remark & validate" cols="50" disabled.bind="disabled"></textarea>
           </div>
         </div>
         <div class="form-actions">

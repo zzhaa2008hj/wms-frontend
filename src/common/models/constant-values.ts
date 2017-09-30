@@ -124,7 +124,7 @@ export class ConstantValues {
   }
 
   static get WorkInfoCategory() {
-    return [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "移库", value: 4 }];
+    return [{ text: "入库", value: 1 }, { text: "出库", value: 2 }, { text: "货权转移", value: 3 }, { text: "货位转移", value: 4 }];
   }
 
   static get OutstockStages() {
@@ -411,5 +411,55 @@ export class ConstantValues {
       type: 2,
       name: "内部"
     }];
+  }
+  static get ownerTsfStage(){
+    return [{
+      stage: -1 ,
+      title: "撤回中"
+    },{
+      stage: 0 ,
+      title: "初始阶段"
+    },
+      {
+        stage: 1 ,
+        title: "待商务审核"
+      },
+      {
+        stage: 2,
+        title: "商务审核未通过"
+      },
+      {
+        stage: 3 ,
+        title: "商务审核通过"
+      },{
+        stage: 4 ,
+        title: "费收审核未通过"
+      },{
+        stage: 5 ,
+        title: "费收审核通过（收费完成）"
+      },{
+        stage: 6 ,
+        title: "费收审核通过（挂账）"
+      },
+      {
+        stage: 7 ,
+        title: "副总审批通过"
+      },
+      {
+        stage: 8 ,
+        title: "作业中"
+      },
+      {
+        stage: 9 ,
+        title: "作业完成"
+      },
+      {
+        stage: 10 ,
+        title: "已生成入库单"
+      },
+      {
+        stage: 11 ,
+        title: "货转完成"
+      }];
   }
 }
