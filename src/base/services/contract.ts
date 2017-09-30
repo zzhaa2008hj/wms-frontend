@@ -134,4 +134,11 @@ export class ContractService {
       .createRequest(`base/contract/changeStatus/${id}`).withParams({status: status}).asPut().send()
       .then(handleResult);
   }
+  /**
+   * 获取已经生效的仓储合同
+   */
+  async contractList(contractType?: number): Promise<Contract[]> {
+    let res = await this.http.get(`base/contract/list?contractType=${contractType}`);
+    return res.content;
+  }
 }

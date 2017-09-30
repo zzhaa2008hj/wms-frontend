@@ -78,7 +78,7 @@
               <div class="form-label">转让日期</div>
               <div class="controls">
                 <input ak-datepicker="k-value.two-way : transfer.transferDate & validate; k-widget.two-way: transferDateDatePicker; k-format.bind:'yyyy-MM-dd'"
-                  type="text">
+                  type="text" k-on-change.delegate="onTransferDateChange()">
               </div>
             </div>
           </div>
