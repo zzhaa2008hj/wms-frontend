@@ -1,0 +1,30 @@
+<template>
+  <div class="controlbar">
+    <div class="input-group">
+      <input style="width:200px" class="form-control" type="text" value.bind="btn" placeholder="请输入要查询的批次号">
+      <a class="btn btn-small" click.delegate="select()" title="搜索"><em class="fa fa-search"></em></a>
+      <a class="btn btn-small" click.delegate="reset()" title="重置"><em class="fa fa-rotate-left"></em></a>
+    </div>
+  </div>
+  <div if.bind="show == 1">
+  <ak-grid k-data-source.bind="dataInSource" k-pageable.bind="pageable" k-selectable="row">
+    <ak-col k-field="originalBatchNumber" k-title="原批次号"></ak-col>
+    <ak-col k-field="originalAgentName" k-title="原代理商名称"></ak-col>
+    <ak-col k-field="originalCustomerName" k-title="原客户名称"></ak-col>
+    <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
+    <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
+    <ak-col k-field="status == '0' ? '未完成' : '完成'" k-title="状态"></ak-col>
+  </ak-grid>
+
+  <ak-grid k-data-source.bind="dataOutSource" k-pageable.bind="pageable" k-selectable="row" >
+    <ak-col k-field="newBatchNumber" k-title="新批次号"></ak-col>
+    <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
+    <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
+    <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+    <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
+    <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
+    <ak-col k-field="status == '0' ? '未完成' : '完成'" k-title="状态"></ak-col>
+  </ak-grid>
+  </div>
+</template>
