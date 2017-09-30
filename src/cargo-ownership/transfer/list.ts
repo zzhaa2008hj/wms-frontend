@@ -29,7 +29,6 @@ export class CargoownershipTransferList {
               @inject private dialogService: DialogService,
               @inject private router: Router,
               @inject private messageDialogService: MessageDialogService,
-              // @inject private dictionaryDataService: DictionaryDataService
             ) {
   }
 
