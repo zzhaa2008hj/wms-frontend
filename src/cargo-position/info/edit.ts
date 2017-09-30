@@ -19,7 +19,7 @@ import { ValidationController, ValidationControllerFactory } from 'aurelia-valid
 import { formValidationRenderer } from '@app/validation/support';
 import { WarehouseTree } from "@app/base/warehouse/tree";
 
-export class NewPositionTransferInfo {
+export class EditPositionTransferInfo {
   disabled = false;
   positionTransferInfo = {} as PositionTransferInfo;
   attachments = [] as AttachmentMap[];
@@ -60,6 +60,7 @@ export class NewPositionTransferInfo {
       if (unit) {
         pti.unitName = unit.dictDataName;
       }
+
       if (pti.cargoRates) {
         pti.cargoRates.forEach(cr => {
           let rateUunit = this.units.find(u => cr.unit == u.dictDataCode);

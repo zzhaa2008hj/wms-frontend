@@ -191,6 +191,7 @@ export class NewPositionTransferInfo {
       storageItems = storageItems.filter(si => si.warehouseId == this.search.warehouseId);
     }
     storageItems.forEach(si => {
+
       si.cargoRates = this.baseCargoItems.find(bci => bci.cargoName == si.cargoName).cargoRates;
       if (this.positionTransferInfo.demandFrom == 1) {
         let deletedCargoRates = si.cargoRates.filter(cr => cr.chargeType == 1);
