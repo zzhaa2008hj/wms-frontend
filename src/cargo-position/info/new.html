@@ -26,8 +26,7 @@
               <label class="form-label">货位转移单号*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="text" class="form-control" value.bind="positionTransferInfo.transferNumber & validate"
-                       disabled.bind="disabled">
+                <input type="text" class="form-control" value.bind="positionTransferInfo.transferNumber" readonly>
               </div>
             </div>
           </div>
@@ -117,24 +116,23 @@
               <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
               <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
               <ak-col k-field="containerType" k-title="集装箱类型 "></ak-col>
-              <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
               <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+              <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
               <ak-col k-field="unitName" k-title="计量单位"></ak-col>
-              <ak-col k-field="position" k-title="堆存坐标"></ak-col>
               <ak-col k-title="新库区名称">
                 <ak-template>
                   <input type="text" class="form-label" value.bind="newWarehouseName" readonly>
                   <a class="btn btn-small" type="button" click.delegate="selectWarehourse(uid)">请选择...</a>
                 </ak-template>
               </ak-col>
-              <ak-col k-title="转移数量">
-                <ak-template>
-                  <input type="text" class="form-label" value.bind="transferQuantity">
-                </ak-template>
-              </ak-col>
               <ak-col k-title="转移件数">
                 <ak-template>
                   <input type="text" class="form-label" value.bind="transferNumber">
+                </ak-template>
+              </ak-col>
+              <ak-col k-title="转移数量">
+                <ak-template>
+                  <input type="text" class="form-label" value.bind="transferQuantity">
                 </ak-template>
               </ak-col>
               <ak-col k-field="remark" k-title="备注"></ak-col>
