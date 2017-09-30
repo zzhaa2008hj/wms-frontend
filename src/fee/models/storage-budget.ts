@@ -42,5 +42,7 @@ export interface StorageBudgetItem {
   //入库时间
   instockDate: Date;
   //堆存天数
-  storageDays:number;
+  storageDays: number;
+  calculateStandard: number;
+  calculateStandardStr: string;
 }

@@ -16,7 +16,7 @@ export class DetailsCargoItem {
   //warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
-
+  calculateStandards = ConstantValues.CalculateStandard;
   constructor(private dialogController: DialogController,
               private dictionaryDataService: DictionaryDataService) {
     this.cargoRateDataSource = new kendo.data.DataSource({
@@ -63,6 +63,9 @@ export class DetailsCargoItem {
       }
       if (rateType) {
         res.rateTypeStr = rateType.text;
+      }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
       }
       return res;
     });

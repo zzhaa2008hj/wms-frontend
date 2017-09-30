@@ -14,6 +14,7 @@ export class ViewContract {
   contractVo: ContractVo;
   contractTypes = ConstantValues.ContractTypes;
   chargeCategory = ConstantValues.ChargeCategory;
+  calculateStandards = ConstantValues.CalculateStandard;
   warehouses: WorkInfo[];
   datasource: kendo.data.DataSource;
   /**
@@ -79,6 +80,9 @@ export class ViewContract {
       }
       if (rateType) {
         res.rateTypeStr = rateType.text;
+      }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
       }
       return res;
     });
