@@ -80,6 +80,8 @@ export interface CargoownershipTransfer {
 
   storageEndDateStr: string;
   transferDateStr: string;
+
+  createAccountId: string;
 }
 
 export interface CargoownershipTransferItem {
