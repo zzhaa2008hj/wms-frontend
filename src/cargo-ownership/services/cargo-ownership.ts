@@ -1,6 +1,12 @@
 import { autoinject } from "aurelia-dependency-injection";
 import { handleResult, Query, RestClient } from "@app/utils";
-import { CargoownershipTransfer, TransferCargoItemVo, CargoownershipTransferVo, CargoownershipTransferItem, CargoOwnershipTransferRate } from '@app/cargo-ownership/models/cargo-ownership';
+import {
+  CargoownershipTransfer,
+  TransferCargoItemVo,
+  CargoownershipTransferVo,
+  CargoownershipTransferItem,
+  CargoOwnershipTransferRate
+} from '@app/cargo-ownership/models/cargo-ownership';
 
 export interface CargoownershipTransferCriteria {
   originalCustomerName?: string;
@@ -13,11 +19,12 @@ export interface CargoownershipTransferCriteria {
 export class CargoownershipTransferService {
   constructor(private http: RestClient) {
   }
+
   /**
    * 分页查询
    */
   getPageList(criteria: CargoownershipTransferCriteria): Query<CargoownershipTransfer> {
-    return   this.http.query<CargoownershipTransfer>(`/ownership-transfer/info/page`, criteria);
+    return this.http.query<CargoownershipTransfer>(`/ownership-transfer/info/page`, criteria);
   }
 
   /**
@@ -40,12 +47,14 @@ export class CargoownershipTransferService {
   getDetail(id: string): Promise<CargoownershipTransferVo> {
     return this.http.get(`/ownership-transfer/info/${id}/detail`).then(res => res.content);
   }
+
   /**
    * 查修改详情
    */
   getEditDetail(id: string): Promise<CargoownershipTransfer> {
     return this.http.get(`/ownership-transfer/info/${id}/edit-detail`).then(res => res.content);
   }
+
   /**
    * 修改
    */
@@ -56,8 +65,8 @@ export class CargoownershipTransferService {
   /**
    * 根据id 获取 货权转移信息
    */
-  async queryById(id : string) : Promise<CargoownershipTransfer>{
-    let res =await  this.http.get(`/ownership-transfer/info/${id}/info`);
+  async queryById(id: string): Promise<CargoownershipTransfer> {
+    let res = await  this.http.get(`/ownership-transfer/info/${id}/info`);
     return res.content
   }
 
@@ -66,8 +75,8 @@ export class CargoownershipTransferService {
    * 费收审核:2
    * 副总审核:3
    */
-  async doAudit(id : string ,status: number , type : string ): Promise<void>{
-    let res =await  this.http.put(`/ownership-transfer/info/${id}/audit/${status}/${type}`,"");
+  async doAudit(id: string, status: number, type: string): Promise<void> {
+    let res = await  this.http.put(`/ownership-transfer/info/${id}/audit/${status}/${type}`, "");
     return res.content;
   }
 
@@ -80,7 +89,6 @@ export class CargoownershipTransferService {
     let res = await this.http.get(`/ownership-transfer/info/${id}/cargo-item`);
     return res.content;
   }
-
 
 
   /**
@@ -98,12 +106,26 @@ export class CargoownershipTransferService {
    *作业完成
    * 设置完工
    */
-  async changeStage(id : string ,stage : number): Promise<void>{
-    let res = await this.http.put(`/ownership-transfer/info/${id}/change-stage/${stage}`,"");
-    return res.content ;
+  async changeStage(id: string, stage: number): Promise<void> {
+    let res = await this.http.put(`/ownership-transfer/info/${id}/change-stage/${stage}`, "");
+    return res.content;
   }
 
   getChangeHistory(id: string, historyId: string): Promise<CargoownershipTransfer> {
     return this.http.get(`/ownership-transfer/info/${id}/changeHistory/${historyId}`).then(res => res.content);
+  }
+
+  /**
+   * 根据批次号查询转入信息
+   */
+  getTsfInHistory(btn: string): Query<CargoownershipTransfer> {
+    return this.http.query<CargoownershipTransfer>(`/ownership-transfer/info/tsfInHistory`, { "batchNum": btn });
+  }
+
+  /**
+   * 根据批次号查询转出信息
+   */
+  getTsfOutHistory(btn: string): Query<CargoownershipTransfer> {
+    return this.http.query<CargoownershipTransfer>(`/ownership-transfer/info/tsfOutHistory`, { "batchNum": btn });
   }
 }

@@ -14,6 +14,7 @@ export class Transfer {
       { route: '/:id/view', name: 'view', moduleId: './view', title: "详情" },
       { route: '/:id/edit', name: 'edit', moduleId: './edit', title: "修改" },
       { route: '/:id/change-historys', name: 'changeHistory', moduleId: './change-history/index', title: "修改记录" },
+      { route: '/btn-search', name: 'searchBtn', moduleId: './batch-search/index', title: "货权转移记录" },
     ]);
     this.router = router;
   }
