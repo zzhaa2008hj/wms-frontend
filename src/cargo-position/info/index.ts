@@ -29,6 +29,18 @@ export class PositionTransferInfo {
         title: '上传签字确认单'
       },
       {
+        route: '/:id/create-work-order',
+        name: 'create-work-order',
+        moduleId: '/dist/cargo-position/work-order/print-work-order',
+        title: '生成作业指令单'
+      },
+      {
+        route: '/:id/view-work-order',
+        name: 'view-work-order',
+        moduleId: '/dist/cargo-position/work-order/print-work-order',
+        title: '查看作业指令单'
+      },
+      {
         route: '/:id/:type/work-order',
         name: 'work-order',
         moduleId: '/dist/cargo-position/work/index',

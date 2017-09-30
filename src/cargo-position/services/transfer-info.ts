@@ -66,6 +66,10 @@ export class PositionTransferInfoService {
   getByTransferItemId(transferItemId: string): Promise<PositionTransferInfo> {
     return this.http.get(`/position-transfer/info/${transferItemId}/byTransferItemId`).then(res => res.content);
   }
+
+  updateGenerateWorkOrder(transferId: string): Promise<void> {
+    return this.http.put(`/position-transfer/info/${transferId}/generateWorkOrder`, '').then(handleResult);
+  }
 }
 
 @autoinject
