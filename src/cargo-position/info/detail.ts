@@ -7,7 +7,7 @@ import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { inject } from "aurelia-dependency-injection";
 
-export class NewPositionTransferInfo {
+export class PositionTransferInfoDetail {
   positionTransferInfo = {} as PositionTransferInfo;
   dataSourceStorage = new kendo.data.HierarchicalDataSource({
     data: []

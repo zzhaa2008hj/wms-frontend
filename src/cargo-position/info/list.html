@@ -1,7 +1,7 @@
 <template>
     <div class="controlbar">
-        <a class="btn btn-small btn-success" route-href="route: new">新增货位转移需求</a>
-        <a class="btn btn-small" click.delegate="changeHistory()">修改记录</a>
+        <a class="btn btn-small btn-success" route-href="route: new"  required-permissions="C000052">新增货位转移需求</a>
+        <a class="btn btn-small" click.delegate="changeHistory()" required-permissions="R000100">修改记录</a>
         <div class="spacer"></div>
         <div class="input-group">
             <input type="text" value.bind="criteria.customerName" placeholder="请输入客户名称">
@@ -14,7 +14,7 @@
              k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
         <ak-col k-field="transferNumber" k-title="货位转移单号" k-width.bind="120">
             <ak-template>
-                <a route-href="route: detail; params.bind: { id: id }">${transferNumber}</a>
+                <a route-href="route: detail; params.bind: { id: id }" required-permissions="R000099">${transferNumber}</a>
                 <!--<label if.bind="!requiredPermissions('R000034')">${outstockOrderNumber}</label>-->
             </ak-template>
         </ak-col>
@@ -29,7 +29,7 @@
         <ak-col k-title="操作" k-width.bind="280">
             <ak-template>
                 <a class="btn btn-small" if.bind="stage == 0 || stage == 2"
-                   route-href="route: edit; params.bind: { id: id }">修改</a>
+                   route-href="route: edit; params.bind: { id: id }" required-permissions="U000077">修改</a>
                 <button class="btn btn-small" if.bind="stage > 2" click.delegate="rollBack($this)">撤回</button>
                 <a class="btn btn-small" if.bind="stage == 1"
                    route-href="route: business-verify; params.bind: { id: id }" required-permissions="U000069">商务审核</a>

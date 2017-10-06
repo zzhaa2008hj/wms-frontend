@@ -19,7 +19,7 @@ import { ValidationController, ValidationControllerFactory } from 'aurelia-valid
 import { formValidationRenderer } from '@app/validation/support';
 import { WarehouseTree } from "@app/base/warehouse/tree";
 
-export class NewPositionTransferInfo {
+export class EditPositionTransferInfo {
   disabled = false;
   positionTransferInfo = {} as PositionTransferInfo;
   attachments = [] as AttachmentMap[];
@@ -60,6 +60,7 @@ export class NewPositionTransferInfo {
       if (unit) {
         pti.unitName = unit.dictDataName;
       }
+
       if (pti.cargoRates) {
         pti.cargoRates.forEach(cr => {
           let rateUunit = this.units.find(u => cr.unit == u.dictDataCode);
@@ -115,7 +116,6 @@ export class NewPositionTransferInfo {
     }
     this.positionTransferInfo.positionTransferItems = storageItems;
     this.positionTransferInfo.attachments = this.attachments;
-    console.log(this.attachments);
     this.validationController.addObject(this.positionTransferInfo, positionTransferInfoValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
@@ -145,7 +145,6 @@ export class NewPositionTransferInfo {
     }).whenClosed();
     if (result.wasCancelled) return;
     let newCargoRates = result.output;
-    console.log(newCargoRates);
     let storageItems: any = this.dataSourceStorage.data();
     storageItems.forEach(si => {
       if (si.uid == storageItem.uid) {
@@ -167,7 +166,6 @@ export class NewPositionTransferInfo {
       .whenClosed();
     if (result.wasCancelled) return;
     let warehouse = result.output;
-    console.log(warehouse);
     let storageItems: any = this.dataSourceStorage.data();
     storageItems.forEach(si => {
       if (si.uid == uid) {
@@ -191,7 +189,6 @@ export class NewPositionTransferInfo {
         }
       });
       this.showAttachments = this.showAttachments.filter(res => res.uuidName != item.uuidName);
-      console.log(this.attachments)
     } catch (err) {
       await this.messageDialogService.alert({ title: "删除失败", message: err.message, icon: "error" });
     }

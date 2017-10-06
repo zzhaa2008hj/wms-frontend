@@ -21,6 +21,7 @@ import { EditRate } from "@app/cargo-position/info/edit-rate";
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { formValidationRenderer } from '@app/validation/support';
 import { WarehouseTree } from "@app/base/warehouse/tree";
+import { CodeService } from "@app/common/services/code";
 
 export class NewPositionTransferInfo {
   selectedDemandFrom: any;
@@ -55,6 +56,7 @@ export class NewPositionTransferInfo {
               @inject private dialogService: DialogService,
               @inject private dictionaryDataService: DictionaryDataService,
               @inject private attachmentService: AttachmentService,
+              @inject private codeService: CodeService,
               @inject private storageService: StorageService,
               @inject private messageDialogService: MessageDialogService,
               @inject private positionTransferInfoService: PositionTransferInfoService,
@@ -122,7 +124,6 @@ export class NewPositionTransferInfo {
     }
     this.positionTransferInfo.positionTransferItems = transferItems;
     this.positionTransferInfo.attachments = this.attachments;
-    console.log(this.attachments)
     this.validationController.addObject(this.positionTransferInfo, positionTransferInfoValidationRules);
     let { valid } = await this.validationController.validate();
     if (!valid) return;
@@ -192,6 +193,7 @@ export class NewPositionTransferInfo {
       storageItems = storageItems.filter(si => si.warehouseId == this.search.warehouseId);
     }
     storageItems.forEach(si => {
+
       si.cargoRates = this.baseCargoItems.find(bci => bci.cargoName == si.cargoName).cargoRates;
       if (this.positionTransferInfo.demandFrom == 1) {
         let deletedCargoRates = si.cargoRates.filter(cr => cr.chargeType == 1);
@@ -300,6 +302,10 @@ export class NewPositionTransferInfo {
     this.positionTransferInfo.agentName = dataItem.agentName;
     this.positionTransferInfo.customerId = dataItem.customerId;
     this.positionTransferInfo.customerName = dataItem.customerName;
+    //自动生成货位转移单号
+    let res = await this.codeService.generateCode("6")
+    console.log(res)
+    this.positionTransferInfo.transferNumber = res.content;
 
     this.baseCargoItems = await this.cargoInfoService.getCargoItems(dataItem.id);
     this.dataSourceCargoItem.data(this.baseCargoItems);

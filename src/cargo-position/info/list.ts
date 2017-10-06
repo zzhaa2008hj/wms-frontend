@@ -119,7 +119,7 @@ export class PositionTransferInfoList {
   async endWork(id) {
     let res = await this.workOrderItemService.getTransferWorkDetails(id);
     if (res == null || res.length == 0) {
-      await this.dialogService.alert({ title: "提示", message: "没有作业内容！" })
+      await this.dialogService.alert({ title: "提示", message: "没有作业内容！" });
       return;
     }
     let confirm = await this.dialogService.confirm({ title: "提示", message: "是否确认完成作业;" });
