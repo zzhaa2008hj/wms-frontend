@@ -25,7 +25,7 @@ export class NewContract {
   unit = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   rateTypes = ConstantValues.WorkInfoCategory;
-
+  calculateStandards = ConstantValues.CalculateStandard;
   contractTypes = ConstantValues.ContractTypes;
   warehouses: WorkInfo[];
 
@@ -100,6 +100,7 @@ export class NewContract {
             pricingMode: { editable: false },
             workName: { editable: false },
             // warehouseTypeStr: { editable: false },
+            calculateStandardStr:{editable: false },
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
             warehouseCategoryStr: { editable: false },
@@ -162,6 +163,9 @@ export class NewContract {
       }
       if (rateType) {
         res.rateTypeStr = rateType.text;
+      }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
       }
       return res;
     });

@@ -31,7 +31,7 @@
           <label class="form-label">费用类别*</label>
           <span class="help"></span>
           <ak-drop-down-list k-value.two-way="rate.chargeCategory & validate" k-option-label="请选择..." k-data-text-field="text" k-data-value-field="value"
-                             k-data-source.bind="chargeCategory" k-on-change.delegate="chargeCategoryChanged()">
+            k-data-source.bind="chargeCategory" k-on-change.delegate="chargeCategoryChanged()">
           </ak-drop-down-list>
         </div>
         <div if.bind="rate.chargeCategory == 2 || rate.chargeCategory == 3">
@@ -53,8 +53,8 @@
           <div class="form-group">
             <label class="form-label">库位类别*</label>
             <span class="help"></span>
-            <ak-drop-down-list k-value.two-way="rate.warehouseCategory & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
-              k-data-source.bind="warehouseCategory">
+            <ak-drop-down-list k-value.two-way="rate.warehouseCategory & validate" k-option-label="请选择..." k-data-text-field="dictDataName"
+              k-data-value-field="dictDataCode" k-data-source.bind="warehouseCategory">
             </ak-drop-down-list>
           </div>
         </div>
@@ -77,6 +77,13 @@
           <span class="help"></span>
           <ak-drop-down-list k-value.two-way="rate.unit & validate" k-option-label="请选择..." k-data-text-field="dictDataName" k-data-value-field="dictDataCode"
             k-data-source.bind="unit">
+          </ak-drop-down-list>
+        </div>
+        <div class="form-group" if.bind="rate.pricingMode == 2 &&rate.chargeCategory == 1">
+          <label class="form-label">计算标准*</label>
+          <span class="help"></span>
+          <ak-drop-down-list k-value.two-way="rate.calculateStandard & validate" k-data-text-field="text" k-data-value-field="value"
+            k-data-source.bind="calculateStandard">
           </ak-drop-down-list>
         </div>
         <div if.bind="rate.pricingMode == 2">

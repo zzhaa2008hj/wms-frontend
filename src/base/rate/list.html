@@ -32,10 +32,11 @@
     <ak-col k-field="price" k-title="单价"></ak-col>
     <ak-col k-field="unit" k-title="计量单位"></ak-col>
     <ak-col k-field="rateTypeStr" k-title="作业类别"></ak-col>
-    <ak-col k-field="workName" k-title="作业内容" k-width.bind="180"></ak-col>
-    <ak-col k-field="cargoCategoryName" k-title="货类" k-width.bind="180"></ak-col>
+    <ak-col k-field="workName" k-title="作业内容" ></ak-col>
+    <ak-col k-field="cargoCategoryName" k-title="货类"></ak-col>
     <ak-col k-field="warehouseCategory" k-title="库位类别"></ak-col>
     <ak-col k-field="pricingMode== 1 ? '单一计费': '阶梯计费'" k-title="计价方式"></ak-col>
+    <ak-col k-field="calculateStandardStr" k-title="计算标准"></ak-col>
     <ak-col k-field="remark" k-title="备注" k-width.bind="250"></ak-col>
     <ak-template for="detailTemplate">
       <rate-recipients if.bind="pricingMode == 2" rate-id.bind="$this.id"></rate-recipients>

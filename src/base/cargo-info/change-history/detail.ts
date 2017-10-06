@@ -69,6 +69,7 @@ export class CargoInfoChangeHistoryDetail {
     } else {
       cargoItemList = this.newCargoItems.filter(x => x.id == id);
     }
+    console.log(cargoItemList)
     if (cargoItemList.length == 0) {
       this.messageDialogService.alert({ title: '错误', message: '该货物不存在！' });
       return;
