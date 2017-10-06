@@ -7,6 +7,7 @@ import { AttachmentService } from "@app/common/services/attachment";
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
 import { DialogService } from "ui";
+import { AttachmentDetail } from "@app/common/attachment/detail";
 
 
 export class NewPositionTransferInfo {
@@ -70,6 +71,16 @@ export class NewPositionTransferInfo {
     } catch (e) {
       await this.dialogService.alert({ title: "错误", message: e.message });
     }
+  }
+
+  async showDetail(data) {
+    let item: AttachmentMap = data.item;
+    let path = '/' + this.positionTransferInfo.cargoInfoId + '/' + item.uuidName;
+    let attachmentUrl = this.attachmentService.view(path);
+    let result = await this.dialogService
+      .open({ viewModel: AttachmentDetail, model: attachmentUrl, lock: true })
+      .whenClosed();
+    if (result.wasCancelled) return;
   }
 
   cancel() {
