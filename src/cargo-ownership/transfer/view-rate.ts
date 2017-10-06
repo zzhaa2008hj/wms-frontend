@@ -67,7 +67,7 @@ export class RateView {
       item.cargoRateSteps.forEach(rate => {
         let unit = this.units.find(r => r.dictDataCode == rate.stepUnit);
         if (unit) {
-          rate.stepUnitName = unit.dictDataName;
+          rate.stepUnitStr = unit.dictDataName;
         }
       });
       this.cargoRateSteps = item.cargoRateSteps;
