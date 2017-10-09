@@ -78,7 +78,7 @@ export class App {
       let auth = this.user.userInfo.menuVoList;
       let auths = new Set(auth.map((a) => a.url));
       let routes = this.config.routes
-       /* .filter(a => auths.has(a.name))*/
+        .filter(a => auths.has(a.name))
         .map(route => {
           if (!route["group"]) return Object.assign({}, route, { nav: true });
           return Object.assign({}, route, { nav: true, group: this.config.group[route.group] });
