@@ -196,9 +196,8 @@
             <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
             <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
             <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
-            <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
-            <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
-            <ak-col k-field="status == '0' ? '未完成' : '完成'" k-title="状态"></ak-col>
+            <ak-col k-field="storageEndDate" k-title="仓储费用结算至" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+            <ak-col k-field="outstockChargePayerName" k-title="出库费用承担方*"></ak-col>
           </ak-grid>
         </div>
       </div>
