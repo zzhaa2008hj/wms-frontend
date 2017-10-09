@@ -9,7 +9,7 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { Order } from '@app/outstock/models/order';
 import { fixDate } from '@app/utils';
-
+import { CargoownershipTransfer } from '@app/cargo-ownership/models/cargo-ownership';
 @autoinject
 export class DetailsCargoInfo {
   cargoInfo = {} as CargoInfo;
@@ -19,11 +19,15 @@ export class DetailsCargoInfo {
 
   units = [] as DictionaryData[];
 
+  
   instockOrders: InstockOrder[];
   instockDatasource: kendo.data.DataSource;
 
   outstockOrders: Order[];
   outstockDatasource: kendo.data.DataSource;
+
+  cargoOwnershipTransfer = [] as CargoownershipTransfer[];
+  cargoOwnershipTransferSource:kendo.data.DataSource;
 
   constructor(private router: Router,
               private cargoInfoService: CargoInfoService,
@@ -61,7 +65,6 @@ export class DetailsCargoInfo {
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
     this.cargoItems = await this.cargoInfoService.getCargoItems(id);
     this.cargoItems.map(res => res.unitStr = this.units.find(d => d.dictDataCode == res.unit).dictDataName);
-    //todo
     //入库信息
     this.instockOrders = await this.cargoInfoService.getInstockOrder(id);
     this.instockOrders.map(res => {
@@ -79,8 +82,9 @@ export class DetailsCargoInfo {
       }
       fixDate(res, "outstockDate");
     });
-    //todo
-    //货权转移、货位转移
+    //货权转移
+    
+    //货位转移
   }
 
   async view(id) {

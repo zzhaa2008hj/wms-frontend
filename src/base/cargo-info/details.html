@@ -181,18 +181,35 @@
         </div>
         <!-- 出库信息结束-->
 
-        <!-- 货权转移开始-->
+        <!-- 货权转移信息开始-->
         <div>
-          暂无货权转移信息
-        </div>
-        <!-- 货权转移结束-->
-
-        <!-- 货位转移开始-->
+          <div if.bind="cargoOwnershipTransfer.length == 0">
+            暂无货权转移信息
+          </div>
+          <!-- <div if.bind="cargoOwnershipTransfer.length > 0"> -->
         <div>
-          暂无货位转移信息
+          <ak-grid k-data-source.bind="cargoOwnershipTransferDataSource" k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
+            <ak-col k-field="originalBatchNumber" k-title="原批次号"></ak-col>
+            <ak-col k-field="originalAgentName" k-title="原代理商名称"></ak-col>
+            <ak-col k-field="originalCustomerName" k-title="原客户名称"></ak-col>
+            <ak-col k-field="newBatchNumber" k-title="新批次号"></ak-col>
+            <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
+            <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
+            <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+            <ak-col k-field="lastStageName" k-title="上阶段"></ak-col>
+            <ak-col k-field="stageName" k-title="当前阶段"></ak-col>
+            <ak-col k-field="status == '0' ? '未完成' : '完成'" k-title="状态"></ak-col>
+          </ak-grid>
         </div>
-        <!-- 货位转移结束-->
       </div>
+      <!-- 货权转移信息结束-->
+
+      <!-- 货位转移开始-->
+      <div>
+        暂无货位转移信息
+      </div>
+      <!-- 货位转移结束-->
     </div>
+  </div>
   </div>
 </template>

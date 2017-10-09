@@ -51,7 +51,7 @@ export class StorageBudgetList {
 
   async select() {
     if (!this.endDate) {
-      return this.dialogService.alert({ title: "提示", message: "请选择结束时间", icon: 'error' });
+      return this.dialogService.alert({ title: "提示", message: "请选择结截止时间", icon: 'error' });
     }
     if (!this.customerId) {
       return this.dialogService.alert({ title: "提示", message: "请选择客户", icon: 'error' });
