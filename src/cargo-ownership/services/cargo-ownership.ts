@@ -102,8 +102,33 @@ export class CargoownershipTransferService {
     let res = await this.http.put(`/ownership-transfer/info/${id}/change-stage/${stage}`,"");
     return res.content ;
   }
-
+  /**
+   * 修改历史
+   * @param id
+   * @param historyId
+   */
   getChangeHistory(id: string, historyId: string): Promise<CargoownershipTransfer> {
     return this.http.get(`/ownership-transfer/info/${id}/changeHistory/${historyId}`).then(res => res.content);
+  }
+  /**
+   * 生成入库单
+   * @param id
+   */
+  createInstockOrder(id: string): Promise<void> {
+    return this.http.post(`/ownership-transfer/info/${id}/instockOrder`, null).then(handleResult);
+  }
+
+  /**
+   * 根据批次号查询转入信息
+   */
+  getTsfInHistory(btn: string): Query<CargoownershipTransfer> {
+    return this.http.query<CargoownershipTransfer>(`/ownership-transfer/info/tsfInHistory`, { "batchNum": btn });
+  }
+
+  /**
+   * 根据批次号查询转出信息
+   */
+  getTsfOutHistory(btn: string): Query<CargoownershipTransfer> {
+    return this.http.query<CargoownershipTransfer>(`/ownership-transfer/info/tsfOutHistory`, { "batchNum": btn });
   }
 }

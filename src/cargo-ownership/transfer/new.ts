@@ -17,7 +17,7 @@ import { CargoownershipTransfer, transferValidationRules, TransferCargoItemVo } 
 import { CargoownershipTransferService } from '@app/cargo-ownership/services/cargo-ownership';
 import { RateView } from '@app/cargo-ownership/transfer/rate';
 import { StorageItemView } from '@app/cargo-ownership/transfer/storage';
-
+import { ContractService } from '@app/base/services/contract';
 export class NewTransfer {
   @observable disabled: boolean = false;
   units = [] as DictionaryData[];
@@ -105,7 +105,8 @@ export class NewTransfer {
               @inject container: Container,
               @inject private attachmentService: AttachmentService,
               @inject private uploader: Uploader,
-              @inject private cargoownershipTransferService: CargoownershipTransferService) {
+              @inject private cargoownershipTransferService: CargoownershipTransferService,
+              @inject private contractService: ContractService) {
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
     container.registerInstance(ValidationController, this.validationController);
@@ -116,21 +117,26 @@ export class NewTransfer {
     this.transfer.batchNumberMode = 0;
     this.transfer.cargoInfoId = this.cargoInfoId;
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
-    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ finished: 0 });
+    this.baseCargoInfo = await this.cargoInfoService.listBaseCargoInfos({ instockStatus: 1 });
     if (this.baseCargoInfo) {
       let agentIds = Array.from(new Set(this.baseCargoInfo.map(info => info.agentId)));
       agentIds.forEach(id => {
         let agentName = this.baseCargoInfo.find(info => info.agentId == id).agentName;
         this.baseAgent.push({id: id, name: agentName});
-        this.baseNewAgent.push({id: id, name: agentName});
       });
 
       let customerIds = Array.from(new Set(this.baseCargoInfo.map(info => info.customerId)));
       customerIds.forEach(id => {
         let customerName = this.baseCargoInfo.find(info => info.customerId == id).customerName;
         this.baseCustomer.push({id: id, name: customerName});
-        this.baseNewCustomer.push({id: id, name: customerName});
       });
+    }
+    // 新客户从合同中取
+    let contracts = await this.contractService.contractList(1);
+    if (contracts && contracts.length > 0) {
+      let customers = contracts.map(t => Object.assign({id: t.customerId, name: t.customerName}));
+      this.baseNewAgent = customers;
+      this.baseNewCustomer = customers;
     }
   }
   
@@ -351,6 +357,16 @@ export class NewTransfer {
     });
     console.log('new-cargoItems', this.cargoItems);
     this.cargoItemDataSource.read();
+  }
+
+  onTransferDateChange() {
+    let startDate = this.transferDateDatePicker.value();
+    if (startDate) {
+      let date = new Date(startDate);
+      this.storageEndDatePicker.value(date);
+      this.storageEndDatePicker.min(date);
+      this.transfer.storageEndDate = date;
+    }
   }
 }
 

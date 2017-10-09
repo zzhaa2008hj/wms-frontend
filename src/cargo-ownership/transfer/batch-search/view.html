@@ -1,0 +1,111 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header  show-close-button.bind="true">
+      货权转移详情
+    </ux-dialog-header>
+  <div class="grid simple">
+    <div class="grid-body no-border">
+      <h4>原信息</h4>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">原批次号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.originalBatchNumber" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">原代理商</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.originalAgentName" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">原客户</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.originalCustomerName" readonly>
+          </div>
+        </div>
+      </div>
+      <h4>转出信息</h4>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">新批次号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.newBatchNumber" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">新代理商</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.newAgentName" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">新客户</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.newCustomerName" readonly>
+          </div>
+        </div>
+      </div>
+      <h4>基础信息</h4>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">转让日期</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.transferDate" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">仓储费用结算至</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.storageEndDate" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">费用承担方</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="transfer.outstockChargePayerName" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <h4>货物信息</h4>
+        <ak-grid k-data-source.bind="cargoInfo">
+          <ak-col k-field="cargoName" k-title="货物名称"></ak-col>
+          <ak-col k-field="cargoCategoryName" k-title="货物类别"></ak-col>
+          <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+          <ak-col k-field="unitStr" k-title="计量单位"></ak-col>
+          <ak-col k-field="containerNumber" k-title="箱号"></ak-col>
+          <ak-col k-field="orderNumber" k-title="指令件数"></ak-col>
+          <ak-col k-field="orderQuantity" k-title="指令数量"></ak-col>
+          <ak-col k-field="remark" k-title="备注"></ak-col>
+        </ak-grid>
+      </div>
+    </div>
+  </div>
+    <ux-dialog-footer>
+      <button click.delegate="close()">关闭</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

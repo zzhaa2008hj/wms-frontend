@@ -34,13 +34,14 @@ export class EditCargoItem {
   search = {} as ContractSearch;
   chargeCategory = ConstantValues.ChargeCategory;
   pricingMode = ConstantValues.PricingMode;
+  calculateStandards = ConstantValues.CalculateStandard;
 
   constructor(private dialogController: DialogController,
-              private dictionaryDataService: DictionaryDataService,
-              private cargoInfoService: CargoInfoService,
-              private dialogService: DialogService,
-              validationControllerFactory: ValidationControllerFactory,
-              container: Container) {
+    private dictionaryDataService: DictionaryDataService,
+    private cargoInfoService: CargoInfoService,
+    private dialogService: DialogService,
+    validationControllerFactory: ValidationControllerFactory,
+    container: Container) {
 
     this.validationController = validationControllerFactory.create();
     this.validationController.addRenderer(formValidationRenderer);
@@ -73,7 +74,8 @@ export class EditCargoItem {
             cargoCategoryName: { editable: false },
             cargoSubCategoryName: { editable: false },
             warehouseCategoryStr: { editable: false },
-            remark: { editable: false }
+            remark: { editable: false },
+            calculateStandardStr: { editable: false },
           }
         }
       }
@@ -160,6 +162,9 @@ export class EditCargoItem {
       }
       if (rateType) {
         res.rateTypeStr = rateType.text;
+      }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
       }
       return res;
     });
@@ -321,6 +326,8 @@ export class EditCargoItem {
         let res4 = true;
         let res5 = true;
         let res6 = true;
+        //计算标准
+        let res7 = true;
         if (e.chargeType) {
           res1 = e.chargeType == r.chargeType;
         }
@@ -339,7 +346,10 @@ export class EditCargoItem {
         if (e.pricingMode) {
           res6 = e.pricingMode == r.pricingMode;
         }
-        return !(res1 && res2 && res3 && res4 && res5 && res6);
+        if (e.pricingMode == 2 && e.rateCategory == 1) {
+          res7 = e.calculateStandard == r.calculateStandard;
+        }
+        return !(res1 && res2 && res3 && res4 && res5 && res6 && res7);
       });
     });
     //合并费率

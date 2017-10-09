@@ -17,9 +17,10 @@ export class ChangeHistoryDetail {
   //warehouseType = [] as DictionaryData[];
   warehouseCategory = [] as DictionaryData[];
   contractTypes = ConstantValues.ContractTypes;
+  calculateStandards = ConstantValues.CalculateStandard;
 
   constructor(private dialogController: DialogController,
-              private dictionaryDataService: DictionaryDataService) {
+    private dictionaryDataService: DictionaryDataService) {
 
   }
 
@@ -33,7 +34,7 @@ export class ChangeHistoryDetail {
 
     this.newContractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.newContractVo.contract.contractType).name;
     this.oldContractVo.contract.contractTypeStr = this.contractTypes.find(r => r.type == this.oldContractVo.contract.contractType).name;
-    
+
     this.oldContractVo.contract.startTimeStr = moment(this.oldContractVo.contract.startTime)
       .format("YYYY-MM-DD");
     this.oldContractVo.contract.endTimeStr = moment(this.oldContractVo.contract.endTime)
@@ -49,8 +50,19 @@ export class ChangeHistoryDetail {
 
     if (this.oldContractVo.contract.contractType != 3) {
       this.oldContractVo.rateVos = this.convertData(this.oldContractVo.rateVos);
+      this.oldContractVo.rateStepVos.map(res => {
+        let unit = this.unit.find(d => res.stepUnit == d.dictDataCode);
+        if (unit) res.stepUnit = unit.dictDataName;
+        return res;
+      })
       this.newContractVo.rateVos = this.convertData(this.newContractVo.rateVos);
+      this.newContractVo.rateStepVos.map(res => {
+        let unit = this.unit.find(d => res.stepUnit == d.dictDataCode);
+        if (unit) res.stepUnit = unit.dictDataName;
+        return res;
+      })
     }
+
   }
 
   oldDetailInit(e) {
@@ -110,6 +122,9 @@ export class ChangeHistoryDetail {
       }
       if (warehouseCategory) {
         res.warehouseCategory = warehouseCategory.dictDataName;
+      }
+      if (res.calculateStandard) {
+        res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
       }
       return res;
     });

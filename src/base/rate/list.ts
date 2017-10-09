@@ -27,16 +27,17 @@ export class List {
   customerCategories = ConstantValues.CustomerCategory;
   chargeCategories = ConstantValues.ChargeCategory;
   chargeTypes = ConstantValues.ChargeType;
+  calculateStandards = ConstantValues.CalculateStandard;
   chargeCategory = [{ type: 1, name: '仓储费' }, { type: 2, name: '装卸费' }, { type: 3, name: '其他费用' }];
 
   private dataSource: kendo.data.DataSource;
 
   constructor(private rateService: RateService,
-              private dataSourceFactory: DataSourceFactory,
-              private dictionaryDataService: DictionaryDataService,
-              private dialogService: DialogService,
-              private router: Router,
-              private messageDialogService: MessageDialogService) {
+    private dataSourceFactory: DataSourceFactory,
+    private dictionaryDataService: DictionaryDataService,
+    private dialogService: DialogService,
+    private router: Router,
+    private messageDialogService: MessageDialogService) {
 
   }
 
@@ -67,6 +68,10 @@ export class List {
         if (chargeCategory) {
           res.chargeCategoryStr = chargeCategory.name;
         }
+        if (res.calculateStandard) {
+          res.calculateStandardStr = this.calculateStandards.find(x => x.value == res.calculateStandard).text;
+        }
+
         return res;
       }),
       pageSize: 10

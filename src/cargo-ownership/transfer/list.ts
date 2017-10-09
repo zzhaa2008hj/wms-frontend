@@ -29,7 +29,6 @@ export class CargoownershipTransferList {
               @inject private dialogService: DialogService,
               @inject private router: Router,
               @inject private messageDialogService: MessageDialogService,
-              // @inject private dictionaryDataService: DictionaryDataService
             ) {
   }
 
@@ -164,5 +163,22 @@ export class CargoownershipTransferList {
       await this.messageDialogService.alert({ title: "消息", message: err.message, icon: "error" });
     }
   }
-
+  /**
+   * 生成入库单
+   */
+  async createInstockOrder() {
+    if (!this.selectedId) {
+      await this.dialogService.alert({ title: "提示", message: "请选择货权转移!" });
+      return;
+    }
+    let conformed = await this.dialogService.confirm({ title: '提示', message: '是否确定生成入库单？'});
+    if (!conformed) return;
+    try {
+      await this.cargoownershipTransferService.createInstockOrder(this.selectedId);
+      await this.dialogService.alert({ title: "提示", message: "生成入库单成功" });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "提示", message: err.message, icon: "error" });
+    }
+  }
 }

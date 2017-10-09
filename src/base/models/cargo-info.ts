@@ -153,6 +153,11 @@ export interface CargoRate {
   warehouseCategoryStr: string;
 
   cargoRateSteps: CargoRateStep[];
+  /**
+   * 计算标准
+   */
+  calculateStandard: number;
+  calculateStandardStr: String;
 }
 
 /**

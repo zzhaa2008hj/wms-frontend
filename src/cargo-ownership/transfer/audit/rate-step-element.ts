@@ -1,7 +1,6 @@
 import { DataSourceFactory } from "@app/utils";
 import { observable, inject} from "aurelia-framework";
 import { bindable, customElement } from "aurelia-templating";
-import { CargoRateStep } from '@app/base/models/cargo-info';
 import { CargoOwnershipTranferRateStep } from "@app/cargo-ownership/models/cargo-ownership";
 
 @customElement('rate-steps')
