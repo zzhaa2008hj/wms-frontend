@@ -37,7 +37,7 @@
         <a class="btn btn-small btn-primary" if.bind="stage == 7" click.delegate="changeStage(id,1)" required-permissions="U000075">变更货卡</a>
         <a class="btn btn-small btn-primary" if.bind="stage == 8" click.delegate="changeStage(id,2)" required-permissions="U000075">变更货卡完成</a>
         <a class="btn btn-small" if.bind="stage >= 1" route-href="route: view; params.bind: {id: id}" required-permissions="R000089">查看详情</a>
-        <a class="btn btn-small btn-primary"  if.bind="stage == 2 || stage == 0" route-href="route: edit; params.bind: {id: id}" required-permissions="U000070">修改</a>
+        <a class="btn btn-small btn-primary"  if.bind="stage == 2 || stage == 0 ||stage == 4" route-href="route: edit; params.bind: {id: id}" required-permissions="U000070">修改</a>
       </ak-template>
     </ak-col>
   </ak-grid>
