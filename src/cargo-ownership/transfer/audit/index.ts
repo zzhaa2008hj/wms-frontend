@@ -25,7 +25,7 @@ export class AuditRouter {
     this.router = router;
   }
   async activate(params){
-    let transfer = await this.cargoownershipTransferService.queryById(params.id);
+    let transfer = await this.cargoownershipTransferService.getDetail(params.id);
     Object.assign(this.transfer ,transfer);
 
   }
