@@ -8,6 +8,7 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { DictionaryData } from '@app/base/models/dictionary';
 import { ConstantValues } from '@app/common/models/constant-values';
 import { NewRate } from '@app/cargo-ownership/transfer/edit-new-rate';
+import { ContractSearch } from '@app/base/models/contract';
 
 @autoinject
 export class RateView {
@@ -20,6 +21,7 @@ export class RateView {
 
   cargoRateSteps: CargoRateStep[] = [];
   cargoRates: CargoRate[] = [];
+  allCargoRates: CargoRate[] = [];
 
   rateTypes = ConstantValues.WorkInfoCategory;
   chargeCategory = ConstantValues.ChargeCategory;
@@ -60,6 +62,7 @@ export class RateView {
       }
     }
   });
+  search = {} as ContractSearch;
   constructor(private dialogController: DialogController,
               private dialogService: DialogService,
               private dictionaryDataService: DictionaryDataService,
@@ -70,12 +73,14 @@ export class RateView {
     container.registerInstance(ValidationController, this.validationController);
   }
 
-  async activate(cargoRates) {
+  async activate({cargoRates, contractRates}) {
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.cargoRates = cargoRates;
     this.cargoRates.forEach(item => this.codeToStr(item));
+    this.allCargoRates = contractRates;
+    this.allCargoRates.forEach(item => this.codeToStr(item));
     this.cargoRateDataSource.read();
 
     this.cargoCategoryName = this.cargoRates[0].cargoCategoryName;
@@ -184,18 +189,47 @@ export class RateView {
     });
   }
 
-  async addRate() {
-    let result = await this.dialogService.open({ viewModel: NewRate, model: {cargoCategoryId: this.cargoCategoryId, cargoCategoryName: this.cargoCategoryName}, lock: true })
-      .whenClosed();
-    if (result.wasCancelled) return;
-    let rate = result.output;
-    this.codeToStr(rate);
-    this.cargoRates.push(rate);
+  delete(id) {
+    this.cargoRates = this.cargoRates.filter(r => r.id != id);
     this.cargoRateDataSource.read();
   }
 
-  delete(id) {
-    this.cargoRates = this.cargoRates.filter(r => r.id != id);
+  select() {
+    let source = [];
+    Object.assign(source, this.allCargoRates);
+    //按条件搜索
+    for (let e in this.search) {
+      if (this.search[e]) {
+        source = source.filter(x => x[e] == this.search[e]);
+      }
+    }
+    //过滤已经选择的合同费率
+    source = source.filter(r => {
+      return this.cargoRates.every(e => {
+        let res1 = true, res2 = true, res3 = true, res4 = true, res5 = true, res6 = true;
+        if (e.chargeType) {
+          res1 = e.chargeType == r.chargeType;
+        }
+        if (e.rateCategory) {
+          res2 = e.rateCategory == r.rateCategory;
+        }
+        if (e.rateType) {
+          res3 = e.rateType == r.rateType;
+        }
+        if (e.workId) {
+          res4 = e.workId == r.workId;
+        }
+        if (e.warehouseCategory) {
+          res5 = e.warehouseCategory == r.warehouseCategory;
+        }
+        if (e.pricingMode) {
+          res6 = e.pricingMode == r.pricingMode;
+        }
+        return !(res1 && res2 && res3 && res4 && res5 && res6);
+      });
+    });
+    //合并费率
+    this.cargoRates = this.cargoRates.concat(source);
     this.cargoRateDataSource.read();
   }
 
