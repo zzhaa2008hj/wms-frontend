@@ -3,14 +3,13 @@ import { DataSourceFactory } from "@app/utils";
 import { ConstantValues } from "@app/common/models/constant-values";
 import { CargoownershipTransferService } from "@app/cargo-ownership/services/cargo-ownership";
 import { DialogService } from "ui";
+import { BtnSearchView } from "@app/cargo-ownership/transfer/batch-search/view";
 
 export class CargoownershipTransferList {
   btn = ""  ;
-
   show = 0 ;
   dataInSource: kendo.data.DataSource;
   dataOutSource: kendo.data.DataSource;
-
   pageable = {
     refresh: true,
     pageSizes: true,
@@ -72,6 +71,14 @@ export class CargoownershipTransferList {
     this.show = 1 ;
   }
 
+  async showInfo(id){
+    let result = await this.dialogService
+      .open({ viewModel: BtnSearchView, model: { id: id }, lock: true }).whenClosed();
+    if (result.wasCancelled) return;
+    this.dataInSource.read();
+    this.dataOutSource.read();
+
+  }
 
 
 

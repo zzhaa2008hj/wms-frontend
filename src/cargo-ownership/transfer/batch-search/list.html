@@ -7,8 +7,12 @@
     </div>
   </div>
   <div if.bind="show == 1">
-  <ak-grid k-data-source.bind="dataInSource" k-pageable.bind="pageable" k-selectable="row">
-    <ak-col k-field="originalBatchNumber" k-title="原批次号"></ak-col>
+  <ak-grid k-data-source.bind="dataInSource" k-pageable.bind="pageable"  >
+    <ak-col k-field="originalBatchNumber" k-title="原批次号">
+      <ak-template>
+        <a click.delegate="showInfo(id)" style="cursor: pointer"   >${originalBatchNumber}</a>
+      </ak-template>
+    </ak-col>
     <ak-col k-field="originalAgentName" k-title="原代理商名称"></ak-col>
     <ak-col k-field="originalCustomerName" k-title="原客户名称"></ak-col>
     <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
@@ -18,7 +22,11 @@
   </ak-grid>
 
   <ak-grid k-data-source.bind="dataOutSource" k-pageable.bind="pageable" k-selectable="row" >
-    <ak-col k-field="newBatchNumber" k-title="新批次号"></ak-col>
+    <ak-col k-field="newBatchNumber" k-title="新批次号">
+      <ak-template>
+        <a click.delegate="showInfo(id)" style="cursor: pointer"   >${originalBatchNumber}</a>
+      </ak-template>
+    </ak-col>
     <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
     <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
     <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
