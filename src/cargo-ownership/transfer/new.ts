@@ -18,6 +18,8 @@ import { CargoownershipTransferService } from '@app/cargo-ownership/services/car
 import { RateView } from '@app/cargo-ownership/transfer/rate';
 import { StorageItemView } from '@app/cargo-ownership/transfer/storage';
 import { ContractService } from '@app/base/services/contract';
+import * as moment from 'moment';
+
 export class NewTransfer {
   @observable disabled: boolean = false;
   units = [] as DictionaryData[];
@@ -30,11 +32,15 @@ export class NewTransfer {
   selectedNewAgent: any;
   selectedNewCustomer: any;
   selectedBatchNumber: any;
+  selectedNewBatchNumber: any;
   selectedOutFeeCustomer: any;
   baseAgent = [];
   baseCustomer = [];
   baseNewAgent = [];
   baseNewCustomer = [];
+  baseNewBatchNumber = new kendo.data.HierarchicalDataSource({
+    data: []
+  });
   baseBatchNumber = new kendo.data.HierarchicalDataSource({
     data: []
   });
@@ -162,23 +168,30 @@ export class NewTransfer {
   async onSelectBatchNumber() {
     this.cargoItems = [];
     let batchNumber = this.selectedBatchNumber.value();
-    if (batchNumber && batchNumber != '') {
-      this.cargoItems = await this.cargoownershipTransferService.getCargoItems(batchNumber);
-      if (this.cargoItems.length == undefined) {
-        let errMessage = Object.assign({code: 0, message: '', content: ''}, this.cargoItems);
-        this.dialogService.alert({ title: '提示', message: errMessage.message, icon: 'error' });
-        this.cargoItems = [];
-        this.cargoItemDataSource.read();
-        return;
-      }
-      if (this.cargoItems.length > 0) {
-        this.cargoItems.forEach(item => {
-          let unit = this.units.find(u => u.dictDataCode == item.unit);
-          if (unit) {
-            item.unitName = unit.dictDataName;
-          }
-        });
-      }
+    let newCustomer = this.selectedNewCustomer.value();
+    if (!batchNumber) {
+      this.dialogService.alert({ title: '提示', message: '请先选择批次号', icon: 'error' });
+      return;
+    }
+    if (!newCustomer) {
+      this.dialogService.alert({ title: '提示', message: '请先选择新客户', icon: 'error' });
+      return;
+    }
+    this.cargoItems = await this.cargoownershipTransferService.getCargoItems(newCustomer, batchNumber);
+    if (this.cargoItems.length == undefined) {
+      let errMessage = Object.assign({code: 0, message: '', content: ''}, this.cargoItems);
+      this.dialogService.alert({ title: '提示', message: errMessage.message, icon: 'error' });
+      this.cargoItems = [];
+      this.cargoItemDataSource.read();
+      return;
+    }
+    if (this.cargoItems.length > 0) {
+      this.cargoItems.forEach(item => {
+        let unit = this.units.find(u => u.dictDataCode == item.unit);
+        if (unit) {
+          item.unitName = unit.dictDataName;
+        }
+      });
     }
     console.log('cargoItems', this.cargoItems);
     this.cargoItemDataSource.read();
@@ -198,6 +211,31 @@ export class NewTransfer {
     let newCustomerId = this.selectedNewCustomer.value();
     let newCustomerName = this.selectedNewCustomer.text();
     this.baseOutFeeCustomer.data([{id: customerId, name: customerName}, {id: newCustomerId, name: newCustomerName}]);
+  }
+
+  async onClickNewBatchNumber() {
+    if (!this.selectedBatchNumber.value()) {
+      this.dialogService.alert({ title: '提示', message: '请先选择批次', icon: 'error' });
+      return;
+    }
+    let customerId = this.selectedNewCustomer.value();
+    if (!customerId) {
+      this.dialogService.alert({ title: '提示', message: '请先选择新客户', icon: 'error' });
+      return;
+    }
+    this.transfer.transferDateStr = moment(this.transfer.transferDate).format("YYYY-MM-DD");
+    let cargoCategoryIds = this.cargoItems.map(item => item.cargoCategoryId).join(',');
+    let batchNumbers = await this.cargoownershipTransferService.getNewBatchNumber(customerId, this.transfer.transferDateStr, cargoCategoryIds);
+    batchNumbers = batchNumbers.map(batchNumber => Object.assign({id: batchNumber, name: batchNumber}));
+    this.baseNewBatchNumber.data(batchNumbers);
+  }
+
+  async getBatchNumber(transferDate, customerId) {
+    this.transfer.transferDateStr = moment(transferDate).format("YYYY-MM-DD");
+    let cargoCategoryIds = this.cargoItems.map(item => item.cargoCategoryId).join(',');
+    let batchNumbers = await this.cargoownershipTransferService.getNewBatchNumber(customerId, this.transfer.transferDateStr, cargoCategoryIds);
+    batchNumbers = batchNumbers.map(batchNumber => Object.assign({id: batchNumber, name: batchNumber}));
+    this.baseNewBatchNumber.data(batchNumbers);
   }
 
   cancel() {

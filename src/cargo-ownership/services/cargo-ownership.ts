@@ -23,8 +23,8 @@ export class CargoownershipTransferService {
   /**
    * 根据批次查询货物
    */
-  getCargoItems(batchNumber: string): Promise<TransferCargoItemVo[]> {
-    return this.http.get(`/ownership-transfer/info/${batchNumber}/cargo-items`).then(res => res.content);
+  getCargoItems(newCustomer: string, batchNumber: string): Promise<TransferCargoItemVo[]> {
+    return this.http.get(`/ownership-transfer/info/${newCustomer}/${batchNumber}/cargo-items`).then(res => res.content);
   }
 
   /**
@@ -130,5 +130,12 @@ export class CargoownershipTransferService {
    */
   getTsfOutHistory(btn: string): Query<CargoownershipTransfer> {
     return this.http.query<CargoownershipTransfer>(`/ownership-transfer/info/tsfOutHistory`, { "batchNum": btn });
+  }
+  /**
+   * 获取可以并票的批次
+   */
+  getNewBatchNumber(customerId: string, transferDate: string, cargoCategoryIds: string): Promise<string[]> {
+    return this.http.createRequest(`/ownership-transfer/info/new-batch-number`).
+    withParams({customerId, transferDate, cargoCategoryIds}).asGet().send().then(res => res.content);
   }
 }

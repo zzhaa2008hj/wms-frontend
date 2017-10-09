@@ -29,15 +29,14 @@
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label class="form-label">原批次号*</label>
+              <div class="form-label">转让日期</div>
               <div class="controls">
-                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedBatchNumber" k-option-label="请选择..." k-data-text-field="name"
-                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseBatchNumber" k-on-change.delegate="onSelectBatchNumber()"
-                  k-value.two-way="transfer.originalBatchNumber & validate" k-enabled.two-way="!hasInfoId">
-                </ak-drop-down-list>
+                <input ak-datepicker="k-value.two-way : transfer.transferDate & validate; k-widget.two-way: transferDateDatePicker; k-format.bind:'yyyy-MM-dd'"
+                  type="text" k-on-change.delegate="onTransferDateChange()">
               </div>
             </div>
           </div>
+          
         </div>
         <div class="col-md-12">
           <div class="col-md-4">
@@ -64,10 +63,12 @@
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label class="form-label">新批次号生成方式*</label>
+              <label class="form-label">原批次号*</label>
               <div class="controls">
-                <input type="radio" class="radio" name="batchNumberMode" model.bind="0" checked.bind="transfer.batchNumberMode" />新批次
-                <input type="radio" class="radio" name="batchNumberMode" model.bind="1" checked.bind="transfer.batchNumberMode" />并票
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedBatchNumber" k-option-label="请选择..." k-data-text-field="name"
+                  k-data-value-field="id" k-filter="contains" k-data-source.bind="baseBatchNumber" k-on-change.delegate="onSelectBatchNumber()"
+                  k-value.two-way="transfer.originalBatchNumber & validate" k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
               </div>
             </div>
           </div>
@@ -75,10 +76,15 @@
         <div class="col-md-12">
           <div class="col-md-4">
             <div class="form-group">
-              <div class="form-label">转让日期</div>
+              <label class="form-label">新批次号生成方式*</label>
               <div class="controls">
-                <input ak-datepicker="k-value.two-way : transfer.transferDate & validate; k-widget.two-way: transferDateDatePicker; k-format.bind:'yyyy-MM-dd'"
-                  type="text" k-on-change.delegate="onTransferDateChange()">
+                <input type="radio" class="radio" name="batchNumberMode" model.bind="0" checked.bind="transfer.batchNumberMode" />新批次
+                <input type="radio" class="radio" name="batchNumberMode" model.bind="1" checked.bind="transfer.batchNumberMode" change.delegate="onClickNewBatchNumber()"
+                />并票
+                <ak-drop-down-list if.bind="transfer.batchNumberMode == 1" k-widget.two-way="selectedNewBatchNumber"
+                  k-option-label="请选择并票的批次..." k-data-text-field="name" k-data-value-field="id" k-filter="contains" k-data-source.bind="baseNewBatchNumber"
+                  k-value.two-way="transfer.newBatchNumber & validate" k-enabled.two-way="!hasInfoId">
+                </ak-drop-down-list>
               </div>
             </div>
           </div>

@@ -240,7 +240,9 @@ export class NewTransfer {
   async showRate(cargoItem) {
     let cargoRates = [];
     cargoItem.cargoRates.forEach(rate => cargoRates.push(copy(rate)));
-    let result = await this.dialogService.open({viewModel: RateView, model: cargoRates, lock: true}).whenClosed();
+    let contractRates = [];
+    cargoItem.contractRates.forEach(rate => contractRates.push(copy(rate)));
+    let result = await this.dialogService.open({viewModel: RateView, model: {cargoRates, contractRates}, lock: true}).whenClosed();
     if (result.wasCancelled) return;
     let output = result.output;
     
