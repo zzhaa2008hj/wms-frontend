@@ -10,6 +10,7 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { Order } from '@app/outstock/models/order';
 import { fixDate } from '@app/utils';
 import { CargoownershipTransfer } from '@app/cargo-ownership/models/cargo-ownership';
+import { CargoownershipTransferService } from '@app/cargo-ownership/services/cargo-ownership';
 @autoinject
 export class DetailsCargoInfo {
   cargoInfo = {} as CargoInfo;
@@ -19,21 +20,22 @@ export class DetailsCargoInfo {
 
   units = [] as DictionaryData[];
 
-  
+
   instockOrders: InstockOrder[];
   instockDatasource: kendo.data.DataSource;
 
   outstockOrders: Order[];
   outstockDatasource: kendo.data.DataSource;
 
-  cargoOwnershipTransfer = [] as CargoownershipTransfer[];
-  cargoOwnershipTransferSource:kendo.data.DataSource;
+  cargoOwnershipTransfers = [] as CargoownershipTransfer[];
+  cargoOwnershipTransferDataSource: kendo.data.DataSource;
 
   constructor(private router: Router,
-              private cargoInfoService: CargoInfoService,
-              private messageDialogService: MessageDialogService,
-              private dictionaryDataService: DictionaryDataService,
-              private dialogService: DialogService) {
+    private cargoownershipTransferService: CargoownershipTransferService,
+    private cargoInfoService: CargoInfoService,
+    private messageDialogService: MessageDialogService,
+    private dictionaryDataService: DictionaryDataService,
+    private dialogService: DialogService) {
     this.dataSource = new kendo.data.DataSource({
       transport: {
         read: (options) => {
@@ -57,9 +59,17 @@ export class DetailsCargoInfo {
         }
       }
     });
+
+    this.cargoOwnershipTransferDataSource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.cargoOwnershipTransfers);
+        }
+      }
+    });
   }
 
-  async activate({ id }) {
+  async activate({ id, batchNumber }) {
     //入库指令信息
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
     this.cargoInfo = await this.cargoInfoService.getCargoInfo(id);
@@ -83,7 +93,11 @@ export class DetailsCargoInfo {
       fixDate(res, "outstockDate");
     });
     //货权转移
-    
+    this.cargoOwnershipTransfers = await this.cargoownershipTransferService.getTsfSuccessList(batchNumber)
+    this.cargoOwnershipTransfers.map(x => {
+      fixDate(x, "transferDate");
+      fixDate(x, "storageEndDate");
+    });
     //货位转移
   }
 

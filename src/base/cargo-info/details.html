@@ -1,6 +1,7 @@
 <template>
   <require from="./cargo-info-detail/instock-item-info"></require>
   <require from="./cargo-info-detail/outstock-item-info"></require>
+  <require from="./cargo-info-detail/transfer-item-info"></require>
   <!--
     <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a click.delegate="changeInfoType(1)">入库指令信息</a></li>
@@ -183,32 +184,34 @@
 
         <!-- 货权转移信息开始-->
         <div>
-          <div if.bind="cargoOwnershipTransfer.length == 0">
+          <div if.bind="cargoOwnershipTransfers.length == 0">
             暂无货权转移信息
           </div>
-          <!-- <div if.bind="cargoOwnershipTransfer.length > 0"> -->
-        <div>
-          <ak-grid k-data-source.bind="cargoOwnershipTransferDataSource" k-pageable.bind="pageable" k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
-            <ak-col k-field="originalBatchNumber" k-title="原批次号"></ak-col>
-            <ak-col k-field="originalAgentName" k-title="原代理商名称"></ak-col>
-            <ak-col k-field="originalCustomerName" k-title="原客户名称"></ak-col>
-            <ak-col k-field="newBatchNumber" k-title="新批次号"></ak-col>
-            <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
-            <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
-            <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
-            <ak-col k-field="storageEndDate" k-title="仓储费用结算至" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
-            <ak-col k-field="outstockChargePayerName" k-title="出库费用承担方*"></ak-col>
-          </ak-grid>
+          <div if.bind="cargoOwnershipTransfers.length > 0">
+            <ak-grid k-data-source.bind="cargoOwnershipTransferDataSource">
+              <ak-col k-field="originalBatchNumber" k-title="原批次号"></ak-col>
+              <ak-col k-field="originalAgentName" k-title="原代理商名称"></ak-col>
+              <ak-col k-field="originalCustomerName" k-title="原客户名称"></ak-col>
+              <ak-col k-field="newBatchNumber" k-title="新批次号"></ak-col>
+              <ak-col k-field="newAgentName" k-title="新代理商名称"></ak-col>
+              <ak-col k-field="newCustomerName" k-title="新客户名称"></ak-col>
+              <ak-col k-field="transferDate" k-title="转移日期" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+              <ak-col k-field="storageEndDate" k-title="仓储费用结算至" k-width.bind="150" k-format="{0:yyyy-MM-dd}"></ak-col>
+              <ak-col k-field="outstockChargePayerName" k-title="出库费用承担方"></ak-col>
+              <ak-template for="detailTemplate">
+                <transfer-item-info cargo-ownership-transfer-id.bind="$this.id"></transfer-item-info>
+              </ak-template>
+            </ak-grid>
+          </div>
         </div>
-      </div>
-      <!-- 货权转移信息结束-->
+        <!-- 货权转移信息结束-->
 
-      <!-- 货位转移开始-->
-      <div>
-        暂无货位转移信息
+        <!-- 货位转移开始-->
+        <div>
+          暂无货位转移信息
+        </div>
+        <!-- 货位转移结束-->
       </div>
-      <!-- 货位转移结束-->
     </div>
-  </div>
   </div>
 </template>
