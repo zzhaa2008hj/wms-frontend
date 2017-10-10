@@ -5,8 +5,8 @@ import { DictionaryDataService } from '@app/base/services/dictionary';
 import { CargoownershipTransferItem } from '@app/cargo-ownership/models/cargo-ownership';
 import { CargoownershipTransferService } from '@app/cargo-ownership/services/cargo-ownership';
 
-@customElement('transfer-item-info')
-export class TransferItemInfo {
+@customElement('transfer-ownership-item-info')
+export class TransferOwnershipItemInfo {
 
   @bindable
   @observable

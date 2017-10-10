@@ -11,6 +11,8 @@ import { Order } from '@app/outstock/models/order';
 import { fixDate } from '@app/utils';
 import { CargoownershipTransfer } from '@app/cargo-ownership/models/cargo-ownership';
 import { CargoownershipTransferService } from '@app/cargo-ownership/services/cargo-ownership';
+import { PositionTransferInfo } from "@app/cargo-position/models/transfer-info";
+import { PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
 @autoinject
 export class DetailsCargoInfo {
   cargoInfo = {} as CargoInfo;
@@ -19,7 +21,6 @@ export class DetailsCargoInfo {
   dataSource: kendo.data.DataSource;
 
   units = [] as DictionaryData[];
-
 
   instockOrders: InstockOrder[];
   instockDatasource: kendo.data.DataSource;
@@ -30,8 +31,12 @@ export class DetailsCargoInfo {
   cargoOwnershipTransfers = [] as CargoownershipTransfer[];
   cargoOwnershipTransferDataSource: kendo.data.DataSource;
 
+  cargoPositionTransfers = [] as PositionTransferInfo[];
+  cargoPositionTransfersDateSource: kendo.data.DataSource;
+
   constructor(private router: Router,
     private cargoownershipTransferService: CargoownershipTransferService,
+    private positionTransferInfoService: PositionTransferInfoService,
     private cargoInfoService: CargoInfoService,
     private messageDialogService: MessageDialogService,
     private dictionaryDataService: DictionaryDataService,
@@ -67,6 +72,14 @@ export class DetailsCargoInfo {
         }
       }
     });
+
+    this.cargoPositionTransfersDateSource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.cargoPositionTransfers);
+        }
+      }
+    });
   }
 
   async activate({ id, batchNumber }) {
@@ -92,13 +105,17 @@ export class DetailsCargoInfo {
       }
       fixDate(res, "outstockDate");
     });
-    //货权转移
+    //货权转移信息
     this.cargoOwnershipTransfers = await this.cargoownershipTransferService.getTsfSuccessList(batchNumber)
     this.cargoOwnershipTransfers.map(x => {
       fixDate(x, "transferDate");
       fixDate(x, "storageEndDate");
     });
-    //货位转移
+    //货位转移信息
+    this.cargoPositionTransfers = await this.positionTransferInfoService.getTsfSuccessList(batchNumber);
+    this.cargoPositionTransfers.map(x => {
+      fixDate(x, "createTime");
+    });
   }
 
   async view(id) {

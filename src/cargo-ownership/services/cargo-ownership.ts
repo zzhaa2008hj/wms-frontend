@@ -141,7 +141,7 @@ export class CargoownershipTransferService {
 
   /**
    * 根据批次号 获取货权转移成功的数据
-   * @param cargoInfoId 
+   * @param batchNumber 
    */
   getTsfSuccessList(batchNumber: string): Promise<CargoownershipTransfer[]> {
     return this.http.get(`/ownership-transfer/info/tsfSuccessList?batchNumber=${batchNumber}`).then(res => res.content);
