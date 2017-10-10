@@ -1,7 +1,7 @@
 <template>
   <div class="controlbar">
-    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000050">新增</a>
-    <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="C000050">审核记录</button>
+    <a class="btn btn-small btn-success" route-href="route: new" required-permissions="C000053">新增</a>
+    <button class="btn btn-small" click.delegate="verifyHistory()" required-permissions="R000104">审核记录</button>
     <div class="spacer"></div>
     <div class="col-md-2">
       <input class="form-control" type="text" value.bind="batchNumber" placeholder="请输入批次号">
@@ -45,15 +45,18 @@
     </ak-col>
     <ak-col k-title="操作" k-width.bind="300">
       <ak-template>
-        <a class="btn btn-small btn-white" route-href="route: view; params.bind: { id: id }" required-permissions="R000093">详情</a>
+        <a class="btn btn-small btn-white" route-href="route: view; params.bind: { id: id }" required-permissions="R000105">详情</a>
         <a class="btn btn-small btn-warning" if.bind="stage == 0 || stage == 2" route-href="route: edit; params.bind: { id: id }"
-          required-permissions="R000093">修改</a>
-        <button class="btn btn-small btn-warning" if.bind="stage == 3" click.delegate="updateStage(id, 4)" required-permissions="R000093">生效</button>
-        <a class="btn btn-small btn-primary" if.bind="stage == 4 || stage == 5 || stage == 7" click.delegate="cancelMortgage(id)" required-permissions="R000093">解押</a>
-        <a class="btn btn-small btn-primary" if.bind="stage == 1 || stage == 6" route-href="route: audit; params.bind: { id: id }"
-          required-permissions="R000093">审核</a>
-        <a class="btn btn-small btn-primary" if.bind="stage == 8" route-href="route: approve; params.bind: { id: id }" required-permissions="R000093">审批</a>
-        <button class="btn btn-small btn-danger" if.bind="stage == 0 || stage == 2" click.delegate="delete(id)" required-permissions="R000093">删除</button>
+          required-permissions="U000078">修改</a>
+        <button class="btn btn-small btn-warning" if.bind="stage == 3" click.delegate="updateStage(id, 4)" required-permissions="U000082">生效</button>
+        <a class="btn btn-small btn-primary" if.bind="stage == 4 || stage == 5 || stage == 7" click.delegate="cancelMortgage(id)" required-permissions="U000079">解押</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 1 && userId != createAccountId" route-href="route: audit; params.bind: { id: id }"
+          required-permissions="U000080">审核</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 6 && userId != cancelPledgeId" route-href="route: audit; params.bind: { id: id }"
+          required-permissions="U000080">审核</a>
+        <a class="btn btn-small btn-primary" if.bind="stage == 8" route-href="route: approve; params.bind: { id: id }" required-permissions="U000081">审批</a>
+        <button class="btn btn-small btn-danger" if.bind="stage == 0 || stage == 2" click.delegate="delete(id)" required-permissions="D000023">删除</button>
+        <button class="btn btn-small btn-primary" if.bind="stage == 9" click.delegate="confirmed(id)" required-permissions="U000083">确认完成</button>
       </ak-template>
     </ak-col>
   </ak-grid>

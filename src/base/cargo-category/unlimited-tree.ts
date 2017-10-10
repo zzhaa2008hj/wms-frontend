@@ -1,4 +1,4 @@
-import { DialogController, MessageDialogService } from 'ui';
+import { DialogController } from 'ui';
 import { autoinject } from "aurelia-dependency-injection";
 import { treeHelper, TreeHelper } from "@app/utils";
 import { CargoCategoryService } from "@app/base/services/cargo-category";
@@ -29,7 +29,6 @@ export class UnlimitedCargoCategoryTree {
   private helper: TreeHelper<any>;
 
   constructor(private dialogController: DialogController,
-              private messageDialogService: MessageDialogService,
               private cargoCategoryService: CargoCategoryService) {
 
   }

@@ -8,6 +8,7 @@ import { DialogService, MessageDialogService } from 'ui';
 import { VerifyRecordCriteria } from '@app/common/services/verify-record';
 import { VerifyRecordDialogList } from '@app/common/verify-records/dialog-list';
 import { CancelMortgage } from '@app/cargo-mortgage/cancel-mortgage';
+import { UserSession } from '@app/user';
 
 @autoinject
 export class CargoMortgage {
@@ -22,16 +23,19 @@ export class CargoMortgage {
   };
   units = [] as DictionaryData[];
   stages = ConstantValues.CargoMortgageStage;
+  userId: string;
 
   constructor(private dataSourceFactory: DataSourceFactory,
-    private dictionaryDataService: DictionaryDataService,
-    private cargoMortgageService: CargoMortgageService,
-    private messageDialogService: MessageDialogService,
-    private dialogService: DialogService) {
-
+              private dictionaryDataService: DictionaryDataService,
+              private cargoMortgageService: CargoMortgageService,
+              private user: UserSession,
+              private messageDialogService: MessageDialogService,
+              private dialogService: DialogService) {
+               
   }
 
   async activate() {
+    this.userId = this.user.userInfo.userId;
     this.units = await this.dictionaryDataService.getDictionaryDatas('unit');
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.cargoMortgageService.queryCargoMortgagePage().map(res => {
@@ -105,6 +109,18 @@ export class CargoMortgage {
       this.dataSource.read();
     } catch (err) {
       await this.messageDialogService.alert({ title: "操作失败", message: err.message, icon: "error" });
+    }
+  }
+
+  async confirmed(id) {
+    let confirmed = await this.dialogService.confirm({ title: "操作确认", message: '确认完成该质押单？' });
+    if (!confirmed) return;
+    try {
+      await this.cargoMortgageService.confirmed(id);
+      await this.dialogService.alert({ title: "", message: '操作成功' });
+      this.dataSource.read();
+    } catch (err) {
+      await this.dialogService.alert({ title: "", message: err.message, icon: "error" });
     }
   }
 }

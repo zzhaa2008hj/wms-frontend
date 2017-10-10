@@ -40,6 +40,10 @@ export class CargoMortgageService {
     return this.http.put(`/cargo-mortgage/info/${id}/updateStage?stage=${stage}`, {}).then(handleResult);
   }
 
+  confirmed(id): Promise<void> {
+    return this.http.put(`/cargo-mortgage/info/${id}/confirmed`, {}).then(handleResult);
+  }
+
   /**
    * @param {string} id 
    * @param {number} status 

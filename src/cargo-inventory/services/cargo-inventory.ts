@@ -1,6 +1,6 @@
 import { RestClient, Query, handleResult } from '@app/utils';
 import { autoinject } from 'aurelia-framework';
-import { CargoInventoryVO, CargoInventory, CargoInventoryItem } from '@app/cargo-inventory/models/cargo-inventoty';
+import { CargoInventoryVO, CargoInventory } from '@app/cargo-inventory/models/cargo-inventoty';
 
 @autoinject
 export class CargoInventoryService {
