@@ -32,10 +32,10 @@
         <label if.bind="remark.length < 9">${remark}</label>
       </ak-template>
     </ak-col>
-    <ak-col k-field="stageStr" k-title="阶段" k-width.bind="100"></ak-col>    
+    <ak-col k-field="stageStr" k-title="阶段" k-width.bind="150"></ak-col>    
     <!-- <ak-col k-field="status" k-title="质押状态" k-width.bind="100"></ak-col> -->
-    <ak-col k-field="cancelPledgeName" k-title="解押人" k-width.bind="100"></ak-col>
-    <ak-col k-field="cancelPledgeTime" k-title="解押时间" k-width.bind="100" k-format="{0:yyyy-MM-dd hh:mm:ss}"></ak-col>
+    <ak-col k-field="cancelPledgeName" k-title="解押人" k-width.bind="140"></ak-col>
+    <ak-col k-field="cancelPledgeTime" k-title="解押时间" k-width.bind="150" k-format="{0:yyyy-MM-dd hh:mm:ss}"></ak-col>
     <!-- <ak-col k-field="auditorName" k-title="审核人" k-width.bind="100"></ak-col> -->
     <ak-col k-field="remark" k-title="解押说明" k-width.bind="100">
       <ak-template>
@@ -43,7 +43,7 @@
         <label if.bind="cancelRemark.length < 9">${cancelRemark}</label>
       </ak-template>
     </ak-col>
-    <ak-col k-title="操作" k-width.bind="300">
+    <ak-col k-title="操作" k-width.bind="180">
       <ak-template>
         <a class="btn btn-small btn-white" route-href="route: view; params.bind: { id: id }" required-permissions="R000105">详情</a>
         <a class="btn btn-small btn-warning" if.bind="stage == 0 || stage == 2" route-href="route: edit; params.bind: { id: id }"
