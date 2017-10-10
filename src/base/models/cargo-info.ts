@@ -158,6 +158,11 @@ export interface CargoRate {
    */
   calculateStandard: number;
   calculateStandardStr: String;
+
+  /**
+   * 状态 0:初始 1:删除 2:新增
+   */
+  status: number;
 }
 
 /**

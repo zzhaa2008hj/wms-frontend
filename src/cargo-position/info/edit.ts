@@ -63,6 +63,7 @@ export class EditPositionTransferInfo {
 
       if (pti.cargoRates) {
         pti.cargoRates.forEach(cr => {
+          cr.status = 0;
           let rateUunit = this.units.find(u => cr.unit == u.dictDataCode);
           if (rateUunit) {
             cr.unitStr = rateUunit.dictDataName;
@@ -145,19 +146,20 @@ export class EditPositionTransferInfo {
     }).whenClosed();
     if (result.wasCancelled) return;
     let newCargoRates = result.output;
+    newCargoRates.forEach(ncr => {
+      if (ncr.status != 0) {
+        ncr.status = 2;
+      }
+    });
+    cargoRates = cargoRates.filter(cr => newCargoRates.indexOf(cr) == -1);
+    cargoRates.forEach(cr => cr.status = 1);
+    newCargoRates.push(...cargoRates);
     let storageItems: any = this.dataSourceStorage.data();
     storageItems.forEach(si => {
       if (si.uid == storageItem.uid) {
         Object.assign(si, { cargoRates: newCargoRates });
       }
     });
-    this.dataSourceStorage.data(storageItems);
-  }
-
-  deleteStorageItem(e) {
-    let storageItems: any = this.dataSourceStorage.data();
-    let storageItem = storageItems.find(si => si.uid == e.uid);
-    storageItems.remove(storageItem);
     this.dataSourceStorage.data(storageItems);
   }
 
