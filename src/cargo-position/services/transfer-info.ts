@@ -70,6 +70,22 @@ export class PositionTransferInfoService {
   updateGenerateWorkOrder(transferId: string): Promise<void> {
     return this.http.put(`/position-transfer/info/${transferId}/generateWorkOrder`, '').then(handleResult);
   }
+
+  /**
+   * 根据批次号 获取货位转移成功的数据
+   * @param batchNumber
+   */
+  getTsfSuccessList(batchNumber: string): Promise<PositionTransferInfo[]> {
+    return this.http.get(`/position-transfer/info/tsfSuccessList?batchNumber=${batchNumber}`).then(res => res.content);
+  }
+
+  /**
+   * 通过id获取单条货位转移的货物信息(只包含货物信息)
+   * @param id
+   */
+  getPositionTransferCargoItem(id: string): Promise<PositionTransferItem[]> {
+    return this.http.get(`/position-transfer/info/${id}/getPositionTransferCargoItem`).then(res => res.content);
+  }
 }
 
 @autoinject

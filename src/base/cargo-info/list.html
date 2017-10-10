@@ -15,7 +15,7 @@
     k-selectable="row" k-on-change.delegate="rowSelected($event.detail)">
     <ak-col k-title="批次号" k-width.bind="105">
       <ak-template>
-        <a route-href="route: details; params.bind: { id: id }" if.bind="requiredPermissions('R000066')">${batchNumber}</a>
+        <a route-href="route: details; params.bind: { id: id,batchNumber: batchNumber }" if.bind="requiredPermissions('R000066')">${batchNumber}</a>
         <label if.bind="!requiredPermissions('R000066')">${batchNumber}</label>
       </ak-template>
     </ak-col>

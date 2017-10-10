@@ -19,6 +19,7 @@ export class RateView {
   rateTypes = ConstantValues.WorkInfoCategory;
   chargeCategory = ConstantValues.ChargeCategory;
   pricingMode = ConstantValues.PricingMode;
+  calculateStandards = ConstantValues.CalculateStandard;
   cargoCategoryName: string;
   cargoCategoryId: string;
 
@@ -62,6 +63,10 @@ export class RateView {
     let warehouseCategory = this.warehouseCategory.find(d => item.warehouseCategory == d.dictDataCode);
     if (warehouseCategory) {
       item.warehouseCategoryStr = warehouseCategory.dictDataName;
+    }
+    let calculateStandard = this.calculateStandards.find(c => item.calculateStandard == c.value);
+    if (calculateStandard) {
+      item.calculateStandardStr = calculateStandard.text;
     }
     if (item.cargoRateSteps && item.cargoRateSteps.length > 0) {
       item.cargoRateSteps.forEach(rate => {

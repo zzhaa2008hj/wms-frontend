@@ -499,12 +499,13 @@ export function convertCurrency(currencyDigits) {
   // outputCharacters = CN_SYMBOL + outputCharacters;
   return outputCharacters;
 }
-
 /**
  * 两个浮点数相乘
  */
 export function accMul(num1, num2): number {
-  if (!num1 && !num2) return null;
+  if (num1 == null || num1 == undefined || isNaN(num1) || num2 == null || num2 == undefined || isNaN(num2)) {
+    return NaN;
+  }
   let m = 0, s1 = num1.toString(), s2 = num2.toString();
   try { m += s1.split(".")[1].length; } catch (e) { }
   try { m += s2.split(".")[1].length; } catch (e) { }
@@ -515,7 +516,9 @@ export function accMul(num1, num2): number {
  * 两个浮点数相减  
  */
 export function accSub(num1, num2): number {
-  if (!num1 && !num2) return null;
+  if (num1 == null || num1 == undefined || isNaN(num1) || num2 == null || num2 == undefined || isNaN(num2)) {
+    return NaN;
+  }
   let r1, r2, m, n;
   try {
     r1 = num1.toString().split('.')[1].length;
@@ -536,7 +539,9 @@ export function accSub(num1, num2): number {
  * 两个浮点数相加  
  */
 export function accAdd(num1, num2) {
-  if (!num1 && !num2) return null;
+  if (num1 == null || num1 == undefined || isNaN(num1) || num2 == null || num2 == undefined || isNaN(num2)) {
+    return NaN;
+  }
   let r1, r2, m;
   try {
     r1 = num1.toString().split('.')[1].length;

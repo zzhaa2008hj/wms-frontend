@@ -14,7 +14,7 @@
                 <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..."
                                    k-filter="contains"
                                    k-value.two-way="positionTransferInfo.batchNumber & validate"
-                                   k-data-text-field="batchNumber" k-data-value-field="batchNumber"
+                                   k-data-text-field="batchNumberStr" k-data-value-field="batchNumber"
                                    k-data-source.bind="baseCargoInfos"
                                    k-on-select.delegate="onSelectCargoInfo($event.detail)">
                 </ak-drop-down-list>
@@ -37,8 +37,7 @@
               <label class="form-label">客户名称*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="text" class="form-control" value.bind="positionTransferInfo.customerName "
-                       disabled.bind="disabled">
+                <input type="text" class="form-control" value.bind="positionTransferInfo.customerName " readonly>
               </div>
             </div>
           </div>
@@ -47,8 +46,7 @@
               <label class="form-label">代理商名称*</label>
               <span class="help"></span>
               <div class="controls">
-                <input type="text" class="form-control" value.bind="positionTransferInfo.agentName "
-                       disabled.bind="disabled">
+                <input type="text" class="form-control" value.bind="positionTransferInfo.agentName " readonly>
               </div>
             </div>
           </div>
@@ -59,7 +57,7 @@
             <span class="help"></span>
             <div class="controls">
               <ak-drop-down-list k-option-label="请选择..."
-                                 k-value.two-way="positionTransferInfo.demandFrom"
+                                 k-value.two-way="positionTransferInfo.demandFrom & validate "
                                  k-data-text-field="text" k-data-value-field="value"
                                  k-data-source.bind="demandFrom">
               </ak-drop-down-list>
@@ -135,7 +133,11 @@
                   <input type="text" class="form-label" value.bind="transferQuantity">
                 </ak-template>
               </ak-col>
-              <ak-col k-field="remark" k-title="备注"></ak-col>
+              <ak-col k-field="remark" k-title="备注">
+                <ak-template>
+                  <input type="text" class="form-label" value.bind="remark">
+                </ak-template>
+              </ak-col>
               <ak-col k-title="操作">
                 <ak-template>
                   <a class="btn btn-small" click.delegate="deleteStorageItem($this)">删除</a>

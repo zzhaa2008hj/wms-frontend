@@ -38,11 +38,11 @@ export class CargoownershipTransferList {
     this.dataSource = this.dataSourceFactory.create({
       query: () => this.cargoownershipTransferService.getPageList(this.search)
         .map(res => {
-          let stage = ConstantValues.ownerTsfStage.find(r => r.stage == res.stage);
+          let stage = ConstantValues.CargoOwnershipStage.find(r => r.stage == res.stage);
           if (stage) {
             res.stageName = stage.title;
           }
-          let lastStage = ConstantValues.ownerTsfStage.find(r => r.stage == res.lastStage);
+          let lastStage = ConstantValues.CargoOwnershipStage.find(r => r.stage == res.lastStage);
           if (lastStage) {
             res.lastStageName = lastStage.title;
           }

@@ -357,9 +357,11 @@ export class ConstantValues {
       title: "星期六"
     }];
   }
+
   static get OrgProperties() {
     return [{ value: 1, name: "个人" }, { value: 2, name: "公司" }];
   }
+
   static get CargoOwnershipStage() {
     return [{
       stage: -1,
@@ -412,6 +414,7 @@ export class ConstantValues {
       name: "内部"
     }];
   }
+
   static get CalculateStandard() {
     return [{
       text: "堆存天数",
