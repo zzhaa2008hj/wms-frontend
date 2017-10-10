@@ -1,0 +1,15 @@
+<template>
+  <ak-grid k-data-source.bind="cargoItemDataSource">
+    <ak-col k-field="cargoName" k-title="货名"></ak-col>
+    <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
+    <ak-col k-field="containerNumber" k-title="集装箱号"></ak-col>
+    <ak-col k-field="containerType" k-title="集装箱类型 "></ak-col>
+    <ak-col k-field="storageQuantity" k-title="堆存数量"></ak-col>
+    <ak-col k-field="storageNumber" k-title="堆存件数"></ak-col>
+    <ak-col k-field="unitName" k-title="计量单位"></ak-col>
+    <ak-col k-field="newWarehouseName" k-title="新库区名称"></ak-col>
+    <ak-col k-field="transferQuantity" k-title="转移数量"></ak-col>
+    <ak-col k-field="transferNumber" k-title="转移件数"></ak-col>
+    <ak-col k-field="remark" k-title="备注"></ak-col>
+  </ak-grid>
+</template>

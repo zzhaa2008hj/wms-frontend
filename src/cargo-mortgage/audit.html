@@ -1,0 +1,132 @@
+<template>
+  <div class="grid simple">
+    <div class="grid-title no-border"></div>
+    <div class="grid-body no-border">
+      <form submit.delegate="save()">
+        <div class="form-group col-md-12" style="height: 70px;">
+          <label class="form-label">质押单号*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.codeNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">批次号*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.batchNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">出质客户*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.pledgorName" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">客户质押单号</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.customerPledgeNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">质押货物*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.cargoName" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">货类*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.cargoCategoryName" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">计量单位*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.unitStr" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">质押件数*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="number" class="form-control" value.bind="cargoMortgage.pledgeNumber" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">质押数量*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="number" step="0.01" class="form-control" value.bind="cargoMortgage.pledgeQuantity" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">质权客户*</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.pledgeeName" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">质押开始时间</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.pledgeStartDateStr" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-4" style="height: 70px;">
+          <label class="form-label">质押结束时间</label>
+          <span class="help"></span>
+          <div class="controls">
+            <input type="text" class="form-control" value.bind="cargoMortgage.pledgeEndDateStr" readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-12" style="height: 70px;">
+          <label class="form-label">质押说明</label>
+          <span class="help"></span>
+          <div class="controls">
+            <textarea value.bind="cargoMortgage.remark" style="width: 100%;" readonly></textarea>
+          </div>
+        </div>
+        <template if.bind="cargoMortgage.stage > 4">
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">解押人</label>
+            <span class="help"></span>
+            <div class="controls">
+                <input type="text" class="form-control" value.bind="cargoMortgage.cancelPledgeName" readonly>
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">解押时间</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="cargoMortgage.cancelPledgeTimeStr" readonly>
+            </div>
+          </div>
+          <div class="form-group col-md-12" style="height: 70px;">
+            <label class="form-label">解押说明</label>
+            <span class="help"></span>
+            <div class="controls">
+              <textarea value.bind="cargoMortgage.cancelRemark" style="width: 100%;" readonly></textarea>
+            </div>
+          </div>
+        </template>
+      </form>
+    </div>
+    <div class="grid-body no-border">
+      <div class="form-actions">
+        <div class="pull-right">
+          <button class="btn btn-primary" type="button" click.delegate="audit(1)">通过</button>
+          <button class="btn btn-danger" type="button" click.delegate="audit(0)">不通过</button>
+          <button class="btn btn-white" type="button" click.delegate="cancel()">返回</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

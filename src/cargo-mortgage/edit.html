@@ -1,0 +1,137 @@
+<template>
+    <div class="grid simple">
+      <div class="grid-title no-border"></div>
+      <div class="grid-body no-border">
+        <form submit.delegate="save()">
+          <div class="form-group col-md-12" style="height: 70px;">
+            <label class="form-label">质押单号*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="cargoMortgage.codeNumber" readonly>
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">批次号*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <ak-drop-down-list k-value.two-way="cargoMortgage.cargoInfoId & validate" k-option-label="请选择..." k-data-text-field="batchNumberStr"
+                k-data-value-field="id" style="width: 100%;" k-data-source.bind="cargoInfos" k-on-select.delegate="onSelectCargoInfo($event.detail)"
+                k-enabled.two-way="!disabled">
+              </ak-drop-down-list>
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">出质客户*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="cargoMortgage.pledgorName" readonly placeholder="请选择批次号">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">客户质押单号</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="cargoMortgage.customerPledgeNumber & validate" disabled.bind="disabled"
+                placeholder="请填写客户质押单号">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">质押货物*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <ak-drop-down-list k-value.two-way="cargoMortgage.cargoItemId & validate" k-option-label="请选择..." k-data-text-field="cargoName"
+                k-data-value-field="id" style="width: 100%;" k-data-source.bind="cargoItemDataSource" k-enabled.two-way="!disabled"
+                k-on-select.delegate="onSelectCargoItem($event.detail)">
+              </ak-drop-down-list>
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">货类*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="cargoMortgage.cargoCategoryName" readonly placeholder="请选择质押货物">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">计量单位*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="cargoMortgage.unitStr" readonly placeholder="请选择质押货物">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">可质押件数*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="unfrozenStorage.sumNumber" readonly placeholder="请填写质押件数">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">可质押数量*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="unfrozenStorage.sumQuantity" readonly placeholder="请填写质押数量">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">质押件数*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="number" class="form-control" value.bind="cargoMortgage.pledgeNumber & validate & toInt" disabled.bind="disabled"
+                placeholder="请填写质押件数">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">质押数量*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="number" step="0.01" class="form-control" value.bind="cargoMortgage.pledgeQuantity & validate & toFloat" disabled.bind="disabled"
+                placeholder="请填写质押数量">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">质权客户*</label>
+            <span class="help"></span>
+            <div class="controls">
+              <ak-drop-down-list k-value.two-way="cargoMortgage.pledgeeId & validate" k-option-label="请选择..." k-data-text-field="shortName"
+                k-data-value-field="id" style="width: 100%;" k-data-source.bind="customers" k-on-select.delegate="onSelectCustomer($event.detail)"
+                k-enabled.two-way="!disabled">
+              </ak-drop-down-list>
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">质押开始时间</label>
+            <span class="help"></span>
+            <div class="input-group" style="margin-top: 6px;">
+              <input ak-datepicker="k-value.two-way : cargoMortgage.pledgeStartDate & validate; k-widget.two-way: startDatePicker; k-read-only.two-way: disabled"
+                k-on-change.delegate="startChange()" type="text" placeholder="请选择开始时间">
+            </div>
+          </div>
+          <div class="form-group col-md-4" style="height: 70px;">
+            <label class="form-label">质押结束时间</label>
+            <span class="help"></span>
+            <div class="input-group" style="margin-top: 6px;">
+              <input ak-datepicker="k-value.two-way : cargoMortgage.pledgeEndDate & validate; k-widget.two-way: endDatePicker; k-read-only.two-way: disabled" 
+                k-on-change.delegate="endChange()" type="text" placeholder="请选择结束时间">
+            </div>
+          </div>
+          <div class="form-group col-md-12" style="height: 70px;">
+            <label class="form-label">备注</label>
+            <span class="help"></span>
+            <div class="controls">
+              <textarea value.bind="cargoMortgage.remark & validate" style="width: 100%;" disabled.bind="disabled"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="grid-body no-border">
+        <div class="form-actions">
+          <div class="pull-right">
+            <button class="btn btn-success" type="button" click.delegate="save()" disabled.bind="disabled">
+              <i class="icon-ok"></i>保存</button>
+            <button class="btn btn-white" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>

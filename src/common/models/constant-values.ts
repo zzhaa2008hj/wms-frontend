@@ -333,29 +333,29 @@ export class ConstantValues {
       stage: "1",
       title: "星期日"
     },
-      {
-        stage: "2",
-        title: "星期一"
-      },
-      {
-        stage: "3 ",
-        title: "星期二"
-      },
-      {
-        stage: "4",
-        title: "星期三"
-      },
-      {
-        stage: "5",
-        title: "星期四"
-      }, {
-        stage: "6",
-        title: "星期五"
-      },
-      {
-        stage: "7",
-        title: "星期六"
-      }];
+    {
+      stage: "2",
+      title: "星期一"
+    },
+    {
+      stage: "3 ",
+      title: "星期二"
+    },
+    {
+      stage: "4",
+      title: "星期三"
+    },
+    {
+      stage: "5",
+      title: "星期四"
+    }, {
+      stage: "6",
+      title: "星期五"
+    },
+    {
+      stage: "7",
+      title: "星期六"
+    }];
   }
 
   static get OrgProperties() {
@@ -474,5 +474,45 @@ export class ConstantValues {
         stage: 11,
         title: "货转完成"
       }];
+  }
+
+  static get CargoMortgageStage() {
+    return [{
+      stage: -1,
+      title: "撤回中"
+    },{
+      stage: 0,
+      title: "质押初始阶段"
+    },{
+      stage: 1,
+      title: "待商务审核"
+    },{
+      stage: 2,
+      title: "商务审核拒绝"
+    },{
+      stage: 3,
+      title: "商务审核通过"
+    },{
+      stage: 4,
+      title: "质押中"
+    },{
+      stage: 5,
+      title: "解押初始阶段"
+    },{
+      stage: 6,
+      title: "待商务审核（解押）"
+    },{
+      stage: 7,
+      title: "商务审核拒绝（解押）"
+    },{
+      stage: 8,
+      title: "商务审核通过（解押）"
+    },{
+      stage: 9,
+      title: "经理审批通过（解押）"
+    },{
+      stage: 10,
+      title: "解押完成"
+    }];
   }
 }

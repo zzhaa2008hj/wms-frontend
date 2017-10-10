@@ -91,3 +91,8 @@ export interface StorageInfoVo extends StorageInfo {
   cargoCategoryName: string;
   cargoSubCatergoryName: string;
 }
+
+export interface UnfrozenStorage {
+  sumQuantity: number;
+  sumNumber: number;
+}
