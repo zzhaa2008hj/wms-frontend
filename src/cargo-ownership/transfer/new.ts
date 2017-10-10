@@ -8,7 +8,7 @@ import { CargoInfoService } from '@app/base/services/cargo-info';
 import { observable } from 'aurelia-framework';
 import { DictionaryData } from "@app/base/models/dictionary";
 import { DictionaryDataService } from "@app/base/services/dictionary";
-import { copy, uuid } from "@app/utils";
+import { copy, uuid, accAdd } from "@app/utils";
 import { AttachmentService } from "@app/common/services/attachment";
 import { AttachmentMap } from "@app/common/models/attachment";
 import { Uploader, Upload } from "@app/upload";
@@ -320,6 +320,19 @@ export class NewTransfer {
       }
       if (item.transferQuantity > item.quantity) {
         this.dialogService.alert({ title: "提示", message: '数量不能大于可转数量', icon: 'error' });
+        return;
+      }
+      let sumN: number = 0, sumQ: number = 0;
+      for (let s of item.storageItems) {
+        sumN = accAdd(sumN, s.storageNumber);
+        sumQ = accAdd(sumQ, s.storageQuantity);
+      }
+      if (item.transferNumber !== sumN) {
+        this.dialogService.alert({ title: "提示", message: '库区总件数与货物件数不一致', icon: 'error' });
+        return;
+      }
+      if (item.transferQuantity !== sumQ) {
+        this.dialogService.alert({ title: "提示", message: '库区总数与货物数不一致', icon: 'error' });
         return;
       }
     }
