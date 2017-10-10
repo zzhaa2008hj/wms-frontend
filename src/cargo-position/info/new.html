@@ -57,7 +57,7 @@
             <span class="help"></span>
             <div class="controls">
               <ak-drop-down-list k-option-label="请选择..."
-                                 k-value.two-way="positionTransferInfo.demandFrom"
+                                 k-value.two-way="positionTransferInfo.demandFrom & validate "
                                  k-data-text-field="text" k-data-value-field="value"
                                  k-data-source.bind="demandFrom">
               </ak-drop-down-list>
@@ -133,7 +133,11 @@
                   <input type="text" class="form-label" value.bind="transferQuantity">
                 </ak-template>
               </ak-col>
-              <ak-col k-field="remark" k-title="备注"></ak-col>
+              <ak-col k-field="remark" k-title="备注">
+                <ak-template>
+                  <input type="text" class="form-label" value.bind="remark">
+                </ak-template>
+              </ak-col>
               <ak-col k-title="操作">
                 <ak-template>
                   <a class="btn btn-small" click.delegate="deleteStorageItem($this)">删除</a>

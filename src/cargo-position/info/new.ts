@@ -93,6 +93,40 @@ export class NewPositionTransferInfo {
         });
         return;
       }
+      //数量件数验证
+      if (si.storageQuantity && si.transferQuantity <= 0) {
+        await this.messageDialogService.alert({
+          title: "新增失败",
+          message: `请检查数据,货物:${si.cargoName}--转移数量不能为0`,
+          icon: 'warning'
+        });
+        return;
+      }
+      if (!si.storageQuantity && si.storageNumber && si.transferNumber <= 0) {
+        await this.messageDialogService.alert({
+          title: "新增失败",
+          message: `请检查数据,货物:${si.cargoName}--转移件数不能为0`,
+          icon: 'warning'
+        });
+        return;
+      }
+      //库区验证
+      if (!si.newWarehouseId) {
+        await this.messageDialogService.alert({
+          title: "新增失败",
+          message: `请检查数据,货物:${si.cargoName}--未选择新库区`,
+          icon: 'warning'
+        });
+        return;
+      }
+      if (si.newWarehouseId == si.warehouseId) {
+        await this.messageDialogService.alert({
+          title: "新增失败",
+          message: `请检查数据,货物:${si.cargoName}--不能转移到同一库区`,
+          icon: 'warning'
+        });
+        return;
+      }
       let transferItem = {} as  PositionTransferItem;
       let cargoItem = this.baseCargoItems.find(bci => bci.cargoName == si.cargoName);
       transferItem.cargoItemId = cargoItem.id;
@@ -112,6 +146,7 @@ export class NewPositionTransferInfo {
       transferItem.remark = si.remark;
       transferItem.containerNumber = si.containerNumber;
       transferItem.containerType = si.containerType;
+
       //费率
       if (si.cargoRates && si.cargoRates.length > 0) {
         Object.assign(transferItem, { cargoRates: si.cargoRates });
@@ -196,7 +231,6 @@ export class NewPositionTransferInfo {
       storageItems = storageItems.filter(si => si.warehouseId == this.search.warehouseId);
     }
     storageItems.forEach(si => {
-
       si.cargoRates = this.baseCargoItems.find(bci => bci.cargoName == si.cargoName).cargoRates;
       if (this.positionTransferInfo.demandFrom == 1) {
         let deletedCargoRates = si.cargoRates.filter(cr => cr.chargeType == 1);
@@ -219,6 +253,8 @@ export class NewPositionTransferInfo {
           });
         }
       });
+      si.transferQuantity = 0;
+      si.transferNumber = 0;
     });
     oldStorageItems.push(...storageItems);
     this.dataSourceStorage.data(oldStorageItems);
@@ -306,8 +342,7 @@ export class NewPositionTransferInfo {
     this.positionTransferInfo.customerId = dataItem.customerId;
     this.positionTransferInfo.customerName = dataItem.customerName;
     //自动生成货位转移单号
-    let res = await this.codeService.generateCode("6")
-    console.log(res)
+    let res = await this.codeService.generateCode("6");
     this.positionTransferInfo.transferNumber = res.content;
 
     this.baseCargoItems = await this.cargoInfoService.getCargoItems(dataItem.id);
