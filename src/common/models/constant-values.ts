@@ -338,7 +338,7 @@ export class ConstantValues {
       title: "星期一"
     },
     {
-      stage: "3 ",
+      stage: "3",
       title: "星期二"
     },
     {
@@ -412,15 +412,7 @@ export class ConstantValues {
       name: "内部"
     }];
   }
-  static get CalculateStandard() {
-    return [{
-      text: "堆存天数",
-      value: 1
-    },{
-      text: "库存数量",
-      value: 2
-    }]
-  }
+
   static get CalculateStandard() {
     return [{
       text: "堆存天数",
