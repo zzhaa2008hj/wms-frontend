@@ -69,8 +69,11 @@ export class NewPositionTransferInfo {
   }
 
   async activate() {
-    this.baseCargoInfos = await  this.cargoInfoService.listBaseCargoInfos({ instockStatus: 1, outstockStatus: 0 });
     this.units = await this.dictionaryDataService.getDictionaryDatas("unit");
+    this.baseCargoInfos = await  this.cargoInfoService.listBaseCargoInfos({ instockStatus: 1, outstockStatus: 0 });
+    this.baseCargoInfos.map(res => {
+      res.batchNumberStr = res.batchNumber + "(" + res.customerName + ")";
+    });
   }
 
   async addNewPositionTransferInfo() {
