@@ -41,16 +41,6 @@
       "title": "报表统计",
       "icon": "assessment",
       "expanded": false
-    },
-    "group6": {
-      "title": "货权转移",
-      "icon": "transfer_within_a_station",
-      "expanded": false
-    },
-    "group7": {
-      "title": "货物盘点",
-      "icon": "assessment",
-      "expanded": false
     }
   },
   "routes": [{
@@ -139,14 +129,28 @@
       "name": "ownership",
       "title": "货权转移",
       "moduleId": "./cargo-ownership/transfer/index",
-      "group": "group6"
+      "icon": "repeat"
+    },
+    {
+      "route": "/cargo-position",
+      "name": "transfe-position",
+      "title": "货位转移",
+      "moduleId": "./cargo-position/info/index",
+      "icon": "rotate_90_degrees_ccw"
     },
     {
       "route": "/cargo-inventory",
       "name": "cargo-inventory",
       "title": "货物盘点",
       "moduleId": "./cargo-inventory/index",
-      "icon": "check_box"
+      "icon": "assignment_turned_in"
+    },
+    {
+      "route": "/cargo-mortgage",
+      "name": "cargo-mortgage",
+      "title": "货物质押",
+      "moduleId": "./cargo-mortgage/index",
+      "icon": "lock"
     },
     {
       "route": "/fee/charge",
@@ -237,7 +241,7 @@
       "name": "electronic-warehouse",
       "title": "电子厂图",
       "moduleId": "./electronic-warehouse/index",
-      "icon": "local_convenience_store"
+      "icon": "picture_in_picture"
     },
     {
       "route": "/base/org-info",

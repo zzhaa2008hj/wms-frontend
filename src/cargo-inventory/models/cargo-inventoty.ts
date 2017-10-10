@@ -46,7 +46,7 @@ export interface CargoInventoryItem extends BaseEntity {
   warehouseName: string;
   instockDate: Date;
   instockDateStr: string;
-  
+
   inventoryNumber: number;
   inventoryQuantity: number;
 
@@ -65,7 +65,7 @@ export interface CargoInventoryVO {
   inventoryItemList: Array<CargoInventoryItem>;
 }
 
-export const cargoInventoryValidationRules  = ValidationRules
+export const cargoInventoryValidationRules = ValidationRules
   .ensure((cargoInventory: CargoInventory) => cargoInventory.cargoCategoryName)
   .displayName('货类')
   .required().withMessage(`\${$displayName} 不能为空`)
@@ -106,7 +106,7 @@ export const cargoInventoryValidationRules  = ValidationRules
   .rules;
 
 
-  export const cargoItemsValidationRules = ValidationRules
+export const cargoItemsValidationRules = ValidationRules
   .ensure((cargoInventory: CargoInventory) => cargoInventory.inventoryChecker)
   .displayName('盘点人')
   .required().withMessage(`\${$displayName} 不能为空`)

@@ -1,6 +1,6 @@
 export interface BaseEntity {
-  id: string;
-  remark: string;
+  id?: string;
+  remark?: string;
   orgId: string;
   createTime: Date;
   createAccountId: string;

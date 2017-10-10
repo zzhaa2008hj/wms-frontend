@@ -36,11 +36,11 @@
           <label class="form-label">入库时间区间*</label>
           <span class="help"></span>
           <div class="input-group" style="margin-top: 6px;">
-            <input ak-datepicker="k-value.two-way : cargoInventory.startTime & validate; k-widget.two-way: startDatePicker" k-on-change.delegate="startChange()"
-              type="text" placeholder="请选择开始时间" disabled.bind="disabled" disabled.bind="disabled">
+            <input ak-datepicker="k-value.two-way : cargoInventory.startTime & validate; k-widget.two-way: startDatePicker; k-read-only.two-way: disabled"
+              k-on-change.delegate="startChange()" type="text" placeholder="请选择开始时间">
             <span class="help m-l-10"></span>
-            <input ak-datepicker="k-value.two-way : cargoInventory.endTime & validate; k-widget.two-way: endDatePicker" k-on-change.delegate="endChange()"
-              type="text" placeholder="请选择结束时间" disabled.bind="disabled">
+            <input ak-datepicker="k-value.two-way : cargoInventory.endTime & validate; k-widget.two-way: endDatePicker; k-read-only.two-way: disabled"
+              k-on-change.delegate="endChange()" type="text" placeholder="请选择结束时间">
           </div>
         </div>
         <div class="form-group">
@@ -55,8 +55,7 @@
           <label class="form-label">预盘时间*</label>
           <span class="help"></span>
           <div class="input-group" style="margin-top: 6px;">
-            <input ak-datepicker="k-value.two-way : cargoInventory.inventoryCheckDate;" type="text" placeholder="请选择预盘时间"
-              disabled.bind="disabled" disabled.bind="disabled">
+            <input ak-datepicker="k-value.two-way : cargoInventory.inventoryCheckDate; k-read-only.two-way: disabled" type="text" placeholder="请选择预盘时间">
           </div>
         </div>
         <div class="form-group">
@@ -68,7 +67,8 @@
         </div>
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i>保存</button>
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled">
+              <i class="icon-ok"></i>保存</button>
             <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消</button>
           </div>
         </div>
