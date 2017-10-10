@@ -416,98 +416,98 @@ export class ConstantValues {
     return [{
       text: "堆存天数",
       value: 1
-    },{
+    }, {
       text: "库存数量",
       value: 2
     }];
   }
 
-  static get ownerTsfStage(){
+  static get ownerTsfStage() {
     return [{
-      stage: -1 ,
+      stage: -1,
       title: "撤回中"
-    },{
-      stage: 0 ,
+    }, {
+      stage: 0,
       title: "初始阶段"
     },
-      {
-        stage: 1 ,
-        title: "待商务审核"
-      },
-      {
-        stage: 2,
-        title: "商务审核未通过"
-      },
-      {
-        stage: 3 ,
-        title: "商务审核通过"
-      },{
-        stage: 4 ,
-        title: "费收审核未通过"
-      },{
-        stage: 5 ,
-        title: "费收审核通过（收费完成）"
-      },{
-        stage: 6 ,
-        title: "费收审核通过（挂账）"
-      },
-      {
-        stage: 7 ,
-        title: "副总审批通过"
-      },
-      {
-        stage: 8 ,
-        title: "作业中"
-      },
-      {
-        stage: 9 ,
-        title: "作业完成"
-      },
-      {
-        stage: 10 ,
-        title: "已生成入库单"
-      },
-      {
-        stage: 11 ,
-        title: "货转完成"
-      }];
+    {
+      stage: 1,
+      title: "待商务审核"
+    },
+    {
+      stage: 2,
+      title: "商务审核未通过"
+    },
+    {
+      stage: 3,
+      title: "商务审核通过"
+    }, {
+      stage: 4,
+      title: "费收审核未通过"
+    }, {
+      stage: 5,
+      title: "费收审核通过（收费完成）"
+    }, {
+      stage: 6,
+      title: "费收审核通过（挂账）"
+    },
+    {
+      stage: 7,
+      title: "副总审批通过"
+    },
+    {
+      stage: 8,
+      title: "作业中"
+    },
+    {
+      stage: 9,
+      title: "作业完成"
+    },
+    {
+      stage: 10,
+      title: "已生成入库单"
+    },
+    {
+      stage: 11,
+      title: "货转完成"
+    }];
   }
 
   static get CargoMortgageStage() {
     return [{
       stage: -1,
       title: "撤回中"
-    },{
+    }, {
       stage: 0,
       title: "质押初始阶段"
-    },{
+    }, {
       stage: 1,
       title: "待商务审核"
-    },{
+    }, {
       stage: 2,
       title: "商务审核拒绝"
-    },{
+    }, {
       stage: 3,
       title: "商务审核通过"
-    },{
+    }, {
       stage: 4,
       title: "质押中"
-    },{
+    }, {
       stage: 5,
       title: "解押初始阶段"
-    },{
+    }, {
       stage: 6,
       title: "待商务审核（解押）"
-    },{
+    }, {
       stage: 7,
       title: "商务审核拒绝（解押）"
-    },{
+    }, {
       stage: 8,
       title: "商务审核通过（解押）"
-    },{
+    }, {
       stage: 9,
       title: "经理审批通过（解押）"
-    },{
+    }, {
       stage: 10,
       title: "解押完成"
     }];
