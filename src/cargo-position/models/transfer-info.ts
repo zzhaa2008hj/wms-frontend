@@ -74,6 +74,10 @@ export const positionTransferInfoValidationRules = ValidationRules
   .displayName('批次号')
   .required().withMessage(`\${$displayName} 不能为空`)
 
+  .ensure((info: PositionTransferInfo) => info.demandFrom)
+  .displayName('需求来源')
+  .required().withMessage(`\${$displayName} 不能为空`)
+
   .ensure((info: PositionTransferInfo) => info.remark)
   .displayName('备注')
   .maxLength(500).withMessage(`\${$displayName} 过长`)

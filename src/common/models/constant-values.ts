@@ -357,9 +357,11 @@ export class ConstantValues {
       title: "星期六"
     }];
   }
+
   static get OrgProperties() {
     return [{ value: 1, name: "个人" }, { value: 2, name: "公司" }];
   }
+
   static get CargoOwnershipStage() {
     return [{
       stage: -1,
@@ -412,26 +414,27 @@ export class ConstantValues {
       name: "内部"
     }];
   }
+
   static get CalculateStandard() {
     return [{
       text: "堆存天数",
       value: 1
-    },{
+    }, {
       text: "库存数量",
       value: 2
     }];
   }
 
-  static get ownerTsfStage(){
+  static get ownerTsfStage() {
     return [{
-      stage: -1 ,
+      stage: -1,
       title: "撤回中"
-    },{
-      stage: 0 ,
+    }, {
+      stage: 0,
       title: "初始阶段"
     },
       {
-        stage: 1 ,
+        stage: 1,
         title: "待商务审核"
       },
       {
@@ -439,36 +442,36 @@ export class ConstantValues {
         title: "商务审核未通过"
       },
       {
-        stage: 3 ,
+        stage: 3,
         title: "商务审核通过"
-      },{
-        stage: 4 ,
+      }, {
+        stage: 4,
         title: "费收审核未通过"
-      },{
-        stage: 5 ,
+      }, {
+        stage: 5,
         title: "费收审核通过（收费完成）"
-      },{
-        stage: 6 ,
+      }, {
+        stage: 6,
         title: "费收审核通过（挂账）"
       },
       {
-        stage: 7 ,
+        stage: 7,
         title: "副总审批通过"
       },
       {
-        stage: 8 ,
+        stage: 8,
         title: "作业中"
       },
       {
-        stage: 9 ,
+        stage: 9,
         title: "作业完成"
       },
       {
-        stage: 10 ,
+        stage: 10,
         title: "已生成入库单"
       },
       {
-        stage: 11 ,
+        stage: 11,
         title: "货转完成"
       }];
   }

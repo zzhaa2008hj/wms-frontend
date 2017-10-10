@@ -31,64 +31,45 @@ export class EditRate {
               private dialogService: DialogService) {
     this.datasource = new kendo.data.DataSource({
       transport: {
-        read: (options) => {
-          options.success(this.filterBaseRateSteps);
-        },
-        update: (options) => {
-          options.success();
-        },
-        destroy: (options) => {
-          options.success();
-        }
-      },
-      schema: {
-        model: {
-          id: 'id',
-          fields: {
-            price: {
-              type: 'number',
-              validation: { required: true, min: 0, max: 1000000000000000 },
-              editable: true,
-              nullable: false
-            },
-            rateCategory: { editable: false },
-            chargeCategory: { editable: false },
-            chargeType: { editable: false },
-            unitStr: { editable: false },
-            rateTypeStr: { editable: false },
-            pricingMode: { editable: false },
-            workName: { editable: false },
-            cargoCategoryName: { editable: false },
-            cargoSubCategoryName: { editable: false },
-            warehouseCategoryStr: { editable: false },
-            remark: { editable: false }
-          }
-        }
-
+        read: (options) => options.success(this.filterBaseRateSteps)
       }
     });
   }
 
   async activate(params: any) {
-    let contractVo: ContractVo = await this.contractService.getContract(params.id);
-    this.contract = contractVo.contract;
-    this.datasource.data(params.cargoRates);
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.unit = await this.dictionaryDataService.getDictionaryDatas("unit");
+
+    let contractVo: ContractVo = await this.contractService.getContract(params.id);
+    this.contract = contractVo.contract;
+    params.cargoRates.map(res => {
+      let rateType = this.rateTypes.find(d => res.rateType == d.value);
+      if (rateType) {
+        res.rateTypeStr = rateType.text;
+      }
+      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      if (warehouseCategory) {
+        res.warehouseCategoryStr = warehouseCategory.dictDataName;
+      }
+      return res;
+    });
+    this.filterBaseRateSteps = [];
+    Object.assign(this.filterBaseRateSteps, params.cargoRates);
+    this.datasource.read();
 
     let rates = await this.contractService.getBaseRate();
     rates.map(res => {
       let unit = this.unit.find(d => res.unit == d.dictDataCode);
-      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
-      let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (unit) {
         res.unitStr = unit.dictDataName;
       }
-      if (warehouseCategory) {
-        res.warehouseCategoryStr = warehouseCategory.dictDataName;
-      }
+      let rateType = this.rateTypes.find(d => res.rateType == d.value);
       if (rateType) {
         res.rateTypeStr = rateType.text;
+      }
+      let warehouseCategory = this.warehouseCategory.find(d => res.warehouseCategory == d.dictDataCode);
+      if (warehouseCategory) {
+        res.warehouseCategoryStr = warehouseCategory.dictDataName;
       }
       if (res.rateStep) {
         res.rateStep.forEach(rs => {
@@ -101,7 +82,6 @@ export class EditRate {
       return res;
     });
     this.baseRateAndSteps = rates;
-    this.filterBaseRateSteps = [];
     this.baseRateStep = await this.contractService.getBaseRateStep();
     this.baseRateStep.map(res => {
       if (res.stepUnit) {
@@ -152,70 +132,6 @@ export class EditRate {
     this.filterBaseRateSteps = this.filterBaseRateSteps.concat(this.source);
     this.datasource.read();
     this.datasource.filter({ field: 'customerCategory', operator: 'eq', value: this.contract.contractType });
-  }
-
-  detailInit(e) {
-    let detailRow = e.detailRow;
-    detailRow.find('.rateSteps').kendoGrid({
-      dataSource: {
-        transport: {
-          read: (options) => {
-            options.success(this.baseRateStep);
-          },
-          update: (options) => {
-            options.success();
-          },
-          destroy: (options) => {
-            options.success();
-          }
-        },
-        schema: {
-          model: {
-            id: 'id',
-            fields: {
-              stepNum: { editable: false },
-              stepStart: { editable: false },
-              stepEnd: { editable: false },
-              stepPrice: {
-                editable: true,
-                notify: true,
-                type: 'number',
-                validation: { required: true, min: 0, max: 1000000000000000 },
-                title: '阶梯价'
-              },
-              stepUnit: { editable: false },
-              remark: { editable: false }
-            }
-          }
-        },
-        filter: { field: 'rateId', operator: 'eq', value: e.data.id }
-      },
-
-      editable: true,
-      columns: [
-        { field: 'stepNum', title: '阶梯号' },
-        { field: 'stepStart', title: '开始值' },
-        { field: 'stepEnd', title: '结束值' },
-        {
-          field: 'stepPrice',
-          title: '阶梯价'
-        },
-        { field: 'stepUnitStr', title: '单位' },
-        { field: 'remark', title: '备注' }
-      ],
-      save: function (e) {
-        e.sender.saveChanges();
-      }
-    });
-  }
-
-  edit(e) {
-    let mode = e.detail.model.pricingMode;
-    if (mode == 1) {
-      return;
-    }
-    let dataGrid = e.detail.sender;
-    dataGrid.closeCell();
   }
 
   async save() {

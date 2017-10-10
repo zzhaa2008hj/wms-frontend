@@ -42,8 +42,7 @@
       <div class="col-md-12">
         <span class="help"></span>
         <div class="controls right">
-          <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid" k-editable.bind="true" k-on-edit.delegate="edit($event)"
-                   k-on-detail-init.delegate="detailInit($event.detail)">
+          <ak-grid k-data-source.bind="datasource" k-widget.bind="customerGrid">
             <ak-col k-field="rateCategory" k-title="费用类别">
               <ak-template>
                 ${rateCategory == 1 ? '仓储费' :rateCategory == 2? '装卸费':'其他费用'}
