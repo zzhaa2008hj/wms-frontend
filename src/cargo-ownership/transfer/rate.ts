@@ -24,6 +24,7 @@ export class RateView {
   rateTypes = ConstantValues.WorkInfoCategory;
   chargeCategory = ConstantValues.ChargeCategory;
   pricingMode = ConstantValues.PricingMode;
+  calculateStandards = ConstantValues.CalculateStandard;
   cargoCategoryName: string;
   cargoCategoryId: string;
 
@@ -55,7 +56,8 @@ export class RateView {
           cargoCategoryName: { editable: false },
           cargoSubCategoryName: { editable: false },
           warehouseCategoryStr: { editable: false },
-          remark: { editable: true }
+          remark: { editable: true },
+          calculateStandardStr: {editable: false}
         }
       }
     }
@@ -76,14 +78,12 @@ export class RateView {
     // this.warehouseType = await this.dictionaryDataService.getDictionaryDatas("warehouseType");
     this.warehouseCategory = await this.dictionaryDataService.getDictionaryDatas("warehouseCategory");
     this.allCargoRates = contractRates;
-    this.allCargoRates.forEach(item => {
-      this.codeToStr(item);
-      this.cargoRates.push(Object.assign({}, item));
-    });
+    // 取消展开显示所有，让用户自己选择
+    this.allCargoRates.forEach(item => this.codeToStr(item));
     this.cargoRateDataSource.read();
 
-    this.cargoCategoryName = this.cargoRates[0].cargoCategoryName;
-    this.cargoCategoryId = this.cargoRates[0].cargoCategoryId;
+    this.cargoCategoryName = this.allCargoRates[0].cargoCategoryName;
+    this.cargoCategoryId = this.allCargoRates[0].cargoCategoryId;
   }
 
   codeToStr(item) {
@@ -98,6 +98,10 @@ export class RateView {
     let warehouseCategory = this.warehouseCategory.find(d => item.warehouseCategory == d.dictDataCode);
     if (warehouseCategory) {
       item.warehouseCategoryStr = warehouseCategory.dictDataName;
+    }
+    let calculateStandard = this.calculateStandards.find(c => item.calculateStandard == c.value);
+    if (calculateStandard) {
+      item.calculateStandardStr = calculateStandard.text;
     }
     if (item.cargoRateSteps && item.cargoRateSteps.length > 0) {
       item.cargoRateSteps.forEach(rate => {
@@ -214,7 +218,7 @@ export class RateView {
     //过滤已经选择的合同费率
     source = source.filter(r => {
       return this.cargoRates.every(e => {
-        let res1 = true, res2 = true, res3 = true, res4 = true, res5 = true, res6 = true;
+        let res1 = true, res2 = true, res3 = true, res4 = true, res5 = true, res6 = true, res7 = true;
         if (e.chargeType) {
           res1 = e.chargeType == r.chargeType;
         }
@@ -233,7 +237,11 @@ export class RateView {
         if (e.pricingMode) {
           res6 = e.pricingMode == r.pricingMode;
         }
-        return !(res1 && res2 && res3 && res4 && res5 && res6);
+        // 仓储费 阶梯费率 才有
+        if (e.pricingMode == 2 && e.rateCategory == 1) {
+          res7 = e.calculateStandard == r.calculateStandard;
+        }
+        return !(res1 && res2 && res3 && res4 && res5 && res6 && res7);
       });
     });
     //合并费率

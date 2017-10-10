@@ -56,7 +56,8 @@ export class RateView {
           cargoCategoryName: { editable: false },
           cargoSubCategoryName: { editable: false },
           warehouseCategoryStr: { editable: false },
-          remark: { editable: true }
+          remark: { editable: true },
+          calculateStandardStr: {editable: false}
         }
       }
     }
@@ -205,7 +206,7 @@ export class RateView {
     //过滤已经选择的合同费率
     source = source.filter(r => {
       return this.cargoRates.every(e => {
-        let res1 = true, res2 = true, res3 = true, res4 = true, res5 = true, res6 = true;
+        let res1 = true, res2 = true, res3 = true, res4 = true, res5 = true, res6 = true, res7 = true;
         if (e.chargeType) {
           res1 = e.chargeType == r.chargeType;
         }
@@ -224,7 +225,11 @@ export class RateView {
         if (e.pricingMode) {
           res6 = e.pricingMode == r.pricingMode;
         }
-        return !(res1 && res2 && res3 && res4 && res5 && res6);
+        // 仓储费 阶梯费率 才有
+        if (e.pricingMode == 2 && e.rateCategory == 1) {
+          res7 = e.calculateStandard == r.calculateStandard;
+        }
+        return !(res1 && res2 && res3 && res4 && res5 && res6 && res7);
       });
     });
     //合并费率
