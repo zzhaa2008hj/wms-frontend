@@ -1,6 +1,7 @@
 <template>
   <require from="./cargo-info-detail/instock-item-info"></require>
   <require from="./cargo-info-detail/outstock-item-info"></require>
+  <require from="./cargo-info-detail/position-item-info"></require>
   <!--
     <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a click.delegate="changeInfoType(1)">入库指令信息</a></li>
@@ -188,8 +189,20 @@
         <!-- 货权转移结束-->
 
         <!-- 货位转移开始-->
-        <div>
+        <div if.bind="positionOrders.length == 0">
           暂无货位转移信息
+        </div>
+        <div if.bind="positionOrders.length > 0">
+          <ak-grid k-data-source.bind="positionDataSource">
+            <ak-col k-field="transferNumber" k-title="货位转移单号"></ak-col>
+            <ak-col k-field="batchNumber" k-title="批次号"></ak-col>
+            <ak-col k-field="demandFrom == 1?'内部':'客户'" k-title="需求来源"></ak-col>
+            <ak-col k-field="customerName" k-title="客户名称"></ak-col>
+            <ak-col k-field="remark" k-title="备注"></ak-col>
+            <ak-template for="detailTemplate">
+              <position-item-info position-order-id.bind="$this.id"></position-item-info>
+            </ak-template>
+          </ak-grid>
         </div>
         <!-- 货位转移结束-->
       </div>

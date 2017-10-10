@@ -9,6 +9,8 @@ import { DictionaryData } from '@app/base/models/dictionary';
 import { DictionaryDataService } from '@app/base/services/dictionary';
 import { Order } from '@app/outstock/models/order';
 import { fixDate } from '@app/utils';
+import { PositionTransferInfoService } from "@app/cargo-position/services/transfer-info";
+import { PositionTransferInfo } from "@app/cargo-position/models/transfer-info";
 
 @autoinject
 export class DetailsCargoInfo {
@@ -25,9 +27,13 @@ export class DetailsCargoInfo {
   outstockOrders: Order[];
   outstockDatasource: kendo.data.DataSource;
 
+  positionOrders: PositionTransferInfo[];
+  positionDataSource: kendo.data.DataSource;
+
   constructor(private router: Router,
               private cargoInfoService: CargoInfoService,
               private messageDialogService: MessageDialogService,
+              private positionTransferInfoService: PositionTransferInfoService,
               private dictionaryDataService: DictionaryDataService,
               private dialogService: DialogService) {
     this.dataSource = new kendo.data.DataSource({
@@ -50,6 +56,14 @@ export class DetailsCargoInfo {
       transport: {
         read: (options) => {
           options.success(this.outstockOrders);
+        }
+      }
+    });
+
+    this.positionDataSource = new kendo.data.DataSource({
+      transport: {
+        read: (options) => {
+          options.success(this.positionOrders);
         }
       }
     });
@@ -79,8 +93,10 @@ export class DetailsCargoInfo {
       }
       fixDate(res, "outstockDate");
     });
-    //todo
-    //货权转移、货位转移
+    //todo 货权转移
+
+    //货位转移信息
+    this.positionOrders = await this.positionTransferInfoService.getPositionOrders(id);
   }
 
   async view(id) {

@@ -70,6 +70,10 @@ export class PositionTransferInfoService {
   updateGenerateWorkOrder(transferId: string): Promise<void> {
     return this.http.put(`/position-transfer/info/${transferId}/generateWorkOrder`, '').then(handleResult);
   }
+
+  async getPositionOrders(cargoInfoId: string) {
+    return this.http.get(`/position-transfer/info/list?cargoInfoId=${cargoInfoId}`).then(res => res.content);
+  }
 }
 
 @autoinject
