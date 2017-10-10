@@ -338,7 +338,7 @@ export class ConstantValues {
       title: "星期一"
     },
     {
-      stage: "3 ",
+      stage: "3",
       title: "星期二"
     },
     {
