@@ -21,7 +21,7 @@ const argv = require('yargs').argv;
 
 const chromeNameByPlatform = {
   'linux': 'google-chrome',
-  //'darwin': 'google chrome',
+  'darwin': 'google chrome',
   'win32': 'chrome'
 };
 
