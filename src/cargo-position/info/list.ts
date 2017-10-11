@@ -9,6 +9,7 @@ import { NewVerifyRecord } from '@app/common/verify-records/new';
 import { VerifyRecordService } from '@app/common/services/verify-record';
 import { UploadConfirm } from "@app/cargo-position/confirm/upload-confirm";
 import { WorkOrderItemService } from "@app/instock/services/work-order";
+import { ConstantValues } from "@app/common/models/constant-values";
 
 @autoinject
 export class PositionTransferInfoList {
@@ -16,6 +17,7 @@ export class PositionTransferInfoList {
   dataSource: kendo.data.DataSource;
   units: DictionaryData[] = [] as DictionaryData[];
   id: string = '';
+  positionStages: any[] = ConstantValues.CargoPositionStage;
 
   pageable = {
     refresh: true,
@@ -34,7 +36,15 @@ export class PositionTransferInfoList {
 
   async activate() {
     this.dataSource = this.dataSourceFactory.create({
-      query: () => this.positionTransferInfoService.page(this.criteria),
+      query: () => this.positionTransferInfoService.page(this.criteria)
+        .map(res => {
+          res.positionStageName = this.positionStages.find(r => r.stage == res.stage).title;
+          let lastStage = this.positionStages.find(r => r.stage == res.lastStage);
+          if (lastStage) {
+            res.positionLastStageName = lastStage.title;
+          }
+          return res;
+        }),
       pageSize: 10
     });
   }
