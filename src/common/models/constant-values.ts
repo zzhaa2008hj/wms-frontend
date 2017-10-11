@@ -358,6 +358,46 @@ export class ConstantValues {
     }];
   }
 
+  static get monthInfo() {
+    return [{
+      stage: "01",
+      title: "一月份"
+    }, {
+      stage: "02",
+      title: "二月份"
+    }, {
+      stage: "03",
+      title: "三月份"
+    }, {
+      stage: "04",
+      title: "四月份"
+    }, {
+      stage: "05",
+      title: "五月份"
+    }, {
+      stage: "06",
+      title: "六月份"
+    }, {
+      stage: "07",
+      title: "七月份"
+    }, {
+      stage: "08",
+      title: "八月份"
+    }, {
+      stage: "09",
+      title: "九月份"
+    }, {
+      stage: "10",
+      title: "十月份"
+    }, {
+      stage: "11",
+      title: "十一月份"
+    }, {
+      stage: "12",
+      title: "十二月份"
+    }];
+  }
+
   static get OrgProperties() {
     return [{ value: 1, name: "个人" }, { value: 2, name: "公司" }];
   }
