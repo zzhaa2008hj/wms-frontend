@@ -515,4 +515,44 @@ export class ConstantValues {
       title: "解押完成"
     }];
   }
+
+  static get CargoPositionStage() {
+    return [{
+      stage: -1,
+      title: "撤回中"
+    }, {
+      stage: 0,
+      title: "初始阶段"
+    }, {
+      stage: 1,
+      title: "待商务审核"
+    }, {
+      stage: 2,
+      title: "商务审核未通过"
+    }, {
+      stage: 3,
+      title: "商务审核通过"
+    }, {
+      stage: 4,
+      title: "客户/领导签字确认"
+    }, {
+      stage: 5,
+      title: "已生成作业指令单"
+    }, {
+      stage: 6,
+      title: "作业中"
+    }, {
+      stage: 7,
+      title: "作业完成"
+    }, {
+      stage: 8,
+      title: "库场审核未通过"
+    }, {
+      stage: 9,
+      title: "库场审核通过"
+    }, {
+      stage: 10,
+      title: "货转完成"
+    }];
+  }
 }
