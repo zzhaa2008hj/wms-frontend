@@ -1,22 +1,18 @@
 <template>
   <require from="./rate-element"></require>
   <div class="grid simple">
-    <div class="grid-title no-border">新增货位转移</h4>
-    </div>
-    <div class="grid-body no-border"><br>
-      <form submit.delegate="addNewPositionTransferInfo()">
+    <div class="grid-title no-border">新增货位转移</h4></div>
+    <form submit.delegate="addNewPositionTransferInfo()">
+      <div class="grid-body no-border">
         <div class="col-md-12">
           <div class="col-md-6">
             <div class="form-group">
               <label class="form-label">批次号*</label>
               <span class="help"></span>
               <div class="controls">
-                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..."
-                                   k-filter="contains"
-                                   k-value.two-way="positionTransferInfo.batchNumber & validate"
-                                   k-data-text-field="batchNumberStr" k-data-value-field="batchNumber"
-                                   k-data-source.bind="baseCargoInfos"
-                                   k-on-select.delegate="onSelectCargoInfo($event.detail)">
+                <ak-drop-down-list style="width: 300px;" k-widget.two-way="selectedCargoInfo" k-option-label="请选择..." k-filter="contains"
+                  k-value.two-way="positionTransferInfo.batchNumber & validate" k-data-text-field="batchNumberStr" k-data-value-field="batchNumber"
+                  k-data-source.bind="baseCargoInfos" k-on-select.delegate="onSelectCargoInfo($event.detail)">
                 </ak-drop-down-list>
               </div>
             </div>
@@ -56,10 +52,8 @@
             <label class="form-label">需求来源*</label>
             <span class="help"></span>
             <div class="controls">
-              <ak-drop-down-list k-option-label="请选择..."
-                                 k-value.two-way="positionTransferInfo.demandFrom & validate "
-                                 k-data-text-field="text" k-data-value-field="value"
-                                 k-data-source.bind="demandFrom">
+              <ak-drop-down-list k-option-label="请选择..." k-value.two-way="positionTransferInfo.demandFrom & validate " k-data-text-field="text"
+                k-data-value-field="value" k-data-source.bind="demandFrom">
               </ak-drop-down-list>
             </div>
           </div>
@@ -69,8 +63,7 @@
             <label class="form-label">备注</label>
             <span class="help"></span>
             <div class="controls">
-              <input type="text" class="form-control" value.bind="positionTransferInfo.remark "
-                     disabled.bind="disabled">
+              <input type="text" class="form-control" value.bind="positionTransferInfo.remark " disabled.bind="disabled">
             </div>
           </div>
         </div>
@@ -81,9 +74,8 @@
               <input style="width: 300px;" type="text" value.bind="dir" multiple/>
               <button class="btn btn-small" click.trigger="chooseFiles()">选择文件</button>
               <button class="btn btn-small btn-primary" click.trigger="upload()">上传</button>
-              <wa-progress width="200px" height="5px" if.bind="currentUpload" value.bind="currentUpload.progress.loaded"
-                           total.bind="currentUpload.progress.total"
-                           label="正在上传...">${percent}%
+              <wa-progress width="200px" height="5px" if.bind="currentUpload" value.bind="currentUpload.progress.loaded" total.bind="currentUpload.progress.total"
+                label="正在上传...">${percent}%
               </wa-progress>
               <button class="btn btn-small" if.bind="currentUpload" click.trigger="currentUpload.abort()">取消</button>
             </div>
@@ -98,17 +90,15 @@
         <div class="col-md-12">
           <h4>货物信息</h4>
           <div class="form-group ">
-            <ak-drop-down-list k-widget.bind="dropDownListCargoItem"
-                               k-value.two-way="search.cargoName" k-option-label="请选择--货位转移货物"
-                               k-data-text-field="cargoName" k-data-value-field="cargoName"
-                               k-data-source.bind="dataSourceCargoItem"
-                               k-on-select.delegate="onSelectCargoItem($event.detail)">
+            <ak-drop-down-list k-widget.bind="dropDownListCargoItem" k-value.two-way="search.cargoName" k-option-label="请选择--货位转移货物"
+              k-data-text-field="cargoName" k-data-value-field="cargoName" k-data-source.bind="dataSourceCargoItem" k-on-select.delegate="onSelectCargoItem($event.detail)">
             </ak-drop-down-list>
-            <ak-drop-down-list k-value.two-way="search.warehouseId" k-option-label="请选择--货物所在库区"
-                               k-data-text-field="warehouseName" k-data-value-field="warehouseId"
-                               k-data-source.bind="dataSourceStorageItem">
+            <ak-drop-down-list k-value.two-way="search.warehouseId" k-option-label="请选择--货物所在库区" k-data-text-field="warehouseName" k-data-value-field="warehouseId"
+              k-data-source.bind="dataSourceStorageItem">
             </ak-drop-down-list>
-            <a class="btn btn-small" click.delegate="addStorageItem()" title="搜索"><em class="fa fa-search"></em></a>
+            <a class="btn btn-small" click.delegate="addStorageItem()" title="搜索">
+              <em class="fa fa-search"></em>
+            </a>
             <ak-grid k-data-source.bind="dataSourceStorage">
               <ak-col k-field="cargoName" k-title="货名"></ak-col>
               <ak-col k-field="warehouseName" k-title="库区名称"></ak-col>
@@ -150,15 +140,18 @@
             </ak-grid>
           </div>
         </div>
+      </div>
+      <div class="grid-body no-border">
         <div class="form-actions">
           <div class="pull-right">
-            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled"><i class="icon-ok"></i>保存
+            <button class="btn btn-success btn-cons" type="submit" disabled.bind="disabled">
+              <i class="icon-ok"></i>保存
             </button>
             <button class="btn btn-white btn-cons" type="button" click.delegate="cancel()" disabled.bind="disabled">取消
             </button>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </template>

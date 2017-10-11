@@ -1,7 +1,7 @@
 <template>
   <div class="grid simple">
-    <div class="grid-body no-border">
-      <form submit.delegate="save()">
+    <form submit.delegate="save()">
+      <div class="grid-body no-border">
         <div class="col-md-3">
           <h4>基础信息</h4>
           <div class="form-group">
@@ -119,6 +119,8 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="grid-body no-border">
         <div class="form-actions">
           <div class="pull-right">
             <button class="btn btn-primary" click.delegate="setPrintAddress()" required-permissions="U000063" if.bind="!edit">打印设置</button>
@@ -127,7 +129,7 @@
             <a class="btn" click.trigger="cancel()" if.bind="edit">取消</a>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </template>

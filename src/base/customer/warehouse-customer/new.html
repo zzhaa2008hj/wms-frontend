@@ -1,165 +1,168 @@
 <template>
-        <div class="grid simple">
-          <div class="grid-body no-border">
-            <form submit.delegate="save()">
-              <div class="col-md-12">
-                <h4>基础信息</h4>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-label">机构性质*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="value" k-value.two-way="org.orgProperty"
-                        k-data-source.bind="orgProperties" style="width: 100%">
-                      </ak-drop-down-list>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4" if.bind="org.orgProperty == 1">
-                  <div class="form-group">
-                    <label class="form-label">姓名*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.name & validate">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4" if.bind="org.orgProperty == 2">
-                  <div class="form-group">
-                    <label class="form-label">机构名称*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.name & validate">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4" if.bind="org.orgProperty == 2">
-                  <div class="form-group">
-                    <label class="form-label">机构简称*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.shortName & validate">
-                    </div>
-                  </div>
-                </div>
+  <div class="grid simple">
+    <form submit.delegate="save()">
+      <div class="grid-body no-border">
+        <div class="col-md-12">
+          <h4>基础信息</h4>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">机构性质*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <ak-drop-down-list k-option-label="请选择" k-data-text-field="name" k-data-value-field="value" k-value.two-way="org.orgProperty"
+                  k-data-source.bind="orgProperties" style="width: 100%">
+                </ak-drop-down-list>
               </div>
-              <div class="col-md-12">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-label">联系人*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.contactPerson & validate">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-label">联系电话*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.contactMobile & validate">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-label">银行*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.bankInfo & validate">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-label">银行账户*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.bankNo & validate">
-                    </div>
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="col-md-4" if.bind="org.orgProperty == 1">
+            <div class="form-group">
+              <label class="form-label">姓名*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.name & validate">
               </div>
-              <div class="col-md-12">
-                <h4>详情信息</h4>
-                <div class="col-md-6">
-                  <div class="form-group" if.bind="org.orgProperty == 1">
-                    <label class="form-label">身份证号*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.organizationCode & validate">
-                    </div>
-                  </div>
-                  <div class="form-group" if.bind="org.orgProperty == 2">
-                    <label class="form-label">统一社会信用代码*</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.organizationCode & validate">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">法人</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.legalPerson & validate">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">注册代码</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.registerCode & validate">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-label">传真号码</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.faxNumber & validate">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">邮箱</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.email & validate">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">地址</label>
-                    <span class="help"></span>
-                    <div class="controls">
-                      <input type="text" class="form-control" value.bind="org.address & validate">
-                    </div>
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="col-md-4" if.bind="org.orgProperty == 2">
+            <div class="form-group">
+              <label class="form-label">机构名称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.name & validate">
               </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label class="form-label">描述</label>
-                  <span class="help"></span>
-                  <div class="controls">
-                    <input type="text" class="form-control" value.bind="org.description & validate">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">备注</label>
-                  <span class="help"></span>
-                  <div class="controls">
-                    <textarea type="text" class="form-control" maxlength="500" value.bind="org.remark & validate"></textarea>
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="col-md-4" if.bind="org.orgProperty == 2">
+            <div class="form-group">
+              <label class="form-label">机构简称*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.shortName & validate">
               </div>
-              <div class="form-actions">
-                <div class="pull-right">
-                  <button class="btn btn-primary" type="submit"><i class="icon-ok"></i> 保存</button>
-                  <a class="btn" click.trigger="cancel()">返回</a>
-                </div>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
-      </template>
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">联系人*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.contactPerson & validate">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">联系电话*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.contactMobile & validate">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">银行*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.bankInfo & validate">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">银行账户*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.bankNo & validate">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <h4>详情信息</h4>
+          <div class="col-md-6">
+            <div class="form-group" if.bind="org.orgProperty == 1">
+              <label class="form-label">身份证号*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.organizationCode & validate">
+              </div>
+            </div>
+            <div class="form-group" if.bind="org.orgProperty == 2">
+              <label class="form-label">统一社会信用代码*</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.organizationCode & validate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">法人</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.legalPerson & validate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">注册代码</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.registerCode & validate">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">传真号码</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.faxNumber & validate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">邮箱</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.email & validate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">地址</label>
+              <span class="help"></span>
+              <div class="controls">
+                <input type="text" class="form-control" value.bind="org.address & validate">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-label">描述</label>
+            <span class="help"></span>
+            <div class="controls">
+              <input type="text" class="form-control" value.bind="org.description & validate">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">备注</label>
+            <span class="help"></span>
+            <div class="controls">
+              <textarea type="text" class="form-control" maxlength="500" value.bind="org.remark & validate"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-body no-border">
+        <div class="form-actions">
+          <div class="pull-right">
+            <button class="btn btn-primary" type="submit">
+              <i class="icon-ok"></i> 保存</button>
+            <a class="btn" click.trigger="cancel()">返回</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
