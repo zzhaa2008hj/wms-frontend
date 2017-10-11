@@ -29,6 +29,7 @@ export class Dashboard {
   warehouseOrder: WarehouseOrder;
 
   weekInfo = ConstantValues.weekInfo;
+  monthInfo = ConstantValues.monthInfo;
 
   /**
    * 仓库信息概览
@@ -185,8 +186,12 @@ export class Dashboard {
         return this.weekInfo.find(r => r.stage == x).title;
       })
     }
+    if(this.wd == "3" || this.wd == "4"){
+      this.warehouseCate = this.warehouseCate.map( x=>{
+        return this.monthInfo.find( r=> r.stage == x ).title ;
+      })
+    }
   }
-
   //初始化echarts
   getWorkOrderInfo() {
     this.wareChart = echarts.init(document.getElementById('main') as HTMLDivElement);
